@@ -1,0 +1,37 @@
+{
+  "name": "@tf/antd",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "unbuild",
+    "prepack": "unbuild"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ant-design-vue": "^4.2.6",
+    "es-toolkit": "catalog:",
+    "vue": "catalog:",
+    "@tf/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "unbuild": "catalog:",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}

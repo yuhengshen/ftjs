@@ -4,6 +4,9 @@ import { useFormInject } from "./useProvide";
 import { get, set } from "es-toolkit/compat";
 import { isEmptyStrOrNull } from "./utils";
 
+/**
+ * 通用的 form 处理
+ */
 export const useFormCommon = <T extends Record<string, any>>(
   options: CommonFormOptions<TfFormColumn<T>>,
 ) => {

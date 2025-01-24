@@ -18,7 +18,6 @@ export const useForm = <T extends Record<string, any>>(
   let unWatchList: { field: string; cancel: () => void }[] = [];
   // 需要隐藏的表单字段
   const expectHideFields = ref<string[]>([]);
-
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
     const set = new Set<string>(expectHideFields.value);
@@ -151,6 +150,9 @@ export const useForm = <T extends Record<string, any>>(
     });
   }
 
+  /**
+   * 检查需要隐藏的字段
+   */
   function checkExpectColumns() {
     const expectHideSet = new Set<string>();
     columns.value
@@ -192,7 +194,7 @@ export const useForm = <T extends Record<string, any>>(
   }
 
   /**
-   * 获取表单有用的表单值
+   * 获取表单当先展示出的表单值
    */
   function getFormData() {
     const formData: Partial<T> = {};

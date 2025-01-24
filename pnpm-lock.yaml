@@ -9,6 +9,9 @@ catalogs:
     '@types/node':
       specifier: ^22.10.9
       version: 22.10.9
+    es-toolkit:
+      specifier: ^1.31.0
+      version: 1.31.0
     typescript:
       specifier: ^5.7.3
       version: 5.7.3
@@ -31,6 +34,9 @@ importers:
 
   packages/tf-core:
     dependencies:
+      es-toolkit:
+        specifier: 'catalog:'
+        version: 1.31.0
       vue:
         specifier: 'catalog:'
         version: 3.5.13(typescript@5.7.3)
@@ -660,6 +666,9 @@ packages:
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
+
+  es-toolkit@1.31.0:
+    resolution: {integrity: sha512-vwS0lv/tzjM2/t4aZZRAgN9I9TP0MSkWuvt6By+hEXfG/uLs8yg2S1/ayRXH/x3pinbLgVJYT+eppueg3cM6tg==}
 
   esbuild@0.24.2:
     resolution: {integrity: sha512-+9egpBW8I3CD5XPe0n6BfT5fxLzxrlDzqydF3aviG+9ni1lDC/OvMHcxqEFV0+LANZG5R1bFMWfUrjVsdwxJvA==}
@@ -1725,6 +1734,8 @@ snapshots:
   electron-to-chromium@1.5.86: {}
 
   entities@4.5.0: {}
+
+  es-toolkit@1.31.0: {}
 
   esbuild@0.24.2:
     optionalDependencies:

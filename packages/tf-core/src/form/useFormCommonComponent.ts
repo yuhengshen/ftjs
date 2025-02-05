@@ -5,9 +5,9 @@ import { get, set } from "es-toolkit/compat";
 import { isEmptyStrOrNull } from "./utils";
 
 /**
- * 通用的 form 处理
+ * 通用的 form 组件处理
  */
-export const useFormCommon = <T extends Record<string, any>>(
+export const useFormCommonComponent = <T extends Record<string, any>>(
   options: CommonFormOptions<TfFormColumn<T>>,
 ) => {
   let { props, valueGetter, valueSetter } = options;

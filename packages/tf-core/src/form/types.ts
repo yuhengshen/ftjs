@@ -1,14 +1,15 @@
-import type { Component, MaybeRefOrGetter } from "vue";
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+import type { ComponentOptionsMixin, DefineComponent, MaybeRefOrGetter, PublicProps } from "vue";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 
 type Watch<T> =
   | WatchHandler<T>
   | {
-      handler: WatchHandler<T>;
-      deep?: boolean;
-      immediate?: boolean;
-    };
+    handler: WatchHandler<T>;
+    deep?: boolean;
+    immediate?: boolean;
+  };
 
 export interface TfFormColumnBase<T> {
   /**
@@ -55,15 +56,15 @@ export interface TfFormColumnBase<T> {
      * 条件，可以是一个值，也可以是一个函数
      */
     value:
-      | any
-      | any[]
-      | /** 返回值表示这个字段是否显示 */ (({
-          searchInfo,
-          val,
-        }: {
-          searchInfo: any;
-          val: any;
-        }) => boolean);
+    | any
+    | any[]
+    | /** 返回值表示这个字段是否显示 */ (({
+      searchInfo,
+      val,
+    }: {
+      searchInfo: any;
+      val: any;
+    }) => boolean);
   }[];
   /**
    * 是否禁用
@@ -80,7 +81,7 @@ export interface TfFormColumnBase<T> {
   /**
    * slots 配置，子类定义
    */
-  slots?: any;
+  slots?: {};
   /**
    * 类型名称，子类定义
    * base 只做占位，以通过编译
@@ -88,19 +89,28 @@ export interface TfFormColumnBase<T> {
   type: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/no-unused-vars
 export interface TfFormColumnMap<T> {
-  // [key: string]: TfFormColumnBase<T>;
+  [key: string]: TfFormColumnBase<T>;
   // 具体业务实现
-  /**
-   * 这个只做展位，以通过编译，不能使用
-   */
-  _base: TfFormColumnBase<T>;
 }
 
 export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: Component<
-    TfFormColumnMap<any>[key]["props"]
+  [key in keyof TfFormColumnMap<any>]: DefineComponent<
+    // 组件的 props 类型
+    TfFormColumnMap<any>[key]["props"],
+    {},
+    {},
+    {},
+    {},
+    ComponentOptionsMixin,
+    ComponentOptionsMixin,
+    {},
+    string,
+    PublicProps,
+    {},
+    {},
+    // Slots 类型
+    TfFormColumnMap<any>[key]["slots"] extends Record<string, any> ? TfFormColumnMap<any>[key]["slots"] : Record<string, any>
   >;
 };
 

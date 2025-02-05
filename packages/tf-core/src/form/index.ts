@@ -1,7 +1,7 @@
 export { useForm } from "./useForm";
-export { useFormCommon } from "./useFormCommon";
+export { useFormCommonComponent } from "./useFormCommonComponent";
 export { useFormInject } from "./useProvide";
-export { registerTfForm } from "./render/register";
+export { registerTfForm, setupTfForm } from "./render/register";
 export { TfForm } from "./render/tf-form";
 
 // 类型导出

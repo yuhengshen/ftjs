@@ -36,7 +36,6 @@ export const TfForm = defineComponent(
         "div",
         visibleColumns.value.map((column) => {
           // core 里面没有定义 renderMap 里的组件，所以这里解析出来是never，导致编译不过
-          // @ts-expect-error 类型不匹配
           const component = renderMap[column.type];
           const props = column.props;
           return h(component, { props }, undefined);

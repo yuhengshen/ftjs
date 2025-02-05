@@ -12,12 +12,12 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
 ) => {
   let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
-  if (props.search.valueGetter) {
-    valueGetter = props.search.valueGetter;
+  if (props.column.valueGetter) {
+    valueGetter = props.column.valueGetter;
   }
   // column 有自定义的转换函数
-  if (props.search.valueSetter) {
-    valueSetter = props.search.valueSetter;
+  if (props.column.valueSetter) {
+    valueSetter = props.column.valueSetter;
   }
 
   const form = useFormInject<T>();
@@ -27,30 +27,30 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
   const valueComputed = computed<any>({
     get() {
       let val;
-      if (props.search.fields) {
-        val = props.search.fields
+      if (props.column.fields) {
+        val = props.column.fields
           .map(field => {
             return get(form.value, field);
           })
           .filter(e => !isEmptyStrOrNull(e));
-      } else if (props.search.field) {
-        val = get(form.value, props.search.field);
+      } else if (props.column.field) {
+        val = get(form.value, props.column.field);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, props.search)
+        console.warn(`column 没有设置 field 或者 fields`, props.column)
       }
       if (valueGetter) val = valueGetter(val);
       return val;
     },
     set(val) {
       if (valueSetter) val = valueSetter(val);
-      if (props.search.fields) {
-        props.search.fields.forEach((field, index) => {
+      if (props.column.fields) {
+        props.column.fields.forEach((field, index) => {
           set(form.value, field, val?.[index]);
         });
-      } else if (props.search.field) {
-        set(form.value, props.search.field, val);
+      } else if (props.column.field) {
+        set(form.value, props.column.field, val);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, props.search)
+        console.warn(`column 没有设置 field 或者 fields`, props.column)
       }
     },
   });

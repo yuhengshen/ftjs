@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { ComponentOptionsMixin, DefineComponent, MaybeRefOrGetter, PublicProps } from "vue";
+import { TfFormColumnCustom } from "./render/renderMap";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 
@@ -90,8 +91,9 @@ export interface TfFormColumnBase<T> {
 }
 
 export interface TfFormColumnMap<T> {
-  [key: string]: TfFormColumnBase<T>;
-  // 具体业务实现
+  /** 自定义渲染 */
+  custom: TfFormColumnCustom<T>;
+  // 其他具体业务实现
 }
 
 export type TfFormRenderMap = {
@@ -120,16 +122,19 @@ export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
 
 export type ToValue<T> = T extends MaybeRefOrGetter<infer U> ? U : T;
 
+export interface CommonFormProps<T extends TfFormColumn<any>> {
+  /** column 定义 */
+  column: T;
+  /** 是否查看模式 */
+  isView: boolean;
+}
+
 export interface CommonFormOptions<T extends TfFormColumn<any>> {
   /**
    * 默认值处理
    */
   defaultFieldProps?: (p?: ToValue<T["props"]>) => Partial<ToValue<T["props"]>>;
-  props: Readonly<{
-    search: T;
-    type: string;
-    isView: boolean;
-  }>;
+  props: Readonly<CommonFormProps<T>>;
   /**
    * set 转换
    */

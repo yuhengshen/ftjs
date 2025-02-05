@@ -18,7 +18,7 @@ interface setupOptions {
   /**
    * 渲染组件集合
    */
-  renderMap?: TfFormRenderMap;
+  renderMap?: Partial<TfFormRenderMap>;
   /**
    * form 组件，需要接受一个slot来渲染表单
    * todo:: 类型加固

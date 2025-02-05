@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import type { ComponentOptionsMixin, DefineComponent, MaybeRefOrGetter, PublicProps } from "vue";
+import type {
+  AllowedComponentProps,
+  ComponentCustomProps,
+  CreateComponentPublicInstanceWithMixins,
+  MaybeRefOrGetter,
+  VNodeProps,
+} from "vue";
 import { TfFormColumnCustom } from "./render/renderMap";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
@@ -7,10 +13,10 @@ type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 type Watch<T> =
   | WatchHandler<T>
   | {
-    handler: WatchHandler<T>;
-    deep?: boolean;
-    immediate?: boolean;
-  };
+      handler: WatchHandler<T>;
+      deep?: boolean;
+      immediate?: boolean;
+    };
 
 export interface TfFormColumnBase<T> {
   /**
@@ -57,15 +63,15 @@ export interface TfFormColumnBase<T> {
      * 条件，可以是一个值，也可以是一个函数
      */
     value:
-    | any
-    | any[]
-    | /** 返回值表示这个字段是否显示 */ (({
-      searchInfo,
-      val,
-    }: {
-      searchInfo: any;
-      val: any;
-    }) => boolean);
+      | any
+      | any[]
+      | /** 返回值表示这个字段是否显示 */ (({
+          searchInfo,
+          val,
+        }: {
+          searchInfo: any;
+          val: any;
+        }) => boolean);
   }[];
   /**
    * 是否禁用
@@ -96,23 +102,37 @@ export interface TfFormColumnMap<T> {
   // 其他具体业务实现
 }
 
+// export type TfFormRenderMap = {
+//   [key in keyof TfFormColumnMap<any>]: DefineComponent<
+//     // 组件的 props 类型
+//     TfFormColumnMap<any>[key]["props"],
+//     {},
+//     {},
+//     {},
+//     {},
+//     ComponentOptionsMixin,
+//     ComponentOptionsMixin,
+//     {},
+//     string,
+//     PublicProps,
+//     {},
+//     {},
+//     // Slots 类型
+//     TfFormColumnMap<any>[key]["slots"] extends Record<string, any>
+//       ? TfFormColumnMap<any>[key]["slots"]
+//       : Record<string, any>
+//   >;
+// };
+
 export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: DefineComponent<
-    // 组件的 props 类型
-    TfFormColumnMap<any>[key]["props"],
+  [key in keyof TfFormColumnMap<any>]: new <TForm>(
+    props: TfFormColumnMap<TForm>[key]["props"] & {} & VNodeProps &
+      AllowedComponentProps &
+      ComponentCustomProps
+  ) => CreateComponentPublicInstanceWithMixins<
+    TfFormColumnMap<TForm>[key]["props"] & {},
     {},
-    {},
-    {},
-    {},
-    ComponentOptionsMixin,
-    ComponentOptionsMixin,
-    {},
-    string,
-    PublicProps,
-    {},
-    {},
-    // Slots 类型
-    TfFormColumnMap<any>[key]["slots"] extends Record<string, any> ? TfFormColumnMap<any>[key]["slots"] : Record<string, any>
+    {}
   >;
 };
 

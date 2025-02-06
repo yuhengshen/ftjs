@@ -127,30 +127,8 @@ export interface TfFormColumnMap<T> {
   // 其他具体业务实现
 }
 
-// export type TfFormRenderMap = {
-//   [key in keyof TfFormColumnMap<any>]: DefineComponent<
-//     // 组件的 props 类型
-//     TfFormColumnMap<any>[key]["props"],
-//     {},
-//     {},
-//     {},
-//     {},
-//     ComponentOptionsMixin,
-//     ComponentOptionsMixin,
-//     {},
-//     string,
-//     PublicProps,
-//     {},
-//     {},
-//     // Slots 类型
-//     TfFormColumnMap<any>[key]["slots"] extends Record<string, any>
-//       ? TfFormColumnMap<any>[key]["slots"]
-//       : Record<string, any>
-//   >;
-// };
-
 export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: Component;
+  [key in keyof TfFormColumnMap<any>]: Component<TfFormColumnMap<any>[key]["props"]>;
 };
 
 type ValueOf<T> = T[keyof T];

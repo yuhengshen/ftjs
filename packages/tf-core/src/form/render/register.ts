@@ -1,4 +1,3 @@
-import { Component } from "vue";
 import { TfFormRenderMap } from "../types";
 import { renderMap as _renderMap, FormComponent, formRender } from "./renderMap";
 
@@ -9,7 +8,7 @@ import { renderMap as _renderMap, FormComponent, formRender } from "./renderMap"
  */
 export const registerTfForm = <T extends keyof TfFormRenderMap>(
   name: T,
-  component: Component,
+  component: TfFormRenderMap[T],
 ) => {
   _renderMap[name] = component;
 };

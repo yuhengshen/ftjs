@@ -1,16 +1,6 @@
-import {
-  CommonFormProps,
-  TfFormColumnBase,
-  setupTfForm,
-  useFormCommonComponent,
-} from "@tf/core";
-import { defineComponent, h } from "vue";
-import { Input, InputProps } from "ant-design-vue";
-
-export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
-  type: "input";
-  props: InputProps;
-}
+import { setupTfForm } from "@tf/core";
+import input from "./input.vue";
+import type { TfFormColumnInput } from "./input.vue";
 declare module "@tf/core" {
   interface TfFormColumnMap<T> {
     input: TfFormColumnInput<T>;
@@ -20,25 +10,6 @@ declare module "@tf/core" {
 setupTfForm({
   formComponent: {},
   renderMap: {
-    input: defineComponent(
-      <T extends Record<string, any>>(
-        props: CommonFormProps<TfFormColumnInput<T>>
-      ) => {
-        console.log(props);
-        const { valueComputed } = useFormCommonComponent({
-          props: {
-            column: props.column,
-            isView: props.isView,
-          },
-        });
-        return () => h(Input, {
-          modelValue: valueComputed.value,
-          onUpdateModelValue: (val: any) => {
-            valueComputed.value = val;
-          },
-        });
-      },
-      {}
-    ),
+    input,
   },
 });

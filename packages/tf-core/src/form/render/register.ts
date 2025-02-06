@@ -9,7 +9,7 @@ import { renderMap as _renderMap } from "./renderMap";
  */
 export const registerTfForm = <T extends keyof TfFormRenderMap>(
   name: T,
-  component: TfFormRenderMap[T]
+  component: Component,
 ) => {
   _renderMap[name] = component;
 };

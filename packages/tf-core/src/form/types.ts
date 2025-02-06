@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type {
-  AllowedComponentProps,
-  ComponentCustomProps,
-  CreateComponentPublicInstanceWithMixins,
+  Component,
   MaybeRefOrGetter,
-  VNodeProps,
 } from "vue";
 import { TfFormColumnCustom } from "./render/renderMap";
 
@@ -13,10 +10,36 @@ type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 type Watch<T> =
   | WatchHandler<T>
   | {
-      handler: WatchHandler<T>;
-      deep?: boolean;
-      immediate?: boolean;
-    };
+    handler: WatchHandler<T>;
+    deep?: boolean;
+    immediate?: boolean;
+  };
+
+/**
+ * 临时工具类型减1
+ */
+type Sub1 = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+/**
+ * 工具类型：获取对象的路径
+ *
+ * T: 传入的对象类型
+ * Depth: 有一些对象属性是循环引用的，需要限制下递归深度，避免超出栈的最大深度
+ */
+type RecordPath<T, Depth extends number = 5> = Depth extends -1
+  ? string
+  : // 数组递归单独处理，因为有其他很多无用属性(length, pop之类的)
+  T extends any[]
+  ? `${number}` | `${number}.${RecordPath<T[number], Sub1[Depth]>}`
+  : // 对象递归
+  T extends Record<string, any>
+  ? ValueOf<{
+    [K in keyof T]: K extends string
+    ? `${K}` | `${K}.${RecordPath<T[K], Sub1[Depth]>}`
+    : never;
+  }>
+  : never;
+
 
 export interface TfFormColumnBase<T> {
   /**
@@ -24,7 +47,7 @@ export interface TfFormColumnBase<T> {
    *
    * `field` 优先级高于 `fields`
    */
-  field?: string;
+  field?: RecordPath<T>;
   /**
    * 字段名数组，当表单需要返回多个值时，使用这个字段
    *
@@ -63,15 +86,15 @@ export interface TfFormColumnBase<T> {
      * 条件，可以是一个值，也可以是一个函数
      */
     value:
-      | any
-      | any[]
-      | /** 返回值表示这个字段是否显示 */ (({
-          searchInfo,
-          val,
-        }: {
-          searchInfo: any;
-          val: any;
-        }) => boolean);
+    | any
+    | any[]
+    | /** 返回值表示这个字段是否显示 */ (({
+      searchInfo,
+      val,
+    }: {
+      searchInfo: any;
+      val: any;
+    }) => boolean);
   }[];
   /**
    * 是否禁用
@@ -125,15 +148,7 @@ export interface TfFormColumnMap<T> {
 // };
 
 export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: new <TForm>(
-    props: TfFormColumnMap<TForm>[key]["props"] & {} & VNodeProps &
-      AllowedComponentProps &
-      ComponentCustomProps
-  ) => CreateComponentPublicInstanceWithMixins<
-    TfFormColumnMap<TForm>[key]["props"] & {},
-    {},
-    {}
-  >;
+  [key in keyof TfFormColumnMap<any>]: Component;
 };
 
 type ValueOf<T> = T[keyof T];

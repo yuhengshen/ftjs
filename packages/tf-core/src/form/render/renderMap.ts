@@ -38,13 +38,6 @@ const Custom = defineComponent({
   }
 })
 
-export const defineCustomRender = <T>(setup: (props: TfFormColumnCustomProps<T>) => any) => {
-  return defineComponent(setup, {
-    inheritAttrs: false,
-    props: ['modelValue', 'column', 'isView', 'onUpdate:modelValue'] as any,
-  });
-}
-
 /**
  * 渲染组件集合
  */

@@ -1,10 +1,9 @@
-import { setupTfForm, FormComponentProps } from "@tf/core";
+import { setupTfForm, defineFormComponent } from "@tf/core";
 import { Form, FormItem, Button, FormProps } from "ant-design-vue";
 import input from "./input.vue";
 import type { TfFormColumnInput } from "./input.vue";
 import select from "./select.vue";
 import type { TfFormColumnSelect } from "./select.vue";
-import { defineComponent } from "vue";
 
 declare module "@tf/core" {
   /**
@@ -24,7 +23,7 @@ declare module "@tf/core" {
   }
 }
 
-const formComponent = defineComponent(<T extends Record<string, any>>(props: FormComponentProps<T>, ctx: any) => {
+const formComponent = defineFormComponent((props, ctx) => {
   const formProps: FormProps = {
     layout: "inline",
     wrapperCol: {
@@ -45,8 +44,6 @@ const formComponent = defineComponent(<T extends Record<string, any>>(props: For
       <Button type="primary" htmlType="submit">提交</Button>
     </FormItem>
   </Form>
-}, {
-  props: ['columns', 'formData', 'formProps', 'onSubmit'] as any,
 })
 
 export default function register() {

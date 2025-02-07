@@ -81,18 +81,20 @@ export interface TfFormColumnBase<T> {
     /**
      * 控制字段
      */
-    key: string;
+    field: string;
     /**
      * 条件，可以是一个值，也可以是一个函数
      */
     value:
-    | any
-    | any[]
+    | string
+    | number
+    | string[]
+    | number[]
     | /** 返回值表示这个字段是否显示 */ (({
-      searchInfo,
+      formData,
       val,
     }: {
-      searchInfo: any;
+      formData: T;
       val: any;
     }) => boolean);
   }[];
@@ -164,7 +166,7 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
   _isView: boolean;
 }
 
-export interface FormContainerProps {}
+export interface FormContainerProps { }
 
 export interface CommonFormOptions<T extends TfFormColumn<any>> extends CommonFormProps<T> {
   /**

@@ -158,28 +158,29 @@ export const useForm = <T extends Record<string, any>>(
     columns.value
       .filter(column => column.expect)
       .forEach(column => {
+        const columnField = column.field ?? column.fields![0];
         column.expect!.forEach(expectItem => {
           const targetColumn = columns.value.find(
             column => {
               const field = column.field ?? column.fields![0];
-              return field === expectItem.key
+              return field === expectItem.field
             },
           );
           if (!targetColumn)
-            return console.warn("找不到关联的字段", expectItem.key);
+            return console.warn("找不到关联的字段", expectItem.field);
 
           const targetField = targetColumn.field ?? targetColumn.fields![0];
-          const expectValue = get(form.value, targetField);
+          const expectValue = get(form.value, columnField);
 
           let hide = false;
           if (typeof expectItem.value === "function") {
             hide = !expectItem.value({
-              form: form.value,
+              formData: form.value,
               val: expectValue,
             });
           } else {
             hide = Array.isArray(expectItem.value)
-              ? !expectItem.value.includes(expectValue)
+              ? !(expectItem.value as any).includes(expectValue)
               : expectItem.value !== expectValue;
           }
           if (hide) {

@@ -35,6 +35,12 @@ const columns: TfFormColumn<FormData>[] = [
       placeholder: "xxxx2",
       allowClear: true,
     },
+    expect: [
+      {
+        field: "age",
+        value: "a",
+      },
+    ],
   },
   {
     type: "input",

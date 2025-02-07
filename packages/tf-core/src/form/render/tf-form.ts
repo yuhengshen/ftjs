@@ -51,7 +51,9 @@ export const TfForm = /*#__PURE__*/ defineComponent(
           columns: visibleColumns.value,
           formData: formData.value,
           formProps: props.formProps,
-          onSubmit: () => props.onSubmit?.(getFormData())
+          onSubmit: () => {
+            return props.onSubmit?.(getFormData());
+          }
         },
         () => visibleColumns.value.map((column) => {
           // core 里面 renderMap 里的组件只定义了 custom
@@ -68,7 +70,7 @@ export const TfForm = /*#__PURE__*/ defineComponent(
   },
   {
     name: "TfForm",
-    props: ["columns", "formData", "onUpdate:formData"] as any,
+    props: ["columns", "formData", "onUpdate:formData", "onSubmit"] as any,
     inheritAttrs: false
   }
 );

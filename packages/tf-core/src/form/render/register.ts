@@ -1,6 +1,6 @@
 import { Component } from "vue";
 import { TfFormRenderMap } from "../types";
-import { renderMap as _renderMap } from "./renderMap";
+import { renderMap as _renderMap, FormComponent, formRender } from "./renderMap";
 
 /**
  * 注册渲染组件，可以按需动态注册，但是必须在使用前注册
@@ -21,11 +21,11 @@ interface setupOptions {
   renderMap?: Partial<TfFormRenderMap>;
   /**
    * form 组件，需要接受一个slot来渲染表单
-   * todo:: 类型加固
    */
-  formComponent?: Component;
+  formComponent: FormComponent;
 }
 export const setupTfForm = (setupOptions: setupOptions) => {
-  const { renderMap } = setupOptions;
+  const { renderMap, formComponent } = setupOptions;
   if (renderMap) Object.assign(_renderMap, renderMap);
+  formRender.c = formComponent;
 };

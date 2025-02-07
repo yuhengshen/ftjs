@@ -1,5 +1,5 @@
-import { defineComponent, h } from "vue";
-import { TfFormColumnBase, TfFormRenderMap } from "../types";
+import { Component, defineComponent, h } from "vue";
+import { TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
 import { useFormCommonComponent } from "../useFormCommonComponent";
 
 export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {
@@ -35,3 +35,19 @@ export const renderMap = {
   // 唯一内置核心的自定义渲染
   custom: Custom,
 } as TfFormRenderMap;
+
+
+/**
+ * 表单容器组件
+ * 泛型参数
+ */
+export type FormComponent = Component<{
+  columns: TfFormColumn<any>[];
+  formData: Record<string, any>;
+}>;
+
+export const formRender: {
+  c?: FormComponent;
+} = {
+  c: undefined,
+}

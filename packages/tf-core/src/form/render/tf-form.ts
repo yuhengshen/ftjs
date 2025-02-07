@@ -1,6 +1,6 @@
 import { computed, defineComponent, h, SetupContext, SlotsType } from "vue";
 import { TfFormColumn } from "../types";
-import { renderMap } from "./renderMap";
+import { formRender, renderMap } from "./renderMap";
 import { useForm } from "../useForm";
 
 /**
@@ -11,10 +11,17 @@ export const TfForm = /*#__PURE__*/ defineComponent(
     props: {
       columns: TfFormColumn<T>[];
       formData: T;
+      /**
+       * form 容器组件 props
+       */
+      formProps?: any;
       "onUpdate:formData"?: (value: T) => void;
     },
     ctx: SetupContext<any, SlotsType<any>>
   ) => {
+    if (!formRender.c) throw new Error("没有表单容器组件，请先注册");
+
+
     const formData = computed({
       get: () => props.formData,
       set(v) {
@@ -33,11 +40,17 @@ export const TfForm = /*#__PURE__*/ defineComponent(
 
     return () => {
       return h(
-        "div",
-        visibleColumns.value.map((column) => {
+        formRender.c!,
+        {
+          columns: visibleColumns.value,
+          formData: formData.value,
+          formProps: props.formProps,
+        },
+        () => visibleColumns.value.map((column) => {
           // core 里面 renderMap 里的组件只定义了 custom
           const component = renderMap[column.type];
           return h(component, {
+            ...column.props,
             _column: column,
             _isView: false,
           }, undefined);

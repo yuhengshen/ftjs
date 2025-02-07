@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends Record<string, any>">
-import { Input, InputProps } from "ant-design-vue";
+import { Input, FormItem, InputProps } from "ant-design-vue";
 import {
   useFormCommonComponent,
   CommonFormProps,
@@ -20,5 +20,7 @@ const { valueComputed } = useFormCommonComponent({
 </script>
 
 <template>
-  <Input v-model:value="valueComputed" />
+  <FormItem :label="props._column.title" :name="props._column.field">
+    <Input v-model:value="valueComputed" />
+  </FormItem>
 </template>

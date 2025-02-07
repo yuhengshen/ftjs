@@ -3,11 +3,12 @@ import { TfForm, TfFormColumn, TfFormColumnCustomProps } from "@tf/core";
 import { defineComponent, ref } from "vue";
 
 interface FormData {
-  name: string;
-  age: number;
+  name?: string;
+  age?: number;
+  likes?: number[];
   extraInfo?: {
-    name: string;
-    age: number;
+    name?: string;
+    age?: number;
   };
 }
 
@@ -43,24 +44,37 @@ const columns: TfFormColumn<FormData>[] = [
     type: "custom",
     field: "name",
     props: {
-      render: defineComponent((props: TfFormColumnCustomProps<FormData>) => {
-        console.log(props);
-        return () => (
-          <div style="display: flex; align-items: center; justify-content: center; height: 100%;">
-            isView: {props.isView ? "true" : "false"}
-          </div>
-        );
-      }, {
-        inheritAttrs: false,
-      }),
+      render: defineComponent(
+        (props: TfFormColumnCustomProps<FormData>) => {
+          console.log(props);
+          return () => (
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; align-self: center; margin: 0 2em">
+              isView: {props.isView ? "true" : "false"}
+            </div>
+          );
+        },
+        {
+          inheritAttrs: false,
+        }
+      ),
     },
+  },
+  {
+    type: "select",
+    field: "likes",
+    title: "爱好",
+    props: {
+      options: [
+        { label: "1", value: 1 },
+        { label: "2", value: 2 },
+      ],
+      mode: "multiple",
+    },
+    value: [1, 2],
   },
 ];
 
-const formData = ref<FormData>({
-  name: "",
-  age: 0,
-});
+const formData = ref<FormData>({});
 </script>
 
 <template>

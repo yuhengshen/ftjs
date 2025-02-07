@@ -164,6 +164,8 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
   _isView: boolean;
 }
 
+export interface FormContainerProps {}
+
 export interface CommonFormOptions<T extends TfFormColumn<any>> extends CommonFormProps<T> {
   /**
    * 默认值处理

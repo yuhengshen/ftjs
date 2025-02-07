@@ -16,6 +16,12 @@ export const TfForm = /*#__PURE__*/ defineComponent(
        */
       formProps?: any;
       "onUpdate:formData"?: (value: T) => void;
+      /**
+       * 提交函数
+       * @param formData 当先的有效表单值
+       * @returns 
+       */
+      onSubmit?: (formData: Partial<T>) => Promise<void> | void
     },
     ctx: SetupContext<any, SlotsType<any>>
   ) => {
@@ -45,6 +51,7 @@ export const TfForm = /*#__PURE__*/ defineComponent(
           columns: visibleColumns.value,
           formData: formData.value,
           formProps: props.formProps,
+          onSubmit: () => props.onSubmit?.(getFormData())
         },
         () => visibleColumns.value.map((column) => {
           // core 里面 renderMap 里的组件只定义了 custom
@@ -52,8 +59,9 @@ export const TfForm = /*#__PURE__*/ defineComponent(
           return h(component, {
             ...column.props,
             _column: column,
+            // 是否为查看模式
             _isView: false,
-          }, undefined);
+          });
         })
       );
     };
@@ -61,5 +69,6 @@ export const TfForm = /*#__PURE__*/ defineComponent(
   {
     name: "TfForm",
     props: ["columns", "formData", "onUpdate:formData"] as any,
+    inheritAttrs: false
   }
 );

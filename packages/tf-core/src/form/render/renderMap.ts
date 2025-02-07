@@ -1,5 +1,5 @@
 import { Component, defineComponent, h } from "vue";
-import { TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
+import { FormContainerProps, TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
 import { useFormCommonComponent } from "../useFormCommonComponent";
 
 export interface TfFormColumnCustomProps<T> {
@@ -38,6 +38,13 @@ const Custom = defineComponent({
   }
 })
 
+export const defineCustomRender = <T>(setup: (props: TfFormColumnCustomProps<T>) => any) => {
+  return defineComponent(setup, {
+    inheritAttrs: false,
+    props: ['modelValue', 'column', 'isView', 'onUpdate:modelValue'] as any,
+  });
+}
+
 /**
  * 渲染组件集合
  */
@@ -47,14 +54,18 @@ export const renderMap = {
 } as TfFormRenderMap;
 
 
+export interface FormComponentProps<T = Record<string, any>> {
+  columns: TfFormColumn<T>[];
+  formData: T;
+  formProps: FormContainerProps;
+  onSubmit?: () => Promise<void> | void
+}
+
 /**
  * 表单容器组件
  * 泛型参数
  */
-export type FormComponent = Component<{
-  columns: TfFormColumn<any>[];
-  formData: Record<string, any>;
-}>;
+export type FormComponent = Component<FormComponentProps>;
 
 export const formRender: {
   c?: FormComponent;

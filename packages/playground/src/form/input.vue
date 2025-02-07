@@ -7,6 +7,7 @@ import {
 } from "@tf/core";
 
 export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
+  /** 输入框 */
   type: "input";
   props?: InputProps;
 }

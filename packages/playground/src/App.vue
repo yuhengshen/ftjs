@@ -1,5 +1,10 @@
 <script setup lang="tsx">
-import { TfForm, TfFormColumn, TfFormColumnCustomProps } from "@tf/core";
+import {
+  defineCustomRender,
+  TfForm,
+  TfFormColumn,
+  TfFormColumnCustomProps,
+} from "@tf/core";
 import { defineComponent, ref } from "vue";
 
 interface FormData {
@@ -44,19 +49,13 @@ const columns: TfFormColumn<FormData>[] = [
     type: "custom",
     field: "name",
     props: {
-      render: defineComponent(
-        (props: TfFormColumnCustomProps<FormData>) => {
-          console.log(props);
-          return () => (
-            <div style="display: flex; align-items: center; justify-content: center; height: 100%; align-self: center; margin: 0 2em">
-              isView: {props.isView ? "true" : "false"}
-            </div>
-          );
-        },
-        {
-          inheritAttrs: false,
-        }
-      ),
+      render: defineCustomRender((props) => {
+        return () => (
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; align-self: center; margin: 0 2em">
+            isView: {props.isView ? "true" : "false"}
+          </div>
+        );
+      }),
     },
   },
   {
@@ -75,10 +74,18 @@ const columns: TfFormColumn<FormData>[] = [
 ];
 
 const formData = ref<FormData>({});
+
+const onSubmit = async (formData: FormData) => {
+  console.log("submit", formData);
+};
 </script>
 
 <template>
   <div style="margin: 100px">
-    <TfForm v-model:form-data="formData" :columns="columns" />
+    <TfForm
+      v-model:form-data="formData"
+      :columns="columns"
+      @submit="onSubmit"
+    />
   </div>
 </template>

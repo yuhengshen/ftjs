@@ -1,5 +1,5 @@
 import { computed, defineComponent, h, SetupContext, SlotsType } from "vue";
-import { TfFormColumn } from "../types";
+import { FormContainerProps, TfFormColumn } from "../types";
 import { formRender, renderMap } from "./renderMap";
 import { useForm } from "../useForm";
 
@@ -14,7 +14,7 @@ export const TfForm = /*#__PURE__*/ defineComponent(
       /**
        * form 容器组件 props
        */
-      formProps?: any;
+      formProps?: FormContainerProps;
       "onUpdate:formData"?: (value: T) => void;
       /**
        * 提交函数
@@ -70,7 +70,7 @@ export const TfForm = /*#__PURE__*/ defineComponent(
   },
   {
     name: "TfForm",
-    props: ["columns", "formData", "onUpdate:formData", "onSubmit"] as any,
+    props: ["columns", "formData", "onUpdate:formData", "onSubmit", "formProps"] as any,
     inheritAttrs: false
   }
 );

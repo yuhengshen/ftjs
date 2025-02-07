@@ -91,6 +91,7 @@ const onSubmit = async (formData: FormData) => {
     <TfForm
       v-model:form-data="formData"
       :columns="columns"
+      :form-props="{ mode: 'search' }"
       @submit="onSubmit"
     />
   </div>

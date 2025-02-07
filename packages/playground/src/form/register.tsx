@@ -19,13 +19,18 @@ declare module "@tf/core" {
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface FormContainerProps extends FormProps {
-
+    mode?: 'search' | 'form',
+    width?: string
   }
 }
 
 const formComponent = defineFormComponent((props, ctx) => {
+  const isSearch = (props.formProps?.mode === 'search')
+
+  const width = isSearch ? undefined : props.formData?.width ?? '500px';
+
   const formProps: FormProps = {
-    layout: "inline",
+    layout: isSearch ? "inline" : 'horizontal',
     wrapperCol: {
       style: {
         width: '200px'
@@ -38,11 +43,16 @@ const formComponent = defineFormComponent((props, ctx) => {
     },
   }
 
-  return () => <Form {...formProps} >
+  const operate = isSearch ? (<FormItem>
+    <Button type="primary" htmlType="submit">查询</Button>
+    <Button style="margin-left: 10px;" type="primary" danger htmlType="reset">重置</Button>
+  </FormItem>) : (<FormItem>
+    <Button type="primary" htmlType="submit">提交</Button>
+  </FormItem>)
+
+  return () => <Form {...formProps} style={{ width }}>
     {ctx.slots.default?.()}
-    <FormItem>
-      <Button type="primary" htmlType="submit">提交</Button>
-    </FormItem>
+    {operate}
   </Form>
 })
 

@@ -50,7 +50,7 @@ export const renderMap = {
 export interface FormComponentProps<T = Record<string, any>> {
   columns: TfFormColumn<T>[];
   formData: T;
-  formProps: FormContainerProps;
+  formProps?: FormContainerProps;
   onSubmit?: () => Promise<void> | void
 }
 

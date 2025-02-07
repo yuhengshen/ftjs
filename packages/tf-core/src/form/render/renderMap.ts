@@ -2,27 +2,37 @@ import { Component, defineComponent, h } from "vue";
 import { TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
 import { useFormCommonComponent } from "../useFormCommonComponent";
 
+export interface TfFormColumnCustomProps<T> {
+  modelValue: any;
+  column: TfFormColumnCustom<T>;
+  isView: boolean;
+  'onUpdate:modelValue': (v: any) => void;
+}
 export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {
   /**
    * 自定义渲染
    */
-  type: "custom"
+  type: "custom",
+  props: {
+    render: Component<TfFormColumnCustomProps<T>>
+  }
 }
 
 const Custom = defineComponent({
-  props: ['render', 'column', 'isView'],
+  props: ['render', '_column', '_isView'],
   setup(props) {
 
     const valueComputed = useFormCommonComponent({
-      _column: props.column,
-      _isView: props.isView,
+      _column: props._column,
+      _isView: props._isView,
     });
 
     return () => {
       return h(props.render, {
         modelValue: valueComputed.valueComputed.value,
-        column: props.column,
-        onUpdateModelValue: (v: any) => valueComputed.valueComputed.value = v,
+        column: props._column,
+        isView: props._isView,
+        'onUpdate:modelValue': (v: any) => valueComputed.valueComputed.value = v,
       });
     }
   }

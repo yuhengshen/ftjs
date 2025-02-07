@@ -6,3 +6,4 @@ export { TfForm } from "./render/tf-form";
 
 // 类型导出
 export * from "./types";
+export type { TfFormColumnCustomProps } from "./render/renderMap";

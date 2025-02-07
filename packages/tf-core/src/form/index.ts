@@ -1,4 +1,3 @@
-export { useForm } from "./useForm";
 export { useFormCommonComponent } from "./useFormCommonComponent";
 export { useFormInject } from "./useProvide";
 export { registerTfForm, setupTfForm } from "./render/register";

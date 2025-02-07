@@ -3,6 +3,7 @@ import { Form, FormItem, Button } from "ant-design-vue";
 import input from "./input.vue";
 import type { TfFormColumnInput } from "./input.vue";
 import { defineComponent } from "vue";
+
 declare module "@tf/core" {
   interface TfFormColumnMap<T> {
     input: TfFormColumnInput<T>;
@@ -17,7 +18,8 @@ export default function register() {
         ...props.formProps,
         model: props.formData,
         onFinish: (values: any) => {
-          console.log(values);
+          console.log('finish', values);
+          console.log(props.formData);
         },
         onFinishFailed: (errorInfo: any) => {
           console.log(errorInfo);

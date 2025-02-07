@@ -9,7 +9,7 @@ export const useForm = <T extends Record<string, any>>(
   formProps?: Ref<T>,
 ) => {
   const columns = computed(() => toValue(_columns));
-  
+
   const form = useFormProvide(formProps);
 
   let tmpDefaultForm: T;
@@ -143,7 +143,7 @@ export const useForm = <T extends Record<string, any>>(
       const fields = column.fields ? column.fields : [column.field!];
       const valueArr = column.fields ? (column.value ?? []) : [column.value];
       fields.forEach((field, idx) => {
-        if (!has(form.value, field)) {
+        if (valueArr[idx] != null && !has(form.value, field)) {
           set(form.value, field, cloneDeep(valueArr[idx]));
         }
       });

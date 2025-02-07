@@ -1,6 +1,6 @@
-import {createApp} from "vue";
-import register from "./form/register";
+import { createApp } from "vue";
+import { registerForm } from "@tf/antd";
 import App from "./App.vue";
 
-register();
+registerForm();
 createApp(App).mount("#app");

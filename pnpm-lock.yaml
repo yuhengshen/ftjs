@@ -59,6 +59,9 @@ importers:
 
   packages/playground:
     dependencies:
+      '@tf/antd':
+        specifier: workspace:*
+        version: link:../tf-antd
       '@tf/core':
         specifier: workspace:*
         version: link:../tf-core

@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { CommonFormOptions, TfFormColumn } from "./types";
+import { CommonFormOptions, TfFormColumnBase } from "./types";
 import { useFormInject } from "./useProvide";
 import { get, set } from "es-toolkit/compat";
 import { isEmptyStrOrNull } from "./utils";
@@ -8,7 +8,7 @@ import { isEmptyStrOrNull } from "./utils";
  * 通用的 form 组件处理
  */
 export const useFormCommonComponent = <T extends Record<string, any>>(
-  options: CommonFormOptions<TfFormColumn<T>>,
+  options: CommonFormOptions<TfFormColumnBase<T>>
 ) => {
   let { _column: column, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
@@ -29,14 +29,14 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
       let val;
       if (column.fields) {
         val = column.fields
-          .map(field => {
+          .map((field) => {
             return get(form.value, field);
           })
-          .filter(e => !isEmptyStrOrNull(e));
+          .filter((e) => !isEmptyStrOrNull(e));
       } else if (column.field) {
         val = get(form.value, column.field);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, column)
+        console.warn(`column 没有设置 field 或者 fields`, column);
       }
       if (valueGetter) val = valueGetter(val);
       return val;
@@ -50,7 +50,7 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
       } else if (column.field) {
         set(form.value, column.field, val);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, column)
+        console.warn(`column 没有设置 field 或者 fields`, column);
       }
     },
   });

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tf/core": "workspace:*",
+    "@tf/antd": "workspace:*",
     "ant-design-vue": "^4.2.6",
     "es-toolkit": "catalog:",
     "vue": "catalog:"

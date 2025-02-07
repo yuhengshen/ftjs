@@ -14,10 +14,8 @@ const Custom = defineComponent({
   setup(props) {
 
     const valueComputed = useFormCommonComponent({
-      props: {
-        column: props.column,
-        isView: props.isView,
-      },
+      _column: props.column,
+      _isView: props.isView,
     });
 
     return () => {

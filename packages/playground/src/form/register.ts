@@ -7,9 +7,11 @@ declare module "@tf/core" {
   }
 }
 
-setupTfForm({
-  formComponent: {},
-  renderMap: {
-    input,
-  },
-});
+export default function register() {
+  setupTfForm({
+    formComponent: {},
+    renderMap: {
+      input,
+    },
+  });
+}

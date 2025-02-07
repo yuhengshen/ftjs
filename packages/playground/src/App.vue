@@ -22,10 +22,12 @@ const formData = ref<FormData>({
   name: "",
   age: 0,
 });
+
+console.log("tf-form", TfForm);
 </script>
 
 <template>
   <div>
-    <TfForm v-model:form-data="formData" :columns="columns" />
+    <TfForm v-model:form-data="formData" :columns="columns"/>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import { computed, defineComponent, h, SetupContext } from "vue";
+import { computed, defineComponent, h, SetupContext, SlotsType } from "vue";
 import { TfFormColumn } from "../types";
 import { renderMap } from "./renderMap";
 import { useForm } from "../useForm";
@@ -6,19 +6,19 @@ import { useForm } from "../useForm";
 /**
  * 表单组件
  */
-export const TfForm = defineComponent(
+export const TfForm = /*#__PURE__*/ defineComponent(
   <T extends Record<string, any>>(
     props: {
       columns: TfFormColumn<T>[];
       formData: T;
+      "onUpdate:formData"?: (value: T) => void;
     },
-    // todo:: 校验 emit，校验泛型
-    ctx: SetupContext
+    ctx: SetupContext<any, SlotsType<any>>
   ) => {
     const formData = computed({
       get: () => props.formData,
       set(v) {
-        ctx.emit("update:formData", v);
+        props["onUpdate:formData"]?.(v);
       },
     });
 
@@ -35,17 +35,18 @@ export const TfForm = defineComponent(
       return h(
         "div",
         visibleColumns.value.map((column) => {
-          // core 里面没有定义 renderMap 里的组件，所以这里解析出来是never，导致编译不过
+          // core 里面 renderMap 里的组件只定义了 custom
           const component = renderMap[column.type];
-          const props = column.props;
-          return h(component, { props }, undefined);
+          return h(component, {
+            _column: column,
+            _isView: false,
+          }, undefined);
         })
       );
     };
   },
   {
     name: "TfForm",
-    props: ["columns", "formData"],
-    emits: ["update:formData"],
+    props: ["columns", "formData", "onUpdate:formData"] as any,
   }
 );

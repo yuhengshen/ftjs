@@ -159,17 +159,16 @@ export type ToValue<T> = T extends MaybeRefOrGetter<infer U> ? U : T;
 
 export interface CommonFormProps<T extends TfFormColumn<any>> {
   /** column 定义 */
-  column: T;
+  _column: T;
   /** 是否查看模式 */
-  isView: boolean;
+  _isView: boolean;
 }
 
-export interface CommonFormOptions<T extends TfFormColumn<any>> {
+export interface CommonFormOptions<T extends TfFormColumn<any>> extends CommonFormProps<T> {
   /**
    * 默认值处理
    */
   defaultFieldProps?: (p?: ToValue<T["props"]>) => Partial<ToValue<T["props"]>>;
-  props: Readonly<CommonFormProps<T>>;
   /**
    * set 转换
    */

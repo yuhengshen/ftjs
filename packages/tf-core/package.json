@@ -6,7 +6,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "exports": {
     ".": {
@@ -26,11 +28,15 @@
     "@eslint/js": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "@vue/test-utils": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
+    "vitest": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

@@ -3,6 +3,9 @@ import { FormComponentProps, renderMap, TfFormColumnCustomProps } from "./render
 import { CommonFormProps, FormContainerProps, TfFormColumn, TfFormColumnMap } from "./types";
 import { useForm } from "./useForm";
 
+/**
+ * 定义自定义组件的 render 属性
+ */
 export const defineCustomRender = <T>(
   setup: (props: TfFormColumnCustomProps<T>) => any
 ) => {
@@ -12,9 +15,13 @@ export const defineCustomRender = <T>(
   });
 };
 
+/**
+ * 定义表单容器组件
+ */
 export const defineFormContainerComponent = (
   setup: <T extends Record<string, any>>(
     props: FormComponentProps<T>,
+
     ctx: SetupContext
   ) => any
 ) => {
@@ -79,9 +86,13 @@ export const defineFormContainerComponent = (
   });
 };
 
+/**
+ * 定义表单组件
+ */
 export function defineFormComponent<K extends keyof TfFormColumnMap<any>>(
   setup: <T extends Record<string, any>>(
     props: CommonFormProps<TfFormColumnMap<T>[K]>,
+
     ctx: SetupContext
   ) => () => VNode
 ) {

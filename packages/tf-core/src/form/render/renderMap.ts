@@ -19,19 +19,19 @@ export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {
 }
 
 const Custom = defineComponent({
-  props: ['render', '_column', '_isView'],
+  props: ['render', 'column', 'isView'],
   setup(props) {
 
     const valueComputed = useFormCommonComponent({
-      _column: props._column,
-      _isView: props._isView,
+      column: props.column,
+      isView: props.isView,
     });
 
     return () => {
       return h(props.render, {
         modelValue: valueComputed.valueComputed.value,
-        column: props._column,
-        isView: props._isView,
+        column: props.column,
+        isView: props.isView,
         'onUpdate:modelValue': (v: any) => valueComputed.valueComputed.value = v,
       });
     }

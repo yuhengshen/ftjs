@@ -12,25 +12,16 @@ export interface TfFormColumnSelect<T> extends TfFormColumnBase<T> {
   props?: SelectProps;
 }
 
-declare module "@tf/core" {
-  /**
-   * columns 类型
-   */
-  interface TfFormColumnMap<T> {
-    select: TfFormColumnSelect<T>;
-  }
-}
-
 export default defineFormComponent<"select">((props, ctx) => {
   const { valueComputed } = useFormCommonComponent({
-    _column: props._column,
-    _isView: props._isView,
+    column: props.column,
+    isView: props.isView,
   });
 
   const { attrs } = ctx;
 
   return () => (
-    <FormItem label={props._column.title} name={props._column.field}>
+    <FormItem label={props.column.title} name={props.column.field}>
       <Select v-model={valueComputed} v-bind={attrs} />
     </FormItem>
   );

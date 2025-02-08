@@ -1,11 +1,7 @@
 <script setup lang="tsx">
-import {
-  defineCustomRender,
-  TfForm,
-  TfFormColumn,
-  TfFormColumnCustomProps,
-} from "@tf/core";
-import { defineComponent, ref } from "vue";
+import { defineCustomRender, TfFormColumn } from "@tf/core";
+import { TfForm } from "@tf/antd";
+import { ref } from "vue";
 
 interface FormData {
   name?: string;
@@ -84,6 +80,9 @@ const formData = ref<FormData>({});
 const onSubmit = async (formData: FormData) => {
   console.log("submit", formData);
 };
+
+
+console.log(TfForm)
 </script>
 
 <template>

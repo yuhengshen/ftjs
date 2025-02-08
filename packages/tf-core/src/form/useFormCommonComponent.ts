@@ -10,7 +10,7 @@ import { isEmptyStrOrNull } from "./utils";
 export const useFormCommonComponent = <T extends Record<string, any>>(
   options: CommonFormOptions<TfFormColumnBase<T>>
 ) => {
-  let { _column: column, valueGetter, valueSetter } = options;
+  let { column, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
   if (column.valueGetter) {
     valueGetter = column.valueGetter;

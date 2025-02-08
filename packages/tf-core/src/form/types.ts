@@ -137,9 +137,9 @@ export type ToValue<T> = T extends MaybeRefOrGetter<infer U> ? U : T;
 
 export interface CommonFormProps<T extends TfFormColumn<any>> {
   /** column 定义 */
-  _column: T;
+  column: T;
   /** 是否查看模式 */
-  _isView: boolean;
+  isView: boolean;
 }
 
 export interface FormContainerProps { }

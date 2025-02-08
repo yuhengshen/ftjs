@@ -6,6 +6,8 @@ export default defineBuildConfig({
   rollup: {
     esbuild: {
       minify: true,
-    }
+      jsx: "automatic",
+      jsxImportSource: "vue",
+    },
   }
 });

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { MaybeRefOrGetter } from "vue";
+import { TfFormColumnCustom } from "./render/renderMap";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 
@@ -118,7 +119,7 @@ export interface TfFormColumnBase<T> {
 
 export interface TfFormColumnMap<T> {
   /** 自定义渲染 */
-  custom: TfFormColumnBase<T>;
+  custom: TfFormColumnCustom<T>;
   // 其他具体业务实现
 }
 
@@ -144,7 +145,7 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
 
 export interface FormContainerProps { }
 
-export interface CommonFormOptions<T extends TfFormColumnBase<any>>
+export interface CommonFormOptions<T extends TfFormColumn<any>>
   extends CommonFormProps<T> {
   /**
    * 默认值处理

@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { CommonFormOptions, TfFormColumnBase } from "./types";
+import { CommonFormOptions, TfFormColumn } from "./types";
 import { useFormInject } from "./useProvide";
 import { get, set } from "es-toolkit/compat";
 import { isEmptyStrOrNull } from "./utils";
@@ -8,7 +8,7 @@ import { isEmptyStrOrNull } from "./utils";
  * 通用的 form 组件处理
  */
 export const useFormCommonComponent = <T extends Record<string, any>>(
-  options: CommonFormOptions<TfFormColumnBase<T>>
+  options: CommonFormOptions<TfFormColumn<T>>
 ) => {
   let { column, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数

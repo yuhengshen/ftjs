@@ -80,9 +80,6 @@ const formData = ref<FormData>({});
 const onSubmit = async (formData: FormData) => {
   console.log("submit", formData);
 };
-
-
-console.log(TfForm)
 </script>
 
 <template>

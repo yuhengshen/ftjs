@@ -1,6 +1,7 @@
-import { Component, defineComponent, h } from "vue";
+import { Component, h } from "vue";
 import { FormContainerProps, TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
 import { useFormCommonComponent } from "../useFormCommonComponent";
+import { defineFormComponent } from "./defineFormComponent";
 
 export interface TfFormColumnCustomProps<T> {
   modelValue: any;
@@ -18,25 +19,41 @@ export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {
   }
 }
 
-const Custom = defineComponent({
-  props: ['render', 'column', 'isView'],
-  setup(props) {
-
-    const { valueComputed } = useFormCommonComponent({
+const Custom = defineFormComponent<"custom">((props) => {
+  const { valueComputed } = useFormCommonComponent({
+    column: props.column,
+    isView: props.isView,
+  });
+  const render = props.column.props.render;
+  return () => {
+    return h(render, {
+      modelValue: valueComputed.value,
       column: props.column,
       isView: props.isView,
+      'onUpdate:modelValue': (v: any) => valueComputed.value = v,
     });
-
-    return () => {
-      return h(props.render, {
-        modelValue: valueComputed.value,
-        column: props.column,
-        isView: props.isView,
-        'onUpdate:modelValue': (v: any) => valueComputed.value = v,
-      });
-    }
   }
 })
+
+// const Custom = defineComponent({
+//   props: ['render', 'column', 'isView'],
+//   setup(props) {
+
+//     const { valueComputed } = useFormCommonComponent({
+//       column: props.column,
+//       isView: props.isView,
+//     });
+
+//     return () => {
+//       return h(props.render, {
+//         modelValue: valueComputed.value,
+//         column: props.column,
+//         isView: props.isView,
+//         'onUpdate:modelValue': (v: any) => valueComputed.value = v,
+//       });
+//     }
+//   }
+// })
 
 /**
  * 渲染组件集合

@@ -1,5 +1,5 @@
 import { computed, ref, watch, onMounted, onUnmounted, nextTick, MaybeRefOrGetter, toValue, Ref } from "vue";
-import { cloneDeep, isEqualStrArr, get, has, set } from "./utils";
+import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
 import { TfFormColumn } from "./types";
 import { useFormProvide } from "./useProvide";
 

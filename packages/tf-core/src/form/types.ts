@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import type { MaybeRef, MaybeRefOrGetter } from "vue";
-import { TfFormColumnCustom } from "./render/renderMap";
+import type { MaybeRefOrGetter } from "vue";
+import { TfFormColumnCustom } from "./renderMap";
+import { RecordPath, ValueOf } from "../type-helper";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 
@@ -11,31 +12,6 @@ type Watch<T> =
     deep?: boolean;
     immediate?: boolean;
   };
-
-/**
- * 临时工具类型减1
- */
-type Sub1 = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-/**
- * 工具类型：获取对象的路径
- *
- * T: 传入的对象类型
- * Depth: 有一些对象属性是循环引用的，需要限制下递归深度，避免超出栈的最大深度
- */
-type RecordPath<T, Depth extends number = 5> = Depth extends -1
-  ? string
-  : // 数组递归单独处理，因为有其他很多无用属性(length, pop之类的)
-  T extends any[]
-  ? `${number}` | `${number}.${RecordPath<T[number], Sub1[Depth]>}`
-  : // 对象递归
-  T extends Record<string, any>
-  ? ValueOf<{
-    [K in keyof T]: K extends string
-    ? `${K}` | `${K}.${RecordPath<T[K], Sub1[Depth]>}`
-    : never;
-  }>
-  : never;
 
 export interface TfFormColumnBase<T> {
   /**
@@ -130,11 +106,8 @@ export type TfFormRenderMap = {
   ) => any;
 };
 
-type ValueOf<T> = T[keyof T];
-
 export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
 
-export type ToValue<T> = T extends MaybeRefOrGetter<infer U> ? U : T;
 
 export interface CommonFormProps<T extends TfFormColumn<any>> {
   /** column 定义 */
@@ -150,7 +123,7 @@ export interface CommonFormOptions<T extends TfFormColumn<any>>
   /**
    * 默认值处理
    */
-  defaultFieldProps?: (p?: ToValue<T["props"]>) => Partial<ToValue<T["props"]>>;
+  defaultFieldProps?: (p?: T["props"]) => Partial<T["props"]>;
   /**
    * set 转换
    */
@@ -159,13 +132,4 @@ export interface CommonFormOptions<T extends TfFormColumn<any>>
    * get 转换
    */
   valueGetter?: (val: any) => any;
-}
-
-
-export type Unrefs<T> = {
-  [K in keyof T]: T[K] extends MaybeRef<infer U> ? U : T[K];
-}
-
-export type Refs<T> = {
-  [K in keyof T]: MaybeRef<T[K]>;
 }

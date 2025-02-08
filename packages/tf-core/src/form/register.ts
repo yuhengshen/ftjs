@@ -1,4 +1,4 @@
-import { TfFormRenderMap } from "../types";
+import { TfFormRenderMap } from "./types";
 import { renderMap as _renderMap } from "./renderMap";
 
 /**

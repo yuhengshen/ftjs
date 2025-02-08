@@ -1,6 +1,6 @@
 import { Component, h } from "vue";
-import { FormContainerProps, TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "../types";
-import { useFormCommonComponent } from "../useFormCommonComponent";
+import { FormContainerProps, TfFormColumn, TfFormColumnBase, TfFormRenderMap } from "./types";
+import { useFormCommonComponent } from "./useFormCommonComponent";
 import { defineFormComponent } from "./defineFormComponent";
 
 export interface TfFormColumnCustomProps<T> {

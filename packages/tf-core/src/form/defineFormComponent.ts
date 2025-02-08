@@ -1,7 +1,7 @@
 import { computed, defineComponent, h, SetupContext, VNode } from "vue";
 import { FormComponentProps, renderMap, TfFormColumnCustomProps } from "./renderMap";
-import { CommonFormProps, FormContainerProps, TfFormColumn, TfFormColumnMap } from "../types";
-import { useForm } from "../useForm";
+import { CommonFormProps, FormContainerProps, TfFormColumn, TfFormColumnMap } from "./types";
+import { useForm } from "./useForm";
 
 export const defineCustomRender = <T>(
   setup: (props: TfFormColumnCustomProps<T>) => any

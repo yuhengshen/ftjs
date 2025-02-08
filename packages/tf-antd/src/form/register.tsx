@@ -1,18 +1,9 @@
 import { setupTfForm, defineFormContainerComponent } from "@tf/core";
 import { Form, FormItem, Button, FormProps } from "ant-design-vue";
-import _input from "./input";
-import type { TfFormColumnInput } from "./input";
-// import select from "./select.vue";
-// import type { TfFormColumnSelect } from "./select.vue";
+import input from "./input";
+import select from "./select";
 
 declare module "@tf/core" {
-  /**
-   * columns 类型
-   */
-  interface TfFormColumnMap<T> {
-    input: TfFormColumnInput<T>;
-  }
-
   /**
    * form 容器组件 props 类型
    */
@@ -70,7 +61,9 @@ export default function register() {
   setupTfForm({
     formComponent,
     renderMap: {
-      input: _input,
+      input,
+      select,
     },
   });
 }
+

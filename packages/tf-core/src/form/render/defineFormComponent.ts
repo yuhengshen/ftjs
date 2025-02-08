@@ -1,6 +1,6 @@
-import { defineComponent, SetupContext } from "vue";
+import { defineComponent, SetupContext, VNode } from "vue";
 import { FormComponentProps, TfFormColumnCustomProps } from "./renderMap";
-import { CommonFormProps, TfFormColumnBase } from "../types";
+import { CommonFormProps, TfFormColumnMap } from "../types";
 
 export const defineCustomRender = <T>(
   setup: (props: TfFormColumnCustomProps<T>) => any
@@ -22,11 +22,11 @@ export const defineFormContainerComponent = (
   });
 };
 
-export function defineFormComponent(
+export function defineFormComponent<K extends keyof TfFormColumnMap<any>>(
   setup: <T extends Record<string, any>>(
-    props: CommonFormProps<TfFormColumnBase<T>>,
+    props: CommonFormProps<TfFormColumnMap<T>[K]>,
     ctx: SetupContext
-  ) => any
+  ) => () => VNode
 ) {
   return defineComponent(setup, {
     props: ["columns", "formData", "formProps", "onSubmit"] as any,

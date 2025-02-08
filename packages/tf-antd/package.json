@@ -22,7 +22,6 @@
   "dependencies": {
     "@tf/core": "workspace:*",
     "ant-design-vue": "catalog:",
-    "es-toolkit": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {
@@ -32,7 +31,7 @@
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-dts": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

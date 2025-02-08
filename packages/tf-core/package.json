@@ -6,15 +6,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "unbuild",
-    "prepack": "unbuild"
+    "build": "vite build"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -25,12 +25,13 @@
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "unbuild": "catalog:",
     "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
     "vue-tsc": "catalog:"
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import type { MaybeRefOrGetter } from "vue";
+import type { MaybeRef, MaybeRefOrGetter } from "vue";
 import { TfFormColumnCustom } from "./render/renderMap";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
@@ -159,4 +159,13 @@ export interface CommonFormOptions<T extends TfFormColumn<any>>
    * get 转换
    */
   valueGetter?: (val: any) => any;
+}
+
+
+export type Unrefs<T> = {
+  [K in keyof T]: T[K] extends MaybeRef<infer U> ? U : T[K];
+}
+
+export type Refs<T> = {
+  [K in keyof T]: T[K] extends MaybeRef<any> ? T[K] : MaybeRef<T[K]>;
 }

@@ -1,3 +1,6 @@
+import { unref } from "vue";
+import { Unrefs } from "./types";
+
 export const isEmptyStrOrNull = (val: any) => {
   return val === "" || val == null;
 };
@@ -48,3 +51,21 @@ export const has = (obj: any, path: string) => {
   }
   return true;
 };
+
+/**
+ * 浅层的将对象的属性值(可能是响应式)转换为普通值，不转化getter
+ * @param obj 
+ * @returns 
+ */
+export const unrefs = <T>(obj: T) => {
+  if (!obj || typeof obj !== 'object') {
+    return obj;
+  }
+
+  return Object.fromEntries(
+    Object.entries(obj)
+      .map(([key, value]) => [key,
+        unref(value)
+      ])
+  ) as Unrefs<T>;
+}

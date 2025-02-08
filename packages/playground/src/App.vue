@@ -3,6 +3,11 @@ import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
 import { ref } from "vue";
 
+const likesOptions = ref([
+  { label: "1", value: 1 },
+  { label: "2", value: 2 },
+]);
+
 interface FormData {
   name?: string;
   age?: number;
@@ -65,15 +70,20 @@ const columns: TfFormColumn<FormData>[] = [
     field: "likes",
     title: "爱好",
     props: {
-      options: [
-        { label: "1", value: 1 },
-        { label: "2", value: 2 },
-      ],
+      options: likesOptions,
       mode: "multiple",
     },
     value: [1, 2],
   },
 ];
+
+setTimeout(() => {
+  likesOptions.value = [
+    { label: "1", value: 1 },
+    { label: "2", value: 2 },
+    { label: "3", value: 3 },
+  ];
+}, 2000);
 
 const formData = ref<FormData>({});
 

@@ -1,8 +1,7 @@
 import { computed } from "vue";
 import { CommonFormOptions, TfFormColumn } from "./types";
 import { useFormInject } from "./useProvide";
-import { get, set } from "es-toolkit/compat";
-import { isEmptyStrOrNull } from "./utils";
+import { isEmptyStrOrNull, get, set } from "./utils";
 
 /**
  * 通用的 form 组件处理

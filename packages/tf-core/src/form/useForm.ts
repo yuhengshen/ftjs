@@ -1,6 +1,5 @@
 import { computed, ref, watch, onMounted, onUnmounted, nextTick, MaybeRefOrGetter, toValue, Ref } from "vue";
-import { cloneDeep, isEqual } from "es-toolkit";
-import { get, has, set } from "es-toolkit/compat";
+import { cloneDeep, isEqualStrArr, get, has, set } from "./utils";
 import { TfFormColumn } from "./types";
 import { useFormProvide } from "./useProvide";
 
@@ -190,7 +189,7 @@ export const useForm = <T extends Record<string, any>>(
       });
 
     const newExpectHideFields = [...expectHideSet];
-    if (isEqual(expectHideFields.value, newExpectHideFields)) return;
+    if (isEqualStrArr(expectHideFields.value, newExpectHideFields)) return;
     expectHideFields.value = newExpectHideFields;
   }
 

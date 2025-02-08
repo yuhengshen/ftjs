@@ -12,7 +12,6 @@
     "@tf/core": "workspace:*",
     "@tf/antd": "workspace:*",
     "ant-design-vue": "catalog:",
-    "es-toolkit": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {

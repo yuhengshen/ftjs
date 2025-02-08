@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ['vue', "es-toolkit"]
+      external: ['vue']
     },
   },
 });

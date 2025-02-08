@@ -167,5 +167,5 @@ export type Unrefs<T> = {
 }
 
 export type Refs<T> = {
-  [K in keyof T]: T[K] extends MaybeRef<any> ? T[K] : MaybeRef<T[K]>;
+  [K in keyof T]: MaybeRef<T[K]>;
 }

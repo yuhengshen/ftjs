@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { defineCustomRender, TfFormColumn } from "@tf/core";
+import { defineCustomRender, Refs, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
 import { ref } from "vue";
 
@@ -7,6 +7,8 @@ const likesOptions = ref([
   { label: "1", value: 1 },
   { label: "2", value: 2 },
 ]);
+
+const placeholder = ref("请输入");
 
 interface FormData {
   name?: string;
@@ -33,7 +35,7 @@ const columns: TfFormColumn<FormData>[] = [
     field: "extraInfo.age",
     title: "年龄",
     props: {
-      placeholder: "xxxx2",
+      placeholder: placeholder,
       allowClear: true,
     },
     expect: [
@@ -83,6 +85,8 @@ setTimeout(() => {
     { label: "2", value: 2 },
     { label: "3", value: 3 },
   ];
+  
+  placeholder.value = "请输入2";
 }, 2000);
 
 const formData = ref<FormData>({});

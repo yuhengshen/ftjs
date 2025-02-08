@@ -7,7 +7,6 @@ import {
 } from "@tf/core";
 import { FormItem, Select, SelectProps } from "ant-design-vue";
 
-
 export interface TfFormColumnSelect<T> extends TfFormColumnBase<T> {
   /** 选择框 */
   type: "select";
@@ -20,11 +19,12 @@ export default defineFormComponent<"select">((props) => {
     isView: props.isView,
   });
 
-  const _props = unrefs(props.column.props);
-
-  return () => (
-    <FormItem label={props.column.title} name={props.column.field}>
-      <Select v-model:value={valueComputed.value} {..._props} />
-    </FormItem>
-  );
+  return () => {
+    const _props = unrefs(props.column.props);
+    return (
+      <FormItem label={props.column.title} name={props.column.field}>
+        <Select v-model:value={valueComputed.value} {..._props} />
+      </FormItem>
+    );
+  };
 });

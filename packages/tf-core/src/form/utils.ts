@@ -59,7 +59,7 @@ export const has = (obj: any, path: string) => {
  */
 export const unrefs = <T>(obj: T) => {
   if (!obj || typeof obj !== 'object') {
-    return obj;
+    return obj as Unrefs<T>;
   }
 
   return Object.fromEntries(

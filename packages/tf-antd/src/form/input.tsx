@@ -11,17 +11,15 @@ export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
   props?: InputProps;
 }
 
-const com = defineFormComponent<"input">((props, ctx) => {
+const com = defineFormComponent<"input">((props) => {
   const { valueComputed } = useFormCommonComponent({
     column: props.column,
     isView: props.isView,
   });
 
-  const { attrs } = ctx;
-
   return () => (
     <FormItem label={props.column.title} name={props.column.field}>
-      <Input v-model={valueComputed} v-bind={attrs} />
+      <Input v-model={valueComputed} {...props.column.props} />
     </FormItem>
   );
 });

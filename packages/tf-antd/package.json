@@ -6,32 +6,33 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "unbuild",
-    "prepack": "unbuild"
+    "build": "vite build"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "dependencies": {
+    "@tf/core": "workspace:*",
     "ant-design-vue": "^4.2.6",
     "es-toolkit": "catalog:",
-    "vue": "catalog:",
-    "@tf/core": "workspace:*"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
+    "@vitejs/plugin-vue-jsx": "^4.1.1",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "unbuild": "catalog:",
     "vite": "catalog:",
+    "vite-plugin-dts": "^4.5.0",
     "vue-tsc": "catalog:"
   }
 }

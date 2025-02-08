@@ -22,17 +22,17 @@ const Custom = defineComponent({
   props: ['render', 'column', 'isView'],
   setup(props) {
 
-    const valueComputed = useFormCommonComponent({
+    const { valueComputed } = useFormCommonComponent({
       column: props.column,
       isView: props.isView,
     });
 
     return () => {
       return h(props.render, {
-        modelValue: valueComputed.valueComputed.value,
+        modelValue: valueComputed.value,
         column: props.column,
         isView: props.isView,
-        'onUpdate:modelValue': (v: any) => valueComputed.valueComputed.value = v,
+        'onUpdate:modelValue': (v: any) => valueComputed.value = v,
       });
     }
   }

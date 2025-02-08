@@ -12,17 +12,15 @@ export interface TfFormColumnSelect<T> extends TfFormColumnBase<T> {
   props?: SelectProps;
 }
 
-export default defineFormComponent<"select">((props, ctx) => {
+export default defineFormComponent<"select">((props) => {
   const { valueComputed } = useFormCommonComponent({
     column: props.column,
     isView: props.isView,
   });
 
-  const { attrs } = ctx;
-
   return () => (
     <FormItem label={props.column.title} name={props.column.field}>
-      <Select v-model={valueComputed} v-bind={attrs} />
+      <Select v-model={valueComputed} {...props.column.props} />
     </FormItem>
   );
 });

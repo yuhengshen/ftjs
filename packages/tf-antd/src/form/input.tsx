@@ -19,7 +19,7 @@ const com = defineFormComponent<"input">((props) => {
 
   return () => (
     <FormItem label={props.column.title} name={props.column.field}>
-      <Input v-model={valueComputed} {...props.column.props} />
+      <Input v-model:value={valueComputed.value} {...props.column.props} />
     </FormItem>
   );
 });

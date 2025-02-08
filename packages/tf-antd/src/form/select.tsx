@@ -20,7 +20,7 @@ export default defineFormComponent<"select">((props) => {
 
   return () => (
     <FormItem label={props.column.title} name={props.column.field}>
-      <Select v-model={valueComputed} {...props.column.props} />
+      <Select v-model:value={valueComputed.value} {...props.column.props} />
     </FormItem>
   );
 });

@@ -1,7 +1,7 @@
 import { computed, ref, watch, onMounted, onUnmounted, nextTick, MaybeRefOrGetter, toValue, Ref } from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
 import { TfFormColumn } from "./types";
-import { useFormProvide } from "./useProvide";
+import { useFormProvide } from "./use-provide";
 
 export const useForm = <T extends Record<string, any>>(
   _columns: MaybeRefOrGetter<TfFormColumn<T>[]>,

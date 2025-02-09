@@ -1,5 +1,6 @@
 import { TfFormRenderMap } from "./types";
-import { renderMap as _renderMap } from "./renderMap";
+import { renderMap as _renderMap } from "./render-map";
+import { CustomComponent } from "./custom-component";
 
 /**
  * 注册渲染组件，可以按需动态注册，但是必须在使用前注册
@@ -22,4 +23,5 @@ interface setupOptions {
 export const setupTfForm = (setupOptions: setupOptions) => {
   const { renderMap } = setupOptions;
   if (renderMap) Object.assign(_renderMap, renderMap);
+  registerTfForm("custom", CustomComponent);
 };

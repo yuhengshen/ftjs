@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { MaybeRefOrGetter } from "vue";
-import { TfFormColumnCustom } from "./renderMap";
+import { TfFormColumnCustom } from "./custom-component";
 import { RecordPath, ValueOf } from "../type-helper";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;

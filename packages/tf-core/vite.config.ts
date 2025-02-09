@@ -4,7 +4,8 @@ import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [vueJsx(), dts({
-    exclude: ['vite.config.ts']
+    include: ['src/**/*.ts'],
+    exclude: ['**/*.spec.ts']
   })],
   build: {
     emptyOutDir: true,

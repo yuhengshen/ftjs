@@ -1,19 +1,8 @@
 import { computed, defineComponent, h, SetupContext, VNode } from "vue";
-import { FormComponentProps, renderMap, TfFormColumnCustomProps } from "./renderMap";
+import { FormComponentProps, renderMap } from "./render-map";
 import { CommonFormProps, FormContainerProps, TfFormColumn, TfFormColumnMap } from "./types";
-import { useForm } from "./useForm";
+import { useForm } from "./use-form";
 
-/**
- * 定义自定义组件的 render 属性
- */
-export const defineCustomRender = <T>(
-  setup: (props: TfFormColumnCustomProps<T>) => any
-) => {
-  return defineComponent(setup, {
-    inheritAttrs: false,
-    props: ["modelValue", "column", "isView", "onUpdate:modelValue"] as any,
-  });
-};
 
 /**
  * 定义表单容器组件
@@ -72,6 +61,7 @@ export const defineFormContainerComponent = (
       },
     }, () => visibleColumns.value.map((column) => {
       // core 里面 renderMap 里的组件只定义了 custom
+      let c = column;
       const component = renderMap[column.type];
       return h(component, {
         column: column,

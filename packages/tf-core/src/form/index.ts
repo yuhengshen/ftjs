@@ -1,9 +1,10 @@
-export { useFormCommonComponent } from "./useFormCommonComponent";
-export { useFormInject } from "./useProvide";
+export { useFormCommonComponent } from "./use-form-common-component";
+export { useFormInject } from "./use-provide";
 export { registerTfForm, setupTfForm } from "./register";
-export * from "./defineFormComponent";
+export * from "./tf-form";
 export * from "../utils";
 
 // 类型导出
 export * from "./types";
-export type { TfFormColumnCustomProps, FormComponentProps } from "./renderMap";
+export type { FormComponentProps } from "./render-map";
+export type { TfFormColumnCustomProps } from "./custom-component";

@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { CommonFormOptions, TfFormColumn } from "./types";
-import { useFormInject } from "./useProvide";
+import { useFormInject } from "./use-provide";
 import { isEmptyStrOrNull, get, set } from "../utils";
 
 /**

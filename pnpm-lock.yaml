@@ -33,6 +33,9 @@ catalogs:
     eslint:
       specifier: ^9.18.0
       version: 9.18.0
+    happy-dom:
+      specifier: ^17.0.2
+      version: 17.0.2
     typescript:
       specifier: ^5.7.3
       version: 5.7.3
@@ -179,6 +182,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.18.0(jiti@2.4.2)
+      happy-dom:
+        specifier: 'catalog:'
+        version: 17.0.2
       typescript:
         specifier: 'catalog:'
         version: 5.7.3
@@ -193,7 +199,7 @@ importers:
         version: 4.5.0(@types/node@22.10.9)(rollup@4.31.0)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.9)(jiti@2.4.2))
       vitest:
         specifier: 'catalog:'
-        version: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(jiti@2.4.2)
+        version: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(happy-dom@17.0.2)(jiti@2.4.2)
       vue-tsc:
         specifier: 'catalog:'
         version: 2.2.0(typescript@5.7.3)
@@ -1308,6 +1314,10 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
+  happy-dom@17.0.2:
+    resolution: {integrity: sha512-PWXllOadphR7angD3ndG5/Ax3yg1PFRvnN8Zu+xVtRsZjJE4RtJF1RBeWN9JFvF5EJmHOCiekdYVTxJr2NBibA==}
+    engines: {node: '>=18.0.0'}
+
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -1967,6 +1977,14 @@ packages:
 
   warning@4.0.3:
     resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
+
+  webidl-conversions@7.0.0:
+    resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
+    engines: {node: '>=12'}
+
+  whatwg-mimetype@3.0.0:
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    engines: {node: '>=12'}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -2628,7 +2646,7 @@ snapshots:
       std-env: 3.8.0
       test-exclude: 7.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(jiti@2.4.2)
+      vitest: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(happy-dom@17.0.2)(jiti@2.4.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -2675,7 +2693,7 @@ snapshots:
       sirv: 3.0.0
       tinyglobby: 0.2.10
       tinyrainbow: 2.0.0
-      vitest: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(jiti@2.4.2)
+      vitest: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(happy-dom@17.0.2)(jiti@2.4.2)
 
   '@vitest/utils@3.0.5':
     dependencies:
@@ -3203,6 +3221,11 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   graphemer@1.4.0: {}
+
+  happy-dom@17.0.2:
+    dependencies:
+      webidl-conversions: 7.0.0
+      whatwg-mimetype: 3.0.0
 
   has-flag@4.0.0: {}
 
@@ -3740,7 +3763,7 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.4.2
 
-  vitest@3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(jiti@2.4.2):
+  vitest@3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(happy-dom@17.0.2)(jiti@2.4.2):
     dependencies:
       '@vitest/expect': 3.0.5
       '@vitest/mocker': 3.0.5(vite@6.0.11(@types/node@22.10.9)(jiti@2.4.2))
@@ -3765,6 +3788,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.10.9
       '@vitest/ui': 3.0.5(vitest@3.0.5)
+      happy-dom: 17.0.2
     transitivePeerDependencies:
       - jiti
       - less
@@ -3807,6 +3831,10 @@ snapshots:
   warning@4.0.3:
     dependencies:
       loose-envify: 1.4.0
+
+  webidl-conversions@7.0.0: {}
+
+  whatwg-mimetype@3.0.0: {}
 
   which@2.0.2:
     dependencies:

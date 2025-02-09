@@ -107,10 +107,11 @@ export const useForm = <T extends Record<string, any>>(
    * sync false: 由于这个方法很可能在watchEffect中调用，其内部属性不应该放到watchEffect的依赖中
    * @param sync 是否同步更新，默认为 false
    */
-  async function resetToDefault(sync = false) {
+  const resetToDefault: ResetToDefault = async (sync = false) => {
     if (!sync) await nextTick();
     if (tmpDefaultForm) {
       form.value = cloneDeep(tmpDefaultForm);
+
       return;
     }
     form.value = visibleColumns.value.reduce<T>(
@@ -128,11 +129,12 @@ export const useForm = <T extends Record<string, any>>(
 
   /**
    * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
-   * @param v 
    */
-  function setAsDefault(v?: T) {
+  const setAsDefault: SetAsDefault<T> = (v?) => {
     tmpDefaultForm = cloneDeep(v ?? form.value);
   }
+
+
 
   /**
    * 如果有字段是新加的, 则加默认值
@@ -196,11 +198,12 @@ export const useForm = <T extends Record<string, any>>(
   /**
    * 获取表单当先展示出的表单值
    */
-  function getFormData() {
-    const formData: Partial<T> = {};
+  const getFormData: GetFormData<T> = () => {
+    const formData: T = {} as T;
     visibleColumns.value.forEach(usefulColumn => {
       const fields = usefulColumn.fields ?? [usefulColumn.field!];
       fields.forEach(field => {
+
         const value = get(form.value, field);
         set(formData, field, value);
       });
@@ -216,6 +219,16 @@ export const useForm = <T extends Record<string, any>>(
     setAsDefault,
   };
 };
+
+export type GetFormData<T> = () => T;
+
+export type ResetToDefault = (sync?: boolean) => Promise<void> | void;
+
+export type SetAsDefault<T> = (v?: T) => void;
+
+
+
+
 
 
 

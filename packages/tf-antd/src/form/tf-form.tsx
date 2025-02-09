@@ -16,7 +16,7 @@ export default defineFormContainerComponent((props, ctx) => {
     ...props.formProps,
     model: props.formData,
     onFinish: async () => {
-      await props.onSubmit?.();
+      await props.onSubmit?.(props.getFormData());
     },
   };
 
@@ -25,7 +25,7 @@ export default defineFormContainerComponent((props, ctx) => {
       <Button type="primary" htmlType="submit">
         查询
       </Button>
-      <Button style="margin-left: 10px;" type="primary" danger htmlType="reset">
+      <Button style="margin-left: 10px;" type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
         重置
       </Button>
     </FormItem>

@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { defineCustomRender, Refs, TfFormColumn } from "@tf/core";
+import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
-import { ref } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
 
 const likesOptions = ref([
   { label: "1", value: 1 },
@@ -94,11 +94,21 @@ const formData = ref<FormData>({});
 const onSubmit = async (formData: FormData) => {
   console.log("submit", formData);
 };
+
+// 拿不到 exposed 方法类型
+// const formRef = useTemplateRef("formRef");
+const formRef1 = ref<InstanceType<typeof TfForm>>();
+
+onMounted(() => {
+  const form = formRef1.value?.getFormData();
+  console.log("form", form);
+});
 </script>
 
 <template>
   <div style="margin: 100px">
     <TfForm
+      ref="formRef1"
       v-model:form-data="formData"
       :columns="columns"
       :form-props="{ mode: 'search' }"

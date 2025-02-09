@@ -3,6 +3,7 @@ export { useFormInject } from "./use-provide";
 export { registerTfForm, setupTfForm } from "./register";
 export * from "./tf-form";
 export * from "../utils";
+export * from "./custom-component";
 
 // 类型导出
 export * from "./types";

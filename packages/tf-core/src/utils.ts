@@ -6,8 +6,12 @@ export const isEmptyStrOrNull = (val: any) => {
 };
 
 export const cloneDeep = <T>(obj: T) => {
-  return JSON.parse(JSON.stringify(obj)) as T;
+  if (typeof obj === 'object') {
+    return JSON.parse(JSON.stringify(obj)) as T;
+  }
+  return obj;
 };
+
 
 /**
  * 对比两个字符串数组是否相同，忽略顺序

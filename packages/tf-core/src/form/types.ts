@@ -101,7 +101,7 @@ export interface TfFormColumnBase<T> {
   /**
    * 表单验证规则
    */
-  rules?: ColumnRule[];
+  rules?: MaybeRefOrGetter<ColumnRule[]>;
 }
 
 export interface TfFormColumnMap<T> {

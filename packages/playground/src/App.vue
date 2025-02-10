@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { defineCustomRender, TfFormColumn } from "@tf/core";
-import { TfForm } from "@tf/antd";
+import { TfForm, TfFormSearch } from "@tf/antd";
 import { onMounted, ref, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
 
@@ -109,7 +109,7 @@ onMounted(() => {
 
 <template>
   <div style="margin: 100px">
-    <TfForm
+    <TfFormSearch
       ref="form"
       v-model:form-data="formData"
       :columns="columns"

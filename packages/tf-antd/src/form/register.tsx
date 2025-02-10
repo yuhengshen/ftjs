@@ -13,7 +13,6 @@ declare module "@tf/core" {
    * form 容器组件 props 类型
    */
   interface FormContainerProps extends FormProps {
-    mode?: "search" | "form";
     width?: string;
   }
 

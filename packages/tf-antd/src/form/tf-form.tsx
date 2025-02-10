@@ -1,57 +1,95 @@
-import { defineFormContainerComponent, useFormInject } from "@tf/core";
+import { defineFormContainerComponent, FormComponentProps, useFormInject } from "@tf/core";
 import { FormProps, FormItem, Button, Form } from "ant-design-vue";
+import { computed, toValue } from "vue";
 
-export default defineFormContainerComponent((props, ctx) => {
-  const isSearch = props.formProps?.mode === "search";
+export const useCommonForm = (props: FormComponentProps) => {
+  // 收集表单列的验证规则，这里需要支持响应式的rules规则
+  const rules = computed(() => {
+    const rulesEntries = props.columns
+      .filter((column) => column.rules)
+      .map((column) => {
+        return [column.field, toValue(column.rules)];
+      });
+    return Object.fromEntries(rulesEntries);
+  });
 
-  const width = isSearch ? undefined : props.formProps?.width ?? "500px";
-
-  // 获取表单值
   const model = useFormInject();
 
-  // 收集表单列的验证规则
-  const rulesEntries = props.columns
-    .filter((column) => column.rules)
-    .map((column) => {
-      return [column.field, column.rules];
-    });
+  return { rules, model };
+}
 
-  const formProps: FormProps = {
-    layout: isSearch ? "inline" : "horizontal",
-    wrapperCol: {
-      style: {
-        width: "200px",
+export const TfForm = defineFormContainerComponent((props, ctx) => {
+  const width = props.formProps?.width ?? "500px";
+
+  // 获取表单值
+  const { model, rules } = useCommonForm(props);
+
+  const formProps = computed<FormProps>(() => {
+    return {
+      layout: "horizontal",
+      model: model.value,
+      onFinish: async () => {
+        await props.onSubmit?.(props.getFormData());
       },
-    },
-    ...props.formProps,
-    model: model.value,
-    rules: Object.fromEntries(rulesEntries),
-    onFinish: async () => {
-      await props.onSubmit?.(props.getFormData());
-    },
-  };
+      rules: rules.value,
+      ...props.formProps,
+    }
+  });
 
-  const operate = isSearch ? (
-    <FormItem>
-      <Button type="primary" htmlType="submit">
-        查询
-      </Button>
-      <Button style="margin-left: 10px;" type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
-        重置
-      </Button>
-    </FormItem>
-  ) : (
-    <FormItem>
-      <Button type="primary" htmlType="submit">
-        提交
-      </Button>
-    </FormItem>
-  );
 
   return () => (
-    <Form {...formProps} style={{ width }}>
+    <Form {...formProps.value} style={{ width }}>
       {ctx.slots.default?.()}
-      {operate}
+      <FormItem>
+        <Button type="primary" htmlType="submit">
+          提交
+        </Button >
+        <Button style="margin-left: 10px;" type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
+          重置
+        </Button>
+      </FormItem >
+    </Form>
+  );
+})
+
+export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
+  const { model, rules } = useCommonForm(props);
+  const formProps = computed<FormProps>(() => {
+    return {
+      layout: "inline",
+      wrapperCol: {
+        style: {
+          // 这样定义宽度，可以方便后续修改
+          width: `var(--tf-form-control-width, 200px)`,
+        },
+      },
+      ...props.formProps,
+      model: model.value,
+      onFinish: async () => {
+        await props.onSubmit?.(props.getFormData());
+      },
+      rules: rules.value,
+    }
+  });
+
+  return () => (
+    <Form {...formProps.value}>
+      {ctx.slots.default?.()}
+      <FormItem style={{
+        "--tf-form-control-width": "220px"
+      }}>
+        <div style="display: flex; gap: 10px;">
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+          <Button type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
+            重置
+          </Button>
+          <Button type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
+            配置
+          </Button>
+        </div>
+      </FormItem>
     </Form>
   );
 })

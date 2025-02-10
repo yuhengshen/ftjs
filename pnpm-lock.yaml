@@ -117,6 +117,9 @@ importers:
       vite:
         specifier: 'catalog:'
         version: 6.0.11(@types/node@22.10.9)(jiti@2.4.2)
+      vue-component-type-helpers:
+        specifier: ^2.2.0
+        version: 2.2.0
       vue-tsc:
         specifier: 'catalog:'
         version: 2.2.0(typescript@5.7.3)
@@ -136,6 +139,9 @@ importers:
       '@eslint/js':
         specifier: 'catalog:'
         version: 9.18.0
+      '@vitejs/plugin-vue':
+        specifier: 'catalog:'
+        version: 5.2.1(vite@6.0.11(@types/node@22.10.9)(jiti@2.4.2))(vue@3.5.13(typescript@5.7.3))
       '@vitejs/plugin-vue-jsx':
         specifier: 'catalog:'
         version: 4.1.1(vite@6.0.11(@types/node@22.10.9)(jiti@2.4.2))(vue@3.5.13(typescript@5.7.3))

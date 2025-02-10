@@ -12,10 +12,7 @@ export const renderMap = {
 
 export interface FormComponentProps<T = Record<string, any>> {
   columns: TfFormColumn<T>[];
-  /**
-   * 表单数据
-   */
-  formData: T;
+  visibleColumns: TfFormColumn<T>[];
   formProps?: FormContainerProps;
   /**
    * 表单提交事件

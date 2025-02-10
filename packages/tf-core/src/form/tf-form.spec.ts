@@ -24,16 +24,13 @@ declare module "./types" {
 }
 
 describe("defineFormContainerComponent", () => {
-  const Test = defineFormContainerComponent((props, ctx) => {
-    return () => h("div", `${props.columns.length} ${props.formData.a} ${props.formProps?.foo}`);
+  const Test = defineFormContainerComponent((props) => {
+    return () => h("div", `${props.columns.length} ${props.visibleColumns.length} ${props.formProps?.foo}`);
   })
 
   const wrapper = mount(Test, {
     props: {
       columns: [],
-      formData: {
-        a: 1
-      },
       formProps: {
         foo: "bar"
       },
@@ -43,7 +40,7 @@ describe("defineFormContainerComponent", () => {
   })
 
   it("it should define a vue component with correct props", () => {
-    expect(wrapper.html()).toBe("<div>0 1 bar</div>");
+    expect(wrapper.html()).toBe("<div>0 0 bar</div>");
   })
   it("it should expose correct methods", () => {
     expect(wrapper.vm.getFormData).toBeDefined();
@@ -54,7 +51,7 @@ describe("defineFormContainerComponent", () => {
 
 describe('defineFormComponent', () => {
   it("it should define a vue component with correct props", () => {
-    const Test = defineFormComponent<"test">((props, ctx) => {
+    const Test = defineFormComponent<"test">((props) => {
       const isView = props.isView;
       const foo = props.column.props?.foo;
       return () => h("div", `${isView} ${foo}`);

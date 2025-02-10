@@ -27,6 +27,7 @@
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",

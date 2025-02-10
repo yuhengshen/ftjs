@@ -1,7 +1,8 @@
 <script setup lang="tsx">
 import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, useTemplateRef } from "vue";
+import { ComponentExposed } from "vue-component-type-helpers"
 
 const likesOptions = ref([
   { label: "1", value: 1 },
@@ -85,7 +86,7 @@ setTimeout(() => {
     { label: "2", value: 2 },
     { label: "3", value: 3 },
   ];
-  
+
   placeholder.value = "请输入2";
 }, 2000);
 
@@ -96,19 +97,19 @@ const onSubmit = async (formData: FormData) => {
 };
 
 // 拿不到 exposed 方法类型
-// const formRef = useTemplateRef("formRef");
-const formRef1 = ref<InstanceType<typeof TfForm>>();
+const formRef = useTemplateRef<ComponentExposed<typeof TfForm>>("form");
+const formRef2 = ref<InstanceType<typeof TfForm>>();
 
 onMounted(() => {
-  const form = formRef1.value?.getFormData();
-  console.log("form", form);
+  formRef.value?.getFormData();
+  formRef2.value?.getFormData();
 });
 </script>
 
 <template>
   <div style="margin: 100px">
     <TfForm
-      ref="formRef1"
+      ref="form"
       v-model:form-data="formData"
       :columns="columns"
       :form-props="{ mode: 'search' }"

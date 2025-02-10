@@ -10,8 +10,8 @@
     "build-deps": "pnpm -w build-core && pnpm -w build-antd"
   },
   "dependencies": {
-    "@tf/core": "workspace:*",
     "@tf/antd": "workspace:*",
+    "@tf/core": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:"
   },
@@ -23,6 +23,7 @@
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
+    "vue-component-type-helpers": "^2.2.0",
     "vue-tsc": "catalog:"
   }
 }

@@ -1,10 +1,12 @@
-import { defineFormContainerComponent } from "@tf/core";
+import { defineFormContainerComponent, useFormInject } from "@tf/core";
 import { FormProps, FormItem, Button, Form } from "ant-design-vue";
 
 export default defineFormContainerComponent((props, ctx) => {
   const isSearch = props.formProps?.mode === "search";
 
-  const width = isSearch ? undefined : props.formData?.width ?? "500px";
+  const width = isSearch ? undefined : props.formProps?.width ?? "500px";
+
+  const model = useFormInject();
 
   const formProps: FormProps = {
     layout: isSearch ? "inline" : "horizontal",
@@ -14,7 +16,7 @@ export default defineFormContainerComponent((props, ctx) => {
       },
     },
     ...props.formProps,
-    model: props.formData,
+    model: model.value,
     onFinish: async () => {
       await props.onSubmit?.(props.getFormData());
     },

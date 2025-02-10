@@ -3,7 +3,34 @@ import { FormComponentProps, renderMap } from "./render-map";
 import { CommonFormProps, FormContainerProps, TfFormColumn, TfFormColumnMap } from "./types";
 import { GetFormData, ResetToDefault, SetAsDefault, useForm } from "./use-form";
 
-export interface TfFormExposed<T extends Record<string, any>> {
+/**
+ * type hack，setup 泛型函数不支持定义 exposed 类型
+ */
+export type TfFormHOCComponent = new <T extends Record<string, any>>(props: {}) => ComponentPublicInstance<
+  {},
+  TfFormHOCComponentExposed<T>,
+  {}
+>
+
+
+export interface TfFormHOCComponentProps<T extends Record<string, any>> {
+  columns: TfFormColumn<T>[];
+  formData: T;
+  /**
+   * form 容器组件 props
+   */
+  formProps?: FormContainerProps;
+  "onUpdate:formData"?: (value: T) => void;
+  /**
+   * 提交函数
+   * @param formData 当先的有效表单值
+   * @returns 
+   */
+  onSubmit?: (formData: T) => Promise<void> | void
+}
+
+
+export interface TfFormHOCComponentExposed<T extends Record<string, any>> {
   /**
    * 获取表单当先展示出的表单值
    */
@@ -22,13 +49,6 @@ export interface TfFormExposed<T extends Record<string, any>> {
   setAsDefault: SetAsDefault<T>;
 }
 
-export type ExposedComponentType = new <T extends Record<string, any>>(props: {}) => ComponentPublicInstance<
-  {},
-  TfFormExposed<T>,
-  {}
->
-
-
 
 /**
  * 定义表单容器组件
@@ -37,32 +57,16 @@ export type ExposedComponentType = new <T extends Record<string, any>>(props: {}
 export const defineFormContainerComponent = (
   setup: <T extends Record<string, any>>(
     props: FormComponentProps<T>,
-
     ctx: SetupContext
   ) => any
 ) => {
   const component = defineComponent(setup, {
-    props: ["columns", "formData", "formProps", "onSubmit", "getFormData", "resetToDefault", "setAsDefault"] as any,
+    props: ["columns", "visibleColumns", "formProps", "onSubmit", "getFormData", "resetToDefault", "setAsDefault"] as any,
     inheritAttrs: false,
     name: "TfFormContainer",
   });
 
-  const Component = defineComponent(<T extends Record<string, any>>(props: {
-    columns: TfFormColumn<T>[];
-
-    formData: T;
-    /**
-     * form 容器组件 props
-     */
-    formProps?: FormContainerProps;
-    "onUpdate:formData"?: (value: T) => void;
-    /**
-     * 提交函数
-     * @param formData 当先的有效表单值
-     * @returns 
-     */
-    onSubmit?: (formData: T) => Promise<void> | void
-  }, ctx: SetupContext) => {
+  const Component = defineComponent(<T extends Record<string, any>>(props: TfFormHOCComponentProps<T>, ctx: SetupContext) => {
     const formData = computed({
       get: () => props.formData,
       set(v) {
@@ -80,8 +84,8 @@ export const defineFormContainerComponent = (
     });
 
     return () => h(component, {
-      columns: visibleColumns.value,
-      formData: formData.value,
+      columns: props.columns,
+      visibleColumns: visibleColumns.value,
       formProps: props.formProps,
       onSubmit: props.onSubmit,
       getFormData,
@@ -91,7 +95,6 @@ export const defineFormContainerComponent = (
       // core 里面 renderMap 里的组件只定义了 custom
       const component = renderMap[column.type];
       return h(component, {
-
         column: column,
         // 是否为查看模式
         isView: false,
@@ -103,7 +106,7 @@ export const defineFormContainerComponent = (
     name: "TfForm",
   });
 
-  return Component as typeof Component & ExposedComponentType;
+  return Component as typeof Component & TfFormHOCComponent;
 };
 
 

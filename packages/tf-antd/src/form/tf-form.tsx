@@ -1,16 +1,20 @@
-import { defineFormContainerComponent, FormComponentProps, useFormInject } from "@tf/core";
+import { defineFormContainerComponent, FormComponentProps, set, useFormInject } from "@tf/core";
 import { FormProps, FormItem, Button, Form } from "ant-design-vue";
 import { computed, toValue } from "vue";
 
 export const useCommonForm = (props: FormComponentProps) => {
   // 收集表单列的验证规则，这里需要支持响应式的rules规则
   const rules = computed(() => {
-    const rulesEntries = props.columns
-      .filter((column) => column.rules)
-      .map((column) => {
-        return [column.field, toValue(column.rules)];
-      });
-    return Object.fromEntries(rulesEntries);
+    const rulesObj = {};
+    for (const column of props.columns) {
+      if (column.rules) {
+        const field = column.field || column.fields?.[0];
+        set(rulesObj, field!, toValue(column.rules));
+      }
+    }
+
+    return rulesObj;
+
   });
 
   const model = useFormInject();

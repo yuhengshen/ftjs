@@ -3,6 +3,7 @@ import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm, TfFormSearch } from "@tf/antd";
 import { onMounted, ref, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
+import { FormItem } from "ant-design-vue";
 
 const likesOptions = ref([
   { label: "1", value: 1 },
@@ -45,6 +46,7 @@ const columns: TfFormColumn<FormData>[] = [
         value: "a",
       },
     ],
+    rules: [{ len: 2, message: "长度为2" }],
   },
   {
     type: "input",
@@ -62,9 +64,9 @@ const columns: TfFormColumn<FormData>[] = [
     props: {
       render: defineCustomRender((props) => {
         return () => (
-          <div style="display: flex; align-items: center; justify-content: center; height: 100%; align-self: center; margin: 0 2em">
-            isView: {props.isView ? "true" : "false"}
-          </div>
+          <FormItem label="isView">
+            <div>isView: {props.isView ? "true" : "false"}</div>
+          </FormItem>
         );
       }),
     },
@@ -113,7 +115,13 @@ onMounted(() => {
       ref="form"
       v-model:form-data="formData"
       :columns="columns"
-      :form-props="{ mode: 'search' }"
+      @submit="onSubmit"
+    />
+    <hr />
+    <TfForm
+      ref="formRef2"
+      v-model:form-data="formData"
+      :columns="columns"
       @submit="onSubmit"
     />
   </div>

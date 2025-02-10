@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build-deps": "pnpm --filter @tf/core build && pnpm --filter @tf/antd build"
+    "build-deps": "pnpm -w build-core && pnpm -w build-antd"
   },
   "dependencies": {
     "@tf/core": "workspace:*",

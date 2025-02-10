@@ -9,15 +9,18 @@
     "pnpm": ">=9.12.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-core": "turbo run build --filter @tf/core",
+    "build-antd": "turbo run build --filter @tf/antd"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "packageManager": "pnpm@9.15.4",
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
+    "turbo": "^2.4.0",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:"
   }

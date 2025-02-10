@@ -2,12 +2,17 @@ import { setupTfForm } from "@tf/core";
 import { FormProps } from "ant-design-vue";
 import input, { TfFormColumnInput } from "./input";
 import select, { TfFormColumnSelect } from "./select";
+import type { RuleType, StoreValue, ValidatorRule } from "ant-design-vue/es/form/interface";
+import type { VNode } from "vue";
+
+export type VNodeChildAtom = VNode | string | number | boolean | null | undefined | void;
+export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 
 declare module "@tf/core" {
   /**
    * form 容器组件 props 类型
    */
-  export interface FormContainerProps extends FormProps {
+  interface FormContainerProps extends FormProps {
     mode?: "search" | "form";
     width?: string;
   }
@@ -18,6 +23,37 @@ declare module "@tf/core" {
   interface TfFormColumnMap<T> {
     input: TfFormColumnInput<T>;
     select: TfFormColumnSelect<T>;
+  }
+
+  /**
+   * 从 antd vue 中复制出来的
+   */
+  interface ColumnRule extends Partial<ValidatorRule> {
+    warningOnly?: boolean;
+    /** validate the value from a list of possible values */
+    enum?: StoreValue[];
+    /** validate the exact length of a field */
+    len?: number;
+    /** validate the max length of a field */
+    max?: number;
+    /** validation error message */
+    message?: string | VueNode;
+    /** validate the min length of a field */
+    min?: number;
+    /** validate from a regular expression */
+    pattern?: RegExp;
+    /** indicates whether field is required */
+    required?: boolean;
+    /** transform a value before validation */
+    transform?: (value: StoreValue) => StoreValue;
+    /** built-in validation type, available options: https://github.com/yiminghe/async-validator#type */
+    type?: RuleType;
+    /** treat required fields that only contain whitespace as errors */
+    whitespace?: boolean;
+    /** Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger` */
+    validateTrigger?: string | string[];
+    /** Check trigger timing */
+    trigger?: 'blur' | 'change' | Array<'change' | 'blur'>;
   }
 }
 

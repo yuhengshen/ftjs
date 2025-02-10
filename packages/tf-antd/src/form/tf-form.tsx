@@ -6,7 +6,15 @@ export default defineFormContainerComponent((props, ctx) => {
 
   const width = isSearch ? undefined : props.formProps?.width ?? "500px";
 
+  // 获取表单值
   const model = useFormInject();
+
+  // 收集表单列的验证规则
+  const rulesEntries = props.columns
+    .filter((column) => column.rules)
+    .map((column) => {
+      return [column.field, column.rules];
+    });
 
   const formProps: FormProps = {
     layout: isSearch ? "inline" : "horizontal",
@@ -17,6 +25,7 @@ export default defineFormContainerComponent((props, ctx) => {
     },
     ...props.formProps,
     model: model.value,
+    rules: Object.fromEntries(rulesEntries),
     onFinish: async () => {
       await props.onSubmit?.(props.getFormData());
     },

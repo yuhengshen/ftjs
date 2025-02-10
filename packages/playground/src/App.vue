@@ -2,7 +2,7 @@
 import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
 import { onMounted, ref, useTemplateRef } from "vue";
-import { ComponentExposed } from "vue-component-type-helpers"
+import { ComponentExposed } from "vue-component-type-helpers";
 
 const likesOptions = ref([
   { label: "1", value: 1 },
@@ -54,6 +54,7 @@ const columns: TfFormColumn<FormData>[] = [
       placeholder: "xxxx3",
       allowClear: true,
     },
+    rules: [{ len: 10, message: "长度为10" }],
   },
   {
     type: "custom",
@@ -101,8 +102,8 @@ const formRef = useTemplateRef<ComponentExposed<typeof TfForm>>("form");
 const formRef2 = ref<InstanceType<typeof TfForm>>();
 
 onMounted(() => {
-  formRef.value?.getFormData();
-  formRef2.value?.getFormData();
+  console.log(formRef.value?.getFormData());
+  console.log(formRef2.value?.getFormData());
 });
 </script>
 

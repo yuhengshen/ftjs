@@ -13,6 +13,12 @@ type Watch<T> =
     immediate?: boolean;
   };
 
+/**
+ * 表单列验证规则，由实现方定义
+ */
+export interface ColumnRule {
+}
+
 export interface TfFormColumnBase<T> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
@@ -91,6 +97,11 @@ export interface TfFormColumnBase<T> {
    * base 只做占位，以通过编译
    */
   type: keyof TfFormColumnMap<T>;
+
+  /**
+   * 表单验证规则
+   */
+  rules?: ColumnRule[];
 }
 
 export interface TfFormColumnMap<T> {

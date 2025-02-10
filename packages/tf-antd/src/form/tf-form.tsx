@@ -61,6 +61,11 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
   const formProps = computed<FormProps>(() => {
     return {
       layout: "inline",
+      labelCol: {
+        style: {
+          width: "100px",
+        }
+      },
       wrapperCol: {
         style: {
           // 这样定义宽度，可以方便后续修改
@@ -77,7 +82,9 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
   });
 
   return () => (
-    <Form {...formProps.value}>
+    <Form {...formProps.value} style={{
+      gap: "10px 0",
+    }}>
       {ctx.slots.default?.()}
       <FormItem style={{
         "--tf-form-control-width": "220px"

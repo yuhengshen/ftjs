@@ -110,7 +110,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div style="margin: 100px">
+  <div>
     <TfFormSearch
       ref="form"
       v-model:form-data="formData"

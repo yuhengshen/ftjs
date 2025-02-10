@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm } from "@tf/antd";
-import { onMounted, ref, useTemplateRef } from "vue";
+import { onMounted, ref } from "vue";
 
 const likesOptions = ref([
   { label: "1", value: 1 },

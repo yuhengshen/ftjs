@@ -6,7 +6,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build-deps": "pnpm --filter @tf/core build && pnpm --filter @tf/antd build"
   },
   "dependencies": {
     "@tf/core": "workspace:*",

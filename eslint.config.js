@@ -8,6 +8,8 @@ export default tseslint.config(
     rules: {
       "prefer-const": ["error", { destructuring: "all" }],
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
     },
   }
 );
+

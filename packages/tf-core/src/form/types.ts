@@ -106,6 +106,9 @@ export type TfFormRenderMap = {
   ) => any;
 };
 
+/**
+ * 表单列定义
+ */
 export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
 
 
@@ -116,6 +119,9 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
   isView: boolean;
 }
 
+/**
+ * 表单容器组件 props
+ */
 export interface FormContainerProps { }
 
 export interface CommonFormOptions<T extends TfFormColumn<any>>

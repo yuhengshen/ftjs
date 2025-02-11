@@ -22,8 +22,4 @@ catalog:
   "@vitest/ui": ^3.0.5
   "@vue/test-utils": ^2.4.6
   happy-dom: ^17.0.2
-
-
-
-
-
+  prettier: ^3.5.0

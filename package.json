@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build-core": "turbo run build --filter @tf/core",
-    "build-antd": "turbo run build --filter @tf/antd"
+    "build-antd": "turbo run build --filter @tf/antd",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,17 @@
     "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
+    "eslint-config-prettier": "^10.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "catalog:",
     "turbo": "^2.4.0",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue,css,less,scss,json,md}": [
+      "prettier --write"
+    ]
   }
 }

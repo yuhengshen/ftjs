@@ -11,7 +11,7 @@ import {
 } from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
 import { TfFormColumn } from "./types";
-import { useFormProvide } from "./use-provide";
+import { useColumnsCheckedReverseProvide, useFormProvide } from "./use-provide";
 
 export const useForm = <T extends Record<string, any>>(
   _columns: MaybeRefOrGetter<TfFormColumn<T>[]>,
@@ -25,15 +25,30 @@ export const useForm = <T extends Record<string, any>>(
 
   // 需要监听的表单字段
   let unWatchList: { field: string; cancel: () => void }[] = [];
-  // 需要隐藏的表单字段
+  // todo:: 需要隐藏的表单字段
   const expectHideFields = ref<string[]>([]);
+
+  const columnsCheckedReverse = useColumnsCheckedReverseProvide(columns);
+  /**
+   * 配置排序
+   */
+  const columnsSort = ref<Partial<Record<keyof T, number>>>({});
+
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
     const set = new Set<string>(expectHideFields.value);
-    return columns.value.filter(column => {
-      const key = column.field ?? column.fields!.join(",");
-      return !set.has(key) && !toValue(column.hide);
-    });
+    return columns.value
+      .filter(column => {
+        const key = column.field ?? (column.fields![0] as string);
+        return !set.has(key) && !columnsCheckedReverse.value?.includes(key);
+      })
+      .sort((a, b) => {
+        const keyA = a.field ?? (a.fields![0] as string);
+        const keyB = b.field ?? (b.fields![0] as string);
+        const aSort = columnsSort.value[keyA] ?? 0;
+        const bSort = columnsSort.value[keyB] ?? 0;
+        return aSort - bSort;
+      });
   });
 
   watch(

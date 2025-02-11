@@ -1,5 +1,5 @@
 export { useFormCommonComponent } from "./use-form-common-component";
-export { useFormInject } from "./use-provide";
+export { useFormInject, useColumnsCheckedReverseInject } from "./use-provide";
 export { registerTfForm, setupTfForm } from "./register";
 export * from "./tf-form";
 export * from "../utils";

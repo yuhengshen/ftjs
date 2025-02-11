@@ -1,9 +1,10 @@
-import { SettingOutlined } from "@ant-design/icons-vue";
+import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
 import {
   defineFormContainerComponent,
   FormComponentProps,
   set,
   useFormInject,
+  useColumnsCheckedReverseInject,
 } from "@tf/core";
 import {
   FormProps,
@@ -104,40 +105,69 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
     };
   });
 
-  const openModal = ref(true);
+  const settingModal = ref(false);
 
-  const mockData = () => {
-    const treeData: TreeProps["treeData"] = [
+  type TreeNode = Exclude<TreeProps["treeData"], undefined>[number];
+
+  const columnsCheckedReverse = useColumnsCheckedReverseInject();
+
+  const createColumnsTree = () => {
+    const treeData: TreeNode[] = [
       { title: "全选", key: "__all", children: [] },
     ];
 
+    const checkedKeys: string[] = [];
+
     for (const column of props.columns) {
-      const key = column.field || column.fields?.[0];
+      const key = column.field || (column.fields?.[0] as string);
       treeData[0].children!.push({
         title: column.title,
-        key: key!,
+        key: key,
         isLeaf: true,
       });
+      if (!columnsCheckedReverse.value.includes(key)) {
+        checkedKeys.push(key);
+      }
     }
-    return treeData;
+    return { treeData, checkedKeys };
   };
 
-  const columnsTree = ref(mockData());
+  const columnsTree = ref<TreeNode[]>([]);
+  const columnsChecked = ref<string[]>([]);
+  const setting = () => {
+    const { treeData, checkedKeys } = createColumnsTree();
+    columnsTree.value = treeData;
+    columnsChecked.value = checkedKeys;
+    settingModal.value = true;
+  };
+
+  const onSettingOk = () => {
+    settingModal.value = false;
+    // todo:: 没有触发更新
+    columnsCheckedReverse.value = props.columns
+      .filter(
+        e =>
+          !columnsChecked.value.includes(e.field ?? (e.fields![0] as string)),
+      )
+      .map(e => e.field ?? (e.fields![0] as string));
+  };
 
   return () => (
     <>
       <Modal
-        v-model:open={openModal.value}
+        v-model:open={settingModal.value}
         mask={false}
-        width={300}
+        width={260}
         okText="保存"
+        maskClosable={false}
         cancelText="取消"
-        onOk={() => (openModal.value = false)}
+        destroyOnClose
+        onOk={onSettingOk}
       >
         {{
           title: () => (
             <span>
-              配置筛选项{" "}
+              配置筛选项
               <span style={{ fontSize: "12px", color: "gray" }}>
                 (可拖动排序)
               </span>
@@ -146,12 +176,12 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
           default: () => (
             <Tree
               treeData={columnsTree.value}
+              v-model:checkedKeys={columnsChecked.value}
               checkable
               selectable={false}
               draggable
               blockNode
               expandedKeys={["__all"]}
-              switcherIcon={<></>}
               virtual={false}
               allowDrop={({ dropNode, dropPosition }) => {
                 if (dropNode.isLeaf && dropPosition === 1) return true;
@@ -160,19 +190,28 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
               }}
               onDrop={info => {
                 const dragNode = info.dragNode;
-                // const position = info.dropPosition;
-                const targetNode = info.node;
+                const position = info.dropPosition;
                 const list = columnsTree.value[0].children!;
                 const fromIndex = list.findIndex(e => e.key === dragNode.key);
-                const targetIndex = list.findIndex(
-                  e => e.key === targetNode.key,
-                );
-
+                const toIndex = position > fromIndex ? position - 1 : position;
                 list.splice(fromIndex, 1);
-                list.splice(targetIndex, 0, dragNode);
-                // todo:: 顺序存在问题
+                list.splice(toIndex, 0, dragNode);
               }}
-            />
+            >
+              {{
+                title: (node: TreeNode) => (
+                  <div style={{ display: "flex" }}>
+                    <span>{node.title}</span>
+                    {node.key !== "__all" && (
+                      <SwapOutlined
+                        rotate={90}
+                        style={{ marginLeft: "auto", color: "gray" }}
+                      />
+                    )}
+                  </div>
+                ),
+              }}
+            </Tree>
           ),
         }}
       </Modal>
@@ -190,10 +229,7 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
           }}
         >
           <div style="display: flex; gap: 10px;">
-            <Button
-              icon={<SettingOutlined />}
-              onClick={() => (openModal.value = true)}
-            >
+            <Button icon={<SettingOutlined />} onClick={setting}>
               配置
             </Button>
             <Button type="primary" htmlType="submit">

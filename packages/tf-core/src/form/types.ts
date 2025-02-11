@@ -100,6 +100,13 @@ export interface TfFormColumnBase<T> {
    * 表单验证规则
    */
   rules?: MaybeRefOrGetter<ColumnRule[]>;
+
+  /**
+   * 排序
+   *
+   * @default 0
+   */
+  sort?: number;
 }
 
 export interface TfFormColumnMap<T> {

@@ -36,7 +36,7 @@ const columns: TfFormColumn<FormData>[] = [
   {
     type: "input",
     field: "extraInfo.age",
-    title: "年龄",
+    title: "年龄嵌套",
     props: {
       placeholder: placeholder,
       allowClear: true,
@@ -62,6 +62,7 @@ const columns: TfFormColumn<FormData>[] = [
   {
     type: "custom",
     field: "name",
+    title: "自定义isView",
     props: {
       render: defineCustomRender(props => {
         return () => (

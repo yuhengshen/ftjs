@@ -30,6 +30,7 @@ const columns: TfFormColumn<FormData>[] = [
     props: {
       placeholder: "xxxx1",
       allowClear: true,
+      disabled: true,
     },
   },
   {
@@ -40,7 +41,7 @@ const columns: TfFormColumn<FormData>[] = [
       placeholder: placeholder,
       allowClear: true,
     },
-    expect: [
+    control: [
       {
         field: "age",
         value: "a",

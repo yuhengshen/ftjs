@@ -1,3 +1,4 @@
+import { SettingOutlined } from "@ant-design/icons-vue";
 import { defineFormContainerComponent, FormComponentProps, set, useFormInject } from "@tf/core";
 import { FormProps, FormItem, Button, Form } from "ant-design-vue";
 import { computed, toValue } from "vue";
@@ -35,6 +36,11 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
       onFinish: async () => {
         await props.onSubmit?.(props.getFormData());
       },
+      labelCol: {
+        style: {
+          width: "100px",
+        }
+      },
       rules: rules.value,
       ...props.formProps,
     }
@@ -44,7 +50,7 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
   return () => (
     <Form {...formProps.value} style={{ width }}>
       {ctx.slots.default?.()}
-      <FormItem>
+      <FormItem label=" " colon={false}>
         <Button type="primary" htmlType="submit">
           提交
         </Button >
@@ -86,18 +92,20 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
       gap: "10px 0",
     }}>
       {ctx.slots.default?.()}
-      <FormItem style={{
-        "--tf-form-control-width": "220px"
-      }}>
+      <FormItem
+        style={{
+          "--tf-form-control-width": "220px"
+        }}
+      >
         <div style="display: flex; gap: 10px;">
+          <Button icon={<SettingOutlined />}>
+            配置
+          </Button>
           <Button type="primary" htmlType="submit">
             查询
           </Button>
           <Button type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
             重置
-          </Button>
-          <Button type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
-            配置
           </Button>
         </div>
       </FormItem>

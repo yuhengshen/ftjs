@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { MaybeRefOrGetter } from "vue";
 import { TfFormColumnCustom } from "./custom-component";
 import { RecordPath, ValueOf } from "../type-helper";
@@ -53,15 +52,19 @@ export interface TfFormColumnBase<T> {
    */
   value?: any;
   /**
-   * 其他字段基于此值的显示规则
+   * 控制其他字段基于此值的显示规则
+   * 
+   * 当其他字段值符合`value`时，控制字段显示，否则隐藏
    */
-  expect?: {
+  control?: {
     /**
      * 控制字段
      */
     field: string;
     /**
      * 条件，可以是一个值，也可以是一个函数
+     * 
+     * 
      */
     value:
     | string
@@ -76,10 +79,6 @@ export interface TfFormColumnBase<T> {
       val: any;
     }) => boolean);
   }[];
-  /**
-   * 是否禁用
-   */
-  disabled?: MaybeRefOrGetter<boolean>;
 
   valueGetter?: (val: any) => any;
   valueSetter?: (val: any) => any;

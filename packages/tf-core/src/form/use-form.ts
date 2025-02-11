@@ -157,10 +157,10 @@ export const useForm = <T extends Record<string, any>>(
   function checkExpectColumns() {
     const expectHideSet = new Set<string>();
     columns.value
-      .filter(column => column.expect)
+      .filter(column => column.control)
       .forEach(column => {
         const columnField = column.field ?? column.fields![0];
-        column.expect!.forEach(expectItem => {
+        column.control!.forEach(expectItem => {
           const targetColumn = columns.value.find(
             column => {
               const field = column.field ?? column.fields![0];

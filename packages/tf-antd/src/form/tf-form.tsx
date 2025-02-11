@@ -5,8 +5,16 @@ import {
   set,
   useFormInject,
 } from "@tf/core";
-import { FormProps, FormItem, Button, Form } from "ant-design-vue";
-import { computed, toValue } from "vue";
+import {
+  FormProps,
+  FormItem,
+  Button,
+  Form,
+  TreeProps,
+  Modal,
+  Tree,
+} from "ant-design-vue";
+import { computed, ref, toValue } from "vue";
 
 export const useCommonForm = (props: FormComponentProps) => {
   // 收集表单列的验证规则，这里需要支持响应式的rules规则
@@ -96,34 +104,112 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
     };
   });
 
+  const openModal = ref(true);
+
+  const mockData = () => {
+    const treeData: TreeProps["treeData"] = [
+      { title: "全选", key: "__all", children: [] },
+    ];
+
+    for (const column of props.columns) {
+      const key = column.field || column.fields?.[0];
+      treeData[0].children!.push({
+        title: column.title,
+        key: key!,
+        isLeaf: true,
+      });
+    }
+    return treeData;
+  };
+
+  const columnsTree = ref(mockData());
+
   return () => (
-    <Form
-      {...formProps.value}
-      style={{
-        gap: "10px 0",
-      }}
-    >
-      {ctx.slots.default?.()}
-      <FormItem
+    <>
+      <Modal
+        v-model:open={openModal.value}
+        mask={false}
+        width={300}
+        okText="保存"
+        cancelText="取消"
+        onOk={() => (openModal.value = false)}
+      >
+        {{
+          title: () => (
+            <span>
+              配置筛选项{" "}
+              <span style={{ fontSize: "12px", color: "gray" }}>
+                (可拖动排序)
+              </span>
+            </span>
+          ),
+          default: () => (
+            <Tree
+              treeData={columnsTree.value}
+              checkable
+              selectable={false}
+              draggable
+              blockNode
+              expandedKeys={["__all"]}
+              switcherIcon={<></>}
+              virtual={false}
+              allowDrop={({ dropNode, dropPosition }) => {
+                if (dropNode.isLeaf && dropPosition === 1) return true;
+                if (dropNode.key === "__all" && dropPosition === 0) return true;
+                return false;
+              }}
+              onDrop={info => {
+                const dragNode = info.dragNode;
+                // const position = info.dropPosition;
+                const targetNode = info.node;
+                const list = columnsTree.value[0].children!;
+                const fromIndex = list.findIndex(e => e.key === dragNode.key);
+                const targetIndex = list.findIndex(
+                  e => e.key === targetNode.key,
+                );
+
+                list.splice(fromIndex, 1);
+                list.splice(targetIndex, 0, dragNode);
+                // todo:: 顺序存在问题
+              }}
+            />
+          ),
+        }}
+      </Modal>
+
+      <Form
+        {...formProps.value}
         style={{
-          "--tf-form-control-width": "220px",
+          gap: "10px 0",
         }}
       >
-        <div style="display: flex; gap: 10px;">
-          <Button icon={<SettingOutlined />}>配置</Button>
-          <Button type="primary" htmlType="submit">
-            查询
-          </Button>
-          <Button
-            type="primary"
-            danger
-            htmlType="reset"
-            onClick={() => props.resetToDefault()}
-          >
-            重置
-          </Button>
-        </div>
-      </FormItem>
-    </Form>
+        {ctx.slots.default?.()}
+        <FormItem
+          style={{
+            "--tf-form-control-width": "220px",
+          }}
+        >
+          <div style="display: flex; gap: 10px;">
+            <Button
+              icon={<SettingOutlined />}
+              onClick={() => (openModal.value = true)}
+            >
+              配置
+            </Button>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
+            <Button
+              type="primary"
+              danger
+              htmlType="reset"
+              onClick={() => props.resetToDefault()}
+            >
+              重置
+            </Button>
+          </div>
+        </FormItem>
+      </Form>
+    </>
   );
 });

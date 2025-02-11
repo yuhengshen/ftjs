@@ -2,10 +2,21 @@ import { setupTfForm } from "@tf/core";
 import { FormProps } from "ant-design-vue";
 import input, { TfFormColumnInput } from "./input";
 import select, { TfFormColumnSelect } from "./select";
-import type { RuleType, StoreValue, ValidatorRule } from "ant-design-vue/es/form/interface";
+import type {
+  RuleType,
+  StoreValue,
+  ValidatorRule,
+} from "ant-design-vue/es/form/interface";
 import type { VNode } from "vue";
 
-export type VNodeChildAtom = VNode | string | number | boolean | null | undefined | void;
+export type VNodeChildAtom =
+  | VNode
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | void;
 export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 
 declare module "@tf/core" {
@@ -17,8 +28,8 @@ declare module "@tf/core" {
   }
 
   /**
- * columns 类型
- */
+   * columns 类型
+   */
   interface TfFormColumnMap<T> {
     input: TfFormColumnInput<T>;
     select: TfFormColumnSelect<T>;
@@ -52,7 +63,7 @@ declare module "@tf/core" {
     /** Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger` */
     validateTrigger?: string | string[];
     /** Check trigger timing */
-    trigger?: 'blur' | 'change' | Array<'change' | 'blur'>;
+    trigger?: "blur" | "change" | Array<"change" | "blur">;
   }
 }
 
@@ -64,4 +75,3 @@ export default function register() {
     },
   });
 }
-

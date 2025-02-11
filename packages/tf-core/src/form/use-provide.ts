@@ -2,10 +2,11 @@ import { inject, MaybeRef, provide, ref, Ref, unref } from "vue";
 
 const provideFormKey = Symbol("tf-core-form-provide-form");
 
-export const useFormProvide = <T extends Record<string, any>>(formModel?: MaybeRef<T>) => {
+export const useFormProvide = <T extends Record<string, any>>(
+  formModel?: MaybeRef<T>,
+) => {
   const formLocal = ref({} as T);
-  const form =
-    (unref(formModel) != null ? formModel : formLocal) as Ref<T>;
+  const form = (unref(formModel) != null ? formModel : formLocal) as Ref<T>;
 
   provide(provideFormKey, form);
 

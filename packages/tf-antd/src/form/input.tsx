@@ -14,7 +14,7 @@ export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
   props?: Refs<InputProps>;
 }
 
-export default defineFormComponent<"input">((props) => {
+export default defineFormComponent<"input">(props => {
   const { valueComputed } = useFormCommonComponent({
     column: props.column,
     isView: props.isView,
@@ -29,6 +29,6 @@ export default defineFormComponent<"input">((props) => {
       <FormItem {...formItemProps.value}>
         <Input v-model:value={valueComputed.value} {..._props} />
       </FormItem>
-    )
+    );
   };
 });

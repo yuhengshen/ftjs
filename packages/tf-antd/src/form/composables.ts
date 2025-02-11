@@ -11,6 +11,5 @@ export const useFormItemProps = <T>(column: TfFormColumn<T>) => {
       name,
       label,
     };
-  })
+  });
 };
-

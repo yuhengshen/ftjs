@@ -3,10 +3,13 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-  plugins: [vueJsx(), dts({
-    include: ['src/**/*.ts'],
-    exclude: ['**/*.spec.ts']
-  })],
+  plugins: [
+    vueJsx(),
+    dts({
+      include: ["src/**/*.ts"],
+      exclude: ["**/*.spec.ts"],
+    }),
+  ],
   build: {
     emptyOutDir: true,
     lib: {
@@ -15,16 +18,16 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ['vue']
+      external: ["vue"],
     },
     minify: false,
   },
   test: {
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    environment: 'happy-dom',
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    environment: "happy-dom",
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      provider: "v8",
+      reporter: ["text", "json", "html"],
     },
-  }
+  },
 });

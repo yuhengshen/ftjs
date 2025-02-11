@@ -1,5 +1,10 @@
 import { SettingOutlined } from "@ant-design/icons-vue";
-import { defineFormContainerComponent, FormComponentProps, set, useFormInject } from "@tf/core";
+import {
+  defineFormContainerComponent,
+  FormComponentProps,
+  set,
+  useFormInject,
+} from "@tf/core";
 import { FormProps, FormItem, Button, Form } from "ant-design-vue";
 import { computed, toValue } from "vue";
 
@@ -15,13 +20,12 @@ export const useCommonForm = (props: FormComponentProps) => {
     }
 
     return rulesObj;
-
   });
 
   const model = useFormInject();
 
   return { rules, model };
-}
+};
 
 export const TfForm = defineFormContainerComponent((props, ctx) => {
   const width = props.formProps?.width ?? "500px";
@@ -39,13 +43,12 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
       labelCol: {
         style: {
           width: "100px",
-        }
+        },
       },
       rules: rules.value,
       ...props.formProps,
-    }
+    };
   });
-
 
   return () => (
     <Form {...formProps.value} style={{ width }}>
@@ -53,14 +56,20 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
       <FormItem label=" " colon={false}>
         <Button type="primary" htmlType="submit">
           提交
-        </Button >
-        <Button style="margin-left: 10px;" type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
+        </Button>
+        <Button
+          style="margin-left: 10px;"
+          type="primary"
+          danger
+          htmlType="reset"
+          onClick={() => props.resetToDefault()}
+        >
           重置
         </Button>
-      </FormItem >
+      </FormItem>
     </Form>
   );
-})
+});
 
 export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
   const { model, rules } = useCommonForm(props);
@@ -70,7 +79,7 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
       labelCol: {
         style: {
           width: "100px",
-        }
+        },
       },
       wrapperCol: {
         style: {
@@ -84,31 +93,37 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
         await props.onSubmit?.(props.getFormData());
       },
       rules: rules.value,
-    }
+    };
   });
 
   return () => (
-    <Form {...formProps.value} style={{
-      gap: "10px 0",
-    }}>
+    <Form
+      {...formProps.value}
+      style={{
+        gap: "10px 0",
+      }}
+    >
       {ctx.slots.default?.()}
       <FormItem
         style={{
-          "--tf-form-control-width": "220px"
+          "--tf-form-control-width": "220px",
         }}
       >
         <div style="display: flex; gap: 10px;">
-          <Button icon={<SettingOutlined />}>
-            配置
-          </Button>
+          <Button icon={<SettingOutlined />}>配置</Button>
           <Button type="primary" htmlType="submit">
             查询
           </Button>
-          <Button type="primary" danger htmlType="reset" onClick={() => props.resetToDefault()}>
+          <Button
+            type="primary"
+            danger
+            htmlType="reset"
+            onClick={() => props.resetToDefault()}
+          >
             重置
           </Button>
         </div>
       </FormItem>
     </Form>
   );
-})
+});

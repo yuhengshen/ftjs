@@ -14,16 +14,16 @@ type Sub1 = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 export type RecordPath<T, Depth extends number = 5> = Depth extends -1
   ? string
   : // 数组递归单独处理，因为有其他很多无用属性(length, pop之类的)
-  T extends any[]
-  ? `${number}` | `${number}.${RecordPath<T[number], Sub1[Depth]>}`
-  : // 对象递归
-  T extends Record<string, any>
-  ? ValueOf<{
-      [K in keyof T]: K extends string
-        ? `${K}` | `${K}.${RecordPath<T[K], Sub1[Depth]>}`
-        : never;
-    }>
-  : never;
+    T extends any[]
+    ? `${number}` | `${number}.${RecordPath<T[number], Sub1[Depth]>}`
+    : // 对象递归
+      T extends Record<string, any>
+      ? ValueOf<{
+          [K in keyof T]: K extends string
+            ? `${K}` | `${K}.${RecordPath<T[K], Sub1[Depth]>}`
+            : never;
+        }>
+      : never;
 
 export type ValueOf<T> = T[keyof T];
 

@@ -6,12 +6,11 @@ export const isEmptyStrOrNull = (val: any) => {
 };
 
 export const cloneDeep = <T>(obj: T) => {
-  if (typeof obj === 'object') {
+  if (typeof obj === "object") {
     return JSON.parse(JSON.stringify(obj)) as T;
   }
   return obj;
 };
-
 
 /**
  * 对比两个字符串数组是否相同，忽略顺序
@@ -21,7 +20,7 @@ export const isEqualStrArr = (a: string[], b: string[]) => {
 };
 
 export const get = (obj: any, path: string) => {
-  const keys = path.split('.');
+  const keys = path.split(".");
   let result = obj;
   for (const key of keys) {
     if (Reflect.has(result, key)) {
@@ -34,7 +33,7 @@ export const get = (obj: any, path: string) => {
 };
 
 export const set = (obj: any, path: string, value: any) => {
-  const keys = path.split('.');
+  const keys = path.split(".");
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
     if (!Reflect.has(obj, key)) {
@@ -46,7 +45,7 @@ export const set = (obj: any, path: string, value: any) => {
 };
 
 export const has = (obj: any, path: string) => {
-  const keys = path.split('.');
+  const keys = path.split(".");
   for (const key of keys) {
     if (!Reflect.has(obj, key)) {
       return false;
@@ -58,18 +57,15 @@ export const has = (obj: any, path: string) => {
 
 /**
  * 浅层的将对象的属性值(可能是响应式)转换为普通值，不转化getter
- * @param obj 
- * @returns 
+ * @param obj
+ * @returns
  */
 export const unrefs = <T>(obj: T) => {
-  if (!obj || typeof obj !== 'object') {
+  if (!obj || typeof obj !== "object") {
     return obj as Unrefs<T>;
   }
 
   return Object.fromEntries(
-    Object.entries(obj)
-      .map(([key, value]) => [key,
-        unref(value)
-      ])
+    Object.entries(obj).map(([key, value]) => [key, unref(value)]),
   ) as Unrefs<T>;
-}
+};

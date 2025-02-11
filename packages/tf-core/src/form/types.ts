@@ -7,16 +7,15 @@ type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 type Watch<T> =
   | WatchHandler<T>
   | {
-    handler: WatchHandler<T>;
-    deep?: boolean;
-    immediate?: boolean;
-  };
+      handler: WatchHandler<T>;
+      deep?: boolean;
+      immediate?: boolean;
+    };
 
 /**
  * 表单列验证规则，由实现方定义
  */
-export interface ColumnRule {
-}
+export interface ColumnRule {}
 
 export interface TfFormColumnBase<T> {
   /**
@@ -53,7 +52,7 @@ export interface TfFormColumnBase<T> {
   value?: any;
   /**
    * 控制其他字段基于此值的显示规则
-   * 
+   *
    * 当其他字段值符合`value`时，控制字段显示，否则隐藏
    */
   control?: {
@@ -63,21 +62,21 @@ export interface TfFormColumnBase<T> {
     field: string;
     /**
      * 条件，可以是一个值，也可以是一个函数
-     * 
-     * 
+     *
+     *
      */
     value:
-    | string
-    | number
-    | string[]
-    | number[]
-    | /** 返回值表示这个字段是否显示 */ (({
-      formData,
-      val,
-    }: {
-      formData: T;
-      val: any;
-    }) => boolean);
+      | string
+      | number
+      | string[]
+      | number[]
+      | /** 返回值表示这个字段是否显示 */ (({
+          formData,
+          val,
+        }: {
+          formData: T;
+          val: any;
+        }) => boolean);
   }[];
 
   valueGetter?: (val: any) => any;
@@ -110,9 +109,9 @@ export interface TfFormColumnMap<T> {
 }
 
 export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: new <T extends Record<string, any>>(props:
-    CommonFormProps<TfFormColumnMap<T>[key]>,
-    ctx: any
+  [key in keyof TfFormColumnMap<any>]: new <T extends Record<string, any>>(
+    props: CommonFormProps<TfFormColumnMap<T>[key]>,
+    ctx: any,
   ) => any;
 };
 
@@ -120,7 +119,6 @@ export type TfFormRenderMap = {
  * 表单列定义
  */
 export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
-
 
 export interface CommonFormProps<T extends TfFormColumn<any>> {
   /** column 定义 */
@@ -132,7 +130,7 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
 /**
  * 表单容器组件 props
  */
-export interface FormContainerProps { }
+export interface FormContainerProps {}
 
 export interface CommonFormOptions<T extends TfFormColumn<any>>
   extends CommonFormProps<T> {

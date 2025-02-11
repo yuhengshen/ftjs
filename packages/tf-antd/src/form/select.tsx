@@ -14,14 +14,13 @@ export interface TfFormColumnSelect<T> extends TfFormColumnBase<T> {
   props?: Refs<SelectProps>;
 }
 
-export default defineFormComponent<"select">((props) => {
+export default defineFormComponent<"select">(props => {
   const { valueComputed } = useFormCommonComponent({
     column: props.column,
     isView: props.isView,
   });
 
   const formItemProps = useFormItemProps(props.column);
-
 
   return () => {
     const _props = unrefs(props.column.props);
@@ -30,6 +29,5 @@ export default defineFormComponent<"select">((props) => {
         <Select v-model:value={valueComputed.value} {..._props} />
       </FormItem>
     );
-
   };
 });

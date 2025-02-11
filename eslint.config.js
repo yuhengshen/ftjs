@@ -1,6 +1,6 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import eslintPluginPrettier from "eslint-plugin-prettier";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 export default tseslint.config(
   js.configs.recommended,
@@ -12,5 +12,8 @@ export default tseslint.config(
       "@typescript-eslint/no-empty-object-type": "off",
     },
   },
-  eslintPluginPrettier.configs.recommended,
+  eslintConfigPrettier,
+  {
+    ignores: ["**/node_modules/**", "**/dist/**", "**/build/**"],
+  },
 );

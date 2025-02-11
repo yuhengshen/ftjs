@@ -8,7 +8,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
     dts({
-      exclude: ['vite.config.ts']
+      exclude: ["vite.config.ts"],
     }),
   ],
   build: {
@@ -19,7 +19,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ['ant-design-vue', '@ant-design/icons-vue', 'vue', '@tf/core']
+      external: ["ant-design-vue", "@ant-design/icons-vue", "vue", "@tf/core"],
     },
   },
 });

@@ -7,23 +7,23 @@ export interface TfFormColumnCustomProps<T> {
   modelValue: any;
   column: TfFormColumnCustom<T>;
   isView: boolean;
-  'onUpdate:modelValue': (v: any) => void;
+  "onUpdate:modelValue": (v: any) => void;
 }
 export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {
   /**
    * 自定义渲染
    */
-  type: "custom",
+  type: "custom";
   props: {
-    render: Component<TfFormColumnCustomProps<T>>
-  }
+    render: Component<TfFormColumnCustomProps<T>>;
+  };
 }
 
 /**
  * 定义自定义组件的 render 属性
  */
 export const defineCustomRender = <T>(
-  setup: (props: TfFormColumnCustomProps<T>) => any
+  setup: (props: TfFormColumnCustomProps<T>) => any,
 ) => {
   return defineComponent(setup, {
     inheritAttrs: false,
@@ -31,7 +31,7 @@ export const defineCustomRender = <T>(
   });
 };
 
-export const CustomComponent = defineFormComponent<"custom">((props) => {
+export const CustomComponent = defineFormComponent<"custom">(props => {
   const { valueComputed } = useFormCommonComponent({
     column: props.column,
     isView: props.isView,
@@ -42,7 +42,7 @@ export const CustomComponent = defineFormComponent<"custom">((props) => {
       modelValue: valueComputed.value,
       column: props.column,
       isView: props.isView,
-      'onUpdate:modelValue': (v: any) => valueComputed.value = v,
+      "onUpdate:modelValue": (v: any) => (valueComputed.value = v),
     });
-  }
-})
+  };
+});

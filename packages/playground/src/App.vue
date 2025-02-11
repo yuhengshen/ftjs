@@ -63,7 +63,7 @@ const columns: TfFormColumn<FormData>[] = [
     type: "custom",
     field: "name",
     props: {
-      render: defineCustomRender((props) => {
+      render: defineCustomRender(props => {
         return () => (
           <FormItem label="isView">
             <div>isView: {props.isView ? "true" : "false"}</div>

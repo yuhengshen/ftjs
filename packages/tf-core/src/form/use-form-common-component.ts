@@ -5,11 +5,11 @@ import { isEmptyStrOrNull, get, set } from "../utils";
 
 /**
  * 通用的 form 组件处理
- * 
+ *
  * todo:: 改名
  */
 export const useFormCommonComponent = <T extends Record<string, any>>(
-  options: CommonFormOptions<TfFormColumn<T>>
+  options: CommonFormOptions<TfFormColumn<T>>,
 ) => {
   let { column, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
@@ -30,10 +30,10 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
       let val;
       if (column.fields) {
         val = column.fields
-          .map((field) => {
+          .map(field => {
             return get(form.value, field);
           })
-          .filter((e) => !isEmptyStrOrNull(e));
+          .filter(e => !isEmptyStrOrNull(e));
       } else if (column.field) {
         val = get(form.value, column.field);
       } else {

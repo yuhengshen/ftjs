@@ -1,4 +1,14 @@
-import { computed, ref, watch, onMounted, onUnmounted, nextTick, MaybeRefOrGetter, toValue, MaybeRef } from "vue";
+import {
+  computed,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+  nextTick,
+  MaybeRefOrGetter,
+  toValue,
+  MaybeRef,
+} from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
 import { TfFormColumn } from "./types";
 import { useFormProvide } from "./use-provide";
@@ -20,12 +30,10 @@ export const useForm = <T extends Record<string, any>>(
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
     const set = new Set<string>(expectHideFields.value);
-    return columns.value.filter(
-      column => {
-        const key = column.field ?? column.fields!.join(",")
-        return !set.has(key) && !toValue(column.hide)
-      }
-    );
+    return columns.value.filter(column => {
+      const key = column.field ?? column.fields!.join(",");
+      return !set.has(key) && !toValue(column.hide);
+    });
   });
 
   watch(
@@ -114,27 +122,22 @@ export const useForm = <T extends Record<string, any>>(
 
       return;
     }
-    form.value = visibleColumns.value.reduce<T>(
-      (prev, column) => {
-        const fields = column.fields ? column.fields : [column.field!];
-        const valueArr = column.fields ? (column.value ?? []) : [column.value];
-        fields.forEach((field, idx) => {
-          set(prev, field, cloneDeep(valueArr[idx]));
-        });
-        return prev;
-      },
-      {} as T,
-    );
-  }
+    form.value = visibleColumns.value.reduce<T>((prev, column) => {
+      const fields = column.fields ? column.fields : [column.field!];
+      const valueArr = column.fields ? (column.value ?? []) : [column.value];
+      fields.forEach((field, idx) => {
+        set(prev, field, cloneDeep(valueArr[idx]));
+      });
+      return prev;
+    }, {} as T);
+  };
 
   /**
    * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
    */
   const setAsDefault: SetAsDefault<T> = (v?) => {
     tmpDefaultForm = cloneDeep(v ?? form.value);
-  }
-
-
+  };
 
   /**
    * 如果有字段是新加的, 则加默认值
@@ -161,12 +164,10 @@ export const useForm = <T extends Record<string, any>>(
       .forEach(column => {
         const columnField = column.field ?? column.fields![0];
         column.control!.forEach(expectItem => {
-          const targetColumn = columns.value.find(
-            column => {
-              const field = column.field ?? column.fields![0];
-              return field === expectItem.field
-            },
-          );
+          const targetColumn = columns.value.find(column => {
+            const field = column.field ?? column.fields![0];
+            return field === expectItem.field;
+          });
           if (!targetColumn)
             return console.warn("找不到关联的字段", expectItem.field);
 
@@ -203,13 +204,12 @@ export const useForm = <T extends Record<string, any>>(
     visibleColumns.value.forEach(usefulColumn => {
       const fields = usefulColumn.fields ?? [usefulColumn.field!];
       fields.forEach(field => {
-
         const value = get(form.value, field);
         set(formData, field, value);
       });
     });
     return formData;
-  }
+  };
 
   return {
     form,
@@ -225,10 +225,3 @@ export type GetFormData<T> = () => T;
 export type ResetToDefault = (sync?: boolean) => Promise<void> | void;
 
 export type SetAsDefault<T> = (v?: T) => void;
-
-
-
-
-
-
-

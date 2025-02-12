@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { CommonFormOptions, TfFormColumn } from "./types";
-import { useFormInject } from "./use-provide";
+import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
 
 /**
@@ -21,7 +21,7 @@ export const useFormCommonComponent = <T extends Record<string, any>>(
     valueSetter = column.valueSetter;
   }
 
-  const form = useFormInject<T>();
+  const { form } = useFormInject<T>()!;
   /**
    * form 中的值处理
    */

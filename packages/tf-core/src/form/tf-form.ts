@@ -6,7 +6,7 @@ import {
   SetupContext,
   VNode,
 } from "vue";
-import { FormComponentProps, renderMap } from "./render-map";
+import { renderMap } from "./render-map";
 import {
   CommonFormProps,
   FormContainerProps,
@@ -62,21 +62,9 @@ export interface TfFormHOCComponentExposed<T extends Record<string, any>> {
 
  */
 export const defineFormContainerComponent = (
-  setup: <T extends Record<string, any>>(
-    props: FormComponentProps<T>,
-    ctx: SetupContext,
-  ) => any,
+  setup: (props: {}, ctx: SetupContext) => any,
 ) => {
-  const component = defineComponent(setup, {
-    props: [
-      "columns",
-      "visibleColumns",
-      "formProps",
-      "onSubmit",
-      "getFormData",
-      "resetToDefault",
-      "setAsDefault",
-    ] as any,
+  const layoutComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfFormContainer",
   });
@@ -94,7 +82,7 @@ export const defineFormContainerComponent = (
       });
 
       const { getFormData, resetToDefault, setAsDefault, visibleColumns } =
-        useForm(() => props.columns, formData);
+        useForm(props, formData);
 
       ctx.expose({
         getFormData,
@@ -103,27 +91,17 @@ export const defineFormContainerComponent = (
       });
 
       return () =>
-        h(
-          component,
-          {
-            columns: props.columns,
-            visibleColumns: visibleColumns.value,
-            formProps: props.formProps,
-            onSubmit: props.onSubmit,
-            getFormData,
-            resetToDefault,
-            setAsDefault,
-          },
-          () =>
-            visibleColumns.value.map(column => {
-              // core 里面 renderMap 里的组件只定义了 custom
-              const component = renderMap[column.type];
-              return h(component, {
-                column: column,
-                // 是否为查看模式
-                isView: false,
-              });
-            }),
+        h(layoutComponent, null, () =>
+          visibleColumns.value.map(column => {
+            // core 里面 renderMap 里的组件只定义了 custom
+            const component = renderMap[column.type];
+            return h(component, {
+              column: column,
+              // 是否为查看模式
+              isView: false,
+              key: column.field ?? column.fields?.[0],
+            });
+          }),
         );
     },
     {
@@ -138,7 +116,6 @@ export const defineFormContainerComponent = (
       name: "TfForm",
     },
   );
-
   return Component as typeof Component & TfFormHOCComponent;
 };
 

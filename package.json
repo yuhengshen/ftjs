@@ -29,7 +29,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "catalog:",
-    "turbo": "^2.4.0",
+    "turbo": "^2.4.1",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:"
   },

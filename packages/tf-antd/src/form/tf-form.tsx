@@ -1,11 +1,5 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
-import {
-  defineFormContainerComponent,
-  FormComponentProps,
-  set,
-  useFormInject,
-  useColumnsCheckedReverseInject,
-} from "@tf/core";
+import { defineFormContainerComponent, set, useFormInject } from "@tf/core";
 import {
   FormProps,
   FormItem,
@@ -17,13 +11,15 @@ import {
 } from "ant-design-vue";
 import { computed, ref, toValue } from "vue";
 
-export const useCommonForm = (props: FormComponentProps) => {
-  // 收集表单列的验证规则，这里需要支持响应式的rules规则
+export const useRules = () => {
+  const { columns } = useFormInject()!;
+  // 收集表单列的验证规则
   const rules = computed(() => {
     const rulesObj = {};
-    for (const column of props.columns) {
+    for (const column of columns.value) {
       if (column.rules) {
         const field = column.field || column.fields?.[0];
+        // 这里需要支持响应式的rules规则
         set(rulesObj, field!, toValue(column.rules));
       }
     }
@@ -31,23 +27,29 @@ export const useCommonForm = (props: FormComponentProps) => {
     return rulesObj;
   });
 
-  const model = useFormInject();
-
-  return { rules, model };
+  return { rules };
 };
 
-export const TfForm = defineFormContainerComponent((props, ctx) => {
-  const width = props.formProps?.width ?? "500px";
+export const TfForm = defineFormContainerComponent((_, ctx) => {
+  const {
+    form,
+    formProps: _formProps,
+    onSubmit,
+    getFormData,
+    resetToDefault,
+  } = useFormInject()!;
+
+  const width = _formProps.value?.width ?? "500px";
 
   // 获取表单值
-  const { model, rules } = useCommonForm(props);
+  const { rules } = useRules();
 
   const formProps = computed<FormProps>(() => {
     return {
       layout: "horizontal",
-      model: model.value,
+      model: form.value,
       onFinish: async () => {
-        await props.onSubmit?.(props.getFormData());
+        await onSubmit?.(getFormData());
       },
       labelCol: {
         style: {
@@ -55,7 +57,7 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
         },
       },
       rules: rules.value,
-      ...props.formProps,
+      ..._formProps.value,
     };
   });
 
@@ -71,7 +73,7 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
           type="primary"
           danger
           htmlType="reset"
-          onClick={() => props.resetToDefault()}
+          onClick={() => resetToDefault()}
         >
           重置
         </Button>
@@ -80,8 +82,17 @@ export const TfForm = defineFormContainerComponent((props, ctx) => {
   );
 });
 
-export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
-  const { model, rules } = useCommonForm(props);
+export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
+  const {
+    form,
+    columnsChecked,
+    formProps: _formProps,
+    onSubmit,
+    getFormData,
+    columns,
+    resetToDefault,
+  } = useFormInject()!;
+  const { rules } = useRules();
   const formProps = computed<FormProps>(() => {
     return {
       layout: "inline",
@@ -96,10 +107,10 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
           width: `var(--tf-form-control-width, 200px)`,
         },
       },
-      ...props.formProps,
-      model: model.value,
+      ..._formProps,
+      model: form.value,
       onFinish: async () => {
-        await props.onSubmit?.(props.getFormData());
+        await onSubmit?.(getFormData());
       },
       rules: rules.value,
     };
@@ -109,47 +120,34 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
 
   type TreeNode = Exclude<TreeProps["treeData"], undefined>[number];
 
-  const columnsCheckedReverse = useColumnsCheckedReverseInject();
-
   const createColumnsTree = () => {
     const treeData: TreeNode[] = [
       { title: "全选", key: "__all", children: [] },
     ];
 
-    const checkedKeys: string[] = [];
-
-    for (const column of props.columns) {
+    for (const column of columns.value) {
       const key = column.field || (column.fields?.[0] as string);
       treeData[0].children!.push({
         title: column.title,
         key: key,
         isLeaf: true,
       });
-      if (!columnsCheckedReverse.value.includes(key)) {
-        checkedKeys.push(key);
-      }
     }
-    return { treeData, checkedKeys };
+    return { treeData };
   };
 
   const columnsTree = ref<TreeNode[]>([]);
-  const columnsChecked = ref<string[]>([]);
+  const columnsCheckedTree = ref<string[]>([]);
   const setting = () => {
-    const { treeData, checkedKeys } = createColumnsTree();
+    const { treeData } = createColumnsTree();
     columnsTree.value = treeData;
-    columnsChecked.value = checkedKeys;
+    columnsCheckedTree.value = columnsChecked.value;
     settingModal.value = true;
   };
 
   const onSettingOk = () => {
     settingModal.value = false;
-    // todo:: 没有触发更新
-    columnsCheckedReverse.value = props.columns
-      .filter(
-        e =>
-          !columnsChecked.value.includes(e.field ?? (e.fields![0] as string)),
-      )
-      .map(e => e.field ?? (e.fields![0] as string));
+    columnsChecked.value = JSON.parse(JSON.stringify(columnsCheckedTree.value));
   };
 
   return () => (
@@ -176,7 +174,7 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
           default: () => (
             <Tree
               treeData={columnsTree.value}
-              v-model:checkedKeys={columnsChecked.value}
+              v-model:checkedKeys={columnsCheckedTree.value}
               checkable
               selectable={false}
               draggable
@@ -239,7 +237,7 @@ export const TfFormSearch = defineFormContainerComponent((props, ctx) => {
               type="primary"
               danger
               htmlType="reset"
-              onClick={() => props.resetToDefault()}
+              onClick={() => resetToDefault()}
             >
               重置
             </Button>

@@ -10,6 +10,11 @@ export default tseslint.config(
       "prefer-const": ["error", { destructuring: "all" }],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-empty-object-type": "off",
+      // _ 开头变量不检查
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" },
+      ],
     },
   },
   eslintConfigPrettier,

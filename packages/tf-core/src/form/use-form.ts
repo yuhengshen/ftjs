@@ -5,34 +5,74 @@ import {
   onMounted,
   onUnmounted,
   nextTick,
-  MaybeRefOrGetter,
   toValue,
   MaybeRef,
+  Ref,
+  unref,
+  provide,
+  inject,
+  ComputedRef,
 } from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
+import { FormInject } from "./render-map";
+import { TfFormHOCComponentProps } from "./tf-form";
 import { TfFormColumn } from "./types";
-import { useColumnsCheckedReverseProvide, useFormProvide } from "./use-provide";
+
+const provideFormKey = Symbol("tf-core-form-provide-form");
+
+const useColumnsChecked = <T extends Record<string, any>>(
+  columns: ComputedRef<TfFormColumn<T>[]>,
+) => {
+  const storageKey = `tf-form-columns-checked-obj`;
+
+  const columnsV = computed(() => {
+    const entries = columns.value.map(e => {
+      const field = e.field ?? (e.fields?.[0] as string);
+      return [field, !e.hide];
+    });
+    return Object.fromEntries(entries);
+  });
+  const storageStr = localStorage.getItem(storageKey);
+  const storageV = storageStr ? JSON.parse(storageStr) : {};
+
+  const vRef = ref<Record<keyof T, boolean>>(
+    Object.assign({}, columnsV.value, storageV),
+  );
+
+  return computed({
+    get() {
+      return Object.entries(vRef.value)
+        .filter(([_, show]) => show)
+        .map(([field]) => field);
+    },
+    set(v) {
+      const entries = columns.value.map(e => {
+        const field = e.field ?? (e.fields?.[0] as string);
+        return [field, v.includes(field)];
+      });
+      vRef.value = Object.fromEntries(entries);
+      localStorage.setItem(storageKey, JSON.stringify(entries));
+    },
+  });
+};
 
 export const useForm = <T extends Record<string, any>>(
-  _columns: MaybeRefOrGetter<TfFormColumn<T>[]>,
-  formProps?: MaybeRef<T>,
+  props: TfFormHOCComponentProps<T>,
+  formData: MaybeRef<T>,
 ) => {
-  const columns = computed(() => toValue(_columns));
+  const columns = computed(() => toValue(props.columns));
 
-  const form = useFormProvide(formProps);
+  const formLocal = ref({} as T);
+  const form = (unref(formData) != null ? formData : formLocal) as Ref<T>;
+
+  const columnsChecked = useColumnsChecked(columns);
+  const columnsSort: FormInject<T>["columnsSort"] = ref({});
 
   let tmpDefaultForm: T;
 
   // 需要监听的表单字段
   let unWatchList: { field: string; cancel: () => void }[] = [];
-  // todo:: 需要隐藏的表单字段
   const expectHideFields = ref<string[]>([]);
-
-  const columnsCheckedReverse = useColumnsCheckedReverseProvide(columns);
-  /**
-   * 配置排序
-   */
-  const columnsSort = ref<Partial<Record<keyof T, number>>>({});
 
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
@@ -40,7 +80,7 @@ export const useForm = <T extends Record<string, any>>(
     return columns.value
       .filter(column => {
         const key = column.field ?? (column.fields![0] as string);
-        return !set.has(key) && !columnsCheckedReverse.value?.includes(key);
+        return !set.has(key) && (columnsChecked.value?.includes(key) ?? true);
       })
       .sort((a, b) => {
         const keyA = a.field ?? (a.fields![0] as string);
@@ -226,6 +266,21 @@ export const useForm = <T extends Record<string, any>>(
     return formData;
   };
 
+  const formProps = computed(() => props.formProps);
+
+  provide<FormInject<T>>(provideFormKey, {
+    form,
+    columnsChecked,
+    columnsSort,
+    columns,
+    visibleColumns,
+    formProps,
+    getFormData,
+    resetToDefault,
+    setAsDefault,
+    onSubmit: props.onSubmit,
+  });
+
   return {
     form,
     visibleColumns,
@@ -233,6 +288,10 @@ export const useForm = <T extends Record<string, any>>(
     getFormData,
     setAsDefault,
   };
+};
+
+export const useFormInject = <T extends Record<string, any>>() => {
+  return inject<FormInject<T>>(provideFormKey);
 };
 
 export type GetFormData<T> = () => T;

@@ -9,11 +9,12 @@ import {
 import { renderMap } from "./render-map";
 import {
   CommonFormProps,
+  ExposeWithComment,
   FormContainerProps,
   TfFormColumn,
   TfFormColumnMap,
 } from "./types";
-import { GetFormData, ResetToDefault, SetAsDefault, useForm } from "./use-form";
+import { useForm } from "./use-form";
 
 /**
  * type hack，setup 泛型函数不支持定义 exposed 类型
@@ -38,24 +39,10 @@ export interface TfFormHOCComponentProps<T extends Record<string, any>> {
   onSubmit?: (formData: T) => Promise<void> | void;
 }
 
-export interface TfFormHOCComponentExposed<T extends Record<string, any>> {
-  /**
-   * 获取表单当先展示出的表单值
-   */
-  getFormData: GetFormData<T>;
-
-  /**
-   * 重置表单为默认值
-   *
-   * sync false: 由于这个方法很可能在watchEffect中调用，其内部属性不应该放到watchEffect的依赖中
-   * @param sync 是否同步更新，默认为 false
-   */
-  resetToDefault: ResetToDefault;
-  /**
-   * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
-   */
-  setAsDefault: SetAsDefault<T>;
-}
+export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
+  ExposeWithComment<T>,
+  "getFormData" | "resetToDefault" | "setAsDefault"
+>;
 
 /**
  * 定义表单容器组件

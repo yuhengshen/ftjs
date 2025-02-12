@@ -3,6 +3,8 @@ import { defineFormComponent, defineFormContainerComponent } from "./tf-form";
 import { TfFormColumnBase } from "./types";
 import { h } from "vue";
 import { mount } from "@vue/test-utils";
+import { useFormInject } from "./use-form";
+import { FormInject } from "./render-map";
 export interface TfFormColumnTest<T> extends TfFormColumnBase<T> {
   /**
    * 自定义渲染
@@ -24,12 +26,11 @@ declare module "./types" {
 }
 
 describe("defineFormContainerComponent", () => {
+  let inject: FormInject<any>;
   const Test = defineFormContainerComponent(props => {
-    return () =>
-      h(
-        "div",
-        `${props.columns.length} ${props.visibleColumns.length} ${props.formProps?.foo}`,
-      );
+    inject = useFormInject()!;
+
+    return () => h("div", `${props}`);
   });
 
   const wrapper = mount(Test, {
@@ -43,9 +44,29 @@ describe("defineFormContainerComponent", () => {
     },
   });
 
-  it("it should define a vue component with correct props", () => {
-    expect(wrapper.html()).toBe("<div>0 0 bar</div>");
+  it("it should inject correct properties", () => {
+    expect(inject).toBeDefined();
+    const injectProperties = [
+      "form",
+      "columnsChecked",
+      "columnsSort",
+      "columns",
+      "visibleColumns",
+      "formProps",
+      "onSubmit",
+      "getFormData",
+      "resetToDefault",
+      "setAsDefault",
+    ] as const;
+    for (const property of injectProperties) {
+      expect(inject[property]).toBeDefined();
+    }
+
+    expect(inject.formProps.value).toEqual({
+      foo: "bar",
+    });
   });
+
   it("it should expose correct methods", () => {
     expect(wrapper.vm.getFormData).toBeDefined();
     expect(wrapper.vm.resetToDefault).toBeDefined();

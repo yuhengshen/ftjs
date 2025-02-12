@@ -3,7 +3,7 @@ import {
   Refs,
   TfFormColumnBase,
   unrefs,
-  useFormCommonComponent,
+  useFormItem,
 } from "@tf/core";
 import { FormItem, Input, InputProps } from "ant-design-vue";
 import { useFormItemProps } from "./composables";
@@ -15,9 +15,8 @@ export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
 }
 
 export default defineFormComponent<"input">(props => {
-  const { valueComputed } = useFormCommonComponent({
+  const { valueComputed } = useFormItem({
     column: props.column,
-    isView: props.isView,
   });
 
   const formItemProps = useFormItemProps(props.column);

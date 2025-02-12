@@ -106,7 +106,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
       const entries = columns.value.map((e, idx) => {
         const field = getField(e);
         // 与默认配置一致的选项不存储
-        if (v[field] !== idx) {
+        if (v[field] !== (e.sort ?? idx)) {
           storageV[field] = v[field];
         }
         return [field, v[field]];

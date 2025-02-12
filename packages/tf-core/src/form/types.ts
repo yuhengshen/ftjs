@@ -140,8 +140,9 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
  */
 export interface FormContainerProps {}
 
-export interface CommonFormOptions<T extends TfFormColumn<any>>
-  extends CommonFormProps<T> {
+export interface CommonFormOptions<T extends TfFormColumn<any>> {
+  /** column 定义 */
+  column: T;
   /**
    * 默认值处理
    */

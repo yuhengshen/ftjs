@@ -1,7 +1,7 @@
 import { Component, defineComponent, h } from "vue";
 import { defineFormComponent } from "./tf-form";
 import { TfFormColumnBase } from "./types";
-import { useFormCommonComponent } from "./use-form-common-component";
+import { useFormItem } from "./use-form-item";
 
 export interface TfFormColumnCustomProps<T> {
   modelValue: any;
@@ -32,9 +32,8 @@ export const defineCustomRender = <T>(
 };
 
 export const CustomComponent = defineFormComponent<"custom">(props => {
-  const { valueComputed } = useFormCommonComponent({
+  const { valueComputed } = useFormItem({
     column: props.column,
-    isView: props.isView,
   });
   const render = props.column.props.render;
   return () => {

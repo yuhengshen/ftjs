@@ -1,4 +1,4 @@
-export { useFormCommonComponent } from "./use-form-common-component";
+export { useFormItem } from "./use-form-item";
 export { registerTfForm, setupTfForm } from "./register";
 export { useFormInject } from "./use-form";
 export * from "./tf-form";

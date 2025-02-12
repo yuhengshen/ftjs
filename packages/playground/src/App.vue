@@ -72,6 +72,7 @@ const columns: TfFormColumn<FormData>[] = [
         );
       }),
     },
+    sort: 999,
   },
   {
     type: "select",

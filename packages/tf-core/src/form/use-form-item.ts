@@ -4,11 +4,9 @@ import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
 
 /**
- * 通用的 form 组件处理
- *
- * todo:: 改名
+ * 通用的 form item 组件处理，处理 form 中的值
  */
-export const useFormCommonComponent = <T extends Record<string, any>>(
+export const useFormItem = <T extends Record<string, any>>(
   options: CommonFormOptions<TfFormColumn<T>>,
 ) => {
   let { column, valueGetter, valueSetter } = options;

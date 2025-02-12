@@ -1,4 +1,4 @@
-import { Component, defineComponent, h } from "vue";
+import { Component, defineComponent, h, MaybeRefOrGetter } from "vue";
 import { defineFormComponent } from "./tf-form";
 import { TfFormColumnBase } from "./types";
 import { useFormItem } from "./use-form-item";
@@ -6,7 +6,7 @@ import { useFormItem } from "./use-form-item";
 export interface TfFormColumnCustomProps<T> {
   modelValue: any;
   column: TfFormColumnCustom<T>;
-  isView: boolean;
+  isView: MaybeRefOrGetter<boolean>;
   "onUpdate:modelValue": (v: any) => void;
 }
 export interface TfFormColumnCustom<T> extends TfFormColumnBase<T> {

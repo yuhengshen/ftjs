@@ -85,7 +85,7 @@ export const defineFormContainerComponent = (
             return h(component, {
               column: column,
               // 是否为查看模式
-              isView: false,
+              isView: column.isView,
               key: column.field ?? column.fields?.[0],
             });
           }),

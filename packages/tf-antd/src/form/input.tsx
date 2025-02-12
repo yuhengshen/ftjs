@@ -7,6 +7,7 @@ import {
 } from "@tf/core";
 import { FormItem, Input, InputProps } from "ant-design-vue";
 import { useFormItemProps } from "./composables";
+import { toValue } from "vue";
 
 export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {
   /** 输入框 */
@@ -26,7 +27,11 @@ export default defineFormComponent<"input">(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        <Input v-model:value={valueComputed.value} {..._props} />
+        {toValue(props.isView) ? (
+          <div>{valueComputed.value}</div>
+        ) : (
+          <Input v-model:value={valueComputed.value} {..._props} />
+        )}
       </FormItem>
     );
   };

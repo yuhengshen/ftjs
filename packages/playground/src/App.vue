@@ -1,14 +1,16 @@
 <script setup lang="tsx">
 import { defineCustomRender, TfFormColumn } from "@tf/core";
 import { TfForm, TfFormSearch } from "@tf/antd";
-import { onMounted, ref, useTemplateRef } from "vue";
+import { onMounted, ref, toValue, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
 import { FormItem } from "ant-design-vue";
 
 const likesOptions = ref([
-  { label: "1", value: 1 },
-  { label: "2", value: 2 },
+  { label: "1111111", value: 1 },
+  { label: "222222222", value: 2 },
 ]);
+
+const isView = ref(false);
 
 const placeholder = ref("请输入");
 
@@ -67,7 +69,7 @@ const columns: TfFormColumn<FormData>[] = [
       render: defineCustomRender(props => {
         return () => (
           <FormItem label="isView">
-            <div>isView: {props.isView ? "true" : "false"}</div>
+            <div>isView: {toValue(props.isView) ? "true" : "false"}</div>
           </FormItem>
         );
       }),
@@ -83,17 +85,15 @@ const columns: TfFormColumn<FormData>[] = [
       mode: "multiple",
     },
     value: [1, 2],
+    isView,
   },
 ];
 
 setTimeout(() => {
-  likesOptions.value = [
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-  ];
+  likesOptions.value.push({ label: "333333333", value: 3 });
 
   placeholder.value = "请输入2";
+  isView.value = true;
 }, 2000);
 
 const formData = ref<FormData>({});

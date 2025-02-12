@@ -108,6 +108,11 @@ export interface TfFormColumnBase<T> {
    * @default index
    */
   sort?: number;
+
+  /**
+   * 是否查看模式
+   */
+  isView?: MaybeRefOrGetter<boolean>;
 }
 
 export interface TfFormColumnMap<T> {
@@ -132,7 +137,7 @@ export interface CommonFormProps<T extends TfFormColumn<any>> {
   /** column 定义 */
   column: T;
   /** 是否查看模式 */
-  isView: boolean;
+  isView: MaybeRefOrGetter<boolean>;
 }
 
 /**

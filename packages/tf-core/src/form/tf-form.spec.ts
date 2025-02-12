@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { defineFormComponent, defineFormContainerComponent } from "./tf-form";
 import { TfFormColumnBase } from "./types";
-import { h } from "vue";
+import { h, toValue } from "vue";
 import { mount } from "@vue/test-utils";
 import { useFormInject } from "./use-form";
 import { FormInject } from "./render-map";
@@ -77,7 +77,7 @@ describe("defineFormContainerComponent", () => {
 describe("defineFormComponent", () => {
   it("it should define a vue component with correct props", () => {
     const Test = defineFormComponent<"test">(props => {
-      const isView = props.isView;
+      const isView = toValue(props.isView);
       const foo = props.column.props?.foo;
       return () => h("div", `${isView} ${foo}`);
     });
@@ -90,7 +90,7 @@ describe("defineFormComponent", () => {
             foo: "bar",
           },
         },
-        isView: false,
+        isView: () => false,
       },
     });
 

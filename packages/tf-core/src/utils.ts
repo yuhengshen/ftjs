@@ -1,5 +1,12 @@
 import { unref } from "vue";
-import { Unrefs } from "./type-helper";
+import { RecordPath, Unrefs } from "./type-helper";
+import { TfFormColumn } from "./form/types";
+
+export const getField = <T extends Record<string, any>>(
+  column: TfFormColumn<T>,
+) => {
+  return (column.field ?? column.fields?.[0]) as RecordPath<T>;
+};
 
 export const isEmptyStrOrNull = (val: any) => {
   return val === "" || val == null;

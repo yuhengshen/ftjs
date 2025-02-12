@@ -1,9 +1,11 @@
-import { TfFormColumn } from "@tf/core";
+import { getField, TfFormColumn } from "@tf/core";
 import { computed, toValue } from "vue";
 
-export const useFormItemProps = <T>(column: TfFormColumn<T>) => {
+export const useFormItemProps = <T extends Record<string, any>>(
+  column: TfFormColumn<T>,
+) => {
   return computed(() => {
-    const field = column.field || column.fields?.[0];
+    const field = getField(column);
     const name = field!.split(".");
     const label = toValue(column.title);
 

@@ -1,5 +1,10 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
-import { defineFormContainerComponent, set, useFormInject } from "@tf/core";
+import {
+  defineFormContainerComponent,
+  getField,
+  set,
+  useFormInject,
+} from "@tf/core";
 import {
   FormProps,
   FormItem,
@@ -18,7 +23,7 @@ export const useRules = () => {
     const rulesObj = {};
     for (const column of columns.value) {
       if (column.rules) {
-        const field = column.field || column.fields?.[0];
+        const field = getField(column);
         // 这里需要支持响应式的rules规则
         set(rulesObj, field!, toValue(column.rules));
       }
@@ -86,11 +91,14 @@ export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
   const {
     form,
     columnsChecked,
+    columnsSort,
+    columns,
     formProps: _formProps,
     onSubmit,
     getFormData,
-    columns,
     resetToDefault,
+    resetColumnsChecked,
+    resetColumnsSort,
   } = useFormInject()!;
   const { rules } = useRules();
   const formProps = computed<FormProps>(() => {
@@ -120,19 +128,29 @@ export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
 
   type TreeNode = Exclude<TreeProps["treeData"], undefined>[number];
 
+  let oldSortList: TreeNode[] = [];
   const createColumnsTree = () => {
     const treeData: TreeNode[] = [
       { title: "全选", key: "__all", children: [] },
     ];
 
+    const children: TreeNode[] = [];
+
     for (const column of columns.value) {
       const key = column.field || (column.fields?.[0] as string);
-      treeData[0].children!.push({
+      children.push({
         title: column.title,
         key: key,
         isLeaf: true,
       });
     }
+    children.sort((a, b) => {
+      const aSort = columnsSort.value[a.key]!;
+      const bSort = columnsSort.value[b.key]!;
+      return aSort - bSort;
+    });
+    oldSortList = [...children];
+    treeData[0].children = children;
     return { treeData };
   };
 
@@ -141,13 +159,34 @@ export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
   const setting = () => {
     const { treeData } = createColumnsTree();
     columnsTree.value = treeData;
-    columnsCheckedTree.value = columnsChecked.value;
+    columnsCheckedTree.value = JSON.parse(JSON.stringify(columnsChecked.value));
     settingModal.value = true;
   };
 
   const onSettingOk = () => {
     settingModal.value = false;
-    columnsChecked.value = JSON.parse(JSON.stringify(columnsCheckedTree.value));
+    columnsChecked.value = columnsCheckedTree.value;
+    // 重新整理排序
+    const list = columnsTree.value[0].children!;
+    const oldColumnsSort = {
+      ...columnsSort.value,
+    };
+    const newColumnsSort: Record<string, number> = {};
+    list.forEach((e, idx) => {
+      const oldNode = oldSortList[idx];
+      const oldField = oldNode.key;
+      // 当前位置，旧的 sort 值
+      const oldSort = oldColumnsSort[oldField]!;
+      const curField = e.key;
+      newColumnsSort[curField] = oldSort;
+    });
+    columnsSort.value = newColumnsSort;
+  };
+
+  const onCancel = () => {
+    resetColumnsChecked();
+    resetColumnsSort();
+    settingModal.value = false;
   };
 
   return () => (
@@ -156,11 +195,8 @@ export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
         v-model:open={settingModal.value}
         mask={false}
         width={260}
-        okText="保存"
         maskClosable={false}
-        cancelText="取消"
         destroyOnClose
-        onOk={onSettingOk}
       >
         {{
           title: () => (
@@ -171,6 +207,18 @@ export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
               </span>
             </span>
           ),
+          footer: () => {
+            return (
+              <div style="text-align: center;">
+                <Button type="primary" danger onClick={onCancel}>
+                  重置
+                </Button>
+                <Button type="primary" onClick={onSettingOk}>
+                  保存
+                </Button>
+              </div>
+            );
+          },
           default: () => (
             <Tree
               treeData={columnsTree.value}

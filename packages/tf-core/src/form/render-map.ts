@@ -20,6 +20,8 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "getFormData"
   | "resetToDefault"
   | "setAsDefault"
+  | "resetColumnsSort"
+  | "resetColumnsChecked"
 >;
 
 export const formRender: {

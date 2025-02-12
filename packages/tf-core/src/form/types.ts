@@ -105,7 +105,7 @@ export interface TfFormColumnBase<T> {
   /**
    * 排序
    *
-   * @default 0
+   * @default index
    */
   sort?: number;
 }
@@ -186,11 +186,19 @@ export interface ExposeWithComment<T extends Record<string, any>> {
   /**
    * 配置显示的项目
    */
-  columnsChecked: Ref<string[]>;
+  columnsChecked: Ref<RecordPath<T>[]>;
+  /**
+   * 重置配置显示项目
+   */
+  resetColumnsChecked: () => void;
   /**
    * 配置排序的项目
    */
-  columnsSort: Ref<Partial<Record<keyof T, number>>>;
+  columnsSort: Ref<Partial<Record<RecordPath<T>, number>>>;
+  /**
+   * 重置排序
+   */
+  resetColumnsSort: () => void;
   /**
    * 所有表单项目
    */

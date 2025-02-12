@@ -13,13 +13,17 @@ import {
   inject,
   ComputedRef,
 } from "vue";
-import { cloneDeep, isEqualStrArr, get, has, set } from "../utils";
+import { cloneDeep, isEqualStrArr, get, has, set, getField } from "../utils";
 import { FormInject } from "./render-map";
 import { TfFormHOCComponentProps } from "./tf-form";
 import { TfFormColumn } from "./types";
+import { RecordPath } from "../type-helper";
 
 const provideFormKey = Symbol("tf-core-form-provide-form");
 
+/**
+ * 缓存展示项
+ */
 const useColumnsChecked = <T extends Record<string, any>>(
   columns: ComputedRef<TfFormColumn<T>[]>,
 ) => {
@@ -35,25 +39,96 @@ const useColumnsChecked = <T extends Record<string, any>>(
   const storageStr = localStorage.getItem(storageKey);
   const storageV = storageStr ? JSON.parse(storageStr) : {};
 
-  const vRef = ref<Record<keyof T, boolean>>(
+  const vRef = ref<Record<RecordPath<T>, boolean>>(
     Object.assign({}, columnsV.value, storageV),
   );
 
-  return computed({
+  const columnsChecked = computed<RecordPath<T>[]>({
     get() {
       return Object.entries(vRef.value)
         .filter(([_, show]) => show)
-        .map(([field]) => field);
+        .map(([field]) => field) as RecordPath<T>[];
     },
     set(v) {
+      const storageV = {} as Record<RecordPath<T>, boolean>;
       const entries = columns.value.map(e => {
-        const field = e.field ?? (e.fields?.[0] as string);
-        return [field, v.includes(field)];
+        const field = getField(e);
+        const show = v.includes(field);
+        // 与默认配置一致的选项不存储
+        if (show !== !e.hide) storageV[field] = show;
+        return [field, show];
       });
       vRef.value = Object.fromEntries(entries);
-      localStorage.setItem(storageKey, JSON.stringify(entries));
+      localStorage.setItem(storageKey, JSON.stringify(storageV));
     },
   });
+
+  const resetColumnsChecked = () => {
+    columnsChecked.value = columns.value
+      .filter(e => !e.hide)
+      .map(e => getField(e));
+  };
+
+  return {
+    columnsChecked,
+    resetColumnsChecked,
+  };
+};
+
+/**
+ * 缓存排序项
+ */
+const useColumnsSorted = <T extends Record<string, any>>(
+  columns: ComputedRef<TfFormColumn<T>[]>,
+) => {
+  const storageKey = `tf-form-columns-sorted-obj`;
+
+  const columnsV = computed(() => {
+    const entries = columns.value.map((e, idx) => {
+      const field = e.field ?? (e.fields?.[0] as string);
+      return [field, e.sort ?? idx];
+    });
+    return Object.fromEntries(entries);
+  });
+  const storageStr = localStorage.getItem(storageKey);
+  const storageV = storageStr ? JSON.parse(storageStr) : {};
+
+  const vRef = ref<Record<RecordPath<T>, number>>(
+    Object.assign({}, columnsV.value, storageV),
+  );
+
+  const columnsSort = computed<Record<RecordPath<T>, number>>({
+    get() {
+      return vRef.value;
+    },
+    set(v) {
+      const storageV = {} as Record<RecordPath<T>, number>;
+      const entries = columns.value.map((e, idx) => {
+        const field = getField(e);
+        // 与默认配置一致的选项不存储
+        if (v[field] !== idx) {
+          storageV[field] = v[field];
+        }
+        return [field, v[field]];
+      });
+      vRef.value = Object.fromEntries(entries);
+      localStorage.setItem(storageKey, JSON.stringify(storageV));
+    },
+  });
+
+  const resetColumnsSort = () => {
+    const resetV = {} as Record<RecordPath<T>, number>;
+    columns.value.forEach((e, idx) => {
+      const field = getField(e);
+      resetV[field] = e.sort ?? idx;
+    });
+    columnsSort.value = resetV;
+  };
+
+  return {
+    columnsSort,
+    resetColumnsSort,
+  };
 };
 
 export const useForm = <T extends Record<string, any>>(
@@ -65,8 +140,8 @@ export const useForm = <T extends Record<string, any>>(
   const formLocal = ref({} as T);
   const form = (unref(formData) != null ? formData : formLocal) as Ref<T>;
 
-  const columnsChecked = useColumnsChecked(columns);
-  const columnsSort: FormInject<T>["columnsSort"] = ref({});
+  const { columnsChecked, resetColumnsChecked } = useColumnsChecked(columns);
+  const { columnsSort, resetColumnsSort } = useColumnsSorted(columns);
 
   let tmpDefaultForm: T;
 
@@ -79,12 +154,12 @@ export const useForm = <T extends Record<string, any>>(
     const set = new Set<string>(expectHideFields.value);
     return columns.value
       .filter(column => {
-        const key = column.field ?? (column.fields![0] as string);
+        const key = getField(column);
         return !set.has(key) && (columnsChecked.value?.includes(key) ?? true);
       })
       .sort((a, b) => {
-        const keyA = a.field ?? (a.fields![0] as string);
-        const keyB = b.field ?? (b.fields![0] as string);
+        const keyA = getField(a);
+        const keyB = getField(b);
         const aSort = columnsSort.value[keyA] ?? 0;
         const bSort = columnsSort.value[keyB] ?? 0;
         return aSort - bSort;
@@ -279,6 +354,8 @@ export const useForm = <T extends Record<string, any>>(
     resetToDefault,
     setAsDefault,
     onSubmit: props.onSubmit,
+    resetColumnsChecked,
+    resetColumnsSort,
   });
 
   return {

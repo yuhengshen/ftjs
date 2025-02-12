@@ -13,7 +13,7 @@ const likesOptions = ref([
 const placeholder = ref("请输入");
 
 interface FormData {
-  name?: string;
+  custom?: string;
   age?: number;
   likes?: number[];
   extraInfo?: {
@@ -61,7 +61,7 @@ const columns: TfFormColumn<FormData>[] = [
   },
   {
     type: "custom",
-    field: "name",
+    field: "custom",
     title: "自定义isView",
     props: {
       render: defineCustomRender(props => {

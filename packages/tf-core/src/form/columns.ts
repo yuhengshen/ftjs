@@ -24,6 +24,8 @@ export interface TfFormColumnBase<T> {
    * 字段名 `fields` 和 `field` 至少有一个存在
    *
    * `field` 优先级高于 `fields`
+   *
+   * 如果是在 TableColumns 中，则默认继承其中的 field
    */
   field?: RecordPath<T>;
   /**
@@ -38,6 +40,8 @@ export interface TfFormColumnBase<T> {
   fields?: string[];
   /**
    * 字段标题
+   *
+   * 如果是在 TableColumns 中，则默认继承其中的 title
    */
   title?: MaybeRefOrGetter<string>;
   /**

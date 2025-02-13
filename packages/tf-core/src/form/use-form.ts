@@ -34,7 +34,7 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "resetColumnsChecked"
 >;
 
-const provideFormKey = Symbol("tf-core-form-provide-form");
+const provideFormKey = Symbol("tf-core-form-provide");
 
 /**
  * 缓存展示项

@@ -23,7 +23,8 @@
     "@ant-design/icons-vue": "catalog:",
     "@tf/core": "workspace:*",
     "ant-design-vue": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "vxe-table": "^4.10.14"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

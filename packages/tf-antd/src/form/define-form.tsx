@@ -1,10 +1,5 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
-import {
-  defineFormContainerComponent,
-  getField,
-  set,
-  useFormInject,
-} from "@tf/core";
+import { defineTfForm, getField, set, useFormInject } from "@tf/core";
 import {
   FormProps,
   FormItem,
@@ -35,7 +30,7 @@ export const useRules = () => {
   return { rules };
 };
 
-export const TfForm = defineFormContainerComponent((_, ctx) => {
+export const TfForm = defineTfForm((_, ctx) => {
   const {
     form,
     formProps: _formProps,
@@ -87,7 +82,7 @@ export const TfForm = defineFormContainerComponent((_, ctx) => {
   );
 });
 
-export const TfFormSearch = defineFormContainerComponent((_, ctx) => {
+export const TfFormSearch = defineTfForm((_, ctx) => {
   const {
     form,
     columnsChecked,

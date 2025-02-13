@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  defineFormComponent,
-  defineFormContainerComponent,
-} from "./define-component";
+import { defineFormComponent, defineTfForm } from "./define-component";
 import { TfFormColumnBase } from "./columns";
 import { h, toValue } from "vue";
 import { mount } from "@vue/test-utils";
@@ -28,9 +25,9 @@ export interface TfFormColumnTest<T> extends TfFormColumnBase<T> {
   };
 }
 
-describe("defineFormContainerComponent", () => {
+describe("defineTfForm", () => {
   let inject: FormInject<any>;
-  const Test = defineFormContainerComponent(props => {
+  const Test = defineTfForm(props => {
     inject = useFormInject()!;
 
     return () => h("div", `${props}`);

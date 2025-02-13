@@ -35,7 +35,7 @@ export type TfFormHOCComponent = new <
 
 export interface TfFormHOCComponentProps<T extends Record<string, any>> {
   columns: TfFormColumn<T>[];
-  formData: T;
+  formData?: T;
   /**
    * form 容器组件 props
    */
@@ -58,9 +58,7 @@ export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
  * 定义表单容器组件
 
  */
-export const defineFormContainerComponent = (
-  setup: (props: {}, ctx: SetupContext) => any,
-) => {
+export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
   const layoutComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfFormContainer",
@@ -74,7 +72,7 @@ export const defineFormContainerComponent = (
       const formData = computed({
         get: () => props.formData,
         set(v) {
-          props["onUpdate:formData"]?.(v);
+          props["onUpdate:formData"]?.(v!);
         },
       });
 

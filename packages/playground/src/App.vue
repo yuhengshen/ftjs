@@ -1,6 +1,6 @@
 <script setup lang="tsx">
-import { defineCustomRender, TfFormColumn } from "@tf/core";
-import { TfForm, TfFormSearch } from "@tf/antd";
+import { defineCustomRender, TfFormColumn, TfTableColumn } from "@tf/core";
+import { TfForm, TfFormSearch, TfTable } from "@tf/antd";
 import { onMounted, ref, toValue, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
 import { FormItem } from "ant-design-vue";
@@ -112,6 +112,31 @@ onMounted(() => {
   console.log(formRef.value?.getFormData());
   console.log(formRef2.value?.getFormData());
 });
+
+interface TableData {
+  name: string;
+  age: number;
+  likes: number[];
+}
+
+const tableColumns: TfTableColumn<TableData>[] = [
+  {
+    field: "name",
+    title: "姓名",
+  },
+  {
+    field: "age",
+    title: "年龄",
+    search: {
+      type: "input",
+    },
+  },
+];
+
+const tableData = ref<TableData[]>([
+  { name: "张三", age: 18, likes: [1, 2] },
+  { name: "李四", age: 20, likes: [3, 4] },
+]);
 </script>
 
 <template>
@@ -128,6 +153,12 @@ onMounted(() => {
       v-model:form-data="formData"
       :columns="columns"
       @submit="onSubmit"
+    />
+    <hr />
+    <TfTable
+      :columns="tableColumns"
+      :table-data="tableData"
+      @search="onSubmit"
     />
   </div>
 </template>

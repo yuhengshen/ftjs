@@ -1,8 +1,8 @@
 import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
-import { RowAction, TableAction, TfTableColumn } from "./columns";
+import { TfTableColumn } from "./columns";
 import { useTable } from "./use-table";
-import { TfFormColumn } from "../form";
-import { RecordPath } from "../type-helper";
+import { FormContainerProps, TfFormColumn } from "../form";
+import { WithLengthKeys } from "../type-helper";
 
 /**
  * 由外部定义其具体类型，归属于 {@link TfTableHOCComponentProps}
@@ -14,7 +14,7 @@ export interface TableProps {}
 export interface TfTableHOCComponentProps<
   TableData extends Record<string, any>,
   SearchData = TableData,
-> {
+> extends DefineTableEvents<TableData, SearchData> {
   /**
    * 列定义
    */
@@ -24,38 +24,51 @@ export interface TfTableHOCComponentProps<
    */
   searchColumns?: TfFormColumn<SearchData>[];
   /**
-   * 行唯一标识字段，这个字段很关键，一方面作为vue key使用，
-   * 另一方面在操作多选时，可以作为是否选中的依据，需要全局唯一
-   *
-   * @default id
-   */
-  keyField?: RecordPath<TableData>;
-  /** 行操作按钮 */
-  rowActions?: RowAction<TableData>[];
-  /** 表格操作按钮 */
-  tableActions?: TableAction[];
-  /**
    * 具体表格组件的 props
    */
   tableProps?: TableProps;
+  /**
+   * 具体表格容器组件的 props
+   */
+  formProps?: FormContainerProps;
+  /**
+   * 表格数据
+   */
+  tableData?: TableData[];
+  /**
+   * 表格事件
+   */
+  onUpdateTableData?: (tableData: TableData[]) => void;
 }
+
+/**
+ * 由内部定义其具体类型
+ *
+ * @public
+ */
+export interface DefineTableEvents<
+  TableData extends Record<string, any>,
+  SearchData = TableData,
+> {}
+
+export type RuntimeEvents = WithLengthKeys<DefineTableEvents<any, any>>;
 
 export function defineTfTable<T extends SlotsType<any>>(
   setup: (props: {}, ctx: SetupContext<EmitsOptions, T>) => any,
+  _runtimeEvents: RuntimeEvents,
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
   });
 
   const runtimeProps = [
-    "checkbox",
     "columns",
-    "keyField",
-    "rowActions",
     "searchColumns",
-    "tableActions",
-    "virtual",
     "tableProps",
+    "tableData",
+    "formProps",
+    "onUpdateTableData",
+    ..._runtimeEvents,
   ] as any;
 
   const TfTable = defineComponent(
@@ -63,7 +76,7 @@ export function defineTfTable<T extends SlotsType<any>>(
       props: TfTableHOCComponentProps<TableData, SearchData>,
       ctx: SetupContext<EmitsOptions, T>,
     ) => {
-      useTable(props);
+      useTable(props, _runtimeEvents);
 
       return () => h(TableComponent, null, ctx.slots);
     },

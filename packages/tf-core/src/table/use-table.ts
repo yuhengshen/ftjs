@@ -1,17 +1,30 @@
-import { computed, ComputedRef, inject, provide } from "vue";
+import {
+  computed,
+  ComputedRef,
+  inject,
+  provide,
+  WritableComputedRef,
+} from "vue";
 import { TfTableColumn } from "./columns";
-import { TfFormColumn } from "../form";
-import { TableProps, TfTableHOCComponentProps } from "./define-components";
+import { FormContainerProps, TfFormColumn } from "../form";
+import {
+  DefineTableEvents,
+  RuntimeEvents,
+  TableProps,
+  TfTableHOCComponentProps,
+} from "./define-components";
 
 const provideTableKey = Symbol("tf-core-table-provide");
 
 interface TableInject<
   TableData extends Record<string, any>,
   FormData = TableData,
-> {
+> extends DefineTableEvents<TableData, FormData> {
   formColumns: ComputedRef<TfFormColumn<FormData>[]>;
   tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
   tableProps: ComputedRef<TableProps>;
+  formProps: ComputedRef<FormContainerProps>;
+  tableData: WritableComputedRef<TableData[]>;
 }
 
 export const useTable = <
@@ -19,6 +32,7 @@ export const useTable = <
   FormData = TableData,
 >(
   props: TfTableHOCComponentProps<TableData, FormData>,
+  runtimeEvents: RuntimeEvents,
 ) => {
   const formColumns = computed<TfFormColumn<FormData>[]>(() => {
     const fromTable = props.columns
@@ -43,10 +57,34 @@ export const useTable = <
     return props.tableProps;
   });
 
+  const formProps = computed(() => {
+    return props.formProps;
+  });
+
+  const tableData = computed({
+    get() {
+      return props.tableData;
+    },
+    set(value: TableData[]) {
+      props.onUpdateTableData?.(value);
+    },
+  });
+
+  const customEvents = runtimeEvents.reduce(
+    (acc, event) => {
+      acc[event] = props[event];
+      return acc;
+    },
+    {} as DefineTableEvents<TableData, FormData>,
+  );
+
   provide(provideTableKey, {
     formColumns,
     tableColumns,
     tableProps,
+    formProps,
+    tableData: tableData,
+    ...customEvents,
   });
 };
 

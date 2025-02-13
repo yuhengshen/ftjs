@@ -45,3 +45,32 @@ export type Unrefs<T> = {
 export type Refs<T> = {
   [K in keyof T]: MaybeRef<T[K]>;
 };
+
+/**
+ * 工具类型：将对象的属性转换为元组
+ *
+ * @deprecated 元祖推算的元素顺序不确定，所以实际上无法使用，替换为 {@link WithLengthKeys}
+ */
+export type TupleKeys<T> = UnionToTuple<keyof T>;
+
+/**
+ * 工具类型：将联合类型转换为元组
+ *
+ * @deprecated 元祖推算的元素顺序不确定，所以实际上无法使用
+ */
+type UnionToTuple<T> = (
+  (T extends any ? (t: T) => T : never) extends infer U
+    ? (U extends any ? (u: U) => any : never) extends (v: infer V) => any
+      ? V
+      : never
+    : never
+) extends (_: any) => infer W
+  ? [...UnionToTuple<Exclude<T, W>>, W]
+  : [];
+
+/**
+ * 工具类型：得到一个具有指定长度的数组，且每个元素唯一
+ */
+export type WithLengthKeys<T> = (keyof T)[] & {
+  length: TupleKeys<T>["length"];
+};

@@ -1,5 +1,4 @@
-import { TfFormRenderMap } from "./types";
-import { renderMap as _renderMap } from "./render-map";
+import { renderMap as _renderMap, TfFormRenderMap } from "./render-map";
 import { CustomComponent } from "./custom-component";
 
 /**

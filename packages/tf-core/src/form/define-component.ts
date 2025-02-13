@@ -3,18 +3,28 @@ import {
   computed,
   defineComponent,
   h,
+  MaybeRefOrGetter,
   SetupContext,
   VNode,
 } from "vue";
 import { renderMap } from "./render-map";
-import {
-  CommonFormProps,
-  ExposeWithComment,
-  FormContainerProps,
-  TfFormColumn,
-  TfFormColumnMap,
-} from "./types";
+import { ExposeWithComment, TfFormColumn, TfFormColumnMap } from "./columns";
 import { useForm } from "./use-form";
+
+/**
+ * 每一个表单组件的 props
+ */
+export interface CommonFormItemProps<T extends TfFormColumn<any>> {
+  /** column 定义 */
+  column: T;
+  /** 是否查看模式 */
+  isView: MaybeRefOrGetter<boolean>;
+}
+
+/**
+ * 表单容器组件 props
+ */
+export interface FormContainerProps {}
 
 /**
  * type hack，setup 泛型函数不支持定义 exposed 类型
@@ -108,11 +118,10 @@ export const defineFormContainerComponent = (
 
 /**
  * 定义表单组件
-
  */
 export function defineFormComponent<K extends keyof TfFormColumnMap<any>>(
   setup: <T extends Record<string, any>>(
-    props: CommonFormProps<TfFormColumnMap<T>[K]>,
+    props: CommonFormItemProps<TfFormColumnMap<T>[K]>,
 
     ctx: SetupContext,
   ) => () => VNode,

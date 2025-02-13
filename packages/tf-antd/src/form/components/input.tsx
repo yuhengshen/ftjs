@@ -6,7 +6,7 @@ import {
   useFormItem,
 } from "@tf/core";
 import { FormItem, Input, InputProps } from "ant-design-vue";
-import { useFormItemProps } from "./composables";
+import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 
 export interface TfFormColumnInput<T> extends TfFormColumnBase<T> {

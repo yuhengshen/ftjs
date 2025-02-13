@@ -2,6 +2,7 @@ import type { ComputedRef, MaybeRefOrGetter, Ref } from "vue";
 import { TfFormColumnCustom } from "./custom-component";
 import { RecordPath, ValueOf } from "../type-helper";
 import { SetAsDefault, ResetToDefault, GetFormData } from "./use-form";
+import { FormContainerProps } from "./define-component";
 
 type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
 
@@ -121,46 +122,10 @@ export interface TfFormColumnMap<T> {
   // 其他具体业务实现
 }
 
-export type TfFormRenderMap = {
-  [key in keyof TfFormColumnMap<any>]: new <T extends Record<string, any>>(
-    props: CommonFormProps<TfFormColumnMap<T>[key]>,
-    ctx: any,
-  ) => any;
-};
-
 /**
  * 表单列定义
  */
 export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
-
-export interface CommonFormProps<T extends TfFormColumn<any>> {
-  /** column 定义 */
-  column: T;
-  /** 是否查看模式 */
-  isView: MaybeRefOrGetter<boolean>;
-}
-
-/**
- * 表单容器组件 props
- */
-export interface FormContainerProps {}
-
-export interface CommonFormOptions<T extends TfFormColumn<any>> {
-  /** column 定义 */
-  column: T;
-  /**
-   * 默认值处理
-   */
-  defaultFieldProps?: (p?: T["props"]) => Partial<T["props"]>;
-  /**
-   * set 转换
-   */
-  valueSetter?: (val: any) => any;
-  /**
-   * get 转换
-   */
-  valueGetter?: (val: any) => any;
-}
 
 /**
  * 对于需要暴露给外部使用的方法，其类型从这里Pick，这样会有统一的类型提示

@@ -1,6 +1,6 @@
 import { Component, defineComponent, h, MaybeRefOrGetter } from "vue";
-import { defineFormComponent } from "./tf-form";
-import { TfFormColumnBase } from "./types";
+import { defineFormComponent } from "./define-component";
+import { TfFormColumnBase } from "./columns";
 import { useFormItem } from "./use-form-item";
 
 export interface TfFormColumnCustomProps<T> {

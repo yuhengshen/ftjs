@@ -96,7 +96,9 @@ setTimeout(() => {
   isView.value = true;
 }, 2000);
 
-const formData = ref<FormData>({});
+const formData = ref<FormData>({
+  extraInfo: {},
+});
 
 const onSubmit = async (formData: FormData) => {
   console.log("submit", formData);

@@ -14,10 +14,25 @@ import {
   ComputedRef,
 } from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set, getField } from "../utils";
-import { FormInject } from "./render-map";
-import { TfFormHOCComponentProps } from "./tf-form";
-import { TfFormColumn } from "./types";
+import { TfFormHOCComponentProps } from "./define-component";
+import { ExposeWithComment, TfFormColumn } from "./columns";
 import { RecordPath } from "../type-helper";
+
+export type FormInject<T extends Record<string, any>> = Pick<
+  ExposeWithComment<T>,
+  | "form"
+  | "columnsChecked"
+  | "columnsSort"
+  | "columns"
+  | "visibleColumns"
+  | "formProps"
+  | "onSubmit"
+  | "getFormData"
+  | "resetToDefault"
+  | "setAsDefault"
+  | "resetColumnsSort"
+  | "resetColumnsChecked"
+>;
 
 const provideFormKey = Symbol("tf-core-form-provide-form");
 

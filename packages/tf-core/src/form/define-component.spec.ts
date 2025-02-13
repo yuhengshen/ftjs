@@ -1,10 +1,23 @@
 import { describe, expect, it } from "vitest";
-import { defineFormComponent, defineFormContainerComponent } from "./tf-form";
-import { TfFormColumnBase } from "./types";
+import {
+  defineFormComponent,
+  defineFormContainerComponent,
+} from "./define-component";
+import { TfFormColumnBase } from "./columns";
 import { h, toValue } from "vue";
 import { mount } from "@vue/test-utils";
-import { useFormInject } from "./use-form";
-import { FormInject } from "./render-map";
+import { useFormInject, FormInject } from "./use-form";
+
+declare module "../index" {
+  interface TfFormColumnMap<T> {
+    test: TfFormColumnTest<T>;
+  }
+
+  interface FormContainerProps {
+    foo: string;
+  }
+}
+
 export interface TfFormColumnTest<T> extends TfFormColumnBase<T> {
   /**
    * 自定义渲染
@@ -13,16 +26,6 @@ export interface TfFormColumnTest<T> extends TfFormColumnBase<T> {
   props?: {
     foo: string;
   };
-}
-
-declare module "./types" {
-  interface TfFormColumnMap<T> {
-    test: TfFormColumnTest<T>;
-  }
-
-  interface FormContainerProps {
-    foo: string;
-  }
 }
 
 describe("defineFormContainerComponent", () => {

@@ -1,6 +1,6 @@
 import { unref } from "vue";
 import { RecordPath, Unrefs } from "./type-helper";
-import { TfFormColumn } from "./form/types";
+import { TfFormColumn } from "./form/columns";
 
 export const getField = <T extends Record<string, any>>(
   column: TfFormColumn<T>,

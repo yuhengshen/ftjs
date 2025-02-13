@@ -1,13 +1,30 @@
 import { computed } from "vue";
-import { CommonFormOptions, TfFormColumn } from "./types";
+import { TfFormColumn } from "./columns";
 import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
+
+export interface UseFormItemOptions<T extends TfFormColumn<any>> {
+  /** column 定义 */
+  column: T;
+  /**
+   * 默认值处理
+   */
+  defaultFieldProps?: (p?: T["props"]) => Partial<T["props"]>;
+  /**
+   * set 转换
+   */
+  valueSetter?: (val: any) => any;
+  /**
+   * get 转换
+   */
+  valueGetter?: (val: any) => any;
+}
 
 /**
  * 通用的 form item 组件处理，处理 form 中的值
  */
 export const useFormItem = <T extends Record<string, any>>(
-  options: CommonFormOptions<TfFormColumn<T>>,
+  options: UseFormItemOptions<TfFormColumn<T>>,
 ) => {
   let { column, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数

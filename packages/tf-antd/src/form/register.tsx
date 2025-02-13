@@ -1,7 +1,7 @@
 import { setupTfForm } from "@tf/core";
 import { FormProps } from "ant-design-vue";
-import input, { TfFormColumnInput } from "./input";
-import select, { TfFormColumnSelect } from "./select";
+import input, { TfFormColumnInput } from "./components/input";
+import select, { TfFormColumnSelect } from "./components/select";
 import type {
   RuleType,
   StoreValue,
@@ -47,7 +47,7 @@ declare module "@tf/core" {
     /** validate the max length of a field */
     max?: number;
     /** validation error message */
-    message?: string | VueNode;
+    message?: VueNode;
     /** validate the min length of a field */
     min?: number;
     /** validate from a regular expression */

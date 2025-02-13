@@ -1,10 +1,9 @@
-export { useFormItem } from "./use-form-item";
-export { registerTfForm, setupTfForm } from "./register";
-export { useFormInject } from "./use-form";
-export * from "./tf-form";
+export * from "./use-form-item";
+export * from "./register";
+export * from "./use-form";
+export * from "./define-component";
 export * from "../utils";
 export * from "./custom-component";
+export * from "./columns";
 // 类型导出
-export * from "./types";
-export type { FormInject } from "./render-map";
-export type { TfFormColumnCustomProps } from "./custom-component";
+export type { TfFormRenderMap } from "./render-map";

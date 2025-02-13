@@ -11,7 +11,6 @@ export default defineConfig({
     }),
   ],
   build: {
-    emptyOutDir: true,
     lib: {
       entry: "./src/index.ts",
       formats: ["es"],
@@ -20,7 +19,7 @@ export default defineConfig({
     rollupOptions: {
       external: ["vue"],
     },
-    minify: false,
+    minify: true,
   },
   test: {
     include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],

@@ -64,11 +64,16 @@ export const TfTable = defineTfTable(
     });
 
     return () => (
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div>
         <TfFormSearch
           columns={formColumns.value}
           onSubmit={onSearch}
           {...formProps.value}
+          style={{
+            borderBottom: "1px solid #f0f0f0",
+            margin: "0 4px 10px 4px",
+            paddingBottom: "10px",
+          }}
         />
         <Table
           columns={columns.value}

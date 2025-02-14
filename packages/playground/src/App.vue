@@ -122,12 +122,19 @@ interface TableData {
   name: string;
   age: number;
   likes: number[];
+  address: string;
+  gender: "male" | "female";
+  isMaster: boolean;
 }
 
 const tableColumns: TfTableColumn<TableData>[] = [
   {
     field: "name",
     title: "姓名",
+    search: {
+      type: "input",
+      hide: true,
+    },
   },
   {
     field: "age",
@@ -136,11 +143,42 @@ const tableColumns: TfTableColumn<TableData>[] = [
       type: "input",
     },
   },
+  {
+    field: "gender",
+    title: "性别",
+    search: {
+      type: "select",
+      props: {
+        options: [
+          { value: "male", label: "男" },
+          { value: "female", label: "女" },
+        ],
+      },
+    },
+  },
+  {
+    field: "isMaster",
+    title: "是否主表",
+  },
 ];
 
 const tableData = ref<TableData[]>([
-  { name: "张三", age: 18, likes: [1, 2] },
-  { name: "李四", age: 20, likes: [3, 4] },
+  {
+    name: "张三",
+    age: 18,
+    likes: [1, 2],
+    address: "北京",
+    gender: "male",
+    isMaster: true,
+  },
+  {
+    name: "李四",
+    age: 20,
+    likes: [3, 4],
+    address: "上海",
+    gender: "female",
+    isMaster: false,
+  },
 ]);
 </script>
 
@@ -160,12 +198,7 @@ const tableData = ref<TableData[]>([
       @submit="onSubmit"
     />
     <hr />
-    <TfTable
-      :columns="tableColumns"
-      :table-data="tableData"
-      @search="onSubmit"
-      style="margin-top: 16px"
-    >
+    <TfTable :columns="tableColumns" :table-data="tableData" @search="onSubmit">
       <template #footer="currentPageData">
         <div>xxxxx</div>
       </template>

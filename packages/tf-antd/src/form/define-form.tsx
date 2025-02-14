@@ -62,7 +62,7 @@ export const TfForm = defineTfForm((_, ctx) => {
   });
 
   return () => (
-    <Form {...formProps.value} style={{ width }}>
+    <Form style={{ width }} {...ctx.attrs} {...formProps.value}>
       {ctx.slots.formContent()}
       <FormItem label=" " colon={false}>
         <Button type="primary" htmlType="submit">
@@ -110,7 +110,7 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
           width: `var(--tf-form-control-width, 200px)`,
         },
       },
-      ..._formProps,
+      ..._formProps.value,
       model: form.value,
       onFinish: async () => {
         await onSubmit?.(getFormData());
@@ -183,6 +183,9 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
     resetColumnsSort();
     settingModal.value = false;
   };
+
+  console.log("ctx.attrs", ctx.attrs);
+  console.log("props.value", formProps.value);
 
   return () => (
     <>
@@ -258,11 +261,11 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
       </Modal>
 
       <Form
-        {...ctx.attrs}
-        {...formProps.value}
         style={{
           gap: "10px 0",
         }}
+        {...ctx.attrs}
+        {...formProps.value}
       >
         {ctx.slots.formContent()}
         <FormItem

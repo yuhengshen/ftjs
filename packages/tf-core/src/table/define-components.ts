@@ -87,8 +87,6 @@ export function defineTfTable<TableData extends Record<string, any>>(
     ) => {
       useTable(props, _runtimeEvents);
 
-      console.log("define ctx.slots", ctx.slots);
-
       return () => h(TableComponent, null, ctx.slots);
     },
     {

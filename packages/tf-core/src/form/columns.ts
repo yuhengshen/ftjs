@@ -190,7 +190,7 @@ export interface ExposeWithComment<T extends Record<string, any>> {
    * @example
    * ```ts
    *
-   * declare module "@tf/core" {
+   * declare module "tf-core" {
    *   interface FormContainerProps {
    *     ...
    *   }

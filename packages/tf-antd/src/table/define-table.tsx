@@ -1,4 +1,4 @@
-import { defineTfTable, useTableInject } from "@tf/core";
+import { defineTfTable, useTableInject } from "tf-core";
 import {
   Table,
   TableColumnType,
@@ -8,7 +8,7 @@ import { TfFormSearch } from "../form/define-form";
 import { computed } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
 
-declare module "@tf/core" {
+declare module "tf-core" {
   interface TableColumn<TableData extends Record<string, any>>
     extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {}
 

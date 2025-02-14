@@ -1,4 +1,4 @@
-import { setupTfForm } from "@tf/core";
+import { setupTfForm } from "tf-core";
 import { FormProps } from "ant-design-vue";
 import input, { TfFormColumnInput } from "./components/input";
 import select, { TfFormColumnSelect } from "./components/select";
@@ -19,7 +19,7 @@ export type VNodeChildAtom =
   | void;
 export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 
-declare module "@tf/core" {
+declare module "tf-core" {
   /**
    * form 容器组件 props 类型
    */

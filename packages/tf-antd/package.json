@@ -1,5 +1,5 @@
 {
-  "name": "@tf/antd",
+  "name": "tf-antd",
   "version": "0.0.0",
   "keywords": [],
   "author": "",
@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",
-    "@tf/core": "workspace:*",
+    "tf-core": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:",
     "vue-component-type-helpers": "catalog:"

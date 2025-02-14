@@ -19,7 +19,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: ["ant-design-vue", "@ant-design/icons-vue", "vue", "@tf/core"],
+      external: ["ant-design-vue", "@ant-design/icons-vue", "vue", "tf-core"],
     },
   },
 });

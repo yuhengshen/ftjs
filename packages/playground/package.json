@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",
-    "@tf/antd": "workspace:*",
-    "@tf/core": "workspace:*",
+    "tf-antd": "workspace:*",
+    "tf-core": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:"
   },

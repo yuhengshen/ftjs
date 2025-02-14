@@ -10,8 +10,8 @@
   },
   "scripts": {
     "play": "pnpm --filter @tf/playground dev",
-    "build-core": "turbo run build --filter @tf/core",
-    "build-antd": "turbo run build --filter @tf/antd",
+    "build-core": "turbo run build --filter tf-core",
+    "build-antd": "turbo run build --filter tf-antd",
     "prepare": "husky",
     "format": "prettier --write .",
     "lint": "eslint --fix ."

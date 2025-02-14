@@ -4,7 +4,7 @@ import {
   TfFormColumnBase,
   unrefs,
   useFormItem,
-} from "@tf/core";
+} from "tf-core";
 import { FormItem, Input, InputProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { toValue } from "vue";

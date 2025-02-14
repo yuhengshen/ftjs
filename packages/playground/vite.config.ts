@@ -15,8 +15,8 @@ export default defineConfig(env => {
     resolve: {
       alias: isDev
         ? {
-            "@tf/core": path.resolve(__dirname, "../tf-core/src/index.ts"),
-            "@tf/antd": path.resolve(__dirname, "../tf-antd/src/index.ts"),
+            "tf-core": path.resolve(__dirname, "../tf-core/src/index.ts"),
+            "tf-antd": path.resolve(__dirname, "../tf-antd/src/index.ts"),
           }
         : undefined,
     },

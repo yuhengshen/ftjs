@@ -110,10 +110,10 @@ importers:
       '@ant-design/icons-vue':
         specifier: 'catalog:'
         version: 7.0.1(vue@3.5.13(typescript@5.7.3))
-      '@tf/antd':
+      'tf-antd':
         specifier: workspace:*
         version: link:../tf-antd
-      '@tf/core':
+      'tf-core':
         specifier: workspace:*
         version: link:../tf-core
       ant-design-vue:
@@ -156,7 +156,7 @@ importers:
       '@ant-design/icons-vue':
         specifier: 'catalog:'
         version: 7.0.1(vue@3.5.13(typescript@5.7.3))
-      '@tf/core':
+      'tf-core':
         specifier: workspace:*
         version: link:../tf-core
       ant-design-vue:

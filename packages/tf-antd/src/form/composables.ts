@@ -1,4 +1,4 @@
-import { getField, TfFormColumn } from "@tf/core";
+import { getField, TfFormColumn } from "tf-core";
 import { computed, toValue } from "vue";
 
 export const useFormItemProps = <T extends Record<string, any>>(

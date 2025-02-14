@@ -1,5 +1,5 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
-import { defineTfForm, getField, set, useFormInject } from "@tf/core";
+import { defineTfForm, getField, set, useFormInject } from "tf-core";
 import {
   FormProps,
   FormItem,

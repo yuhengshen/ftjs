@@ -4,8 +4,8 @@ import {
   TableProps,
   TfFormColumn,
   TfTableColumn,
-} from "@tf/core";
-import { TfForm, TfFormSearch, TfTable } from "@tf/antd";
+} from "tf-core";
+import { TfForm, TfFormSearch, TfTable } from "tf-antd";
 import { onMounted, ref, toValue, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
 import { FormItem, Table, TableColumnType } from "ant-design-vue";

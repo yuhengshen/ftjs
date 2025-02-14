@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { registerForm } from "@tf/antd";
+import { registerForm } from "tf-antd";
 import App from "./App.vue";
 
 registerForm();

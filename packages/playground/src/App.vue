@@ -1,9 +1,14 @@
 <script setup lang="tsx">
-import { defineCustomRender, TfFormColumn, TfTableColumn } from "@tf/core";
+import {
+  defineCustomRender,
+  TableProps,
+  TfFormColumn,
+  TfTableColumn,
+} from "@tf/core";
 import { TfForm, TfFormSearch, TfTable } from "@tf/antd";
 import { onMounted, ref, toValue, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
-import { FormItem } from "ant-design-vue";
+import { FormItem, Table, TableColumnType } from "ant-design-vue";
 
 const likesOptions = ref([
   { label: "1111111", value: 1 },
@@ -155,10 +160,13 @@ const tableData = ref<TableData[]>([
       @submit="onSubmit"
     />
     <hr />
-    <TfTable
-      :columns="tableColumns"
-      :table-data="tableData"
-      @search="onSubmit"
-    />
+    <TfTable :columns="tableColumns" :table-data="tableData" @search="onSubmit">
+      <template #footer="currentPageData">
+        <div>xxxxx</div>
+      </template>
+      <template #bodyCell="{ column, index, record, text, value }">
+        <div>{{ value }} {{ text }} {{ index }}</div>
+      </template>
+    </TfTable>
   </div>
 </template>

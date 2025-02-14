@@ -9,7 +9,7 @@ import { WithLengthKeys } from "../type-helper";
  *
  * @public
  */
-export interface TableProps {}
+export interface TableProps<TableData extends Record<string, any>> {}
 
 export interface TfTableHOCComponentProps<
   TableData extends Record<string, any>,
@@ -26,7 +26,7 @@ export interface TfTableHOCComponentProps<
   /**
    * 具体表格组件的 props
    */
-  tableProps?: TableProps;
+  tableProps?: TableProps<TableData>;
   /**
    * 具体表格容器组件的 props
    */
@@ -51,14 +51,20 @@ export interface DefineTableEvents<
   SearchData = TableData,
 > {}
 
+export interface DefineTableSlots<TableData extends Record<string, any>> {}
+
 export type RuntimeEvents = WithLengthKeys<DefineTableEvents<any, any>>;
 
-export function defineTfTable<T extends SlotsType<any>>(
-  setup: (props: {}, ctx: SetupContext<EmitsOptions, T>) => any,
+export function defineTfTable<TableData extends Record<string, any>>(
+  setup: (
+    props: {},
+    ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
+  ) => any,
   _runtimeEvents: RuntimeEvents,
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
+    name: "TfTableContainer",
   });
 
   const runtimeProps = [
@@ -74,7 +80,7 @@ export function defineTfTable<T extends SlotsType<any>>(
   const TfTable = defineComponent(
     <TableData extends Record<string, any>, SearchData = TableData>(
       props: TfTableHOCComponentProps<TableData, SearchData>,
-      ctx: SetupContext<EmitsOptions, T>,
+      ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
     ) => {
       useTable(props, _runtimeEvents);
 
@@ -83,6 +89,7 @@ export function defineTfTable<T extends SlotsType<any>>(
     {
       inheritAttrs: false,
       props: runtimeProps,
+      name: "TfTable",
     },
   );
 

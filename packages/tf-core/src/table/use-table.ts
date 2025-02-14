@@ -22,7 +22,7 @@ interface TableInject<
 > extends DefineTableEvents<TableData, FormData> {
   formColumns: ComputedRef<TfFormColumn<FormData>[]>;
   tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
-  tableProps: ComputedRef<TableProps>;
+  tableProps: ComputedRef<TableProps<TableData>>;
   formProps: ComputedRef<FormContainerProps>;
   tableData: WritableComputedRef<TableData[]>;
 }

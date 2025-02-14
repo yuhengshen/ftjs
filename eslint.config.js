@@ -13,7 +13,11 @@ export default tseslint.config(
       // _ 开头变量不检查
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          typeParameters: { ignorePatternsForAllParameters: true },
+        },
       ],
     },
   },

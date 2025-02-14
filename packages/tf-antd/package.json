@@ -24,7 +24,7 @@
     "@tf/core": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:",
-    "vxe-table": "^4.10.14"
+    "vue-component-type-helpers": "catalog:"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

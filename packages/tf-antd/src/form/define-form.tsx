@@ -63,7 +63,7 @@ export const TfForm = defineTfForm((_, ctx) => {
 
   return () => (
     <Form {...formProps.value} style={{ width }}>
-      {ctx.slots.default?.()}
+      {ctx.slots.formContent()}
       <FormItem label=" " colon={false}>
         <Button type="primary" htmlType="submit">
           提交
@@ -258,12 +258,13 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
       </Modal>
 
       <Form
+        {...ctx.attrs}
         {...formProps.value}
         style={{
           gap: "10px 0",
         }}
       >
-        {ctx.slots.default?.()}
+        {ctx.slots.formContent()}
         <FormItem
           style={{
             "--tf-form-control-width": "220px",

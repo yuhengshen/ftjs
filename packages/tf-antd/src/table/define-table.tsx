@@ -31,9 +31,7 @@ declare module "@tf/core" {
 }
 
 export const TfTable = defineTfTable(
-  (_, ctx) => {
-    console.log("slots", ctx.slots);
-
+  (_p, ctx) => {
     const {
       formColumns,
       tableColumns,
@@ -57,8 +55,16 @@ export const TfTable = defineTfTable(
       });
     });
 
+    const props = computed(() => {
+      // 设置默认值
+      return {
+        bordered: true,
+        ...tableProps.value,
+      };
+    });
+
     return () => (
-      <div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <TfFormSearch
           columns={formColumns.value}
           onSubmit={onSearch}
@@ -66,7 +72,8 @@ export const TfTable = defineTfTable(
         />
         <Table
           columns={columns.value}
-          {...tableProps.value}
+          {...ctx.attrs}
+          {...props.value}
           dataSource={tableData.value}
           onChange={onChange}
           onExpand={onExpand}

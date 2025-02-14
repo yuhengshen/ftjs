@@ -14,7 +14,11 @@ import {
   ComputedRef,
 } from "vue";
 import { cloneDeep, isEqualStrArr, get, has, set, getField } from "../utils";
-import { TfFormHOCComponentProps } from "./define-component";
+import {
+  DefineFormEvents,
+  FormRuntimeEvents,
+  TfFormHOCComponentProps,
+} from "./define-component";
 import { ExposeWithComment, TfFormColumn } from "./columns";
 import { RecordPath } from "../type-helper";
 
@@ -32,7 +36,8 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "setAsDefault"
   | "resetColumnsSort"
   | "resetColumnsChecked"
->;
+> &
+  DefineFormEvents<T>;
 
 const provideFormKey = Symbol("tf-core-form-provide");
 
@@ -149,6 +154,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
 export const useForm = <T extends Record<string, any>>(
   props: TfFormHOCComponentProps<T>,
   formData: MaybeRef<T>,
+  runtimeEvents: FormRuntimeEvents,
 ) => {
   const columns = computed(() => toValue(props.columns));
 
@@ -180,6 +186,11 @@ export const useForm = <T extends Record<string, any>>(
         return aSort - bSort;
       });
   });
+
+  const customEvents = runtimeEvents.reduce((acc, event) => {
+    acc[event] = props[event];
+    return acc;
+  }, {} as DefineFormEvents<T>);
 
   watch(
     visibleColumns,
@@ -371,6 +382,7 @@ export const useForm = <T extends Record<string, any>>(
     onSubmit: props.onSubmit,
     resetColumnsChecked,
     resetColumnsSort,
+    ...customEvents,
   });
 
   return {

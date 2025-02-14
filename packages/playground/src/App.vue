@@ -160,7 +160,12 @@ const tableData = ref<TableData[]>([
       @submit="onSubmit"
     />
     <hr />
-    <TfTable :columns="tableColumns" :table-data="tableData" @search="onSubmit">
+    <TfTable
+      :columns="tableColumns"
+      :table-data="tableData"
+      @search="onSubmit"
+      style="margin-top: 16px"
+    >
       <template #footer="currentPageData">
         <div>xxxxx</div>
       </template>

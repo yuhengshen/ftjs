@@ -9,8 +9,8 @@ import { TfTableColumn } from "./columns";
 import { FormContainerProps, TfFormColumn } from "../form";
 import {
   DefineTableEvents,
-  RuntimeEvents,
   TableProps,
+  TableRuntimeEvents,
   TfTableHOCComponentProps,
 } from "./define-components";
 
@@ -32,7 +32,7 @@ export const useTable = <
   FormData = TableData,
 >(
   props: TfTableHOCComponentProps<TableData, FormData>,
-  runtimeEvents: RuntimeEvents,
+  runtimeEvents: TableRuntimeEvents,
 ) => {
   const formColumns = computed<TfFormColumn<FormData>[]>(() => {
     const fromTable = props.columns

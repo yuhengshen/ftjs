@@ -51,16 +51,19 @@ export interface DefineTableEvents<
   SearchData = TableData,
 > {}
 
+/**
+ * @public
+ */
 export interface DefineTableSlots<TableData extends Record<string, any>> {}
 
-export type RuntimeEvents = WithLengthKeys<DefineTableEvents<any, any>>;
+export type TableRuntimeEvents = WithLengthKeys<DefineTableEvents<any, any>>;
 
 export function defineTfTable<TableData extends Record<string, any>>(
   setup: (
     props: {},
     ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
   ) => any,
-  _runtimeEvents: RuntimeEvents,
+  _runtimeEvents: TableRuntimeEvents,
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
@@ -84,10 +87,11 @@ export function defineTfTable<TableData extends Record<string, any>>(
     ) => {
       useTable(props, _runtimeEvents);
 
+      console.log("define ctx.slots", ctx.slots);
+
       return () => h(TableComponent, null, ctx.slots);
     },
     {
-      inheritAttrs: false,
       props: runtimeProps,
       name: "TfTable",
     },

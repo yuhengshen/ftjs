@@ -2,14 +2,17 @@ import {
   ComponentPublicInstance,
   computed,
   defineComponent,
+  EmitsOptions,
   h,
   MaybeRefOrGetter,
   SetupContext,
+  SlotsType,
   VNode,
 } from "vue";
 import { renderMap } from "./render-map";
 import { ExposeWithComment, TfFormColumn, TfFormColumnMap } from "./columns";
 import { useForm } from "./use-form";
+import { WithLengthKeys } from "../type-helper";
 
 /**
  * 每一个表单组件的 props
@@ -23,8 +26,34 @@ export interface CommonFormItemProps<T extends TfFormColumn<any>> {
 
 /**
  * 表单容器组件 props
+ * @public
  */
 export interface FormContainerProps {}
+
+/**
+ * @public
+ */
+export interface DefineFormSlots<T extends Record<string, any>> {
+  /**
+   * 表单内容 slot
+   */
+  formContent: () => any;
+}
+
+/**
+ * @public
+ */
+export interface DefineFormEvents<T extends Record<string, any>> {
+  /**
+   * 提交表单
+   * @param formData 有效值
+   */
+  onSubmit?: (formData: T) => Promise<void> | void;
+}
+
+export type FormRuntimeEvents = WithLengthKeys<
+  Omit<DefineFormEvents<any>, "onSubmit">
+>;
 
 /**
  * type hack，setup 泛型函数不支持定义 exposed 类型
@@ -58,7 +87,13 @@ export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
  * 定义表单容器组件
 
  */
-export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
+export const defineTfForm = (
+  setup: (
+    props: {},
+    ctx: SetupContext<EmitsOptions, SlotsType<DefineFormSlots<any>>>,
+  ) => any,
+  _runtimeEvents: FormRuntimeEvents = [],
+) => {
   const layoutComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfFormContainer",
@@ -67,7 +102,10 @@ export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
   const Component = defineComponent(
     <T extends Record<string, any>>(
       props: TfFormHOCComponentProps<T>,
-      ctx: SetupContext,
+      ctx: SetupContext<
+        EmitsOptions,
+        SlotsType<Omit<DefineFormSlots<any>, "formContent">>
+      >,
     ) => {
       const formData = computed({
         get: () => props.formData,
@@ -77,7 +115,7 @@ export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
       });
 
       const { getFormData, resetToDefault, setAsDefault, visibleColumns } =
-        useForm(props, formData);
+        useForm(props, formData, _runtimeEvents);
 
       ctx.expose({
         getFormData,
@@ -86,18 +124,20 @@ export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
       });
 
       return () =>
-        h(layoutComponent, null, () =>
-          visibleColumns.value.map(column => {
-            // core 里面 renderMap 里的组件只定义了 custom
-            const component = renderMap[column.type];
-            return h(component, {
-              column: column,
-              // 是否为查看模式
-              isView: column.isView,
-              key: column.field ?? column.fields?.[0],
-            });
-          }),
-        );
+        h(layoutComponent, null, {
+          ...ctx.slots,
+          formContent: () =>
+            visibleColumns.value.map(column => {
+              // core 里面 renderMap 里的组件只定义了 custom
+              const component = renderMap[column.type];
+              return h(component, {
+                column: column,
+                // 是否为查看模式
+                isView: column.isView,
+                key: column.field ?? column.fields?.[0],
+              });
+            }),
+        });
     },
     {
       props: [
@@ -106,8 +146,8 @@ export const defineTfForm = (setup: (props: {}, ctx: SetupContext) => any) => {
         "formProps",
         "onSubmit",
         "onUpdate:formData",
+        ..._runtimeEvents,
       ] as any,
-      inheritAttrs: false,
       name: "TfForm",
     },
   );

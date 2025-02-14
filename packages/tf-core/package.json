@@ -1,6 +1,6 @@
 {
   "name": "@tf/core",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -8,7 +8,9 @@
   "scripts": {
     "build": "vite build",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "release": "tsx ../../scripts/release.ts",
+    "publish": "tsx ../../scripts/publish.ts"
   },
   "exports": {
     ".": {

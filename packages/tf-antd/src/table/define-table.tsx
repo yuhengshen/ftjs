@@ -9,8 +9,10 @@ import { computed, onMounted, ref } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
 
 declare module "tf-core" {
-  interface TableColumn<TableData extends Record<string, any>>
-    extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {}
+  interface TfTableColumn<
+    TableData extends Record<string, any>,
+    SearchData = TableData,
+  > extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {}
 
   interface TableProps<TableData extends Record<string, any>>
     extends Omit<
@@ -50,6 +52,7 @@ export const TfTable = defineTfTable(
       tableData,
       loading,
       total,
+      keyField,
       defaultPageSize,
       onSearch,
       onChange,
@@ -78,6 +81,7 @@ export const TfTable = defineTfTable(
           ...column,
           title: column.title,
           dataIndex: column.field,
+          width: column.width ?? 120,
         };
       });
     });
@@ -96,6 +100,13 @@ export const TfTable = defineTfTable(
             handleSearch();
           },
         },
+        tableLayout: "fixed" as const,
+        scroll: {
+          scrollToFirstRowOnChange: true,
+          x: "max-content",
+          y: 500,
+        },
+        rowKey: keyField.value ?? "id",
         ...tableProps.value,
       };
     });

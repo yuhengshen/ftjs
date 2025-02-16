@@ -28,6 +28,7 @@ interface TableInject<
   loading: ComputedRef<boolean>;
   total: ComputedRef<number>;
   defaultPageSize: ComputedRef<number>;
+  keyField: ComputedRef<string>;
 }
 
 export const useTable = <
@@ -63,6 +64,7 @@ export const useTable = <
     "loading",
     "total",
     "defaultPageSize",
+    "keyField",
   ];
 
   const computedProps = computedList.reduce(

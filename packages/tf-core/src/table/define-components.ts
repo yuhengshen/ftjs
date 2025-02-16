@@ -47,6 +47,10 @@ export interface TfTableHOCComponentProps<
    * 表格数据
    */
   tableData?: TableData[];
+  /**
+   * 表格 key 字段
+   */
+  keyField?: string;
 }
 
 /**
@@ -87,6 +91,7 @@ export function defineTfTable<TableData extends Record<string, any>>(
     "total",
     "defaultPageSize",
     "loading",
+    "keyField",
     ..._runtimeEvents,
   ] as any;
 

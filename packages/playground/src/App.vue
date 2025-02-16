@@ -120,6 +120,19 @@ const onSubmit = async (formData: FormData) => {
     address: "北京",
     gender: "male",
     isMaster: index % 2 === 0,
+    address2: "北京2",
+    address3: "北京3",
+    address4: "北京4",
+    address5: "北京5",
+    address6: "北京6",
+    address7: "北京7",
+    address8: "北京8",
+    address9: "北京9",
+    address10: "北京10",
+    address11: "北京11",
+    address12: "北京12",
+    address13: "北京13",
+    id: `${index}`,
   }));
   total.value = 2000;
   loading.value = false;
@@ -141,9 +154,22 @@ interface TableData {
   address: string;
   gender: "male" | "female";
   isMaster: boolean;
+  address2: string;
+  address3: string;
+  address4: string;
+  address5: string;
+  id: string;
+  address6: string;
+  address7: string;
+  address8: string;
+  address9: string;
+  address10: string;
+  address11: string;
+  address12: string;
+  address13: string;
 }
 
-const tableColumns: TfTableColumn<TableData>[] = [
+const tableColumns: TfTableColumn<TableData & { operate: string }>[] = [
   {
     field: "name",
     title: "姓名",
@@ -151,6 +177,7 @@ const tableColumns: TfTableColumn<TableData>[] = [
       type: "input",
       hide: true,
     },
+    width: 200,
   },
   {
     field: "age",
@@ -176,6 +203,89 @@ const tableColumns: TfTableColumn<TableData>[] = [
     field: "isMaster",
     title: "是否主表",
   },
+  {
+    field: "address",
+    title: "地址",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address2",
+    title: "地址2",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address3",
+    title: "地址3",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address4",
+    title: "地址4",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address5",
+    title: "地址5",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address6",
+    title: "地址6",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address7",
+    title: "地址7",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address8",
+    title: "地址8",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address9",
+    title: "地址9",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address10",
+    title: "地址10",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "address11",
+    title: "地址11",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "operate",
+    title: "操作",
+    width: 100,
+    fixed: "right",
+  },
 ];
 
 const tableData = ref<TableData[]>([]);
@@ -183,7 +293,7 @@ const tableData = ref<TableData[]>([]);
 
 <template>
   <div>
-    <TfFormSearch
+    <!-- <TfFormSearch
       ref="form"
       v-model:form-data="formData"
       :columns="columns"
@@ -195,8 +305,8 @@ const tableData = ref<TableData[]>([]);
       v-model:form-data="formData"
       :columns="columns"
       @submit="onSubmit"
-    />
-    <hr />
+    /> -->
+    <!-- <hr /> -->
     <TfTable
       :columns="tableColumns"
       :loading
@@ -208,7 +318,9 @@ const tableData = ref<TableData[]>([]);
         <div>{{ currentPageData.length }}</div>
       </template>
       <template #bodyCell="{ column, index, record, text, value }">
-        <div>{{ value }} {{ text }} {{ index }}</div>
+        <div v-if="column.dataIndex === 'operate'">
+          <Button>操作</Button>
+        </div>
       </template>
     </TfTable>
   </div>

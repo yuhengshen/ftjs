@@ -15,6 +15,7 @@
     "allowJs": false,
     "resolveJsonModule": true,
     "noImplicitOverride": true,
+    "noImplicitAny": false,
     "noEmit": true,
     "lib": ["ESNext", "DOM"]
   }

@@ -184,9 +184,6 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
     settingModal.value = false;
   };
 
-  console.log("ctx.attrs", ctx.attrs);
-  console.log("props.value", formProps.value);
-
   return () => (
     <>
       <Modal

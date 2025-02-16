@@ -6,7 +6,7 @@ import {
   TfTableColumn,
 } from "tf-core";
 import { TfForm, TfFormSearch, TfTable } from "tf-antd";
-import { onMounted, ref, toValue, useTemplateRef } from "vue";
+import { computed, onMounted, ref, toValue, useTemplateRef } from "vue";
 import { ComponentExposed } from "vue-component-type-helpers";
 import { FormItem, Table, TableColumnType } from "ant-design-vue";
 
@@ -105,8 +105,24 @@ const formData = ref<FormData>({
   extraInfo: {},
 });
 
+const total = ref(0);
+const loading = ref(false);
+
 const onSubmit = async (formData: FormData) => {
-  console.log("submit", formData);
+  console.log("search", formData);
+  let index = Math.floor(Math.random() * 100);
+  loading.value = true;
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  tableData.value = Array.from({ length: 20 }, _ => ({
+    name: `张三${index}`,
+    age: 18 + index++,
+    likes: [1, 2],
+    address: "北京",
+    gender: "male",
+    isMaster: index % 2 === 0,
+  }));
+  total.value = 2000;
+  loading.value = false;
 };
 
 // 拿不到 exposed 方法类型
@@ -162,24 +178,7 @@ const tableColumns: TfTableColumn<TableData>[] = [
   },
 ];
 
-const tableData = ref<TableData[]>([
-  {
-    name: "张三",
-    age: 18,
-    likes: [1, 2],
-    address: "北京",
-    gender: "male",
-    isMaster: true,
-  },
-  {
-    name: "李四",
-    age: 20,
-    likes: [3, 4],
-    address: "上海",
-    gender: "female",
-    isMaster: false,
-  },
-]);
+const tableData = ref<TableData[]>([]);
 </script>
 
 <template>
@@ -198,9 +197,15 @@ const tableData = ref<TableData[]>([
       @submit="onSubmit"
     />
     <hr />
-    <TfTable :columns="tableColumns" :table-data="tableData" @search="onSubmit">
+    <TfTable
+      :columns="tableColumns"
+      :loading
+      :total
+      :table-data
+      @search="onSubmit"
+    >
       <template #footer="currentPageData">
-        <div>xxxxx</div>
+        <div>{{ currentPageData.length }}</div>
       </template>
       <template #bodyCell="{ column, index, record, text, value }">
         <div>{{ value }} {{ text }} {{ index }}</div>

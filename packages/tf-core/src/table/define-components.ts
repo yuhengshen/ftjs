@@ -24,6 +24,18 @@ export interface TfTableHOCComponentProps<
    */
   searchColumns?: TfFormColumn<SearchData>[];
   /**
+   * 表格总条数
+   */
+  total?: number;
+  /**
+   * 默认每页条数
+   */
+  defaultPageSize?: number;
+  /**
+   * 是否显示 loading
+   */
+  loading?: boolean;
+  /**
    * 具体表格组件的 props
    */
   tableProps?: TableProps<TableData>;
@@ -35,10 +47,6 @@ export interface TfTableHOCComponentProps<
    * 表格数据
    */
   tableData?: TableData[];
-  /**
-   * 表格事件
-   */
-  onUpdateTableData?: (tableData: TableData[]) => void;
 }
 
 /**
@@ -76,7 +84,9 @@ export function defineTfTable<TableData extends Record<string, any>>(
     "tableProps",
     "tableData",
     "formProps",
-    "onUpdateTableData",
+    "total",
+    "defaultPageSize",
+    "loading",
     ..._runtimeEvents,
   ] as any;
 

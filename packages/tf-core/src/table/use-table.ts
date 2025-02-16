@@ -24,7 +24,10 @@ interface TableInject<
   tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
   tableProps: ComputedRef<TableProps<TableData>>;
   formProps: ComputedRef<FormContainerProps>;
-  tableData: WritableComputedRef<TableData[]>;
+  tableData: ComputedRef<TableData[]>;
+  loading: ComputedRef<boolean>;
+  total: ComputedRef<number>;
+  defaultPageSize: ComputedRef<number>;
 }
 
 export const useTable = <
@@ -53,22 +56,22 @@ export const useTable = <
     return props.columns;
   });
 
-  const tableProps = computed(() => {
-    return props.tableProps;
-  });
+  const computedList = [
+    "tableProps",
+    "formProps",
+    "tableData",
+    "loading",
+    "total",
+    "defaultPageSize",
+  ];
 
-  const formProps = computed(() => {
-    return props.formProps;
-  });
-
-  const tableData = computed({
-    get() {
-      return props.tableData;
+  const computedProps = computedList.reduce(
+    (acc, key) => {
+      acc[key] = computed(() => props[key]);
+      return acc;
     },
-    set(value: TableData[]) {
-      props.onUpdateTableData?.(value);
-    },
-  });
+    {} as Record<string, any>,
+  );
 
   const customEvents = runtimeEvents.reduce(
     (acc, event) => {
@@ -81,9 +84,7 @@ export const useTable = <
   provide(provideTableKey, {
     formColumns,
     tableColumns,
-    tableProps,
-    formProps,
-    tableData: tableData,
+    ...computedProps,
     ...customEvents,
   });
 };

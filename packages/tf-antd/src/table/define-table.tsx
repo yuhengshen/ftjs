@@ -5,7 +5,7 @@ import {
   TableProps as AntdTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
 
 declare module "tf-core" {
@@ -13,7 +13,17 @@ declare module "tf-core" {
     extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {}
 
   interface TableProps<TableData extends Record<string, any>>
-    extends Omit<AntdTableProps<TableData>, "columns"> {}
+    extends Omit<
+      AntdTableProps<TableData>,
+      "columns" | "pagination" | "loading"
+    > {
+    /**
+     * 是否初始化搜索
+     *
+     * @default true
+     */
+    initSearch?: boolean;
+  }
 
   interface DefineTableSlots<TableData extends Record<string, any>>
     extends ComponentSlots<typeof Table> {}
@@ -38,12 +48,29 @@ export const TfTable = defineTfTable(
       tableProps,
       formProps,
       tableData,
+      loading,
+      total,
+      defaultPageSize,
       onSearch,
       onChange,
       onExpand,
       onExpandedRowsChange,
       onResizeColumn,
     } = useTableInject()!;
+
+    const formRef = ref<InstanceType<typeof TfFormSearch>>();
+
+    const handleSearch = async () => {
+      if (!onSearch) return;
+      const formData = formRef.value?.getFormData()!;
+      onSearch(formData);
+    };
+
+    onMounted(() => {
+      if (tableProps.value?.initSearch ?? true) {
+        handleSearch();
+      }
+    });
 
     const columns = computed(() => {
       return tableColumns.value.map(column => {
@@ -55,10 +82,20 @@ export const TfTable = defineTfTable(
       });
     });
 
+    const currentPage = ref(1);
     const props = computed(() => {
       // 设置默认值
       return {
         bordered: true,
+        pagination: {
+          total: total.value,
+          defaultPageSize: defaultPageSize.value ?? 20,
+          current: currentPage.value,
+          onChange: (page: number, pageSize: number) => {
+            currentPage.value = page;
+            handleSearch();
+          },
+        },
         ...tableProps.value,
       };
     });
@@ -66,8 +103,9 @@ export const TfTable = defineTfTable(
     return () => (
       <div>
         <TfFormSearch
+          ref={formRef}
           columns={formColumns.value}
-          onSubmit={onSearch}
+          onSubmit={handleSearch}
           {...formProps.value}
           style={{
             borderBottom: "1px solid #f0f0f0",
@@ -77,9 +115,10 @@ export const TfTable = defineTfTable(
         />
         <Table
           columns={columns.value}
+          loading={loading.value}
+          dataSource={tableData.value}
           {...ctx.attrs}
           {...props.value}
-          dataSource={tableData.value}
           onChange={onChange}
           onExpand={onExpand}
           onExpandedRowsChange={onExpandedRowsChange}

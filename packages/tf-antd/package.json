@@ -23,8 +23,9 @@
   ],
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",
-    "tf-core": "workspace:*",
     "ant-design-vue": "catalog:",
+    "dayjs": "^1.11.13",
+    "tf-core": "workspace:*",
     "vue": "catalog:",
     "vue-component-type-helpers": "catalog:"
   },

@@ -169,8 +169,11 @@ const tableColumns: TfTableColumn<TableData & { operate: string }>[] = [
     field: "name",
     title: "姓名",
     search: {
-      type: "input",
-      hide: true,
+      type: "range-picker",
+      fields: ["address", "address2"],
+      props: {
+        showTime: true,
+      },
     },
     width: 200,
   },

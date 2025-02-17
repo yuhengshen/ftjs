@@ -62,7 +62,7 @@ export interface OnSearchInfo {
 }
 
 interface Pagination {
-  current: number;
+  page: number;
   pageSize: number;
 }
 
@@ -93,7 +93,7 @@ export const TfTable = defineTfTable(
 
     const handleSearch = async (
       pagination: Pagination = {
-        current: 1,
+        page: 1,
         pageSize: defaultPageSize.value ?? 20,
       },
     ) => {
@@ -130,7 +130,7 @@ export const TfTable = defineTfTable(
           current: currentPage.value,
           onChange: (page: number, pageSize: number) => {
             currentPage.value = page;
-            handleSearch({ current: page, pageSize });
+            handleSearch({ page, pageSize });
           },
         },
         tableLayout: "fixed" as const,

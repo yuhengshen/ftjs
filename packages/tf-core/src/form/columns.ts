@@ -202,4 +202,8 @@ export interface ExposeWithComment<T extends Record<string, any>> {
    * 表单提交事件
    */
   onSubmit?: (formData: T) => Promise<void> | void;
+  /**
+   * 缓存
+   */
+  cache: ComputedRef<string | undefined>;
 }

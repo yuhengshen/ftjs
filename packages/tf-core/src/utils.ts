@@ -76,3 +76,49 @@ export const unrefs = <T>(obj: T) => {
     Object.entries(obj).map(([key, value]) => [key, unref(value)]),
   ) as Unrefs<T>;
 };
+
+/**
+ * 获取缓存
+ * @param key 缓存 key
+ * @param cache 缓存名称
+ * @returns
+ */
+export const getStorage = (key: string, cache?: string) => {
+  let value = {};
+  if (cache) {
+    try {
+      const storageStr = localStorage.getItem(key);
+      if (storageStr) {
+        const storageV = JSON.parse(storageStr);
+        if (storageV[cache]) {
+          value = storageV[cache];
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      value = {};
+    }
+  }
+  return value;
+};
+
+/**
+ * 设置缓存
+ * @param key 缓存 key
+ * @param cache 缓存名称
+ */
+export const setStorage = (key: string, value: any, cache?: string) => {
+  if (cache) {
+    let obj = {};
+    const storageStr = localStorage.getItem(key);
+    if (storageStr) {
+      try {
+        obj = JSON.parse(storageStr) ?? {};
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    obj[cache] = value;
+    localStorage.setItem(key, JSON.stringify(obj));
+  }
+};

@@ -1,35 +1,24 @@
-import {
-  computed,
-  ComputedRef,
-  inject,
-  provide,
-  WritableComputedRef,
-} from "vue";
-import { TfTableColumn } from "./columns";
-import { FormContainerProps, TfFormColumn } from "../form";
+import { computed, ComputedRef, inject, provide } from "vue";
+import { TfFormColumn } from "../form";
 import {
   DefineTableEvents,
-  TableProps,
   TableRuntimeEvents,
+  TfTableHOCComponentIntrinsicProps,
   TfTableHOCComponentProps,
 } from "./define-components";
+import { ComputedRefKeys } from "../type-helper";
+import { TfTableColumn } from "./columns";
 
 const provideTableKey = Symbol("tf-core-table-provide");
 
-interface TableInject<
+type TableInject<
   TableData extends Record<string, any>,
   FormData = TableData,
-> extends DefineTableEvents<TableData, FormData> {
-  formColumns: ComputedRef<TfFormColumn<FormData>[]>;
-  tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
-  tableProps: ComputedRef<TableProps<TableData>>;
-  formProps: ComputedRef<FormContainerProps>;
-  tableData: ComputedRef<TableData[]>;
-  loading: ComputedRef<boolean>;
-  total: ComputedRef<number>;
-  defaultPageSize: ComputedRef<number>;
-  keyField: ComputedRef<string>;
-}
+> = DefineTableEvents<TableData, FormData> &
+  ComputedRefKeys<TfTableHOCComponentIntrinsicProps<TableData, FormData>> & {
+    formColumns: ComputedRef<TfFormColumn<FormData>[]>;
+    tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
+  };
 
 export const useTable = <
   TableData extends Record<string, any>,
@@ -65,6 +54,8 @@ export const useTable = <
     "total",
     "defaultPageSize",
     "keyField",
+    "id",
+    "cache",
   ];
 
   const computedProps = computedList.reduce(

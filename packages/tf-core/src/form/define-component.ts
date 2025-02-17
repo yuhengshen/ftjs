@@ -63,6 +63,10 @@ export type TfFormHOCComponent = new <
 >(props: {}) => ComponentPublicInstance<{}, TfFormHOCComponentExposed<T>, {}>;
 
 export interface TfFormHOCComponentProps<T extends Record<string, any>> {
+  /**
+   * 用于缓存配置，不填则不缓存
+   */
+  cache?: string;
   columns: TfFormColumn<T>[];
   formData?: T;
   /**
@@ -141,6 +145,7 @@ export const defineTfForm = (
     },
     {
       props: [
+        "cache",
         "columns",
         "formData",
         "formProps",

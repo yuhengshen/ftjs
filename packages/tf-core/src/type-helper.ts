@@ -1,4 +1,4 @@
-import { MaybeRef } from "vue";
+import { ComputedRef, MaybeRef } from "vue";
 
 /**
  * 临时工具类型减1
@@ -73,4 +73,11 @@ type UnionToTuple<T> = (
  */
 export type WithLengthKeys<T> = (keyof T)[] & {
   length: TupleKeys<T>["length"];
+};
+
+/**
+ * 工具类型：将对象中所有属性值转为 {@link ComputedRef}
+ */
+export type ComputedRefKeys<T> = {
+  [K in keyof T]-?: T[K] extends ComputedRef<any> ? T[K] : ComputedRef<T[K]>;
 };

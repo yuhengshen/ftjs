@@ -88,6 +88,7 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
     columnsChecked,
     columnsSort,
     columns,
+    cache,
     formProps: _formProps,
     onSubmit,
     getFormData,
@@ -271,9 +272,11 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
           }}
         >
           <div style="display: flex; gap: 10px;">
-            <Button icon={<SettingOutlined />} onClick={setting}>
-              配置
-            </Button>
+            {cache.value && (
+              <Button icon={<SettingOutlined />} onClick={setting}>
+                配置
+              </Button>
+            )}
             <Button type="primary" htmlType="submit">
               查询
             </Button>

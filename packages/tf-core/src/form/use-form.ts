@@ -13,7 +13,16 @@ import {
   inject,
   ComputedRef,
 } from "vue";
-import { cloneDeep, isEqualStrArr, get, has, set, getField } from "../utils";
+import {
+  cloneDeep,
+  isEqualStrArr,
+  get,
+  has,
+  set,
+  getField,
+  getStorage,
+  setStorage,
+} from "../utils";
 import {
   DefineFormEvents,
   FormRuntimeEvents,
@@ -36,6 +45,7 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "setAsDefault"
   | "resetColumnsSort"
   | "resetColumnsChecked"
+  | "cache"
 > &
   DefineFormEvents<T>;
 
@@ -46,6 +56,7 @@ const provideFormKey = Symbol("tf-core-form-provide");
  */
 const useColumnsChecked = <T extends Record<string, any>>(
   columns: ComputedRef<TfFormColumn<T>[]>,
+  cache?: string,
 ) => {
   const storageKey = `tf-form-columns-checked-obj`;
 
@@ -56,8 +67,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
     });
     return Object.fromEntries(entries);
   });
-  const storageStr = localStorage.getItem(storageKey);
-  const storageV = storageStr ? JSON.parse(storageStr) : {};
+  const storageV = getStorage(storageKey, cache);
 
   const vRef = ref<Record<RecordPath<T>, boolean>>(
     Object.assign({}, columnsV.value, storageV),
@@ -79,7 +89,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
         return [field, show];
       });
       vRef.value = Object.fromEntries(entries);
-      localStorage.setItem(storageKey, JSON.stringify(storageV));
+      setStorage(storageKey, storageV, cache);
     },
   });
 
@@ -100,6 +110,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
  */
 const useColumnsSorted = <T extends Record<string, any>>(
   columns: ComputedRef<TfFormColumn<T>[]>,
+  cache?: string,
 ) => {
   const storageKey = `tf-form-columns-sorted-obj`;
 
@@ -110,8 +121,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
     });
     return Object.fromEntries(entries);
   });
-  const storageStr = localStorage.getItem(storageKey);
-  const storageV = storageStr ? JSON.parse(storageStr) : {};
+  const storageV = getStorage(storageKey, cache);
 
   const vRef = ref<Record<RecordPath<T>, number>>(
     Object.assign({}, columnsV.value, storageV),
@@ -132,7 +142,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
         return [field, v[field]];
       });
       vRef.value = Object.fromEntries(entries);
-      localStorage.setItem(storageKey, JSON.stringify(storageV));
+      setStorage(storageKey, storageV, cache);
     },
   });
 
@@ -161,8 +171,14 @@ export const useForm = <T extends Record<string, any>>(
   const formLocal = ref({} as T);
   const form = (unref(formData) != null ? formData : formLocal) as Ref<T>;
 
-  const { columnsChecked, resetColumnsChecked } = useColumnsChecked(columns);
-  const { columnsSort, resetColumnsSort } = useColumnsSorted(columns);
+  const { columnsChecked, resetColumnsChecked } = useColumnsChecked(
+    columns,
+    props.cache,
+  );
+  const { columnsSort, resetColumnsSort } = useColumnsSorted(
+    columns,
+    props.cache,
+  );
 
   let tmpDefaultForm: T;
 
@@ -369,6 +385,8 @@ export const useForm = <T extends Record<string, any>>(
 
   const formProps = computed(() => props.formProps);
 
+  const cache = computed(() => props.cache);
+
   provide<FormInject<T>>(provideFormKey, {
     form,
     columnsChecked,
@@ -376,6 +394,7 @@ export const useForm = <T extends Record<string, any>>(
     columns,
     visibleColumns,
     formProps,
+    cache,
     getFormData,
     resetToDefault,
     setAsDefault,

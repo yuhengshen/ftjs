@@ -54,6 +54,7 @@ export const TfTable = defineTfTable(
       total,
       keyField,
       defaultPageSize,
+      cache,
       onSearch,
       onChange,
       onExpand,
@@ -115,6 +116,7 @@ export const TfTable = defineTfTable(
       <div>
         <TfFormSearch
           ref={formRef}
+          cache={cache.value}
           columns={formColumns.value}
           onSubmit={handleSearch}
           {...formProps.value}

@@ -11,10 +11,14 @@ import { WithLengthKeys } from "../type-helper";
  */
 export interface TableProps<TableData extends Record<string, any>> {}
 
-export interface TfTableHOCComponentProps<
+export interface TfTableHOCComponentIntrinsicProps<
   TableData extends Record<string, any>,
   SearchData = TableData,
-> extends DefineTableEvents<TableData, SearchData> {
+> {
+  /**
+   * 用于缓存配置，不填则不缓存
+   */
+  cache?: string;
   /**
    * 列定义
    */
@@ -53,6 +57,11 @@ export interface TfTableHOCComponentProps<
   keyField?: string;
 }
 
+export interface TfTableHOCComponentProps<
+  TableData extends Record<string, any>,
+  SearchData = TableData,
+> extends DefineTableEvents<TableData, SearchData>,
+    TfTableHOCComponentIntrinsicProps<TableData, SearchData> {}
 /**
  * 由内部定义其具体类型
  *
@@ -83,6 +92,7 @@ export function defineTfTable<TableData extends Record<string, any>>(
   });
 
   const runtimeProps = [
+    "cache",
     "columns",
     "searchColumns",
     "tableProps",

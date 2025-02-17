@@ -8,7 +8,7 @@
   "scripts": {
     "build": "vite build",
     "release": "tsx ../../scripts/release.ts",
-    "publish": "tsx ../../scripts/publish.ts"
+    "pub": "tsx ../../scripts/publish.ts"
   },
   "exports": {
     ".": {

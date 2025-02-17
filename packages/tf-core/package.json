@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "release": "tsx ../../scripts/release.ts",
-    "publish": "tsx ../../scripts/publish.ts"
+    "pub": "tsx ../../scripts/publish.ts"
   },
   "exports": {
     ".": {

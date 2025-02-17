@@ -1,13 +1,12 @@
 {
-  "name": "@tf/playground",
+  "name": "tf-playground",
   "version": "0.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build-deps": "pnpm -w build-core && pnpm -w build-antd"
+    "dev": "vite"
   },
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",

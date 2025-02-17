@@ -25,12 +25,19 @@ export default defineFormComponent<"input">(props => {
   return () => {
     const _props = unrefs(props.column.props);
 
+    const placeholder = `请输入${formItemProps.value.label}`;
+
     return (
       <FormItem {...formItemProps.value}>
         {toValue(props.isView) ? (
           <div>{valueComputed.value}</div>
         ) : (
-          <Input v-model:value={valueComputed.value} {..._props} />
+          <Input
+            v-model:value={valueComputed.value}
+            allowClear
+            placeholder={placeholder}
+            {..._props}
+          />
         )}
       </FormItem>
     );

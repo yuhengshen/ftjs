@@ -1,17 +1,18 @@
 import { setupTfForm } from "tf-core";
 import { FormProps } from "ant-design-vue";
-import input, { TfFormColumnInput } from "./components/input";
-import select, { TfFormColumnSelect } from "./components/select";
 import type {
   RuleType,
   StoreValue,
   ValidatorRule,
 } from "ant-design-vue/es/form/interface";
 import type { VNode } from "vue";
+import input, { TfFormColumnInput } from "./components/input";
+import select, { TfFormColumnSelect } from "./components/select";
 import datePicker, { TfFormColumnDatePicker } from "./components/date-picker";
 import rangePicker, {
   TfFormColumnRangePicker,
 } from "./components/range-picker";
+import radio, { TfFormColumnRadio } from "./components/radio";
 export type VNodeChildAtom =
   | VNode
   | string
@@ -36,6 +37,7 @@ declare module "tf-core" {
   interface TfFormColumnMap<T> {
     input: TfFormColumnInput<T>;
     select: TfFormColumnSelect<T>;
+    radio: TfFormColumnRadio<T>;
     "date-picker": TfFormColumnDatePicker<T>;
     "range-picker": TfFormColumnRangePicker<T>;
   }
@@ -77,6 +79,7 @@ export default function register() {
     renderMap: {
       input,
       select,
+      radio,
       "date-picker": datePicker,
       "range-picker": rangePicker,
     },

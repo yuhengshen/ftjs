@@ -52,6 +52,11 @@ declare module "tf-core" {
     onResizeColumn?: TableProps<TableData>["onResizeColumn"];
     onSearch?: (searchData: SearchData, info: OnSearchInfo) => void;
   }
+
+  interface DefineTableSlots<TableData extends Record<string, any>> {
+    buttons?: () => any;
+    tools?: () => any;
+  }
 }
 
 export interface OnSearchInfo {
@@ -145,15 +150,21 @@ export const TfTable = defineTfTable(
       y: undefined,
     });
 
-    let containerStyle: CSSProperties;
+    let containerStyle: CSSProperties = {
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+    };
     let tableStyle: CSSProperties;
     const containerRef = ref<HTMLDivElement>();
+    const toolbar = ref<HTMLDivElement>();
 
     /**
      * 计算表格高度
      */
     const calcTableHeight = () => {
       const container = containerRef.value;
+      const toolbarHeight = toolbar.value?.clientHeight ?? 0;
       const table = container?.querySelector(
         ".ant-table-wrapper",
       ) as HTMLDivElement;
@@ -166,6 +177,7 @@ export const TfTable = defineTfTable(
       if (!table) return;
       let y =
         table.clientHeight -
+        toolbarHeight -
         // pagination不是立即渲染的，其高度为64
         64 -
         (header?.clientHeight ?? 0) -
@@ -178,8 +190,7 @@ export const TfTable = defineTfTable(
 
     if (fitFlexHeight.value ?? true) {
       containerStyle = {
-        display: "flex",
-        flexDirection: "column",
+        ...containerStyle,
         flex: "1",
         minHeight: 0,
       };
@@ -218,12 +229,13 @@ export const TfTable = defineTfTable(
           columns={formColumns.value}
           onSubmit={() => handleSearch()}
           {...formProps.value}
-          style={{
-            borderBottom: "1px solid #f0f0f0",
-            margin: "0 4px 10px 4px",
-            paddingBottom: "10px",
-          }}
         />
+        {(ctx.slots.buttons || ctx.slots.tools) && (
+          <div ref={toolbar}>
+            {ctx.slots.buttons?.()}
+            {ctx.slots.tools?.()}
+          </div>
+        )}
         <Table
           style={tableStyle}
           columns={columns.value}

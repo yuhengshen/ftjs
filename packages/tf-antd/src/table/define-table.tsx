@@ -5,7 +5,7 @@ import {
   TableProps as AntdTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
-import { computed, onMounted, ref } from "vue";
+import { computed, CSSProperties, onMounted, onUnmounted, ref } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
 
 declare module "tf-core" {
@@ -18,22 +18,34 @@ declare module "tf-core" {
     extends Omit<
       AntdTableProps<TableData>,
       "columns" | "pagination" | "loading"
-    > {
+    > {}
+
+  interface DefineTableSlots<TableData extends Record<string, any>>
+    extends ComponentSlots<typeof Table> {}
+
+  interface DefineTableProps<
+    TableData extends Record<string, any>,
+    SearchData = TableData,
+  > {
     /**
      * 是否初始化搜索
      *
      * @default true
      */
     initSearch?: boolean;
-  }
 
-  interface DefineTableSlots<TableData extends Record<string, any>>
-    extends ComponentSlots<typeof Table> {}
-
-  interface DefineTableEvents<
-    TableData extends Record<string, any>,
-    SearchData = TableData,
-  > {
+    /**
+     * 是否自适应父元素(flex布局)剩余高度
+     *
+     * 如果为true，则table会占据父元素的剩余高度，此时可以通过 {@see minHeight} 控制最小高度，避免高度不够展示内容
+     * @default true
+     */
+    fitFlexHeight?: boolean;
+    /**
+     * 自适应父元素(flex布局)剩余高度时，最小高度
+     * @default 210
+     */
+    minHeight?: number;
     onChange?: TableProps<TableData>["onChange"];
     onExpand?: TableProps<TableData>["onExpand"];
     onExpandedRowsChange?: TableProps<TableData>["onExpandedRowsChange"];
@@ -55,6 +67,9 @@ export const TfTable = defineTfTable(
       keyField,
       defaultPageSize,
       cache,
+      initSearch,
+      fitFlexHeight,
+      minHeight,
       onSearch,
       onChange,
       onExpand,
@@ -71,7 +86,7 @@ export const TfTable = defineTfTable(
     };
 
     onMounted(() => {
-      if (tableProps.value?.initSearch ?? true) {
+      if (initSearch.value ?? true) {
         handleSearch();
       }
     });
@@ -102,18 +117,84 @@ export const TfTable = defineTfTable(
           },
         },
         tableLayout: "fixed" as const,
-        scroll: {
-          scrollToFirstRowOnChange: true,
-          x: "max-content",
-          y: 500,
-        },
         rowKey: keyField.value ?? "id",
         ...tableProps.value,
       };
     });
 
+    const scroll = ref<AntdTableProps<any>["scroll"]>({
+      scrollToFirstRowOnChange: true,
+      x: "max-content",
+      y: undefined,
+    });
+
+    let containerStyle: CSSProperties;
+    let tableStyle: CSSProperties;
+    const containerRef = ref<HTMLDivElement>();
+
+    /**
+     * 计算表格高度
+     */
+    const calcTableHeight = () => {
+      const container = containerRef.value;
+      const table = container?.querySelector(
+        ".ant-table-wrapper",
+      ) as HTMLDivElement;
+      const header = container?.querySelector(
+        ".ant-table-thead",
+      ) as HTMLDivElement;
+      const footer = container?.querySelector(
+        ".ant-table-footer",
+      ) as HTMLDivElement;
+      if (!table) return;
+      let y =
+        table.clientHeight -
+        // pagination不是立即渲染的，其高度为64
+        64 -
+        (header?.clientHeight ?? 0) -
+        (footer?.clientHeight ?? 0);
+
+      let minHeightValue = minHeight.value ?? 210;
+      if (y < minHeightValue) y = minHeightValue;
+      scroll.value!.y = y;
+    };
+
+    if (fitFlexHeight.value ?? true) {
+      containerStyle = {
+        display: "flex",
+        flexDirection: "column",
+        flex: "1",
+        minHeight: 0,
+      };
+      tableStyle = {
+        flex: "1",
+        minHeight: 0,
+      };
+      let resizeObserver: ResizeObserver;
+      let prevHeight: number;
+      let timer: ReturnType<typeof setTimeout>;
+      onMounted(() => {
+        resizeObserver = new ResizeObserver(entries => {
+          // 只监听高度变化
+          const height = entries[0].contentRect.height;
+          if (prevHeight === height) return;
+          prevHeight = height;
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            calcTableHeight();
+          }, 100);
+        });
+        resizeObserver.observe(containerRef.value!);
+      });
+      onUnmounted(() => {
+        resizeObserver.disconnect();
+      });
+    }
+
     return () => (
-      <div>
+      <div ref={containerRef} style={containerStyle}>
         <TfFormSearch
           ref={formRef}
           cache={cache.value}
@@ -127,9 +208,11 @@ export const TfTable = defineTfTable(
           }}
         />
         <Table
+          style={tableStyle}
           columns={columns.value}
           loading={loading.value}
           dataSource={tableData.value}
+          scroll={scroll.value}
           {...ctx.attrs}
           {...props.value}
           onChange={onChange}
@@ -150,5 +233,8 @@ export const TfTable = defineTfTable(
     "onExpandedRowsChange",
     "onResizeColumn",
     "onSearch",
+    "initSearch",
+    "fitFlexHeight",
+    "minHeight",
   ],
 );

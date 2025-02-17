@@ -302,22 +302,47 @@ const tableData = ref<TableData[]>([]);
       @submit="onSubmit"
     /> -->
     <!-- <hr /> -->
-    <TfTable
-      :columns="tableColumns"
-      :loading
-      :total
-      :table-data
-      cache="table1"
-      @search="onSubmit"
+    <div
+      style="
+        height: 100vh;
+        padding: 10px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+      "
     >
-      <template #footer="currentPageData">
-        <div>{{ currentPageData.length }}</div>
-      </template>
-      <template #bodyCell="{ column, index, record, text, value }">
-        <div v-if="column.dataIndex === 'operate'">
-          <Button>操作</Button>
-        </div>
-      </template>
-    </TfTable>
+      <TfTable
+        :columns="tableColumns"
+        :loading
+        :total
+        :table-data
+        cache="table1"
+        fit-height
+        @search="onSubmit"
+      >
+        <template #footer="currentPageData">
+          <div>{{ currentPageData.length }}</div>
+        </template>
+        <template #bodyCell="{ column, index, record, text, value }">
+          <div v-if="column.dataIndex === 'operate'">
+            <Button>操作</Button>
+          </div>
+        </template>
+      </TfTable>
+    </div>
   </div>
 </template>
+
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+</style>

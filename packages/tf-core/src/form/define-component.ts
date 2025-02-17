@@ -43,7 +43,7 @@ export interface DefineFormSlots<T extends Record<string, any>> {
 /**
  * @public
  */
-export interface DefineFormEvents<T extends Record<string, any>> {
+export interface DefineFormProps<T extends Record<string, any>> {
   /**
    * 提交表单
    * @param formData 有效值
@@ -51,8 +51,8 @@ export interface DefineFormEvents<T extends Record<string, any>> {
   onSubmit?: (formData: T) => Promise<void> | void;
 }
 
-export type FormRuntimeEvents = WithLengthKeys<
-  Omit<DefineFormEvents<any>, "onSubmit">
+export type FormRuntimeProps = WithLengthKeys<
+  Omit<DefineFormProps<any>, "onSubmit">
 >;
 
 /**
@@ -99,7 +99,7 @@ export interface TfFormHOCComponentIntrinsicProps<
 
 export interface TfFormHOCComponentProps<T extends Record<string, any>>
   extends TfFormHOCComponentIntrinsicProps<T>,
-    DefineFormEvents<T> {}
+    DefineFormProps<T> {}
 
 export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
   ExposeWithComment<T>,
@@ -114,7 +114,7 @@ export const defineTfForm = (
     props: {},
     ctx: SetupContext<EmitsOptions, SlotsType<DefineFormSlots<any>>>,
   ) => any,
-  _runtimeEvents: FormRuntimeEvents,
+  _runtimeProps: FormRuntimeProps,
 ) => {
   const layoutComponent = defineComponent(setup, {
     inheritAttrs: false,
@@ -128,7 +128,7 @@ export const defineTfForm = (
     "formProps",
     "onSubmit",
     "onUpdate:formData",
-    ..._runtimeEvents,
+    ..._runtimeProps,
   ] as any;
 
   const Component = defineComponent(
@@ -147,7 +147,7 @@ export const defineTfForm = (
       });
 
       const { getFormData, resetToDefault, setAsDefault, visibleColumns } =
-        useForm(props, formData, _runtimeEvents);
+        useForm(props, formData, _runtimeProps);
 
       ctx.expose({
         getFormData,

@@ -24,12 +24,12 @@ import {
   setStorage,
 } from "../utils";
 import {
-  DefineFormEvents,
-  FormRuntimeEvents,
+  DefineFormProps,
+  FormRuntimeProps,
   TfFormHOCComponentProps,
 } from "./define-component";
 import { ExposeWithComment, TfFormColumn } from "./columns";
-import { RecordPath } from "../type-helper";
+import { RecordPath, SplitEventKeys } from "../type-helper";
 
 export type FormInject<T extends Record<string, any>> = Pick<
   ExposeWithComment<T>,
@@ -47,7 +47,7 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "resetColumnsChecked"
   | "cache"
 > &
-  DefineFormEvents<T>;
+  SplitEventKeys<DefineFormProps<T>>;
 
 const provideFormKey = Symbol("tf-core-form-provide");
 
@@ -164,7 +164,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
 export const useForm = <T extends Record<string, any>>(
   props: TfFormHOCComponentProps<T>,
   formData: MaybeRef<T>,
-  runtimeEvents: FormRuntimeEvents,
+  runtimeProps: FormRuntimeProps,
 ) => {
   const columns = computed(() => toValue(props.columns));
 
@@ -203,10 +203,14 @@ export const useForm = <T extends Record<string, any>>(
       });
   });
 
-  const customEvents = runtimeEvents.reduce((acc, event) => {
-    acc[event] = props[event];
+  const customProps = runtimeProps.reduce((acc, event: string) => {
+    if (event.startsWith("on")) {
+      acc[event] = props[event];
+    } else {
+      acc[event] = computed(() => props[event]);
+    }
     return acc;
-  }, {} as DefineFormEvents<T>);
+  }, {});
 
   watch(
     visibleColumns,
@@ -401,7 +405,7 @@ export const useForm = <T extends Record<string, any>>(
     onSubmit: props.onSubmit,
     resetColumnsChecked,
     resetColumnsSort,
-    ...customEvents,
+    ...customProps,
   });
 
   return {

@@ -81,3 +81,15 @@ export type WithLengthKeys<T> = (keyof T)[] & {
 export type ComputedRefKeys<T> = {
   [K in keyof T]-?: T[K] extends ComputedRef<any> ? T[K] : ComputedRef<T[K]>;
 };
+
+/**
+ * 工具类型：将对象中所有属性值分流，分为事件和非事件
+ *
+ * 事件可为空。
+ * 属性为可为空的计算属性，本身一定存在。
+ */
+export type SplitEventKeys<T> = {
+  [K in keyof T as K extends `on${string}` ? K : never]?: T[K];
+} & {
+  [K in keyof T as K extends `on${string}` ? never : K]-?: ComputedRef<T[K]>;
+};

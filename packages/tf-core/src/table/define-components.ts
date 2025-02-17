@@ -60,14 +60,14 @@ export interface TfTableHOCComponentIntrinsicProps<
 export interface TfTableHOCComponentProps<
   TableData extends Record<string, any>,
   SearchData = TableData,
-> extends DefineTableEvents<TableData, SearchData>,
+> extends DefineTableProps<TableData, SearchData>,
     TfTableHOCComponentIntrinsicProps<TableData, SearchData> {}
 /**
- * 由内部定义其具体类型
+ * 由内部定义额外的Props类型，需要另外指定 runtimeProps
  *
  * @public
  */
-export interface DefineTableEvents<
+export interface DefineTableProps<
   TableData extends Record<string, any>,
   SearchData = TableData,
 > {}
@@ -77,14 +77,14 @@ export interface DefineTableEvents<
  */
 export interface DefineTableSlots<TableData extends Record<string, any>> {}
 
-export type TableRuntimeEvents = WithLengthKeys<DefineTableEvents<any, any>>;
+export type TableRuntimeProps = WithLengthKeys<DefineTableProps<any, any>>;
 
 export function defineTfTable<TableData extends Record<string, any>>(
   setup: (
     props: {},
     ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
   ) => any,
-  _runtimeEvents: TableRuntimeEvents,
+  _runtimeProps: TableRuntimeProps,
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
@@ -102,7 +102,7 @@ export function defineTfTable<TableData extends Record<string, any>>(
     "defaultPageSize",
     "loading",
     "keyField",
-    ..._runtimeEvents,
+    ..._runtimeProps,
   ] as any;
 
   const TfTable = defineComponent(
@@ -110,7 +110,7 @@ export function defineTfTable<TableData extends Record<string, any>>(
       props: TfTableHOCComponentProps<TableData, SearchData>,
       ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
     ) => {
-      useTable(props, _runtimeEvents);
+      useTable(props, _runtimeProps);
 
       return () => h(TableComponent, null, ctx.slots);
     },

@@ -1,12 +1,12 @@
 import { computed, ComputedRef, inject, provide } from "vue";
 import { TfFormColumn } from "../form";
 import {
-  DefineTableEvents,
-  TableRuntimeEvents,
+  DefineTableProps,
+  TableRuntimeProps,
   TfTableHOCComponentIntrinsicProps,
   TfTableHOCComponentProps,
 } from "./define-components";
-import { ComputedRefKeys } from "../type-helper";
+import { ComputedRefKeys, SplitEventKeys } from "../type-helper";
 import { TfTableColumn } from "./columns";
 
 const provideTableKey = Symbol("tf-core-table-provide");
@@ -14,7 +14,7 @@ const provideTableKey = Symbol("tf-core-table-provide");
 type TableInject<
   TableData extends Record<string, any>,
   FormData = TableData,
-> = DefineTableEvents<TableData, FormData> &
+> = SplitEventKeys<DefineTableProps<TableData, FormData>> &
   ComputedRefKeys<TfTableHOCComponentIntrinsicProps<TableData, FormData>> & {
     formColumns: ComputedRef<TfFormColumn<FormData>[]>;
     tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
@@ -25,7 +25,7 @@ export const useTable = <
   FormData = TableData,
 >(
   props: TfTableHOCComponentProps<TableData, FormData>,
-  runtimeEvents: TableRuntimeEvents,
+  runtimeProps: TableRuntimeProps,
 ) => {
   const formColumns = computed<TfFormColumn<FormData>[]>(() => {
     const fromTable = props.columns
@@ -46,39 +46,36 @@ export const useTable = <
     return props.columns;
   });
 
-  const computedList = [
+  const injectPropsList = [
+    "cache",
+    "columns",
+    "searchColumns",
+    "total",
+    "defaultPageSize",
+    "loading",
     "tableProps",
     "formProps",
     "tableData",
-    "loading",
-    "total",
-    "defaultPageSize",
     "keyField",
-    "id",
-    "cache",
+    ...runtimeProps,
   ];
 
-  const computedProps = computedList.reduce(
+  const injectProps = injectPropsList.reduce(
     (acc, key) => {
-      acc[key] = computed(() => props[key]);
+      if (key.startsWith("on")) {
+        acc[key] = props[key];
+      } else {
+        acc[key] = computed(() => props[key]);
+      }
       return acc;
     },
     {} as Record<string, any>,
   );
 
-  const customEvents = runtimeEvents.reduce(
-    (acc, event) => {
-      acc[event] = props[event];
-      return acc;
-    },
-    {} as DefineTableEvents<TableData, FormData>,
-  );
-
   provide(provideTableKey, {
     formColumns,
     tableColumns,
-    ...computedProps,
-    ...customEvents,
+    ...injectProps,
   });
 };
 

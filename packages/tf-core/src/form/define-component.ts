@@ -62,17 +62,32 @@ export type TfFormHOCComponent = new <
   T extends Record<string, any>,
 >(props: {}) => ComponentPublicInstance<{}, TfFormHOCComponentExposed<T>, {}>;
 
-export interface TfFormHOCComponentProps<T extends Record<string, any>> {
+export interface TfFormHOCComponentIntrinsicProps<
+  T extends Record<string, any>,
+> {
   /**
    * 用于缓存配置，不填则不缓存
    */
   cache?: string;
+  /**
+   * 表单列定义
+   */
   columns: TfFormColumn<T>[];
+  /**
+   * v-model:formData 的值
+   *
+   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfFrom内部会生成一个内部值
+   */
   formData?: T;
   /**
-   * form 容器组件 props
+   * form 容器组件 props {@link FormContainerProps}
    */
   formProps?: FormContainerProps;
+  /**
+   * v-model:formData 的更新函数
+   *
+   * 需要`formData`不为空
+   */
   "onUpdate:formData"?: (value: T) => void;
   /**
    * 提交函数
@@ -82,6 +97,10 @@ export interface TfFormHOCComponentProps<T extends Record<string, any>> {
   onSubmit?: (formData: T) => Promise<void> | void;
 }
 
+export interface TfFormHOCComponentProps<T extends Record<string, any>>
+  extends TfFormHOCComponentIntrinsicProps<T>,
+    DefineFormEvents<T> {}
+
 export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
   ExposeWithComment<T>,
   "getFormData" | "resetToDefault" | "setAsDefault"
@@ -89,19 +108,28 @@ export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
 
 /**
  * 定义表单容器组件
-
  */
 export const defineTfForm = (
   setup: (
     props: {},
     ctx: SetupContext<EmitsOptions, SlotsType<DefineFormSlots<any>>>,
   ) => any,
-  _runtimeEvents: FormRuntimeEvents = [],
+  _runtimeEvents: FormRuntimeEvents,
 ) => {
   const layoutComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfFormContainer",
   });
+
+  const runtimeProps = [
+    "cache",
+    "columns",
+    "formData",
+    "formProps",
+    "onSubmit",
+    "onUpdate:formData",
+    ..._runtimeEvents,
+  ] as any;
 
   const Component = defineComponent(
     <T extends Record<string, any>>(
@@ -144,15 +172,7 @@ export const defineTfForm = (
         });
     },
     {
-      props: [
-        "cache",
-        "columns",
-        "formData",
-        "formProps",
-        "onSubmit",
-        "onUpdate:formData",
-        ..._runtimeEvents,
-      ] as any,
+      props: runtimeProps,
       name: "TfForm",
     },
   );

@@ -80,7 +80,7 @@ export const TfForm = defineTfForm((_, ctx) => {
       </FormItem>
     </Form>
   );
-});
+}, []);
 
 export const TfFormSearch = defineTfForm((_, ctx) => {
   const {
@@ -293,4 +293,4 @@ export const TfFormSearch = defineTfForm((_, ctx) => {
       </Form>
     </>
   );
-});
+}, []);

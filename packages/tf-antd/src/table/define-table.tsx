@@ -221,6 +221,13 @@ export const TfTable = defineTfTable(
       });
     }
 
+    ctx.expose({
+      refresh: async () => {
+        await formRef.value?.resetToDefault();
+        handleSearch();
+      },
+    });
+
     return () => (
       <div ref={containerRef} style={containerStyle}>
         <TfFormSearch

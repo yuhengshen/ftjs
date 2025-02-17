@@ -1,4 +1,12 @@
-import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
+import {
+  computed,
+  defineComponent,
+  EmitsOptions,
+  h,
+  ref,
+  SetupContext,
+  SlotsType,
+} from "vue";
 import { TfTableColumn } from "./columns";
 import { useTable } from "./use-table";
 import { FormContainerProps, TfFormColumn } from "../form";
@@ -111,8 +119,20 @@ export function defineTfTable<TableData extends Record<string, any>>(
       ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
     ) => {
       useTable(props, _runtimeProps);
+      const tableRef = ref();
 
-      return () => h(TableComponent, null, ctx.slots);
+      ctx.expose({
+        refresh: () => tableRef.value?.refresh(),
+      });
+
+      return () =>
+        h(
+          TableComponent,
+          {
+            ref: tableRef,
+          },
+          ctx.slots,
+        );
     },
     {
       props: runtimeProps,

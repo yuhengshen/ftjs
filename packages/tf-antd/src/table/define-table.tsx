@@ -50,8 +50,20 @@ declare module "tf-core" {
     onExpand?: TableProps<TableData>["onExpand"];
     onExpandedRowsChange?: TableProps<TableData>["onExpandedRowsChange"];
     onResizeColumn?: TableProps<TableData>["onResizeColumn"];
-    onSearch?: (searchData: SearchData) => void;
+    onSearch?: (searchData: SearchData, info: OnSearchInfo) => void;
   }
+}
+
+export interface OnSearchInfo {
+  /**
+   * 分页信息
+   */
+  pagination: Pagination;
+}
+
+interface Pagination {
+  current: number;
+  pageSize: number;
 }
 
 export const TfTable = defineTfTable(
@@ -79,10 +91,15 @@ export const TfTable = defineTfTable(
 
     const formRef = ref<InstanceType<typeof TfFormSearch>>();
 
-    const handleSearch = async () => {
+    const handleSearch = async (
+      pagination: Pagination = {
+        current: 1,
+        pageSize: defaultPageSize.value ?? 20,
+      },
+    ) => {
       if (!onSearch) return;
       const formData = formRef.value?.getFormData()!;
-      onSearch(formData);
+      onSearch(formData, { pagination });
     };
 
     onMounted(() => {
@@ -113,7 +130,7 @@ export const TfTable = defineTfTable(
           current: currentPage.value,
           onChange: (page: number, pageSize: number) => {
             currentPage.value = page;
-            handleSearch();
+            handleSearch({ current: page, pageSize });
           },
         },
         tableLayout: "fixed" as const,
@@ -199,7 +216,7 @@ export const TfTable = defineTfTable(
           ref={formRef}
           cache={cache.value}
           columns={formColumns.value}
-          onSubmit={handleSearch}
+          onSubmit={() => handleSearch()}
           {...formProps.value}
           style={{
             borderBottom: "1px solid #f0f0f0",

@@ -103,8 +103,8 @@ const formData = ref<FormData>({
 const total = ref(0);
 const loading = ref(false);
 
-const onSubmit = async (formData: FormData) => {
-  console.log("search", formData);
+const onSubmit = async (formData: FormData, { pagination }) => {
+  console.log("search", formData, pagination);
   let index = Math.floor(Math.random() * 100);
   loading.value = true;
   await new Promise(resolve => setTimeout(resolve, 2000));

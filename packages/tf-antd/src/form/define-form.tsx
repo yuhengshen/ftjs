@@ -9,7 +9,7 @@ import {
   Modal,
   Tree,
 } from "ant-design-vue";
-import { computed, ref, toValue, watchEffect } from "vue";
+import { computed, ref, toValue, useId, watchEffect } from "vue";
 
 export const useRules = () => {
   const { columns } = useFormInject()!;
@@ -81,8 +81,10 @@ export const TfForm = defineTfForm(
       };
     });
 
+    const id = useId();
+
     return () => (
-      <Form style={{ width }} {...ctx.attrs} {...formProps.value}>
+      <Form name={id} style={{ width }} {...ctx.attrs} {...formProps.value}>
         {ctx.slots.formContent()}
         <FormItem label=" " colon={false}>
           <Button type="primary" htmlType="submit">
@@ -213,6 +215,8 @@ export const TfFormSearch = defineTfForm(
       settingModal.value = false;
     };
 
+    const id = useId();
+
     return () => (
       <>
         <Modal
@@ -289,6 +293,7 @@ export const TfFormSearch = defineTfForm(
         </Modal>
 
         <Form
+          name={id}
           style={{
             gap: "10px 0",
           }}

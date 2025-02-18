@@ -30,6 +30,9 @@ export const get = (obj: any, path: string) => {
   const keys = path.split(".");
   let result = obj;
   for (const key of keys) {
+    if (result == null || typeof result !== "object") {
+      return undefined;
+    }
     if (Reflect.has(result, key)) {
       result = Reflect.get(result, key);
     } else {

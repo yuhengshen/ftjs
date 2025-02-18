@@ -20,7 +20,7 @@ export interface CommonFormItemProps<T extends TfFormColumn<any>> {
   /** column 定义 */
   column: T;
   /** 是否查看模式 */
-  isView: MaybeRefOrGetter<boolean>;
+  isView: boolean;
 }
 
 /**

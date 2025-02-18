@@ -1,11 +1,12 @@
-import { computed } from "vue";
+import { computed, toValue } from "vue";
 import { TfFormColumn } from "./columns";
 import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
+import { CommonFormItemProps } from "./define-component";
 
 export interface UseFormItemOptions<T extends TfFormColumn<any>> {
-  /** column 定义 */
-  column: T;
+  /** 通用 props */
+  props: CommonFormItemProps<T>;
   /**
    * set 转换
    */
@@ -22,14 +23,14 @@ export interface UseFormItemOptions<T extends TfFormColumn<any>> {
 export const useFormItem = <T extends Record<string, any>>(
   options: UseFormItemOptions<TfFormColumn<T>>,
 ) => {
-  let { column, valueGetter, valueSetter } = options;
+  let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
-  if (column.valueGetter) {
-    valueGetter = column.valueGetter;
+  if (props.column.valueGetter) {
+    valueGetter = props.column.valueGetter;
   }
   // column 有自定义的转换函数
-  if (column.valueSetter) {
-    valueSetter = column.valueSetter;
+  if (props.column.valueSetter) {
+    valueSetter = props.column.valueSetter;
   }
 
   const { form } = useFormInject<T>()!;
@@ -39,35 +40,40 @@ export const useFormItem = <T extends Record<string, any>>(
   const valueComputed = computed<any>({
     get() {
       let val;
-      if (column.fields) {
-        val = column.fields
+      if (props.column.fields) {
+        val = props.column.fields
           .map(field => {
             return get(form.value, field);
           })
           .filter(e => !isEmptyStrOrNull(e));
-      } else if (column.field) {
-        val = get(form.value, column.field);
+      } else if (props.column.field) {
+        val = get(form.value, props.column.field);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, column);
+        console.warn(`column 没有设置 field 或者 fields`, props.column);
       }
       if (valueGetter) val = valueGetter(val);
       return val;
     },
     set(val) {
       if (valueSetter) val = valueSetter(val);
-      if (column.fields) {
-        column.fields.forEach((field, index) => {
+      if (props.column.fields) {
+        props.column.fields.forEach((field, index) => {
           set(form.value, field, val?.[index]);
         });
-      } else if (column.field) {
-        set(form.value, column.field, val);
+      } else if (props.column.field) {
+        set(form.value, props.column.field, val);
       } else {
-        console.warn(`column 没有设置 field 或者 fields`, column);
+        console.warn(`column 没有设置 field 或者 fields`, props.column);
       }
     },
   });
 
+  const isView = computed(() => {
+    return toValue(props.column.isView) ?? props.isView;
+  });
+
   return {
     valueComputed,
+    isView,
   };
 };

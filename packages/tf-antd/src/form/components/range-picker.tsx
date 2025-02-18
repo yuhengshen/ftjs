@@ -18,8 +18,8 @@ export interface TfFormColumnRangePicker<T> extends TfFormColumnBase<T> {
 }
 
 export default defineFormComponent<"range-picker">(props => {
-  const { valueComputed } = useFormItem({
-    column: props.column,
+  const { valueComputed, isView } = useFormItem({
+    props,
   });
 
   const formItemProps = useFormItemProps(props.column);
@@ -41,7 +41,7 @@ export default defineFormComponent<"range-picker">(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(props.isView) ? (
+        {toValue(isView.value) ? (
           <div>{valueComputed.value}</div>
         ) : (
           <RangePicker v-model:value={valueComputed.value} {..._props} />

@@ -17,8 +17,8 @@ export interface TfFormColumnRadio<T> extends TfFormColumnBase<T> {
 }
 
 export default defineFormComponent<"radio">(props => {
-  const { valueComputed } = useFormItem({
-    column: props.column,
+  const { valueComputed, isView } = useFormItem({
+    props,
   });
 
   const formItemProps = useFormItemProps(props.column);
@@ -38,7 +38,7 @@ export default defineFormComponent<"radio">(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(props.isView) ? (
+        {toValue(isView.value) ? (
           <div>{isViewText.value}</div>
         ) : (
           <Radio.Group v-model:value={valueComputed.value} {..._props} />

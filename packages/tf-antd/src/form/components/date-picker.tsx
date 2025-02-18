@@ -16,9 +16,7 @@ export interface TfFormColumnDatePicker<T> extends TfFormColumnBase<T> {
 }
 
 export default defineFormComponent<"date-picker">(props => {
-  const { valueComputed } = useFormItem({
-    column: props.column,
-  });
+  const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -30,7 +28,7 @@ export default defineFormComponent<"date-picker">(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(props.isView) ? (
+        {toValue(isView.value) ? (
           <div>{valueComputed.value}</div>
         ) : (
           // @ts-expect-error antd date picker onChange 类型不兼容

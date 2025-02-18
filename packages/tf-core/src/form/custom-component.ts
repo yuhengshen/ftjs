@@ -32,15 +32,15 @@ export const defineCustomRender = <T>(
 };
 
 export const CustomComponent = defineFormComponent<"custom">(props => {
-  const { valueComputed } = useFormItem({
-    column: props.column,
+  const { valueComputed, isView } = useFormItem({
+    props,
   });
   const render = props.column.props.render;
   return () => {
     return h(render, {
       modelValue: valueComputed.value,
       column: props.column,
-      isView: props.isView,
+      isView: isView.value,
       "onUpdate:modelValue": (v: any) => (valueComputed.value = v),
     });
   };

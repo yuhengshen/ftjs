@@ -185,14 +185,12 @@ export const TfTable = defineTfTable(
     };
     let tableStyle: CSSProperties;
     const containerRef = ref<HTMLDivElement>();
-    const toolbar = ref<HTMLDivElement>();
 
     /**
      * 计算表格高度
      */
     const calcTableHeight = () => {
       const container = containerRef.value;
-      const toolbarHeight = toolbar.value?.clientHeight ?? 0;
       const table = container?.querySelector(
         ".ant-table-wrapper",
       ) as HTMLDivElement;
@@ -205,7 +203,6 @@ export const TfTable = defineTfTable(
       if (!table) return;
       let y =
         table.clientHeight -
-        toolbarHeight -
         // pagination不是立即渲染的，其高度为64
         64 -
         (header?.clientHeight ?? 0) -
@@ -269,7 +266,7 @@ export const TfTable = defineTfTable(
           {...formProps.value}
         />
         {(ctx.slots.buttons || ctx.slots.tools) && (
-          <div ref={toolbar}>
+          <div>
             {ctx.slots.buttons?.()}
             {ctx.slots.tools?.()}
           </div>

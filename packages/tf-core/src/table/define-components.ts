@@ -1,6 +1,4 @@
 import {
-  ComponentPublicInstance,
-  computed,
   defineComponent,
   EmitsOptions,
   h,
@@ -66,20 +64,6 @@ export interface TfTableHOCComponentIntrinsicProps<
   keyField?: string;
 }
 
-interface TfTableHOCComponentExposed<TableData extends Record<string, any>> {
-  /**
-   * 刷新表格
-   */
-  refresh: () => void;
-}
-
-/**
- * type hack，setup 泛型函数不支持定义 exposed 类型
- */
-export type TfTableHOCComponent = new <
-  T extends Record<string, any>,
->(props: {}) => ComponentPublicInstance<{}, TfTableHOCComponentExposed<T>, {}>;
-
 export interface TfTableHOCComponentProps<
   TableData extends Record<string, any>,
   SearchData = TableData,
@@ -134,29 +118,7 @@ export function defineTfTable<TableData extends Record<string, any>>(
       ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
     ) => {
       useTable(props, _runtimeProps);
-      const tableRef = ref();
-
-      ctx.expose({
-        refresh: () => {
-          const refresh = tableRef.value?.refresh;
-          if (!refresh) {
-            console.warn(
-              "TfTable: define-table时, 没有暴露 refresh 方法，请检查",
-            );
-            return;
-          }
-          refresh();
-        },
-      });
-
-      return () =>
-        h(
-          TableComponent,
-          {
-            ref: tableRef,
-          },
-          ctx.slots,
-        );
+      return () => h(TableComponent, null, ctx.slots);
     },
     {
       props: runtimeProps,
@@ -164,5 +126,5 @@ export function defineTfTable<TableData extends Record<string, any>>(
     },
   );
 
-  return TfTable as typeof TfTable & TfTableHOCComponent;
+  return TfTable;
 }

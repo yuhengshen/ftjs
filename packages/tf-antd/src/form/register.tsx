@@ -1,4 +1,4 @@
-import { setupTfForm } from "tf-core";
+import { FormInject, setupTfForm } from "tf-core";
 import { FormProps } from "ant-design-vue";
 import type {
   RuleType,
@@ -23,12 +23,23 @@ export type VNodeChildAtom =
   | void;
 export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 
+export interface FormExposed<T extends Record<string, any>> {
+  getFormData: FormInject<T>["getFormData"];
+  resetToDefault: FormInject<T>["resetToDefault"];
+  setAsDefault: FormInject<T>["setAsDefault"];
+}
+
 declare module "tf-core" {
   /**
    * form 容器组件 props 类型
    */
   interface FormContainerProps extends FormProps {
     width?: string;
+  }
+
+  interface DefineFormProps<T extends Record<string, any>> {
+    exposed?: FormExposed<T>;
+    "onUpdate:exposed"?: (exposed: FormExposed<T>) => void;
   }
 
   /**

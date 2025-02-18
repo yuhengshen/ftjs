@@ -5,8 +5,33 @@ import {
   TableProps as AntdTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
-import { computed, CSSProperties, onMounted, onUnmounted, ref } from "vue";
+import type { FormExposed } from "../form/register";
+import {
+  computed,
+  CSSProperties,
+  onMounted,
+  onUnmounted,
+  ref,
+  watchEffect,
+} from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
+
+/**
+ * 表格暴露的方法
+ */
+export interface TableExposed<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any> = TableData,
+> {
+  /**
+   * 刷新表格
+   */
+  refresh: () => void;
+  /**
+   * 表单暴露的方法
+   */
+  formExposed: FormExposed<SearchData>;
+}
 
 declare module "tf-core" {
   interface TfTableColumn<
@@ -25,7 +50,7 @@ declare module "tf-core" {
 
   interface DefineTableProps<
     TableData extends Record<string, any>,
-    SearchData = TableData,
+    SearchData extends Record<string, any> = TableData,
   > {
     /**
      * 是否初始化搜索
@@ -46,6 +71,8 @@ declare module "tf-core" {
      * @default 210
      */
     minHeight?: number;
+    exposed?: TableExposed<TableData, SearchData>;
+    "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
     onChange?: TableProps<TableData>["onChange"];
     onExpand?: TableProps<TableData>["onExpand"];
     onExpandedRowsChange?: TableProps<TableData>["onExpandedRowsChange"];
@@ -92,9 +119,10 @@ export const TfTable = defineTfTable(
       onExpand,
       onExpandedRowsChange,
       onResizeColumn,
+      "onUpdate:exposed": onUpdateExposed,
     } = useTableInject()!;
 
-    const formRef = ref<InstanceType<typeof TfFormSearch>>();
+    const formExposed = ref<FormExposed<any>>();
 
     const handleSearch = async (
       pagination: Pagination = {
@@ -103,7 +131,7 @@ export const TfTable = defineTfTable(
       },
     ) => {
       if (!onSearch) return;
-      const formData = formRef.value?.getFormData()!;
+      const formData = formExposed.value?.getFormData()!;
       onSearch(formData, { pagination });
     };
 
@@ -221,17 +249,20 @@ export const TfTable = defineTfTable(
       });
     }
 
-    ctx.expose({
-      refresh: async () => {
-        await formRef.value?.resetToDefault();
-        handleSearch();
-      },
+    watchEffect(() => {
+      onUpdateExposed?.({
+        refresh: async () => {
+          await formExposed.value?.resetToDefault();
+          handleSearch();
+        },
+        formExposed: formExposed.value!,
+      });
     });
 
     return () => (
       <div ref={containerRef} style={containerStyle}>
         <TfFormSearch
-          ref={formRef}
+          v-model:exposed={formExposed.value}
           cache={cache.value}
           columns={formColumns.value}
           onSubmit={() => handleSearch()}
@@ -272,5 +303,7 @@ export const TfTable = defineTfTable(
     "initSearch",
     "fitFlexHeight",
     "minHeight",
+    "exposed",
+    "onUpdate:exposed",
   ],
 );

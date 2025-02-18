@@ -1,5 +1,4 @@
 import {
-  ComponentPublicInstance,
   computed,
   defineComponent,
   EmitsOptions,
@@ -10,7 +9,7 @@ import {
   VNode,
 } from "vue";
 import { renderMap } from "./render-map";
-import { ExposeWithComment, TfFormColumn, TfFormColumnMap } from "./columns";
+import { TfFormColumn, TfFormColumnMap } from "./columns";
 import { useForm } from "./use-form";
 import { WithLengthKeys } from "../type-helper";
 
@@ -55,13 +54,6 @@ export type FormRuntimeProps = WithLengthKeys<
   Omit<DefineFormProps<any>, "onSubmit">
 >;
 
-/**
- * type hack，setup 泛型函数不支持定义 exposed 类型
- */
-export type TfFormHOCComponent = new <
-  T extends Record<string, any>,
->(props: {}) => ComponentPublicInstance<{}, TfFormHOCComponentExposed<T>, {}>;
-
 export interface TfFormHOCComponentIntrinsicProps<
   T extends Record<string, any>,
 > {
@@ -101,11 +93,6 @@ export interface TfFormHOCComponentProps<T extends Record<string, any>>
   extends TfFormHOCComponentIntrinsicProps<T>,
     DefineFormProps<T> {}
 
-export type TfFormHOCComponentExposed<T extends Record<string, any>> = Pick<
-  ExposeWithComment<T>,
-  "getFormData" | "resetToDefault" | "setAsDefault"
->;
-
 /**
  * 定义表单容器组件
  */
@@ -139,6 +126,7 @@ export const defineTfForm = (
         SlotsType<Omit<DefineFormSlots<any>, "formContent">>
       >,
     ) => {
+      // v-model:formData 支持
       const formData = computed({
         get: () => props.formData,
         set(v) {
@@ -146,14 +134,7 @@ export const defineTfForm = (
         },
       });
 
-      const { getFormData, resetToDefault, setAsDefault, visibleColumns } =
-        useForm(props, formData, _runtimeProps);
-
-      ctx.expose({
-        getFormData,
-        resetToDefault,
-        setAsDefault,
-      });
+      const { visibleColumns } = useForm(props, formData, _runtimeProps);
 
       return () =>
         h(layoutComponent, null, {
@@ -176,7 +157,7 @@ export const defineTfForm = (
       name: "TfForm",
     },
   );
-  return Component as typeof Component & TfFormHOCComponent;
+  return Component;
 };
 
 /**

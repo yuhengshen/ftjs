@@ -1,8 +1,7 @@
 <script setup lang="tsx">
 import { defineCustomRender, TfFormColumn, TfTableColumn } from "tf-core";
-import { TfForm, TfTable } from "tf-antd";
-import { onMounted, ref, toValue, useTemplateRef } from "vue";
-import { ComponentExposed } from "vue-component-type-helpers";
+import { TfTable } from "tf-antd";
+import { ref, toValue } from "vue";
 import { FormItem, Button } from "ant-design-vue";
 
 const likesOptions = ref([
@@ -132,15 +131,6 @@ const onSubmit = async (formData: FormData, { pagination }) => {
   total.value = 2000;
   loading.value = false;
 };
-
-// 拿不到 exposed 方法类型
-const formRef = useTemplateRef<ComponentExposed<typeof TfForm>>("form");
-const formRef2 = ref<InstanceType<typeof TfForm>>();
-
-onMounted(() => {
-  console.log(formRef.value?.getFormData());
-  console.log(formRef2.value?.getFormData());
-});
 
 interface TableData {
   name: string;
@@ -292,14 +282,12 @@ const tableData = ref<TableData[]>([]);
 <template>
   <div>
     <!-- <TfFormSearch
-      ref="form"
       v-model:form-data="formData"
       :columns="columns"
       @submit="onSubmit"
     />
     <hr />
     <TfForm
-      ref="formRef2"
       v-model:form-data="formData"
       :columns="columns"
       @submit="onSubmit"

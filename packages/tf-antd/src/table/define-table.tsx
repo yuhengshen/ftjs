@@ -144,10 +144,10 @@ export const TfTable = defineTfTable(
     const columns = computed(() => {
       return tableColumns.value.map(column => {
         return {
+          width: 120,
+          align: "center" as const,
           ...column,
-          title: column.title,
           dataIndex: column.field,
-          width: column.width ?? 120,
         };
       });
     });

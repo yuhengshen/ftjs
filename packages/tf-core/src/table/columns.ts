@@ -11,6 +11,6 @@ export interface TfTableColumn<
   SearchData = TableData,
 > {
   title: string;
-  field: RecordPath<TableData>;
+  field: RecordPath<TableData> | `_${string}`;
   search?: TfFormColumn<SearchData>;
 }

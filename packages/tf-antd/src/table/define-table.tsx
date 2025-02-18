@@ -71,6 +71,11 @@ declare module "tf-core" {
      * @default 210
      */
     minHeight?: number;
+    /**
+     * 是否隐藏搜索
+     * @default false
+     */
+    hideSearch?: boolean;
     exposed?: TableExposed<TableData, SearchData>;
     "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
     onChange?: TableProps<TableData>["onChange"];
@@ -114,6 +119,7 @@ export const TfTable = defineTfTable(
       initSearch,
       fitFlexHeight,
       minHeight,
+      hideSearch,
       onSearch,
       onChange,
       onExpand,
@@ -204,7 +210,9 @@ export const TfTable = defineTfTable(
       let y =
         table.clientHeight -
         // pagination不是立即渲染的，其高度为64
+        // 多减去2px，避免出现小数
         64 -
+        2 -
         (header?.clientHeight ?? 0) -
         (footer?.clientHeight ?? 0);
 
@@ -258,13 +266,15 @@ export const TfTable = defineTfTable(
 
     return () => (
       <div ref={containerRef} style={containerStyle}>
-        <TfFormSearch
-          v-model:exposed={formExposed.value}
-          cache={cache.value}
-          columns={formColumns.value}
-          onSubmit={() => handleSearch()}
-          {...formProps.value}
-        />
+        {!hideSearch.value && (
+          <TfFormSearch
+            v-model:exposed={formExposed.value}
+            cache={cache.value}
+            columns={formColumns.value}
+            onSubmit={() => handleSearch()}
+            {...formProps.value}
+          />
+        )}
         {(ctx.slots.buttons || ctx.slots.tools) && (
           <div>
             {ctx.slots.buttons?.()}
@@ -302,5 +312,6 @@ export const TfTable = defineTfTable(
     "minHeight",
     "exposed",
     "onUpdate:exposed",
+    "hideSearch",
   ],
 );

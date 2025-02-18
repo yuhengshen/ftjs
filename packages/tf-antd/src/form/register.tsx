@@ -13,6 +13,8 @@ import rangePicker, {
   TfFormColumnRangePicker,
 } from "./components/range-picker";
 import radio, { TfFormColumnRadio } from "./components/radio";
+import textarea, { TfFormColumnTextarea } from "./components/textarea";
+
 export type VNodeChildAtom =
   | VNode
   | string
@@ -49,6 +51,7 @@ declare module "tf-core" {
     input: TfFormColumnInput<T>;
     select: TfFormColumnSelect<T>;
     radio: TfFormColumnRadio<T>;
+    textarea: TfFormColumnTextarea<T>;
     "date-picker": TfFormColumnDatePicker<T>;
     "range-picker": TfFormColumnRangePicker<T>;
   }
@@ -89,6 +92,7 @@ export default function register() {
   setupTfForm({
     renderMap: {
       input,
+      textarea,
       select,
       radio,
       "date-picker": datePicker,

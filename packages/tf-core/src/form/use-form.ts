@@ -63,7 +63,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
   const columnsV = computed(() => {
     const entries = columns.value.map(e => {
       const field = e.field ?? (e.fields?.[0] as string);
-      return [field, !e.hide];
+      return [field, !toValue(e.hide)];
     });
     return Object.fromEntries(entries);
   });
@@ -85,7 +85,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
         const field = getField(e);
         const show = v.includes(field);
         // 与默认配置一致的选项不存储
-        if (show !== !e.hide) storageV[field] = show;
+        if (show !== !toValue(e.hide)) storageV[field] = show;
         return [field, show];
       });
       vRef.value = Object.fromEntries(entries);
@@ -95,7 +95,7 @@ const useColumnsChecked = <T extends Record<string, any>>(
 
   const resetColumnsChecked = () => {
     columnsChecked.value = columns.value
-      .filter(e => !e.hide)
+      .filter(e => !toValue(e.hide))
       .map(e => getField(e));
   };
 

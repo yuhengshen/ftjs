@@ -394,8 +394,6 @@ function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
       }
 
       if (column.edit && scopeProps.record === editRow.value) {
-        const field = column.field;
-
         let edit: ValueOf<EditMap<T>>;
         if (typeof column.edit === "string") {
           edit = {
@@ -405,6 +403,7 @@ function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
         } else {
           edit = column.edit;
         }
+        const field = edit.field ?? column.field;
         const component = editMap[edit.type];
         if (component) {
           return h(component, {

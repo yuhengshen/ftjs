@@ -4,11 +4,13 @@ import { Component } from "vue";
 export interface EditMap<TableData extends Record<string, any>> {
   input: {
     type: "input";
-    props: InputProps;
+    field?: string;
+    props?: InputProps;
   };
   select: {
     type: "select";
-    props: SelectProps;
+    field?: string;
+    props?: SelectProps;
   };
 }
 

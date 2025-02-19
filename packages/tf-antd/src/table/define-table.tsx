@@ -20,6 +20,7 @@ import {
   h,
   onMounted,
   onUnmounted,
+  reactive,
   Ref,
   ref,
   watchEffect,
@@ -46,7 +47,7 @@ export interface TableExposed<
   /**
    * 编辑行
    */
-  editRow: Ref<TableData | undefined>;
+  editRowMap: Map<TableData, TableData>;
   /**
    * 设置编辑行
    */
@@ -54,11 +55,11 @@ export interface TableExposed<
   /**
    * 取消编辑行
    */
-  cancelEditRow: () => void;
+  cancelEditRow: (row: TableData) => void;
   /**
    * 保存编辑行
    */
-  saveEditRow: () => void;
+  saveEditRow: (row: TableData) => void;
 }
 
 declare module "tf-core" {
@@ -297,8 +298,13 @@ export const TfTable = defineTfTable(
       });
     }
 
-    const { createBodyCell, setEditRow, cancelEditRow, saveEditRow, editRow } =
-      useEdit(tableData);
+    const {
+      createBodyCell,
+      setEditRow,
+      cancelEditRow,
+      saveEditRow,
+      editRowMap,
+    } = useEdit(tableData);
 
     watchEffect(() => {
       onUpdateExposed?.({
@@ -307,7 +313,7 @@ export const TfTable = defineTfTable(
           handleSearch();
         },
         formExposed: formExposed.value!,
-        editRow,
+        editRowMap,
         setEditRow,
         cancelEditRow,
         saveEditRow,
@@ -367,10 +373,10 @@ export const TfTable = defineTfTable(
   ],
 );
 
-function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
-  const editRow = ref<T | undefined>(undefined);
-
-  let oldRow;
+function useEdit<T extends Record<string, any>>(
+  tableData: Ref<T[] | undefined>,
+) {
+  const editRowMap = reactive(new Map<T, T>());
 
   type BodyCell = DefineTableSlots<T>["bodyCell"];
   type BodyCellParams<T> = T extends undefined
@@ -380,25 +386,24 @@ function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
       : never;
 
   const createBodyCell = (bodyCellDefault: BodyCell) => {
-    if (!tableData.value?.includes(editRow.value)) return bodyCellDefault;
+    if (editRowMap.size === 0) return bodyCellDefault;
     return (scopeProps: BodyCellParams<BodyCell>) => {
       const column = scopeProps.column as TfTableColumn<T>;
 
       if (column.customRender) {
         return column.customRender({
           ...scopeProps,
-          record: scopeProps.record as any,
+          record: scopeProps.record as T,
           // todo:: 这个是啥？
           renderIndex: -1,
         });
       }
 
-      if (column.edit && scopeProps.record === editRow.value) {
+      if (column.edit && editRowMap.has(scopeProps.record as T)) {
         let edit: ValueOf<EditMap<T>>;
         if (typeof column.edit === "string") {
           edit = {
             type: column.edit,
-            props: {},
           };
         } else {
           edit = column.edit;
@@ -419,23 +424,23 @@ function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
   };
 
   const setEditRow = (row: T) => {
-    oldRow = cloneDeep(row);
-    editRow.value = row;
+    const oldRow = cloneDeep(row) as any;
+    editRowMap.set(row, oldRow);
   };
 
-  const cancelEditRow = () => {
-    if (!oldRow || !tableData.value) return;
-    tableData.value[tableData.value.indexOf(editRow.value)] = oldRow;
-    editRow.value = undefined;
-    oldRow = undefined;
+  const cancelEditRow = (row: T) => {
+    const oldRow = editRowMap.get(row);
+    if (!oldRow) return;
+    const index = tableData.value!.indexOf(row);
+    tableData.value![index] = oldRow as T;
+    editRowMap.delete(row);
   };
 
-  const saveEditRow = () => {
-    editRow.value = undefined;
-    oldRow = undefined;
+  const saveEditRow = (row: T) => {
+    editRowMap.delete(row);
   };
   return {
-    editRow,
+    editRowMap,
     setEditRow,
     createBodyCell,
     cancelEditRow,

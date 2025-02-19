@@ -211,10 +211,19 @@ export const TfTable = defineTfTable(
       };
     });
 
-    const scroll = ref<AntdTableProps<any>["scroll"]>({
-      scrollToFirstRowOnChange: true,
-      x: "100%",
-      y: 0,
+    const _scrollY = ref(0);
+
+    const scrollY = computed(() => {
+      if (!tableData.value || tableData.value.length === 0) return;
+      return _scrollY.value;
+    });
+
+    const scroll = computed<AntdTableProps<any>["scroll"]>(() => {
+      return {
+        scrollToFirstRowOnChange: true,
+        x: "100%",
+        y: scrollY.value,
+      };
     });
 
     let containerStyle: CSSProperties = {
@@ -252,7 +261,7 @@ export const TfTable = defineTfTable(
 
       let minHeightValue = minHeight.value ?? 210;
       if (y < minHeightValue) y = minHeightValue;
-      scroll.value!.y = y;
+      _scrollY.value = y;
     };
 
     if (fitFlexHeight.value ?? true) {

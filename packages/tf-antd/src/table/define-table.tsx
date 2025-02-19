@@ -18,11 +18,13 @@ import {
   computed,
   CSSProperties,
   h,
+  nextTick,
   onMounted,
   onUnmounted,
   reactive,
   Ref,
   ref,
+  watch,
   watchEffect,
 } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
@@ -60,6 +62,14 @@ export interface TableExposed<
    * 保存编辑行
    */
   saveEditRow: (row: TableData) => void;
+  /**
+   * 滚动到指定行
+   */
+  scrollToRow: (row: TableData) => void;
+  /**
+   * 滚动到指定行索引
+   */
+  scrollToIndex: (index: number) => void;
 }
 
 declare module "tf-core" {
@@ -306,6 +316,21 @@ export const TfTable = defineTfTable(
       editRowMap,
     } = useEdit(tableData);
 
+    const scrollToIndex = (index: number) => {
+      const row = containerRef.value?.querySelectorAll(".ant-table-row")[index];
+      if (!row) return;
+      row.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      });
+    };
+
+    const scrollToRow = (row: any) => {
+      const index = tableData.value!.indexOf(row);
+      scrollToIndex(index);
+    };
+
     watchEffect(() => {
       onUpdateExposed?.({
         refresh: async () => {
@@ -314,9 +339,16 @@ export const TfTable = defineTfTable(
         },
         formExposed: formExposed.value!,
         editRowMap,
-        setEditRow,
+        setEditRow: row => {
+          setEditRow(row);
+          nextTick().then(() => {
+            scrollToRow(row);
+          });
+        },
         cancelEditRow,
         saveEditRow,
+        scrollToIndex,
+        scrollToRow,
       });
     });
 
@@ -433,12 +465,25 @@ function useEdit<T extends Record<string, any>>(
     if (!oldRow) return;
     const index = tableData.value!.indexOf(row);
     tableData.value![index] = oldRow as T;
-    editRowMap.delete(row);
+    delEditRow(row);
   };
 
   const saveEditRow = (row: T) => {
+    delEditRow(row);
+  };
+
+  const delEditRow = (row: T) => {
     editRowMap.delete(row);
   };
+
+  watch(tableData, v => {
+    editRowMap.forEach((_val, key) => {
+      if (!v?.includes(key)) {
+        editRowMap.delete(key);
+      }
+    });
+  });
+
   return {
     editRowMap,
     setEditRow,

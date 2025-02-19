@@ -6,11 +6,17 @@ import {
   useTableInject,
   ValueOf,
 } from "tf-core";
-import type { DefineTableSlots, TfTableColumn } from "tf-core";
+import type {
+  TfTableColumn,
+  TfFormColumn,
+  TfFormHOCComponentProps,
+  TableTypeMap,
+  TfTableIntrinsicProps,
+} from "tf-core";
 import {
   Table,
   TableColumnType,
-  TableProps as AntdTableProps,
+  TableProps as AntTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
 import type { FormExposed } from "../form/register";
@@ -29,6 +35,22 @@ import {
 } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
 import { editMap, EditMap } from "./column-edit";
+
+declare module "tf-core" {
+  interface TableTypeMap<
+    TableData extends Record<string, any>,
+    SearchData extends Record<string, any> = TableData,
+  > {
+    antd: {
+      extendedProps: ExtendedProps<TableData, SearchData>;
+      tableSlots: TableSlots<TableData>;
+      tableColumn: TableColumn<TableData, SearchData>;
+      formColumn: TfFormColumn<SearchData>;
+      internalTableProps: InternalTableProps<TableData>;
+      internalFormProps: TfFormHOCComponentProps<SearchData>;
+    };
+  }
+}
 
 /**
  * 表格暴露的方法
@@ -72,72 +94,78 @@ export interface TableExposed<
   scrollToIndex: (index: number) => void;
 }
 
-declare module "tf-core" {
-  interface TfTableColumn<
-    TableData extends Record<string, any>,
-    SearchData = TableData,
-  > extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
-    /**
-     * 行内编辑
-     */
-    edit?: keyof EditMap<TableData> | ValueOf<EditMap<TableData>>;
-  }
+/**
+ * 列定义
+ */
+export interface TableColumn<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any> = TableData,
+> extends TfTableColumn<TableData, SearchData>,
+    Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
+  /**
+   * 行内编辑
+   */
+  edit?: keyof EditMap<TableData> | ValueOf<EditMap<TableData>>;
+}
 
-  interface TableProps<TableData extends Record<string, any>>
-    extends Omit<
-      AntdTableProps<TableData>,
-      "columns" | "pagination" | "loading"
-    > {}
+/**
+ * 内部表格 props
+ */
+interface InternalTableProps<TableData extends Record<string, any>>
+  extends Omit<
+    AntTableProps<TableData>,
+    "columns" | "pagination" | "loading"
+  > {}
 
-  interface DefineTableSlots<TableData extends Record<string, any>>
-    extends ComponentSlots<typeof Table> {}
+/**
+ * 表格插槽
+ */
+export interface TableSlots<TableData extends Record<string, any>>
+  extends ComponentSlots<typeof Table> {
+  buttons?: () => any;
+  tools?: () => any;
+}
 
-  interface DefineTableProps<
-    TableData extends Record<string, any>,
-    SearchData extends Record<string, any> = TableData,
-  > {
-    /**
-     * 是否初始化搜索
-     *
-     * @default true
-     */
-    initSearch?: boolean;
+interface ExtendedProps<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any> = TableData,
+> {
+  /**
+   * 是否初始化搜索
+   *
+   * @default true
+   */
+  initSearch?: boolean;
 
-    /**
-     * 是否自适应父元素(flex布局)剩余高度
-     *
-     * 如果为true，则table会占据父元素的剩余高度，此时可以通过 {@see minHeight} 控制最小高度，避免高度不够展示内容
-     * @default true
-     */
-    fitFlexHeight?: boolean;
-    /**
-     * 自适应父元素(flex布局)剩余高度时，最小高度
-     * @default 210
-     */
-    minHeight?: number;
-    /**
-     * 是否隐藏搜索
-     * @default false
-     */
-    hideSearch?: boolean;
-    /**
-     * 是否隐藏分页
-     * @default false
-     */
-    hidePagination?: boolean;
-    exposed?: TableExposed<TableData, SearchData>;
-    "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
-    onChange?: TableProps<TableData>["onChange"];
-    onExpand?: TableProps<TableData>["onExpand"];
-    onExpandedRowsChange?: TableProps<TableData>["onExpandedRowsChange"];
-    onResizeColumn?: TableProps<TableData>["onResizeColumn"];
-    onSearch?: (searchData: SearchData, info: OnSearchInfo) => void;
-  }
-
-  interface DefineTableSlots<TableData extends Record<string, any>> {
-    buttons?: () => any;
-    tools?: () => any;
-  }
+  /**
+   * 是否自适应父元素(flex布局)剩余高度
+   *
+   * 如果为true，则table会占据父元素的剩余高度，此时可以通过 {@link minHeight} 控制最小高度，避免高度不够展示内容
+   * @default true
+   */
+  fitFlexHeight?: boolean;
+  /**
+   * 自适应父元素(flex布局)剩余高度时，最小高度
+   * @default 210
+   */
+  minHeight?: number;
+  /**
+   * 是否隐藏搜索
+   * @default false
+   */
+  hideSearch?: boolean;
+  /**
+   * 是否隐藏分页
+   * @default false
+   */
+  hidePagination?: boolean;
+  exposed?: TableExposed<TableData, SearchData>;
+  "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
+  onChange?: AntTableProps<TableData>["onChange"];
+  onExpand?: AntTableProps<TableData>["onExpand"];
+  onExpandedRowsChange?: AntTableProps<TableData>["onExpandedRowsChange"];
+  onResizeColumn?: AntTableProps<TableData>["onResizeColumn"];
+  onSearch?: (searchData: SearchData, info: OnSearchInfo) => void;
 }
 
 export interface OnSearchInfo {
@@ -152,13 +180,13 @@ interface Pagination {
   pageSize: number;
 }
 
-export const TfTable = defineTfTable(
+export const TfTable = defineTfTable<"antd">(
   (_p, ctx) => {
     const {
       formColumns,
       tableColumns,
-      tableProps,
-      formProps,
+      internalTableProps,
+      internalFormProps,
       tableData,
       loading,
       total,
@@ -176,7 +204,9 @@ export const TfTable = defineTfTable(
       onExpandedRowsChange,
       onResizeColumn,
       "onUpdate:exposed": onUpdateExposed,
-    } = useTableInject()!;
+    } = useTableInject<any, any, "antd">()!;
+
+    // columns.value[0].ed
 
     const formExposed = ref<FormExposed<any>>();
 
@@ -227,7 +257,7 @@ export const TfTable = defineTfTable(
             },
         tableLayout: "fixed" as const,
         rowKey: keyField.value ?? "id",
-        ...tableProps.value,
+        ...internalTableProps.value,
       };
     });
 
@@ -238,7 +268,7 @@ export const TfTable = defineTfTable(
       return _scrollY.value;
     });
 
-    const scroll = computed<AntdTableProps<any>["scroll"]>(() => {
+    const scroll = computed<AntTableProps<any>["scroll"]>(() => {
       return {
         scrollToFirstRowOnChange: true,
         x: "100%",
@@ -369,7 +399,7 @@ export const TfTable = defineTfTable(
             cache={cache.value}
             columns={formColumns.value}
             onSubmit={() => handleSearch()}
-            {...formProps.value}
+            {...internalFormProps.value}
           />
         )}
         {(ctx.slots.buttons || ctx.slots.tools) && (
@@ -415,12 +445,17 @@ export const TfTable = defineTfTable(
   ],
 );
 
+export type TfTableProps<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any> = TableData,
+> = TfTableIntrinsicProps<TableData, SearchData, "antd">;
+
 function useEdit<T extends Record<string, any>>(
   tableData: Ref<T[] | undefined>,
 ) {
   const editRowMap = reactive(new Map<T, T>());
 
-  type BodyCell = DefineTableSlots<T>["bodyCell"];
+  type BodyCell = TableSlots<T>["bodyCell"];
   type BodyCellParams<T> = T extends undefined
     ? never
     : T extends (arg: infer U, ...args: any[]) => any
@@ -430,7 +465,10 @@ function useEdit<T extends Record<string, any>>(
   const createBodyCell = (bodyCellDefault: BodyCell) => {
     if (editRowMap.size === 0) return bodyCellDefault;
     return (scopeProps: BodyCellParams<BodyCell>) => {
-      const column = scopeProps.column as TfTableColumn<T>;
+      const column = scopeProps.column as TableTypeMap<
+        any,
+        any
+      >["antd"]["tableColumn"];
 
       if (column.customRender) {
         return column.customRender({

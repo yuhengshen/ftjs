@@ -1,26 +1,26 @@
-import {
-  defineComponent,
-  EmitsOptions,
-  h,
-  ref,
-  SetupContext,
-  SlotsType,
-} from "vue";
+import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
 import { TfTableColumn } from "./columns";
 import { useTable } from "./use-table";
-import { FormContainerProps, TfFormColumn } from "../form";
-import { WithLengthKeys } from "../type-helper";
+import { TfFormColumn } from "../form";
 
-/**
- * 由外部定义其具体类型，归属于 {@link TfTableHOCComponentProps}
- *
- * @public
- */
-export interface TableProps<TableData extends Record<string, any>> {}
-
-export interface TfTableHOCComponentIntrinsicProps<
+export interface TableTypeMap<
   TableData extends Record<string, any>,
-  SearchData = TableData,
+  SearchData extends Record<string, any>,
+> {
+  default: {
+    tableSlots: {};
+    tableColumn: TfTableColumn<TableData, SearchData>;
+    formColumn: TfFormColumn<SearchData>;
+    extendedProps: {};
+    internalFormProps: {};
+    internalTableProps: {};
+  };
+}
+
+export interface TfTableIntrinsicProps<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any> = TableData,
+  type extends keyof TableTypeMap<TableData, SearchData> = "default",
 > {
   /**
    * 用于缓存配置，不填则不缓存
@@ -29,11 +29,11 @@ export interface TfTableHOCComponentIntrinsicProps<
   /**
    * 列定义
    */
-  columns: TfTableColumn<TableData, SearchData>[];
+  columns: TableTypeMap<TableData, SearchData>[type]["tableColumn"][];
   /**
    * 列定义外的搜索条件
    */
-  searchColumns?: TfFormColumn<SearchData>[];
+  searchColumns?: TableTypeMap<TableData, SearchData>[type]["formColumn"][];
   /**
    * 表格总条数
    */
@@ -47,13 +47,19 @@ export interface TfTableHOCComponentIntrinsicProps<
    */
   loading?: boolean;
   /**
-   * 具体表格组件的 props
+   * 内部表单组件的 props
    */
-  tableProps?: TableProps<TableData>;
+  internalFormProps?: TableTypeMap<
+    TableData,
+    SearchData
+  >[type]["internalFormProps"];
   /**
-   * 具体表格容器组件的 props
+   * 内部表格组件的 props
    */
-  formProps?: FormContainerProps;
+  internalTableProps?: TableTypeMap<
+    TableData,
+    SearchData
+  >[type]["internalTableProps"];
   /**
    * 表格数据
    */
@@ -64,34 +70,15 @@ export interface TfTableHOCComponentIntrinsicProps<
   keyField?: string;
 }
 
-export interface TfTableHOCComponentProps<
-  TableData extends Record<string, any>,
-  SearchData = TableData,
-> extends DefineTableProps<TableData, SearchData>,
-    TfTableHOCComponentIntrinsicProps<TableData, SearchData> {}
-/**
- * 由内部定义额外的Props类型，需要另外指定 runtimeProps
- *
- * @public
- */
-export interface DefineTableProps<
-  TableData extends Record<string, any>,
-  SearchData = TableData,
-> {}
-
-/**
- * @public
- */
-export interface DefineTableSlots<TableData extends Record<string, any>> {}
-
-export type TableRuntimeProps = WithLengthKeys<DefineTableProps<any, any>>;
-
-export function defineTfTable<TableData extends Record<string, any>>(
+export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
   setup: (
     props: {},
-    ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
+    ctx: SetupContext<
+      EmitsOptions,
+      SlotsType<TableTypeMap<any, any>[Type]["tableSlots"]>
+    >,
   ) => any,
-  _runtimeProps: TableRuntimeProps,
+  _runtimeProps: string[],
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
@@ -102,9 +89,9 @@ export function defineTfTable<TableData extends Record<string, any>>(
     "cache",
     "columns",
     "searchColumns",
-    "tableProps",
+    "internalFormProps",
     "tableData",
-    "formProps",
+    "internalTableProps",
     "total",
     "defaultPageSize",
     "loading",
@@ -113,11 +100,18 @@ export function defineTfTable<TableData extends Record<string, any>>(
   ] as any;
 
   const TfTable = defineComponent(
-    <TableData extends Record<string, any>, SearchData = TableData>(
-      props: TfTableHOCComponentProps<TableData, SearchData>,
-      ctx: SetupContext<EmitsOptions, SlotsType<DefineTableSlots<TableData>>>,
+    <
+      TableData extends Record<string, any>,
+      SearchData extends Record<string, any> = TableData,
+    >(
+      props: TfTableIntrinsicProps<TableData, SearchData, Type> &
+        TableTypeMap<TableData, SearchData>[Type]["extendedProps"],
+      ctx: SetupContext<
+        EmitsOptions,
+        SlotsType<TableTypeMap<TableData, SearchData>[Type]["tableSlots"]>
+      >,
     ) => {
-      useTable(props, _runtimeProps);
+      useTable<TableData, SearchData, Type>(props, _runtimeProps);
       return () => h(TableComponent, null, ctx.slots);
     },
     {

@@ -1,33 +1,38 @@
 import { computed, ComputedRef, inject, provide } from "vue";
 import { TfFormColumn } from "../form";
-import {
-  DefineTableProps,
-  TableRuntimeProps,
-  TfTableHOCComponentIntrinsicProps,
-  TfTableHOCComponentProps,
-} from "./define-components";
-import { ComputedRefKeys, SplitEventKeys } from "../type-helper";
+import { TableTypeMap, TfTableIntrinsicProps } from "./define-components";
+import { SplitEventKeys } from "../type-helper";
 import { TfTableColumn } from "./columns";
 
 const provideTableKey = Symbol("tf-core-table-provide");
 
 type TableInject<
   TableData extends Record<string, any>,
-  FormData = TableData,
-> = SplitEventKeys<DefineTableProps<TableData, FormData>> &
-  ComputedRefKeys<TfTableHOCComponentIntrinsicProps<TableData, FormData>> & {
-    formColumns: ComputedRef<TfFormColumn<FormData>[]>;
-    tableColumns: ComputedRef<TfTableColumn<TableData>[]>;
-  };
+  FormData extends Record<string, any> = TableData,
+  Type extends keyof TableTypeMap<TableData, FormData> = "default",
+> = SplitEventKeys<
+  TfTableIntrinsicProps<TableData, FormData, Type> &
+    TableTypeMap<TableData, FormData>[Type]["extendedProps"]
+> & {
+  formColumns: ComputedRef<
+    TableTypeMap<TableData, FormData>[Type]["formColumn"][]
+  >;
+  tableColumns: ComputedRef<
+    TableTypeMap<TableData, FormData>[Type]["tableColumn"][]
+  >;
+};
 
 export const useTable = <
   TableData extends Record<string, any>,
-  FormData = TableData,
+  FormData extends Record<string, any> = TableData,
+  Type extends keyof TableTypeMap<TableData, FormData> = "default",
 >(
-  props: TfTableHOCComponentProps<TableData, FormData>,
-  runtimeProps: TableRuntimeProps,
+  props: TfTableIntrinsicProps<TableData, FormData, Type>,
+  runtimeProps: string[],
 ) => {
-  const formColumns = computed<TfFormColumn<FormData>[]>(() => {
+  type FormColumn = TableTypeMap<TableData, FormData>[Type]["formColumn"];
+
+  const formColumns = computed<FormColumn[]>(() => {
     const fromTable = props.columns
       .filter(e => e.search)
       .map(e => ({
@@ -81,7 +86,8 @@ export const useTable = <
 
 export const useTableInject = <
   TableData extends Record<string, any>,
-  FormData = TableData,
+  FormData extends Record<string, any> = TableData,
+  Type extends keyof TableTypeMap<TableData, FormData> = "default",
 >() => {
-  return inject<TableInject<TableData, FormData>>(provideTableKey);
+  return inject<TableInject<TableData, FormData, Type>>(provideTableKey);
 };

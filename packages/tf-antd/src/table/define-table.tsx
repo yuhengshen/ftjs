@@ -1,4 +1,12 @@
-import { defineTfTable, useTableInject } from "tf-core";
+import {
+  cloneDeep,
+  defineTfTable,
+  get,
+  set,
+  useTableInject,
+  ValueOf,
+} from "tf-core";
+import type { DefineTableSlots, TfTableColumn } from "tf-core";
 import {
   Table,
   TableColumnType,
@@ -9,12 +17,15 @@ import type { FormExposed } from "../form/register";
 import {
   computed,
   CSSProperties,
+  h,
   onMounted,
   onUnmounted,
+  Ref,
   ref,
   watchEffect,
 } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
+import { editMap, EditMap } from "./column-edit";
 
 /**
  * 表格暴露的方法
@@ -31,13 +42,35 @@ export interface TableExposed<
    * 表单暴露的方法
    */
   formExposed: FormExposed<SearchData>;
+
+  /**
+   * 编辑行
+   */
+  editRow: Ref<TableData | undefined>;
+  /**
+   * 设置编辑行
+   */
+  setEditRow: (row: TableData) => void;
+  /**
+   * 取消编辑行
+   */
+  cancelEditRow: () => void;
+  /**
+   * 保存编辑行
+   */
+  saveEditRow: () => void;
 }
 
 declare module "tf-core" {
   interface TfTableColumn<
     TableData extends Record<string, any>,
     SearchData = TableData,
-  > extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {}
+  > extends Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
+    /**
+     * 行内编辑
+     */
+    edit?: keyof EditMap<TableData> | ValueOf<EditMap<TableData>>;
+  }
 
   interface TableProps<TableData extends Record<string, any>>
     extends Omit<
@@ -180,8 +213,8 @@ export const TfTable = defineTfTable(
 
     const scroll = ref<AntdTableProps<any>["scroll"]>({
       scrollToFirstRowOnChange: true,
-      x: "max-content",
-      y: undefined,
+      x: "100%",
+      y: 0,
     });
 
     let containerStyle: CSSProperties = {
@@ -200,10 +233,11 @@ export const TfTable = defineTfTable(
       const table = container?.querySelector(
         ".ant-table-wrapper",
       ) as HTMLDivElement;
-      const header = container?.querySelector(
+      if (!table) return;
+      const header = container!.querySelector(
         ".ant-table-thead",
       ) as HTMLDivElement;
-      const footer = container?.querySelector(
+      const footer = container!.querySelector(
         ".ant-table-footer",
       ) as HTMLDivElement;
       if (!table) return;
@@ -254,6 +288,9 @@ export const TfTable = defineTfTable(
       });
     }
 
+    const { createBodyCell, setEditRow, cancelEditRow, saveEditRow, editRow } =
+      useEdit(tableData);
+
     watchEffect(() => {
       onUpdateExposed?.({
         refresh: async () => {
@@ -261,6 +298,10 @@ export const TfTable = defineTfTable(
           handleSearch();
         },
         formExposed: formExposed.value!,
+        editRow,
+        setEditRow,
+        cancelEditRow,
+        saveEditRow,
       });
     });
 
@@ -296,6 +337,7 @@ export const TfTable = defineTfTable(
         >
           {{
             ...ctx.slots,
+            bodyCell: createBodyCell(ctx.slots.bodyCell),
           }}
         </Table>
       </div>
@@ -315,3 +357,80 @@ export const TfTable = defineTfTable(
     "hideSearch",
   ],
 );
+
+function useEdit<T extends any[]>(tableData: Ref<T | undefined>) {
+  const editRow = ref<T | undefined>(undefined);
+
+  let oldRow;
+
+  type BodyCell = DefineTableSlots<T>["bodyCell"];
+  type BodyCellParams<T> = T extends undefined
+    ? never
+    : T extends (arg: infer U, ...args: any[]) => any
+      ? U
+      : never;
+
+  const createBodyCell = (bodyCellDefault: BodyCell) => {
+    if (!tableData.value?.includes(editRow.value)) return bodyCellDefault;
+    return (scopeProps: BodyCellParams<BodyCell>) => {
+      const column = scopeProps.column as TfTableColumn<T>;
+
+      if (column.customRender) {
+        return column.customRender({
+          ...scopeProps,
+          record: scopeProps.record as any,
+          // todo:: 这个是啥？
+          renderIndex: -1,
+        });
+      }
+
+      if (column.edit && scopeProps.record === editRow.value) {
+        const field = column.field;
+
+        let edit: ValueOf<EditMap<T>>;
+        if (typeof column.edit === "string") {
+          edit = {
+            type: column.edit,
+            props: {},
+          };
+        } else {
+          edit = column.edit;
+        }
+        const component = editMap[edit.type];
+        if (component) {
+          return h(component, {
+            ...edit.props,
+            value: get(scopeProps.record, field),
+            "onUpdate:value": (value: any) => {
+              set(scopeProps.record, field, value);
+            },
+          });
+        }
+      }
+    };
+  };
+
+  const setEditRow = (row: T) => {
+    oldRow = cloneDeep(row);
+    editRow.value = row;
+  };
+
+  const cancelEditRow = () => {
+    if (!oldRow || !tableData.value) return;
+    tableData.value[tableData.value.indexOf(editRow.value)] = oldRow;
+    editRow.value = undefined;
+    oldRow = undefined;
+  };
+
+  const saveEditRow = () => {
+    editRow.value = undefined;
+    oldRow = undefined;
+  };
+  return {
+    editRow,
+    setEditRow,
+    createBodyCell,
+    cancelEditRow,
+    saveEditRow,
+  };
+}

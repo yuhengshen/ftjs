@@ -120,6 +120,11 @@ declare module "tf-core" {
      * @default false
      */
     hideSearch?: boolean;
+    /**
+     * 是否隐藏分页
+     * @default false
+     */
+    hidePagination?: boolean;
     exposed?: TableExposed<TableData, SearchData>;
     "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
     onChange?: TableProps<TableData>["onChange"];
@@ -139,7 +144,7 @@ export interface OnSearchInfo {
   /**
    * 分页信息
    */
-  pagination: Pagination;
+  pagination?: Pagination;
 }
 
 interface Pagination {
@@ -164,6 +169,7 @@ export const TfTable = defineTfTable(
       fitFlexHeight,
       minHeight,
       hideSearch,
+      hidePagination,
       onSearch,
       onChange,
       onExpand,
@@ -174,14 +180,15 @@ export const TfTable = defineTfTable(
 
     const formExposed = ref<FormExposed<any>>();
 
-    const handleSearch = async (
-      pagination: Pagination = {
-        page: 1,
-        pageSize: defaultPageSize.value ?? 20,
-      },
-    ) => {
+    const handleSearch = async (pagination?: Pagination) => {
       if (!onSearch) return;
       const formData = formExposed.value?.getFormData()!;
+      if (!pagination && !hidePagination.value) {
+        pagination = {
+          page: 1,
+          pageSize: defaultPageSize.value ?? 20,
+        };
+      }
       onSearch(formData, { pagination });
     };
 
@@ -207,15 +214,17 @@ export const TfTable = defineTfTable(
       // 设置默认值
       return {
         bordered: true,
-        pagination: {
-          total: total.value,
-          defaultPageSize: defaultPageSize.value ?? 20,
-          current: currentPage.value,
-          onChange: (page: number, pageSize: number) => {
-            currentPage.value = page;
-            handleSearch({ page, pageSize });
-          },
-        },
+        pagination: hidePagination.value
+          ? (false as const)
+          : {
+              total: total.value,
+              defaultPageSize: defaultPageSize.value ?? 20,
+              current: currentPage.value,
+              onChange: (page: number, pageSize: number) => {
+                currentPage.value = page;
+                handleSearch({ page, pageSize });
+              },
+            },
         tableLayout: "fixed" as const,
         rowKey: keyField.value ?? "id",
         ...tableProps.value,
@@ -399,6 +408,7 @@ export const TfTable = defineTfTable(
     "initSearch",
     "fitFlexHeight",
     "minHeight",
+    "hidePagination",
     "exposed",
     "onUpdate:exposed",
     "hideSearch",
@@ -445,6 +455,7 @@ function useEdit<T extends Record<string, any>>(
         if (component) {
           return h(component, {
             ...edit.props,
+            class: "tf-table-edit",
             value: get(scopeProps.record, field),
             "onUpdate:value": (value: any) => {
               set(scopeProps.record, field, value);

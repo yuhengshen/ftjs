@@ -8,8 +8,6 @@ import {
 } from "tf-core";
 import type {
   TfTableColumn,
-  TfFormColumn,
-  TfFormHOCComponentProps,
   TableTypeMap,
   TfTableIntrinsicProps,
 } from "tf-core";
@@ -19,7 +17,7 @@ import {
   TableProps as AntTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
-import type { FormExposed } from "../form/register";
+import type { AntdColumns, FormExposed } from "../form/register";
 import {
   computed,
   CSSProperties,
@@ -42,12 +40,12 @@ declare module "tf-core" {
     SearchData extends Record<string, any> = TableData,
   > {
     antd: {
-      extendedProps: ExtendedProps<TableData, SearchData>;
       tableSlots: TableSlots<TableData>;
-      tableColumn: TableColumn<TableData, SearchData>;
-      formColumn: TfFormColumn<SearchData>;
+      tableColumn: TableColumn<TableData>;
+      formColumn: AntdColumns<SearchData>;
+      extendedProps: ExtendedProps<TableData, SearchData>;
       internalTableProps: InternalTableProps<TableData>;
-      internalFormProps: TfFormHOCComponentProps<SearchData>;
+      internalFormProps: {};
     };
   }
 }
@@ -97,10 +95,8 @@ export interface TableExposed<
 /**
  * 列定义
  */
-export interface TableColumn<
-  TableData extends Record<string, any>,
-  SearchData extends Record<string, any> = TableData,
-> extends TfTableColumn<TableData, SearchData>,
+export interface TableColumn<TableData extends Record<string, any>>
+  extends TfTableColumn<TableData>,
     Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
   /**
    * 行内编辑

@@ -35,7 +35,6 @@ export type FormInject<
   | "form"
   | "columnsChecked"
   | "columnsSort"
-  | "columns"
   | "visibleColumns"
   | "internalFormProps"
   | "onSubmit"
@@ -46,7 +45,9 @@ export type FormInject<
   | "resetColumnsChecked"
   | "cache"
 > &
-  SplitEventKeys<FormTypeMap<FormData>[Type]["extendedProps"]>;
+  SplitEventKeys<FormTypeMap<FormData>[Type]["extendedProps"]> & {
+    columns: ComputedRef<FormTypeMap<FormData>[Type]["columns"][]>;
+  };
 
 const provideFormKey = Symbol("tf-core-form-provide");
 

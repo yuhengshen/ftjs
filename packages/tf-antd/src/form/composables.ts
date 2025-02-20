@@ -1,8 +1,8 @@
-import { getField, TfFormColumn } from "tf-core";
+import { getField } from "tf-core";
 import { computed, toValue } from "vue";
-
+import { AntdColumnBase } from "./register";
 export const useFormItemProps = <T extends Record<string, any>>(
-  column: TfFormColumn<T>,
+  column: AntdColumnBase<T>,
 ) => {
   return computed(() => {
     const field = getField(column);

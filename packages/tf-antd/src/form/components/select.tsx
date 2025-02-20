@@ -1,21 +1,15 @@
-import {
-  defineFormComponent,
-  Refs,
-  TfFormColumnBase,
-  unrefs,
-  useFormItem,
-} from "tf-core";
+import { defineFormComponent, Refs, unrefs, useFormItem } from "tf-core";
 import { FormItem, Select, SelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, toValue, unref } from "vue";
+import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnSelect<T> extends TfFormColumnBase<T> {
-  /** 选择框 */
-  type: "select";
+export interface TfFormColumnSelect<T extends Record<string, any>>
+  extends AntdColumnBase<T> {
   props?: Refs<SelectProps>;
 }
 
-export default defineFormComponent<"select">(props => {
+export default defineFormComponent<TfFormColumnSelect<any>>(props => {
   const { valueComputed, isView } = useFormItem({
     props,
   });

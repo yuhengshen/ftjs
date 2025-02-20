@@ -10,9 +10,10 @@ import {
   Tree,
 } from "ant-design-vue";
 import { computed, ref, toValue, useId, watchEffect } from "vue";
+import { formRenderMap } from "./register";
 
 export const useRules = () => {
-  const { columns } = useFormInject()!;
+  const { columns } = useFormInject<any, "antd">()!;
   // 收集表单列的验证规则
   const rules = computed(() => {
     const rulesObj = {};
@@ -36,7 +37,7 @@ const useExposed = () => {
     resetToDefault,
     getFormData,
     setAsDefault,
-  } = useFormInject()!;
+  } = useFormInject<any, "antd">()!;
 
   watchEffect(() => {
     onUpdateExposed?.({
@@ -47,17 +48,18 @@ const useExposed = () => {
   });
 };
 
-export const TfForm = defineTfForm(
+export const TfForm = defineTfForm<"antd">(
   (_, ctx) => {
     const {
       form,
-      formProps: _formProps,
+      width: _width,
+      internalFormProps: _formProps,
       onSubmit,
       getFormData,
       resetToDefault,
-    } = useFormInject()!;
+    } = useFormInject<any, "antd">()!;
 
-    const width = _formProps.value?.width ?? "500px";
+    const width = _width.value ?? "500px";
 
     // 获取表单值
     const { rules } = useRules();
@@ -103,10 +105,11 @@ export const TfForm = defineTfForm(
       </Form>
     );
   },
+  formRenderMap,
   ["exposed", "onUpdate:exposed"],
 );
 
-export const TfFormSearch = defineTfForm(
+export const TfFormSearch = defineTfForm<"antd">(
   (_, ctx) => {
     const {
       form,
@@ -114,7 +117,7 @@ export const TfFormSearch = defineTfForm(
       columnsSort,
       columns,
       cache,
-      formProps: _formProps,
+      internalFormProps: _formProps,
       onSubmit,
       getFormData,
       resetToDefault,
@@ -329,5 +332,6 @@ export const TfFormSearch = defineTfForm(
       </>
     );
   },
+  formRenderMap,
   ["exposed", "onUpdate:exposed"],
 );

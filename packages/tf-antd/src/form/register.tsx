@@ -1,5 +1,4 @@
-import { FormInject, setupTfForm } from "tf-core";
-import { FormProps } from "ant-design-vue";
+import { FormInject, TfFormColumnBase } from "tf-core";
 import type {
   RuleType,
   StoreValue,
@@ -14,6 +13,7 @@ import rangePicker, {
 } from "./components/range-picker";
 import radio, { TfFormColumnRadio } from "./components/radio";
 import textarea, { TfFormColumnTextarea } from "./components/textarea";
+import { FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
   | VNode
@@ -26,77 +26,81 @@ export type VNodeChildAtom =
 export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 
 export interface FormExposed<T extends Record<string, any>> {
-  getFormData: FormInject<T>["getFormData"];
-  resetToDefault: FormInject<T>["resetToDefault"];
-  setAsDefault: FormInject<T>["setAsDefault"];
+  getFormData: FormInject<T, "antd">["getFormData"];
+  resetToDefault: FormInject<T, "antd">["resetToDefault"];
+  setAsDefault: FormInject<T, "antd">["setAsDefault"];
 }
+
+export interface AntdColumnBase<FormData extends Record<string, any>>
+  extends TfFormColumnBase<FormData> {
+  /**
+   * 校验规则
+   */
+  rules?: ColumnRule[];
+}
+
+/**
+ * 全部的 antd column 集合
+ */
+export type AntdColumns<FormData extends Record<string, any>> =
+  | TfFormColumnDatePicker<FormData>
+  | TfFormColumnRangePicker<FormData>
+  | TfFormColumnRadio<FormData>
+  | TfFormColumnSelect<FormData>
+  | TfFormColumnTextarea<FormData>
+  | TfFormColumnInput<FormData>;
+
+export const formRenderMap = {
+  input,
+  textarea,
+  select,
+  radio,
+  "date-picker": datePicker,
+  "range-picker": rangePicker,
+};
 
 declare module "tf-core" {
-  /**
-   * form 容器组件 props 类型
-   */
-  interface FormContainerProps extends FormProps {
-    width?: string;
-  }
-
-  interface DefineFormProps<T extends Record<string, any>> {
-    exposed?: FormExposed<T>;
-    "onUpdate:exposed"?: (exposed: FormExposed<T>) => void;
-  }
-
-  /**
-   * columns 类型
-   */
-  interface TfFormColumnMap<T> {
-    input: TfFormColumnInput<T>;
-    select: TfFormColumnSelect<T>;
-    radio: TfFormColumnRadio<T>;
-    textarea: TfFormColumnTextarea<T>;
-    "date-picker": TfFormColumnDatePicker<T>;
-    "range-picker": TfFormColumnRangePicker<T>;
-  }
-
-  /**
-   * 从 antd vue 中复制出来的
-   */
-  interface ColumnRule extends Partial<ValidatorRule> {
-    warningOnly?: boolean;
-    /** validate the value from a list of possible values */
-    enum?: StoreValue[];
-    /** validate the exact length of a field */
-    len?: number;
-    /** validate the max length of a field */
-    max?: number;
-    /** validation error message */
-    message?: VueNode;
-    /** validate the min length of a field */
-    min?: number;
-    /** validate from a regular expression */
-    pattern?: RegExp;
-    /** indicates whether field is required */
-    required?: boolean;
-    /** transform a value before validation */
-    transform?: (value: StoreValue) => StoreValue;
-    /** built-in validation type, available options: https://github.com/yiminghe/async-validator#type */
-    type?: RuleType;
-    /** treat required fields that only contain whitespace as errors */
-    whitespace?: boolean;
-    /** Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger` */
-    validateTrigger?: string | string[];
-    /** Check trigger timing */
-    trigger?: "blur" | "change" | Array<"change" | "blur">;
+  interface FormTypeMap<_FormData extends Record<string, any>> {
+    antd: {
+      formSlots: {};
+      columns: AntdColumns<_FormData>;
+      extendedProps: {
+        width?: string;
+        exposed?: FormExposed<_FormData>;
+        "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
+      };
+      internalFormProps: FormProps;
+    };
   }
 }
 
-export default function register() {
-  setupTfForm({
-    renderMap: {
-      input,
-      textarea,
-      select,
-      radio,
-      "date-picker": datePicker,
-      "range-picker": rangePicker,
-    },
-  });
+/**
+ * 从 antd vue 中复制出来的
+ */
+interface ColumnRule extends Partial<ValidatorRule> {
+  warningOnly?: boolean;
+  /** validate the value from a list of possible values */
+  enum?: StoreValue[];
+  /** validate the exact length of a field */
+  len?: number;
+  /** validate the max length of a field */
+  max?: number;
+  /** validation error message */
+  message?: VueNode;
+  /** validate the min length of a field */
+  min?: number;
+  /** validate from a regular expression */
+  pattern?: RegExp;
+  /** indicates whether field is required */
+  required?: boolean;
+  /** transform a value before validation */
+  transform?: (value: StoreValue) => StoreValue;
+  /** built-in validation type, available options: https://github.com/yiminghe/async-validator#type */
+  type?: RuleType;
+  /** treat required fields that only contain whitespace as errors */
+  whitespace?: boolean;
+  /** Customize rule level `validateTrigger`. Must be subset of Field `validateTrigger` */
+  validateTrigger?: string | string[];
+  /** Check trigger timing */
+  trigger?: "blur" | "change" | Array<"change" | "blur">;
 }

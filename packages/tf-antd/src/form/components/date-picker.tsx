@@ -1,22 +1,15 @@
-import {
-  defineFormComponent,
-  Refs,
-  TfFormColumnBase,
-  unrefs,
-  useFormItem,
-} from "tf-core";
+import { defineFormComponent, Refs, unrefs, useFormItem } from "tf-core";
 import { FormItem, DatePicker, DatePickerProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
-
-export interface TfFormColumnDatePicker<T> extends TfFormColumnBase<T> {
-  /** 日期选择器 */
-  type: "date-picker";
+import { AntdColumnBase } from "../register";
+export interface TfFormColumnDatePicker<T extends Record<string, any>>
+  extends AntdColumnBase<T> {
   props?: Refs<DatePickerProps>;
 }
 
-export default defineFormComponent<"date-picker">(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+export default defineFormComponent<TfFormColumnDatePicker<any>>(props => {
+  const { valueComputed, isView } = useFormItem<any, "antd">({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -31,7 +24,7 @@ export default defineFormComponent<"date-picker">(props => {
         {toValue(isView.value) ? (
           <div>{valueComputed.value}</div>
         ) : (
-          // @ts-expect-error antd date picker onChange 类型不兼容
+          // @ts-expect-error 类型推断错误
           <DatePicker v-model:value={valueComputed.value} {..._props} />
         )}
       </FormItem>

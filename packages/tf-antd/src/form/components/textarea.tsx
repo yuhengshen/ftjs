@@ -1,21 +1,15 @@
-import {
-  defineFormComponent,
-  Refs,
-  TfFormColumnBase,
-  unrefs,
-  useFormItem,
-} from "tf-core";
+import { defineFormComponent, Refs, unrefs, useFormItem } from "tf-core";
 import { FormItem, Textarea, TextAreaProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
+import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnTextarea<T> extends TfFormColumnBase<T> {
-  /** 输入框 */
-  type: "textarea";
+export interface TfFormColumnTextarea<T extends Record<string, any>>
+  extends AntdColumnBase<T> {
   props?: Refs<TextAreaProps>;
 }
 
-export default defineFormComponent<"textarea">(props => {
+export default defineFormComponent<TfFormColumnTextarea<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

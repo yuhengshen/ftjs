@@ -1,23 +1,17 @@
-import {
-  defineFormComponent,
-  Refs,
-  TfFormColumnBase,
-  unrefs,
-  useFormItem,
-} from "tf-core";
+import { defineFormComponent, Refs, unrefs, useFormItem } from "tf-core";
 import { FormItem, RangePicker } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { RangePickerProps } from "ant-design-vue/es/date-picker";
 import dayjs from "dayjs";
+import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnRangePicker<T> extends TfFormColumnBase<T> {
-  /** 日期范围选择器 */
-  type: "range-picker";
+export interface TfFormColumnRangePicker<T extends Record<string, any>>
+  extends AntdColumnBase<T> {
   props?: Refs<RangePickerProps>;
 }
 
-export default defineFormComponent<"range-picker">(props => {
+export default defineFormComponent<TfFormColumnRangePicker<any>>(props => {
   const { valueComputed, isView } = useFormItem({
     props,
   });

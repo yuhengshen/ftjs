@@ -4,9 +4,12 @@ import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
 import { CommonFormItemProps, FormTypeMap } from "./define-component";
 
-interface UseFormItemOptions<FormData extends Record<string, any>> {
+interface UseFormItemOptions<
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+> {
   /** 通用 props */
-  props: CommonFormItemProps<TfFormColumnBase<FormData>>;
+  props: CommonFormItemProps<FormTypeMap<FormData>[Type]["columns"]>;
   /**
    * set 转换
    */
@@ -24,7 +27,7 @@ export const useFormItem = <
   FromData extends Record<string, any>,
   Type extends keyof FormTypeMap<FromData>,
 >(
-  options: UseFormItemOptions<TfFormColumnBase<FormData>>,
+  options: UseFormItemOptions<TfFormColumnBase<FormData>, Type>,
 ) => {
   let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数

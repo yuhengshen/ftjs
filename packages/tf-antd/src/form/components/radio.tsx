@@ -1,22 +1,16 @@
-import {
-  defineFormComponent,
-  Refs,
-  TfFormColumnBase,
-  unrefs,
-  useFormItem,
-} from "tf-core";
+import { defineFormComponent, Refs, unrefs, useFormItem } from "tf-core";
 import { FormItem, Radio, RadioGroupProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, toValue, unref } from "vue";
 import { RadioGroupChildOption } from "ant-design-vue/es/radio/Group";
+import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnRadio<T> extends TfFormColumnBase<T> {
-  /** 单选框，注意 options 必填 */
-  type: "radio";
+export interface TfFormColumnRadio<T extends Record<string, any>>
+  extends AntdColumnBase<T> {
   props?: Refs<RadioGroupProps>;
 }
 
-export default defineFormComponent<"radio">(props => {
+export default defineFormComponent<TfFormColumnRadio<any>>(props => {
   const { valueComputed, isView } = useFormItem({
     props,
   });

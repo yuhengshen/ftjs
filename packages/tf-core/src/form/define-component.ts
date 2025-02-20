@@ -87,21 +87,22 @@ export type ExtractColumns<
 /**
  * 定义表单容器组件
  */
-export const defineTfForm = <
-  Type extends keyof FormTypeMap<any>,
-  M extends Record<
-    string,
-    new (props: CommonFormItemProps<any>, ctx: any) => any
-  >,
->(
+export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
   setup: (
     props: {},
     ctx: SetupContext<
       EmitsOptions,
-      SlotsType<FormTypeMap<any>[Type]["formSlots"]>
+      SlotsType<
+        FormTypeMap<any>[Type]["formSlots"] & {
+          /**
+           * 表单内容
+           */
+          formContent: () => any;
+        }
+      >
     >,
   ) => any,
-  renderMap: M,
+  renderMap: any,
   _runtimeProps: string[],
 ) => {
   const FormComponent = defineComponent(setup, {
@@ -175,12 +176,8 @@ export const defineTfForm = <
 /**
  * 定义表单组件
  */
-export function defineFormComponent(
-  setup: <T extends Record<string, any>>(
-    props: CommonFormItemProps<TfFormColumnBase<T>>,
-
-    ctx: SetupContext,
-  ) => () => VNode,
+export function defineFormComponent<T extends TfFormColumnBase<any>>(
+  setup: (props: CommonFormItemProps<T>, ctx: SetupContext) => () => VNode,
 ) {
   return defineComponent(setup, {
     props: ["column", "isView"] as any,

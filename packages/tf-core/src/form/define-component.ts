@@ -36,7 +36,7 @@ export interface TfFormIntrinsicProps<
   /**
    * v-model:formData 的值
    *
-   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfFrom内部会生成一个内部值
+   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfForm内部会生成一个内部值
    */
   formData?: FormData;
   /**
@@ -67,22 +67,13 @@ export interface CommonFormItemProps<T extends TfFormColumnBase<any>> {
   isView: boolean;
 }
 
-/**
- * 从 renderMap 中提取出 Columns
- */
-export type ExtractColumns<
-  Map extends Record<
-    string,
-    new (props: CommonFormItemProps<any>, ctx: any) => any
-  >,
-> = {
-  [K in keyof Map]: Map[K] extends new (
-    props: CommonFormItemProps<infer T>,
-    ctx: any,
-  ) => any
-    ? T
-    : never;
-}[keyof Map];
+export type TfFormPropsMap<
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+> = TfFormIntrinsicProps<FormData, Type> &
+  FormTypeMap<FormData>[Type]["extendedProps"] & {
+    columns: FormTypeMap<FormData>[Type]["columns"][];
+  };
 
 /**
  * 定义表单容器组件
@@ -122,10 +113,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
 
   return defineComponent(
     <FormData extends Record<string, any>>(
-      props: TfFormIntrinsicProps<FormData, Type> &
-        FormTypeMap<FormData>[Type]["extendedProps"] & {
-          columns: FormTypeMap<FormData>[Type]["columns"][];
-        },
+      props: TfFormPropsMap<FormData, Type>,
       ctx: SetupContext<
         EmitsOptions,
         SlotsType<FormTypeMap<FormData>[Type]["formSlots"]>

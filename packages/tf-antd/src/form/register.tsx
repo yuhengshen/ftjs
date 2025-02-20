@@ -4,7 +4,7 @@ import type {
   StoreValue,
   ValidatorRule,
 } from "ant-design-vue/es/form/interface";
-import type { VNode } from "vue";
+import type { MaybeRefOrGetter, VNode } from "vue";
 import input, { TfFormColumnInput } from "./components/input";
 import select, { TfFormColumnSelect } from "./components/select";
 import datePicker, { TfFormColumnDatePicker } from "./components/date-picker";
@@ -36,13 +36,13 @@ export interface AntdColumnBase<FormData extends Record<string, any>>
   /**
    * 校验规则
    */
-  rules?: ColumnRule[];
+  rules?: MaybeRefOrGetter<ColumnRule[]>;
 }
 
 /**
  * 全部的 antd column 集合
  */
-export type AntdColumns<FormData extends Record<string, any>> =
+export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnDatePicker<FormData>
   | TfFormColumnRangePicker<FormData>
   | TfFormColumnRadio<FormData>
@@ -63,9 +63,21 @@ declare module "tf-core" {
   interface FormTypeMap<_FormData extends Record<string, any>> {
     antd: {
       formSlots: {};
-      columns: AntdColumns<_FormData>;
+      columns: FormColumn<_FormData>;
       extendedProps: {
+        /**
+         * 表格宽度
+         */
         width?: string;
+        exposed?: FormExposed<_FormData>;
+        "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
+      };
+      internalFormProps: FormProps;
+    };
+    antdSearch: {
+      formSlots: {};
+      columns: FormColumn<_FormData>;
+      extendedProps: {
         exposed?: FormExposed<_FormData>;
         "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
       };

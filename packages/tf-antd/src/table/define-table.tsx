@@ -6,18 +6,14 @@ import {
   useTableInject,
   ValueOf,
 } from "tf-core";
-import type {
-  TfTableColumn,
-  TableTypeMap,
-  TfTableIntrinsicProps,
-} from "tf-core";
+import type { TfTableColumn, TableTypeMap, TfTablePropsMap } from "tf-core";
 import {
   Table,
   TableColumnType,
   TableProps as AntTableProps,
 } from "ant-design-vue";
 import { TfFormSearch } from "../form/define-form";
-import type { AntdColumns, FormExposed } from "../form/register";
+import type { FormColumn, FormExposed } from "../form/register";
 import {
   computed,
   CSSProperties,
@@ -42,7 +38,7 @@ declare module "tf-core" {
     antd: {
       tableSlots: TableSlots<TableData>;
       tableColumn: TableColumn<TableData>;
-      formColumn: AntdColumns<SearchData>;
+      formColumn: FormColumn<SearchData>;
       extendedProps: ExtendedProps<TableData, SearchData>;
       internalTableProps: InternalTableProps<TableData>;
       internalFormProps: {};
@@ -444,7 +440,7 @@ export const TfTable = defineTfTable<"antd">(
 export type TfTableProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
-> = TfTableIntrinsicProps<TableData, SearchData, "antd">;
+> = TfTablePropsMap<TableData, SearchData, "antd">;
 
 function useEdit<T extends Record<string, any>>(
   tableData: Ref<T[] | undefined>,

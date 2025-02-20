@@ -6,6 +6,10 @@ import { AntdColumnBase } from "../register";
 
 export interface TfFormColumnTextarea<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 文本域
+   */
+  type: "textarea";
   props?: Refs<TextAreaProps>;
 }
 

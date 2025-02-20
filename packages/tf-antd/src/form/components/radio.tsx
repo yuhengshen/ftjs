@@ -7,6 +7,10 @@ import { AntdColumnBase } from "../register";
 
 export interface TfFormColumnRadio<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 单选框
+   */
+  type: "radio";
   props?: Refs<RadioGroupProps>;
 }
 

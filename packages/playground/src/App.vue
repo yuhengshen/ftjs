@@ -1,7 +1,6 @@
 <script setup lang="tsx">
-import { defineCustomRender, TfFormColumn, TfTableColumn } from "tf-core";
-import { TfTable } from "tf-antd";
-import { ref, toValue } from "vue";
+import { TfTable, TfFormProps, TfTableProps } from "tf-antd";
+import { ref } from "vue";
 import { FormItem, Button } from "ant-design-vue";
 
 const likesOptions = ref([
@@ -23,7 +22,7 @@ interface FormData {
   };
 }
 
-const columns: TfFormColumn<FormData>[] = [
+const columns: TfFormProps<FormData>["columns"] = [
   {
     type: "input",
     field: "extraInfo.name",
@@ -60,21 +59,21 @@ const columns: TfFormColumn<FormData>[] = [
     },
     rules: [{ len: 10, message: "长度为10" }],
   },
-  {
-    type: "custom",
-    field: "custom",
-    title: "自定义isView",
-    props: {
-      render: defineCustomRender(props => {
-        return () => (
-          <FormItem label="isView">
-            <div>isView: {toValue(props.isView) ? "true" : "false"}</div>
-          </FormItem>
-        );
-      }),
-    },
-    sort: 999,
-  },
+  // {
+  //   type: "custom",
+  //   field: "custom",
+  //   title: "自定义isView",
+  //   props: {
+  //     render: defineCustomRender(props => {
+  //       return () => (
+  //         <FormItem label="isView">
+  //           <div>isView: {toValue(props.isView) ? "true" : "false"}</div>
+  //         </FormItem>
+  //       );
+  //     }),
+  //   },
+  //   sort: 999,
+  // },
   {
     type: "select",
     field: "likes",
@@ -154,7 +153,7 @@ interface TableData {
   address13: string;
 }
 
-const tableColumns: TfTableColumn<TableData & { operate: string }>[] = [
+const tableColumns: TfTableProps<TableData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -269,7 +268,7 @@ const tableColumns: TfTableColumn<TableData & { operate: string }>[] = [
     },
   },
   {
-    field: "operate",
+    field: "_operate",
     title: "操作",
     width: 100,
     fixed: "right",

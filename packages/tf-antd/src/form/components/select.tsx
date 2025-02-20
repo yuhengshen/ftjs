@@ -6,6 +6,10 @@ import { AntdColumnBase } from "../register";
 
 export interface TfFormColumnSelect<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 选择器
+   */
+  type: "select";
   props?: Refs<SelectProps>;
 }
 

@@ -8,6 +8,10 @@ import { AntdColumnBase } from "../register";
 
 export interface TfFormColumnRangePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 范围选择器
+   */
+  type: "range-picker";
   props?: Refs<RangePickerProps>;
 }
 

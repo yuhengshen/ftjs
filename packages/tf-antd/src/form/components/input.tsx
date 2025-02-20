@@ -6,6 +6,10 @@ import { AntdColumnBase } from "../register";
 
 export interface TfFormColumnInput<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 输入框
+   */
+  type: "input";
   props?: Refs<InputProps>;
 }
 

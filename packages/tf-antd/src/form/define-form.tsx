@@ -1,5 +1,11 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
-import { defineTfForm, getField, set, useFormInject } from "tf-core";
+import {
+  defineTfForm,
+  getField,
+  set,
+  useFormInject,
+  TfFormPropsMap,
+} from "tf-core";
 import {
   FormProps,
   FormItem,
@@ -48,7 +54,7 @@ const useExposed = () => {
   });
 };
 
-export const TfForm = defineTfForm<"antd">(
+export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
   (_, ctx) => {
     const {
       form,
@@ -109,7 +115,7 @@ export const TfForm = defineTfForm<"antd">(
   ["exposed", "onUpdate:exposed"],
 );
 
-export const TfFormSearch = defineTfForm<"antd">(
+export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
   (_, ctx) => {
     const {
       form,
@@ -335,3 +341,11 @@ export const TfFormSearch = defineTfForm<"antd">(
   formRenderMap,
   ["exposed", "onUpdate:exposed"],
 );
+
+export type TfFormProps<FormData extends Record<string, any>> = TfFormPropsMap<
+  FormData,
+  "antd"
+>;
+
+export type TfFormSearchProps<FormData extends Record<string, any>> =
+  TfFormPropsMap<FormData, "antdSearch">;

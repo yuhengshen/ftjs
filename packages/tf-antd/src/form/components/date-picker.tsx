@@ -5,6 +5,10 @@ import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 export interface TfFormColumnDatePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
+  /**
+   * 日期选择器
+   */
+  type: "date-picker";
   props?: Refs<DatePickerProps>;
 }
 

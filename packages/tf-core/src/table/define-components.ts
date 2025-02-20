@@ -80,6 +80,13 @@ export interface TfTableIntrinsicProps<
   keyField?: string;
 }
 
+export type TfTablePropsMap<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any>,
+  Type extends keyof TableTypeMap<TableData, SearchData>,
+> = TfTableIntrinsicProps<TableData, SearchData, Type> &
+  TableTypeMap<TableData, SearchData>[Type]["extendedProps"];
+
 export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
   setup: (
     props: {},
@@ -114,8 +121,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
       TableData extends Record<string, any>,
       SearchData extends Record<string, any> = TableData,
     >(
-      props: TfTableIntrinsicProps<TableData, SearchData, Type> &
-        TableTypeMap<TableData, SearchData>[Type]["extendedProps"],
+      props: TfTablePropsMap<TableData, SearchData, Type>,
       ctx: SetupContext<
         EmitsOptions,
         SlotsType<TableTypeMap<TableData, SearchData>[Type]["tableSlots"]>

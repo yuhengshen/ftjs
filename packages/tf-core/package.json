@@ -27,16 +27,13 @@
     "vue": "catalog:"
   },
   "devDependencies": {
-    "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "@vue/test-utils": "catalog:",
-    "eslint": "catalog:",
     "happy-dom": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",

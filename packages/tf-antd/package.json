@@ -30,12 +30,9 @@
     "vue-component-type-helpers": "catalog:"
   },
   "devDependencies": {
-    "@eslint/js": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
-    "eslint": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vue-tsc": "catalog:"

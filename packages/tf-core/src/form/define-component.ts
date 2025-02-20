@@ -3,7 +3,6 @@ import {
   defineComponent,
   EmitsOptions,
   h,
-  MaybeRefOrGetter,
   SetupContext,
   SlotsType,
   VNode,
@@ -32,7 +31,7 @@ export interface FormContainerProps {}
 /**
  * @public
  */
-export interface DefineFormSlots<T extends Record<string, any>> {
+export interface DefineFormSlots<_T extends Record<string, any>> {
   /**
    * 表单内容 slot
    */

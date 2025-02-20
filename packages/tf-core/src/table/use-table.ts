@@ -2,7 +2,6 @@ import { computed, ComputedRef, inject, provide } from "vue";
 import { TfFormColumn } from "../form";
 import { TableTypeMap, TfTableIntrinsicProps } from "./define-components";
 import { SplitEventKeys } from "../type-helper";
-import { TfTableColumn } from "./columns";
 
 const provideTableKey = Symbol("tf-core-table-provide");
 
@@ -24,8 +23,8 @@ type TableInject<
 
 export const useTable = <
   TableData extends Record<string, any>,
-  FormData extends Record<string, any> = TableData,
-  Type extends keyof TableTypeMap<TableData, FormData> = "default",
+  FormData extends Record<string, any>,
+  Type extends keyof TableTypeMap<TableData, FormData>,
 >(
   props: TfTableIntrinsicProps<TableData, FormData, Type>,
   runtimeProps: string[],

@@ -16,9 +16,9 @@ export default tseslint.config(
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
-          typeParameters: { ignorePatternsForAllParameters: true },
         },
       ],
+      "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
     },
   },
   eslintConfigPrettier,

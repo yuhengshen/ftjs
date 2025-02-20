@@ -7,7 +7,7 @@ interface Edit<Type, Props> {
   props?: Props;
 }
 
-export interface EditMap<TableData extends Record<string, any>> {
+export interface EditMap<_TableData extends Record<string, any>> {
   input: Edit<"input", InputProps>;
   select: Edit<"select", SelectProps>;
 }

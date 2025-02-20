@@ -120,7 +120,7 @@ interface InternalTableProps<TableData extends Record<string, any>>
 /**
  * 表格插槽
  */
-export interface TableSlots<TableData extends Record<string, any>>
+export interface TableSlots<_TableData extends Record<string, any>>
   extends ComponentSlots<typeof Table> {
   buttons?: () => any;
   tools?: () => any;
@@ -309,7 +309,7 @@ export const TfTable = defineTfTable<"antd">(
         (header?.clientHeight ?? 0) -
         (footer?.clientHeight ?? 0);
 
-      let minHeightValue = minHeight.value ?? 210;
+      const minHeightValue = minHeight.value ?? 210;
       if (y < minHeightValue) y = minHeightValue;
       _scrollY.value = y;
     };

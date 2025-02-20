@@ -1,5 +1,4 @@
 import { computed, ComputedRef, inject, provide } from "vue";
-import { TfFormColumn } from "../form";
 import { TableTypeMap, TfTableIntrinsicProps } from "./define-components";
 import { SplitEventKeys } from "../type-helper";
 
@@ -40,10 +39,7 @@ export const useTable = <
         ...e.search!,
       }));
 
-    return [
-      ...fromTable,
-      ...(props.searchColumns ?? []),
-    ] as TfFormColumn<FormData>[];
+    return [...fromTable, ...(props.searchColumns ?? [])];
   });
 
   const tableColumns = computed(() => {

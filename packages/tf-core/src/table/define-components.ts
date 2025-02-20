@@ -1,26 +1,36 @@
 import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
 import { TfTableColumn } from "./columns";
 import { useTable } from "./use-table";
-import { TfFormColumn } from "../form";
-
+import { TfFormColumnBase } from "../form";
 export interface TableTypeMap<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any>,
 > {
   default: {
     tableSlots: {};
-    tableColumn: TfTableColumn<TableData, SearchData>;
-    formColumn: TfFormColumn<SearchData>;
+    tableColumn: TfTableColumn<TableData>;
+    formColumn: TfFormColumnBase<SearchData>;
     extendedProps: {};
     internalFormProps: {};
     internalTableProps: {};
   };
 }
 
+export type TableColumn<
+  TableData extends Record<string, any>,
+  SearchData extends Record<string, any>,
+  Type extends keyof TableTypeMap<TableData, SearchData>,
+> = TableTypeMap<TableData, SearchData>[Type]["tableColumn"] & {
+  /**
+   * 搜索表单配置
+   */
+  search?: TableTypeMap<TableData, SearchData>[Type]["formColumn"];
+};
+
 export interface TfTableIntrinsicProps<
   TableData extends Record<string, any>,
-  SearchData extends Record<string, any> = TableData,
-  type extends keyof TableTypeMap<TableData, SearchData> = "default",
+  SearchData extends Record<string, any>,
+  type extends keyof TableTypeMap<TableData, SearchData>,
 > {
   /**
    * 用于缓存配置，不填则不缓存
@@ -29,7 +39,7 @@ export interface TfTableIntrinsicProps<
   /**
    * 列定义
    */
-  columns: TableTypeMap<TableData, SearchData>[type]["tableColumn"][];
+  columns: TableColumn<TableData, SearchData, type>[];
   /**
    * 列定义外的搜索条件
    */
@@ -99,7 +109,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
     ..._runtimeProps,
   ] as any;
 
-  const TfTable = defineComponent(
+  return defineComponent(
     <
       TableData extends Record<string, any>,
       SearchData extends Record<string, any> = TableData,
@@ -119,6 +129,4 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
       name: "TfTable",
     },
   );
-
-  return TfTable;
 }

@@ -7,15 +7,60 @@ import {
   SlotsType,
   VNode,
 } from "vue";
-import { renderMap } from "./render-map";
-import { TfFormColumn, TfFormColumnMap } from "./columns";
 import { useForm } from "./use-form";
-import { WithLengthKeys } from "../type-helper";
+import { TfFormColumnBase } from "./columns";
+
+export interface FormTypeMap<_FormData extends Record<string, any>> {
+  default: {
+    formSlots: {};
+    extendedProps: {};
+    internalFormProps: {};
+    columns:
+      | (TfFormColumnBase<any> & {
+          type: "custom";
+        })
+      | (TfFormColumnBase<any> & {
+          type: "custom2";
+        });
+  };
+}
+
+export interface TfFormIntrinsicProps<
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+> {
+  /**
+   * 用于缓存配置，不填则不缓存
+   */
+  cache?: string;
+  /**
+   * v-model:formData 的值
+   *
+   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfFrom内部会生成一个内部值
+   */
+  formData?: FormData;
+  /**
+   * 内部 form 组件 props
+   */
+  internalFormProps?: FormTypeMap<FormData>[Type]["internalFormProps"];
+  /**
+   * v-model:formData 的更新函数
+   *
+   * 需要`formData`不为空
+   */
+  "onUpdate:formData"?: (value: FormData) => void;
+  /**
+   * 提交函数
+   * @param formData 当先的有效表单值
+   * @returns
+   */
+  onSubmit?: (formData: FormData) => Promise<void> | void;
+}
 
 /**
  * 每一个表单组件的 props
  */
-export interface CommonFormItemProps<T extends TfFormColumn<any>> {
+export interface CommonFormItemProps<T extends TfFormColumnBase<any>> {
   /** column 定义 */
   column: T;
   /** 是否查看模式 */
@@ -23,86 +68,43 @@ export interface CommonFormItemProps<T extends TfFormColumn<any>> {
 }
 
 /**
- * 表单容器组件 props
- * @public
+ * 从 renderMap 中提取出 Columns
  */
-export interface FormContainerProps {}
-
-/**
- * @public
- */
-export interface DefineFormSlots<_T extends Record<string, any>> {
-  /**
-   * 表单内容 slot
-   */
-  formContent: () => any;
-}
-
-/**
- * @public
- */
-export interface DefineFormProps<T extends Record<string, any>> {
-  /**
-   * 提交表单
-   * @param formData 有效值
-   */
-  onSubmit?: (formData: T) => Promise<void> | void;
-}
-
-export type FormRuntimeProps = WithLengthKeys<
-  Omit<DefineFormProps<any>, "onSubmit">
->;
-
-export interface TfFormHOCComponentIntrinsicProps<
-  T extends Record<string, any>,
-> {
-  /**
-   * 用于缓存配置，不填则不缓存
-   */
-  cache?: string;
-  /**
-   * 表单列定义
-   */
-  columns: TfFormColumn<T>[];
-  /**
-   * v-model:formData 的值
-   *
-   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfFrom内部会生成一个内部值
-   */
-  formData?: T;
-  /**
-   * form 容器组件 props {@link FormContainerProps}
-   */
-  formProps?: FormContainerProps;
-  /**
-   * v-model:formData 的更新函数
-   *
-   * 需要`formData`不为空
-   */
-  "onUpdate:formData"?: (value: T) => void;
-  /**
-   * 提交函数
-   * @param formData 当先的有效表单值
-   * @returns
-   */
-  onSubmit?: (formData: T) => Promise<void> | void;
-}
-
-export interface TfFormHOCComponentProps<T extends Record<string, any>>
-  extends TfFormHOCComponentIntrinsicProps<T>,
-    DefineFormProps<T> {}
+export type ExtractColumns<
+  Map extends Record<
+    string,
+    new (props: CommonFormItemProps<any>, ctx: any) => any
+  >,
+> = {
+  [K in keyof Map]: Map[K] extends new (
+    props: CommonFormItemProps<infer T>,
+    ctx: any,
+  ) => any
+    ? T
+    : never;
+}[keyof Map];
 
 /**
  * 定义表单容器组件
  */
-export const defineTfForm = (
+export const defineTfForm = <
+  Type extends keyof FormTypeMap<any>,
+  M extends Record<
+    string,
+    new (props: CommonFormItemProps<any>, ctx: any) => any
+  >,
+>(
   setup: (
     props: {},
-    ctx: SetupContext<EmitsOptions, SlotsType<DefineFormSlots<any>>>,
+    ctx: SetupContext<
+      EmitsOptions,
+      SlotsType<FormTypeMap<any>[Type]["formSlots"]>
+    >,
   ) => any,
-  _runtimeProps: FormRuntimeProps,
+  renderMap: M,
+  _runtimeProps: string[],
 ) => {
-  const layoutComponent = defineComponent(setup, {
+  const FormComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfFormContainer",
   });
@@ -111,18 +113,21 @@ export const defineTfForm = (
     "cache",
     "columns",
     "formData",
-    "formProps",
+    "internalFormProps",
     "onSubmit",
     "onUpdate:formData",
     ..._runtimeProps,
   ] as any;
 
-  const Component = defineComponent(
-    <T extends Record<string, any>>(
-      props: TfFormHOCComponentProps<T>,
+  return defineComponent(
+    <FormData extends Record<string, any>>(
+      props: TfFormIntrinsicProps<FormData, Type> &
+        FormTypeMap<FormData>[Type]["extendedProps"] & {
+          columns: FormTypeMap<FormData>[Type]["columns"][];
+        },
       ctx: SetupContext<
         EmitsOptions,
-        SlotsType<Omit<DefineFormSlots<any>, "formContent">>
+        SlotsType<FormTypeMap<FormData>[Type]["formSlots"]>
       >,
     ) => {
       // v-model:formData 支持
@@ -133,14 +138,23 @@ export const defineTfForm = (
         },
       });
 
-      const { visibleColumns } = useForm(props, formData, _runtimeProps);
+      const { visibleColumns } = useForm<FormData, Type>(
+        props,
+        formData,
+        _runtimeProps,
+      );
 
       return () =>
-        h(layoutComponent, null, {
+        h(FormComponent, null, {
           ...ctx.slots,
           formContent: () =>
             visibleColumns.value.map(column => {
-              // core 里面 renderMap 里的组件只定义了 custom
+              // 需要保证 column.type 在 renderMap 中存在
+              if (!renderMap[column.type]) {
+                throw new Error(
+                  `[tf-core]: column.type ${column.type} not found`,
+                );
+              }
               const component = renderMap[column.type];
               return h(component, {
                 column: column,
@@ -156,15 +170,14 @@ export const defineTfForm = (
       name: "TfForm",
     },
   );
-  return Component;
 };
 
 /**
  * 定义表单组件
  */
-export function defineFormComponent<K extends keyof TfFormColumnMap<any>>(
+export function defineFormComponent(
   setup: <T extends Record<string, any>>(
-    props: CommonFormItemProps<TfFormColumnMap<T>[K]>,
+    props: CommonFormItemProps<TfFormColumnBase<T>>,
 
     ctx: SetupContext,
   ) => () => VNode,

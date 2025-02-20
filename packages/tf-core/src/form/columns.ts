@@ -1,25 +1,24 @@
-import type { ComputedRef, MaybeRefOrGetter, Ref } from "vue";
-import { TfFormColumnCustom } from "./custom-component";
-import { RecordPath, ValueOf } from "../type-helper";
-import { SetAsDefault, ResetToDefault, GetFormData } from "./use-form";
-import { FormContainerProps } from "./define-component";
+import type { MaybeRefOrGetter } from "vue";
+import { RecordPath } from "../type-helper";
 
-type WatchHandler<T> = (params: { val: any; oldVal: any; form: T }) => void;
+type WatchHandler<FormData extends Record<string, any>> = (params: {
+  val: any;
+  oldVal: any;
+  form: FormData;
+}) => void;
 
-type Watch<T> =
-  | WatchHandler<T>
+type Watch<FormData extends Record<string, any>> =
+  | WatchHandler<FormData>
   | {
-      handler: WatchHandler<T>;
+      handler: WatchHandler<FormData>;
       deep?: boolean;
       immediate?: boolean;
     };
 
 /**
- * 表单列验证规则，由实现方定义
+ * 实现方需要继承这个interface
  */
-export interface ColumnRule {}
-
-export interface TfFormColumnBase<T> {
+export interface TfFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *
@@ -27,7 +26,7 @@ export interface TfFormColumnBase<T> {
    *
    * 如果是在 TableColumns 中，则默认继承其中的 field
    */
-  field?: RecordPath<T>;
+  field?: RecordPath<FormData>;
   /**
    * 字段名数组，当表单需要返回多个值时，使用这个字段
    *
@@ -51,7 +50,7 @@ export interface TfFormColumnBase<T> {
   /**
    * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
    */
-  watch?: Watch<T>;
+  watch?: Watch<FormData>;
   /**
    * 字段默认值
    */
@@ -80,7 +79,7 @@ export interface TfFormColumnBase<T> {
           formData,
           val,
         }: {
-          formData: T;
+          formData: FormData;
           val: any;
         }) => boolean);
   }[];
@@ -96,16 +95,6 @@ export interface TfFormColumnBase<T> {
    * slots 配置，子类定义
    */
   slots?: {};
-  /**
-   * 类型名称，子类定义
-   * base 只做占位，以通过编译
-   */
-  type: keyof TfFormColumnMap<T>;
-
-  /**
-   * 表单验证规则
-   */
-  rules?: MaybeRefOrGetter<ColumnRule[]>;
 
   /**
    * 排序
@@ -118,92 +107,4 @@ export interface TfFormColumnBase<T> {
    * 是否查看模式
    */
   isView?: MaybeRefOrGetter<boolean>;
-}
-
-export interface TfFormColumnMap<T> {
-  /** 自定义渲染 */
-  custom: TfFormColumnCustom<T>;
-  // 其他具体业务实现
-}
-
-/**
- * 表单列定义
- */
-export type TfFormColumn<T> = ValueOf<TfFormColumnMap<T>>;
-
-/**
- * 对于需要暴露给外部使用的方法，其类型从这里Pick，这样会有统一的类型提示
- */
-export interface ExposeWithComment<T extends Record<string, any>> {
-  /**
-   * 获取表单当前展示出的项目的表单值
-   */
-  getFormData: GetFormData<T>;
-
-  /**
-   * 重置表单为默认值
-   *
-   * `sync false` 由于这个方法很可能在`watchEffect`中调用
-   *
-   * 以非同步的方式调用，其内部属性不会放到`watchEffect`的依赖中
-   * @param sync 是否同步更新，默认为 false
-   */
-  resetToDefault: ResetToDefault;
-  /**
-   * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
-   */
-  setAsDefault: SetAsDefault<T>;
-
-  /**
-   * 表单值，包含已经隐藏的值
-   */
-  form: Ref<T>;
-  /**
-   * 配置显示的项目
-   */
-  columnsChecked: Ref<RecordPath<T>[]>;
-  /**
-   * 重置配置显示项目
-   */
-  resetColumnsChecked: () => void;
-  /**
-   * 配置排序的项目
-   */
-  columnsSort: Ref<Partial<Record<RecordPath<T>, number>>>;
-  /**
-   * 重置排序
-   */
-  resetColumnsSort: () => void;
-  /**
-   * 所有表单项目
-   */
-  columns: ComputedRef<TfFormColumn<T>[]>;
-  /**
-   * 当前显示的表单项目
-   */
-  visibleColumns: ComputedRef<TfFormColumn<T>[]>;
-  /**
-   * 表单容器组件 props, 由表单容器组件决定
-   *
-   * 定义方式：
-   *
-   * @example
-   * ```ts
-   *
-   * declare module "tf-core" {
-   *   interface FormContainerProps {
-   *     ...
-   *   }
-   * }
-   * ```
-   */
-  formProps: ComputedRef<FormContainerProps | undefined>;
-  /**
-   * 表单提交事件
-   */
-  onSubmit?: (formData: T) => Promise<void> | void;
-  /**
-   * 缓存
-   */
-  cache: ComputedRef<string | undefined>;
 }

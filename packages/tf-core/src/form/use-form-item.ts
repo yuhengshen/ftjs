@@ -1,12 +1,12 @@
 import { computed, toValue } from "vue";
-import { TfFormColumn } from "./columns";
+import { TfFormColumnBase } from "./columns";
 import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
-import { CommonFormItemProps } from "./define-component";
+import { CommonFormItemProps, FormTypeMap } from "./define-component";
 
-export interface UseFormItemOptions<T extends TfFormColumn<any>> {
+interface UseFormItemOptions<FormData extends Record<string, any>> {
   /** 通用 props */
-  props: CommonFormItemProps<T>;
+  props: CommonFormItemProps<TfFormColumnBase<FormData>>;
   /**
    * set 转换
    */
@@ -20,8 +20,11 @@ export interface UseFormItemOptions<T extends TfFormColumn<any>> {
 /**
  * 通用的 form item 组件处理，处理 form 中的值
  */
-export const useFormItem = <T extends Record<string, any>>(
-  options: UseFormItemOptions<TfFormColumn<T>>,
+export const useFormItem = <
+  FromData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FromData>,
+>(
+  options: UseFormItemOptions<TfFormColumnBase<FormData>>,
 ) => {
   let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
@@ -33,7 +36,7 @@ export const useFormItem = <T extends Record<string, any>>(
     valueSetter = props.column.valueSetter;
   }
 
-  const { form } = useFormInject<T>()!;
+  const { form } = useFormInject<FormData, Type>()!;
   /**
    * form 中的值处理
    */

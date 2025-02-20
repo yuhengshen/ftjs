@@ -6,7 +6,6 @@ import {
   onUnmounted,
   nextTick,
   toValue,
-  MaybeRef,
   Ref,
   unref,
   provide,
@@ -23,22 +22,22 @@ import {
   getStorage,
   setStorage,
 } from "../utils";
-import {
-  DefineFormProps,
-  FormRuntimeProps,
-  TfFormHOCComponentProps,
-} from "./define-component";
-import { ExposeWithComment, TfFormColumn } from "./columns";
+import { FormTypeMap, TfFormIntrinsicProps } from "./define-component";
+import { TfFormColumnBase } from "./columns";
 import { RecordPath, SplitEventKeys } from "../type-helper";
+import { ExposeWithComment } from "./types";
 
-export type FormInject<T extends Record<string, any>> = Pick<
-  ExposeWithComment<T>,
+export type FormInject<
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+> = Pick<
+  ExposeWithComment<FormData, Type>,
   | "form"
   | "columnsChecked"
   | "columnsSort"
   | "columns"
   | "visibleColumns"
-  | "formProps"
+  | "internalFormProps"
   | "onSubmit"
   | "getFormData"
   | "resetToDefault"
@@ -47,15 +46,15 @@ export type FormInject<T extends Record<string, any>> = Pick<
   | "resetColumnsChecked"
   | "cache"
 > &
-  SplitEventKeys<DefineFormProps<T>>;
+  SplitEventKeys<FormTypeMap<FormData>[Type]["extendedProps"]>;
 
 const provideFormKey = Symbol("tf-core-form-provide");
 
 /**
  * 缓存展示项
  */
-const useColumnsChecked = <T extends Record<string, any>>(
-  columns: ComputedRef<TfFormColumn<T>[]>,
+const useColumnsChecked = <FormData extends Record<string, any>>(
+  columns: ComputedRef<TfFormColumnBase<FormData>[]>,
   cache?: string,
 ) => {
   const storageKey = `tf-form-columns-checked-obj`;
@@ -69,21 +68,21 @@ const useColumnsChecked = <T extends Record<string, any>>(
   });
   const storageV = getStorage(storageKey, cache);
 
-  const vRef = ref<Record<RecordPath<T>, boolean>>(
+  const vRef = ref<Record<RecordPath<FormData>, boolean>>(
     Object.assign({}, columnsV.value, storageV),
   );
 
-  const columnsChecked = computed<RecordPath<T>[]>({
+  const columnsChecked = computed<RecordPath<FormData>[]>({
     get() {
       return Object.entries(vRef.value)
         .filter(([_, show]) => show)
-        .map(([field]) => field) as RecordPath<T>[];
+        .map(([field]) => field) as RecordPath<FormData>[];
     },
     set(v) {
-      const storageV = {} as Record<RecordPath<T>, boolean>;
+      const storageV = {} as Record<RecordPath<FormData>, boolean>;
       const entries = columns.value.map(e => {
         const field = getField(e);
-        const show = v.includes(field);
+        const show = v.includes(field as any);
         // 与默认配置一致的选项不存储
         if (show !== !toValue(e.hide)) storageV[field] = show;
         return [field, show];
@@ -108,8 +107,8 @@ const useColumnsChecked = <T extends Record<string, any>>(
 /**
  * 缓存排序项
  */
-const useColumnsSorted = <T extends Record<string, any>>(
-  columns: ComputedRef<TfFormColumn<T>[]>,
+const useColumnsSorted = <FormData extends Record<string, any>>(
+  columns: ComputedRef<TfFormColumnBase<FormData>[]>,
   cache?: string,
 ) => {
   const storageKey = `tf-form-columns-sorted-obj`;
@@ -123,16 +122,16 @@ const useColumnsSorted = <T extends Record<string, any>>(
   });
   const storageV = getStorage(storageKey, cache);
 
-  const vRef = ref<Record<RecordPath<T>, number>>(
+  const vRef = ref<Record<RecordPath<FormData>, number>>(
     Object.assign({}, columnsV.value, storageV),
   );
 
-  const columnsSort = computed<Record<RecordPath<T>, number>>({
+  const columnsSort = computed<Record<RecordPath<FormData>, number>>({
     get() {
       return vRef.value;
     },
     set(v) {
-      const storageV = {} as Record<RecordPath<T>, number>;
+      const storageV = {} as Record<RecordPath<FormData>, number>;
       const entries = columns.value.map((e, idx) => {
         const field = getField(e);
         // 与默认配置一致的选项不存储
@@ -147,7 +146,7 @@ const useColumnsSorted = <T extends Record<string, any>>(
   });
 
   const resetColumnsSort = () => {
-    const resetV = {} as Record<RecordPath<T>, number>;
+    const resetV = {} as Record<RecordPath<FormData>, number>;
     columns.value.forEach((e, idx) => {
       const field = getField(e);
       resetV[field] = e.sort ?? idx;
@@ -161,15 +160,23 @@ const useColumnsSorted = <T extends Record<string, any>>(
   };
 };
 
-export const useForm = <T extends Record<string, any>>(
-  props: TfFormHOCComponentProps<T>,
-  formData: MaybeRef<T>,
-  runtimeProps: FormRuntimeProps,
+export const useForm = <
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+>(
+  props: TfFormIntrinsicProps<FormData, Type> &
+    FormTypeMap<FormData>[Type]["extendedProps"] & {
+      columns: FormTypeMap<FormData>[Type]["columns"][];
+    },
+  formData: Ref<FormData | undefined>,
+  runtimeProps: string[],
 ) => {
   const columns = computed(() => toValue(props.columns));
 
-  const formLocal = ref({} as T);
-  const form = (unref(formData) != null ? formData : formLocal) as Ref<T>;
+  const formLocal = ref({} as FormData);
+  const form = (
+    unref(formData) != null ? formData : formLocal
+  ) as Ref<FormData>;
 
   const { columnsChecked, resetColumnsChecked } = useColumnsChecked(
     columns,
@@ -180,7 +187,7 @@ export const useForm = <T extends Record<string, any>>(
     props.cache,
   );
 
-  let tmpDefaultForm: T;
+  let tmpDefaultForm: FormData;
 
   // 需要监听的表单字段
   let unWatchList: { field: string; cancel: () => void }[] = [];
@@ -191,7 +198,7 @@ export const useForm = <T extends Record<string, any>>(
     const set = new Set<string>(expectHideFields.value);
     return columns.value
       .filter(column => {
-        const key = getField(column);
+        const key = getField(column) as any;
         return !set.has(key) && (columnsChecked.value?.includes(key) ?? true);
       })
       .sort((a, b) => {
@@ -210,7 +217,7 @@ export const useForm = <T extends Record<string, any>>(
       acc[event] = computed(() => props[event]);
     }
     return acc;
-  }, {});
+  }, {}) as any;
 
   watch(
     visibleColumns,
@@ -298,20 +305,20 @@ export const useForm = <T extends Record<string, any>>(
 
       return;
     }
-    form.value = visibleColumns.value.reduce<T>((prev, column) => {
+    form.value = visibleColumns.value.reduce<FormData>((prev, column) => {
       const fields = column.fields ? column.fields : [column.field!];
       const valueArr = column.fields ? (column.value ?? []) : [column.value];
       fields.forEach((field, idx) => {
         set(prev, field, cloneDeep(valueArr[idx]));
       });
       return prev;
-    }, {} as T);
+    }, {} as FormData);
   };
 
   /**
    * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
    */
-  const setAsDefault: SetAsDefault<T> = (v?) => {
+  const setAsDefault: SetAsDefault<FormData> = (v?) => {
     tmpDefaultForm = cloneDeep(v ?? form.value);
   };
 
@@ -375,8 +382,8 @@ export const useForm = <T extends Record<string, any>>(
   /**
    * 获取表单当先展示出的表单值
    */
-  const getFormData: GetFormData<T> = () => {
-    const formData: T = {} as T;
+  const getFormData: GetFormData<FormData> = () => {
+    const formData: FormData = {} as FormData;
     visibleColumns.value.forEach(usefulColumn => {
       const fields = usefulColumn.fields ?? [usefulColumn.field!];
       fields.forEach(field => {
@@ -387,17 +394,17 @@ export const useForm = <T extends Record<string, any>>(
     return formData;
   };
 
-  const formProps = computed(() => props.formProps);
+  const internalFormProps = computed(() => props.internalFormProps);
 
   const cache = computed(() => props.cache);
 
-  provide<FormInject<T>>(provideFormKey, {
+  provide<FormInject<FormData, Type>>(provideFormKey, {
     form,
     columnsChecked,
     columnsSort,
     columns,
     visibleColumns,
-    formProps,
+    internalFormProps,
     cache,
     getFormData,
     resetToDefault,
@@ -417,12 +424,17 @@ export const useForm = <T extends Record<string, any>>(
   };
 };
 
-export const useFormInject = <T extends Record<string, any>>() => {
-  return inject<FormInject<T>>(provideFormKey);
+export const useFormInject = <
+  FormData extends Record<string, any>,
+  Type extends keyof FormTypeMap<FormData>,
+>() => {
+  return inject<FormInject<FormData, Type>>(provideFormKey);
 };
 
-export type GetFormData<T> = () => T;
+export type GetFormData<FormData extends Record<string, any>> = () => FormData;
 
 export type ResetToDefault = (sync?: boolean) => Promise<void> | void;
 
-export type SetAsDefault<T> = (v?: T) => void;
+export type SetAsDefault<FormData extends Record<string, any>> = (
+  v?: FormData,
+) => void;

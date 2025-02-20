@@ -13,7 +13,7 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: true,
-    minify: false,
+    minify: true,
     lib: {
       entry: "./src/index.ts",
       formats: ["es"],
@@ -26,6 +26,7 @@ export default defineConfig({
         "vue",
         "tf-core",
         "dayjs",
+        "vxe-table",
       ],
     },
   },

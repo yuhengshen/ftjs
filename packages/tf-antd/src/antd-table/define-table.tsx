@@ -49,7 +49,7 @@ declare module "tf-core" {
 /**
  * 表格暴露的方法
  */
-export interface TableExposed<
+interface TableExposed<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
 > {
@@ -91,7 +91,7 @@ export interface TableExposed<
 /**
  * 列定义
  */
-export interface TableColumn<TableData extends Record<string, any>>
+interface TableColumn<TableData extends Record<string, any>>
   extends TfTableColumn<TableData>,
     Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
   /**
@@ -112,7 +112,7 @@ interface InternalTableProps<TableData extends Record<string, any>>
 /**
  * 表格插槽
  */
-export interface TableSlots<_TableData extends Record<string, any>>
+interface TableSlots<_TableData extends Record<string, any>>
   extends ComponentSlots<typeof Table> {
   buttons?: () => any;
   tools?: () => any;
@@ -160,7 +160,7 @@ interface ExtendedProps<
   onSearch?: (searchData: SearchData, info: OnSearchInfo) => void;
 }
 
-export interface OnSearchInfo {
+interface OnSearchInfo {
   /**
    * 分页信息
    */
@@ -197,8 +197,6 @@ export const TfTable = defineTfTable<"antd">(
       onResizeColumn,
       "onUpdate:exposed": onUpdateExposed,
     } = useTableInject<any, any, "antd">()!;
-
-    // columns.value[0].ed
 
     const formExposed = ref<FormExposed<any>>();
 

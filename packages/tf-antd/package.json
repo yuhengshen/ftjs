@@ -27,7 +27,8 @@
     "dayjs": "^1.11.13",
     "tf-core": "workspace:*",
     "vue": "catalog:",
-    "vue-component-type-helpers": "catalog:"
+    "vue-component-type-helpers": "catalog:",
+    "vxe-table": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",

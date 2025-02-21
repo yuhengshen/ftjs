@@ -43,7 +43,7 @@ interface VxeTableExposed<
   /**
    * 刷新表格
    */
-  refresh: () => void;
+  refresh: () => Promise<void>;
   /**
    * 表单暴露的方法
    */
@@ -52,6 +52,10 @@ interface VxeTableExposed<
    * 表格暴露的方法
    */
   tableExposed: VxeGridInstance<TableData>;
+  /**
+   * 是否处于编辑状态
+   */
+  isEdit: boolean;
 }
 
 /**
@@ -118,7 +122,7 @@ interface VxeExtendedProps<
   onSearch: (
     searchData: SearchData,
     info: { pagination?: VxePagination },
-  ) => void;
+  ) => Promise<void> | void;
 }
 
 interface VxePagination {
@@ -160,7 +164,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
           pageSize: defaultPageSize.value ?? 20,
         };
       }
-      onSearch(formData, { pagination });
+      await onSearch(formData, { pagination });
     };
 
     onMounted(() => {
@@ -171,7 +175,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
 
     const rowConfig = computed(() => {
       return {
-        keyField: keyField.value ?? "id",
+        keyField: keyField.value,
       };
     });
 
@@ -248,6 +252,8 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
         mode: "row",
         showStatus: true,
         trigger: "manual",
+        autoClear: false,
+        autoPos: true,
       };
     });
 
@@ -271,12 +277,18 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       };
     }
 
+    async function refresh() {
+      await formExposed.value?.resetToDefault();
+      await handleSearch();
+      isEdit.value = false;
+    }
+
+    const isEdit = ref(false);
+
     watchEffect(() => {
       onUpdateExposed?.({
-        refresh: async () => {
-          await formExposed.value?.resetToDefault();
-          handleSearch();
-        },
+        isEdit: isEdit.value,
+        refresh,
         formExposed: formExposed.value!,
         tableExposed: tableExposed.value!,
       });
@@ -312,6 +324,8 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             }}
             keepSource={enableEdit.value}
             editConfig={editConfig.value}
+            onEditActivated={() => (isEdit.value = true)}
+            onEditClosed={() => (isEdit.value = false)}
             {...internalTableProps.value}
           >
             {{

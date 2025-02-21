@@ -20,6 +20,10 @@ export default defineFormComponent<TfFormColumnSelect<any>>(props => {
 
   const formItemProps = useFormItemProps(props.column);
 
+  const placeholder = computed(() => {
+    return `请选择${formItemProps.value.label}`;
+  });
+
   const isViewText = computed(() => {
     const options = unref(props.column.props?.options);
     const isMultiple = props.column.props?.mode === "multiple";
@@ -43,7 +47,11 @@ export default defineFormComponent<TfFormColumnSelect<any>>(props => {
         {toValue(isView.value) ? (
           <div>{isViewText.value}</div>
         ) : (
-          <Select v-model:value={valueComputed.value} {..._props} />
+          <Select
+            v-model:value={valueComputed.value}
+            placeholder={placeholder.value}
+            {..._props}
+          />
         )}
       </FormItem>
     );

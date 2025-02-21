@@ -7,7 +7,7 @@ export const useFormItemProps = <T extends Record<string, any>>(
   return computed(() => {
     const field = getField(column);
     const name = field!.split(".");
-    const label = toValue(column.title);
+    const label = toValue(column.title) ?? "";
 
     return {
       name,

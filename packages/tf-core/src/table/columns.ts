@@ -6,6 +6,12 @@ import { RecordPath } from "../type-helper";
  * @public
  */
 export interface TfTableColumn<TableData extends Record<string, any>> {
-  title: string;
+  /**
+   * 列标题
+   */
+  title?: string;
+  /**
+   * 列字段
+   */
   field: RecordPath<TableData> | `_${string}`;
 }

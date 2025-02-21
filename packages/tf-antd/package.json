@@ -1,6 +1,6 @@
 {
   "name": "tf-antd",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -21,21 +21,28 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@ant-design/icons-vue": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "^1.11.13",
     "tf-core": "workspace:*",
     "vue": "catalog:",
     "vue-component-type-helpers": "catalog:",
-    "vxe-table": "catalog:"
-  },
-  "devDependencies": {
+    "vxe-table": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vue-tsc": "catalog:"
+  },
+  "peerDependencies": {
+    "@ant-design/icons-vue": ">=7.0.0",
+    "vue": ">=3.0.0",
+    "tf-core": ">=1.0.0",
+    "ant-design-vue": ">=4.0.0",
+    "dayjs": ">=1.0.0",
+    "vxe-table": ">=4.0.0"
   }
 }

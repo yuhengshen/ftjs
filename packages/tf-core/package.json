@@ -1,6 +1,6 @@
 {
   "name": "tf-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -23,9 +23,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "vue": "catalog:"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
@@ -37,6 +35,10 @@
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
     "vitest": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-tsc": "catalog:",
+    "vue": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
   }
 }

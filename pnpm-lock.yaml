@@ -155,10 +155,16 @@ importers:
         version: 2.2.0(typescript@5.7.3)
 
   packages/tf-antd:
-    dependencies:
+    devDependencies:
       '@ant-design/icons-vue':
         specifier: 'catalog:'
         version: 7.0.1(vue@3.5.13(typescript@5.7.3))
+      '@vitejs/plugin-vue':
+        specifier: 'catalog:'
+        version: 5.2.1(vite@6.1.0(@types/node@22.10.9)(jiti@2.4.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@vitejs/plugin-vue-jsx':
+        specifier: 'catalog:'
+        version: 4.1.1(vite@6.1.0(@types/node@22.10.9)(jiti@2.4.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       ant-design-vue:
         specifier: 'catalog:'
         version: 4.2.6(vue@3.5.13(typescript@5.7.3))
@@ -168,22 +174,6 @@ importers:
       tf-core:
         specifier: workspace:*
         version: link:../tf-core
-      vue:
-        specifier: 'catalog:'
-        version: 3.5.13(typescript@5.7.3)
-      vue-component-type-helpers:
-        specifier: 'catalog:'
-        version: 2.2.0
-      vxe-table:
-        specifier: 'catalog:'
-        version: 4.11.6(vue@3.5.13(typescript@5.7.3))
-    devDependencies:
-      '@vitejs/plugin-vue':
-        specifier: 'catalog:'
-        version: 5.2.1(vite@6.1.0(@types/node@22.10.9)(jiti@2.4.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
-      '@vitejs/plugin-vue-jsx':
-        specifier: 'catalog:'
-        version: 4.1.1(vite@6.1.0(@types/node@22.10.9)(jiti@2.4.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       typescript:
         specifier: 'catalog:'
         version: 5.7.3
@@ -193,15 +183,20 @@ importers:
       vite-plugin-dts:
         specifier: 'catalog:'
         version: 4.5.0(@types/node@22.10.9)(rollup@4.31.0)(typescript@5.7.3)(vite@6.1.0(@types/node@22.10.9)(jiti@2.4.2)(yaml@2.7.0))
-      vue-tsc:
-        specifier: 'catalog:'
-        version: 2.2.0(typescript@5.7.3)
-
-  packages/tf-core:
-    dependencies:
       vue:
         specifier: 'catalog:'
         version: 3.5.13(typescript@5.7.3)
+      vue-component-type-helpers:
+        specifier: 'catalog:'
+        version: 2.2.0
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 2.2.0(typescript@5.7.3)
+      vxe-table:
+        specifier: 'catalog:'
+        version: 4.11.6(vue@3.5.13(typescript@5.7.3))
+
+  packages/tf-core:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -233,6 +228,9 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 3.0.5(@types/node@22.10.9)(@vitest/ui@3.0.5)(happy-dom@17.0.2)(jiti@2.4.2)(yaml@2.7.0)
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.13(typescript@5.7.3)
       vue-tsc:
         specifier: 'catalog:'
         version: 2.2.0(typescript@5.7.3)

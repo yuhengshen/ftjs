@@ -14,8 +14,10 @@
     "build-antd": "turbo run build --filter tf-antd",
     "release-core": "pnpm --filter tf-core release",
     "release-antd": "pnpm --filter tf-antd release",
+    "release-ele": "pnpm --filter tf-element release",
     "pub-core": "pnpm --filter tf-core pub",
     "pub-antd": "pnpm --filter tf-antd pub",
+    "pub-ele": "pnpm --filter tf-element pub",
     "prepare": "husky",
     "format": "prettier --write .",
     "lint": "eslint --fix ."

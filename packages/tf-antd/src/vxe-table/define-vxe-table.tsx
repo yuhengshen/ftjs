@@ -264,6 +264,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     };
     let tableStyle: CSSProperties;
     const containerRef = ref<HTMLDivElement>();
+    let height: string | undefined;
 
     if (fitFlexHeight.value ?? true) {
       containerStyle = {
@@ -275,6 +276,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
         flex: "1",
         minHeight: 0,
       };
+      height = "100%";
     }
 
     async function refresh() {
@@ -311,6 +313,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             ref={ref => (tableExposed.value = ref as VxeGridInstance<any>)}
             border
             showOverflow
+            height={height}
             columns={columns.value}
             loading={loading.value}
             data={tableData.value}

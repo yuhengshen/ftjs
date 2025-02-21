@@ -106,12 +106,12 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
     "cache",
     "columns",
     "searchColumns",
-    "internalFormProps",
-    "tableData",
-    "internalTableProps",
     "total",
     "defaultPageSize",
     "loading",
+    "internalTableProps",
+    "internalFormProps",
+    "tableData",
     "keyField",
     ..._runtimeProps,
   ] as any;
@@ -127,7 +127,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
         SlotsType<TableTypeMap<TableData, SearchData>[Type]["tableSlots"]>
       >,
     ) => {
-      useTable<TableData, SearchData, Type>(props, _runtimeProps);
+      useTable<TableData, SearchData, Type>(props, runtimeProps);
       return () => h(TableComponent, null, ctx.slots);
     },
     {

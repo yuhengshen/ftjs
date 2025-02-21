@@ -112,7 +112,7 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
     );
   },
   formRenderMap,
-  ["exposed", "onUpdate:exposed"],
+  ["exposed", "onUpdate:exposed", "width"],
 );
 
 export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(

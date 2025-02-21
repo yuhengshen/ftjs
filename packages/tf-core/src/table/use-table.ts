@@ -46,21 +46,7 @@ export const useTable = <
     return props.columns;
   });
 
-  const injectPropsList = [
-    "cache",
-    "columns",
-    "searchColumns",
-    "total",
-    "defaultPageSize",
-    "loading",
-    "internalTableProps",
-    "internalFormProps",
-    "tableData",
-    "keyField",
-    ...runtimeProps,
-  ];
-
-  const injectProps = injectPropsList.reduce(
+  const injectProps = runtimeProps.reduce(
     (acc, key) => {
       if (key.startsWith("on")) {
         acc[key] = props[key];

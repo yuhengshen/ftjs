@@ -1,9 +1,16 @@
 import { defineTfTable, useTableInject } from "tf-core";
 import type { TfTableColumn, TfTablePropsMap } from "tf-core";
-import { VxeGrid, VxeGridProps, VxeGridSlots } from "vxe-table";
+import {
+  VxeGrid,
+  VxeGridProps,
+  VxeGridSlots,
+  VxeGridInstance,
+  VxeGridPropTypes,
+} from "vxe-table";
 import { TfFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
 import { computed, CSSProperties, onMounted, ref, watchEffect } from "vue";
+import { Pagination, Spin } from "ant-design-vue";
 
 declare module "tf-core" {
   interface TableTypeMap<
@@ -11,11 +18,14 @@ declare module "tf-core" {
     SearchData extends Record<string, any> = TableData,
   > {
     "vxe-table": {
-      tableSlots: TableSlots<TableData>;
-      tableColumn: TableColumn<TableData>;
+      tableSlots: VxeTableSlots<TableData> & {
+        buttons: () => any;
+        tools: () => any;
+      };
+      tableColumn: VxeTableColumn<TableData>;
       formColumn: FormColumn<SearchData>;
-      extendedProps: ExtendedProps<TableData, SearchData>;
-      internalTableProps: InternalTableProps<TableData>;
+      extendedProps: VxeExtendedProps<TableData, SearchData>;
+      internalTableProps: InternalVxeTableProps<TableData>;
       internalFormProps: {};
     };
   }
@@ -24,7 +34,7 @@ declare module "tf-core" {
 /**
  * 表格暴露的方法
  */
-interface TableExposed<
+interface VxeTableExposed<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
 > {
@@ -36,28 +46,31 @@ interface TableExposed<
    * 表单暴露的方法
    */
   formExposed: FormExposed<SearchData>;
+  /**
+   * 表格暴露的方法
+   */
+  tableExposed: VxeGridInstance<TableData>;
 }
 
 /**
  * 列定义
  */
-interface TableColumn<TableData extends Record<string, any>>
-  extends TfTableColumn<TableData>,
-    Omit<VxeGridProps<TableData>["columns"], "title" | "dataIndex"> {}
+type VxeTableColumn<TableData extends Record<string, any>> =
+  TfTableColumn<TableData> & Omit<VxeGridPropTypes.Column<TableData>, "title">;
 
 /**
  * 内部表格 props
  */
-interface InternalTableProps<TableData extends Record<string, any>>
+interface InternalVxeTableProps<TableData extends Record<string, any>>
   extends Omit<VxeGridProps<TableData>, "columns"> {}
 
 /**
  * 表格插槽
  */
-interface TableSlots<TableData extends Record<string, any>>
+interface VxeTableSlots<TableData extends Record<string, any>>
   extends VxeGridSlots<TableData> {}
 
-interface ExtendedProps<
+interface VxeExtendedProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
 > {
@@ -90,12 +103,17 @@ interface ExtendedProps<
    * @default false
    */
   hidePagination?: boolean;
-  exposed?: TableExposed<TableData, SearchData>;
-  "onUpdate:exposed"?: (exposed: TableExposed<TableData, SearchData>) => void;
-  onSearch: (searchData: SearchData, info: { pagination?: Pagination }) => void;
+  exposed?: VxeTableExposed<TableData, SearchData>;
+  "onUpdate:exposed"?: (
+    exposed: VxeTableExposed<TableData, SearchData>,
+  ) => void;
+  onSearch: (
+    searchData: SearchData,
+    info: { pagination?: VxePagination },
+  ) => void;
 }
 
-interface Pagination {
+interface VxePagination {
   page: number;
   pageSize: number;
 }
@@ -122,9 +140,10 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       "onUpdate:exposed": onUpdateExposed,
     } = useTableInject<any, any, "vxe-table">()!;
 
-    const formExposed = ref<FormExposed<any>>();
+    const formExposed = ref<VxeTableExposed<any>["formExposed"]>();
+    const tableExposed = ref<VxeTableExposed<any>["tableExposed"]>();
 
-    const handleSearch = async (pagination?: Pagination) => {
+    const handleSearch = async (pagination?: VxePagination) => {
       if (!onSearch) return;
       const formData = formExposed.value?.getFormData()!;
       if (!pagination && !hidePagination.value) {
@@ -142,14 +161,6 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       }
     });
 
-    const pagerConfig = computed(() => {
-      return {
-        total: total.value,
-        defaultPageSize: defaultPageSize.value ?? 20,
-        current: 1,
-      };
-    });
-
     const rowConfig = computed(() => {
       return {
         keyField: keyField.value ?? "id",
@@ -159,12 +170,30 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     const columns = computed(() => {
       return tableColumns.value.map(column => {
         return {
-          width: 120,
+          minWidth: 120,
           align: "center" as const,
           ...column,
           dataIndex: column.field,
         };
       });
+    });
+
+    const customConfig = computed<VxeGridProps<any>["customConfig"]>(() => {
+      return {
+        storage: true,
+        enabled: cache.value != null,
+      };
+    });
+
+    const toolbarConfig = computed<VxeGridProps<any>["toolbarConfig"]>(() => {
+      return {
+        custom: true,
+        zoom: true,
+        slots: {
+          buttons: "buttons",
+          toolSuffix: "tools",
+        },
+      };
     });
 
     let containerStyle: CSSProperties = {
@@ -194,6 +223,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
           handleSearch();
         },
         formExposed: formExposed.value!,
+        tableExposed: tableExposed.value!,
       });
     });
 
@@ -208,19 +238,53 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             {...internalFormProps.value}
           />
         )}
+
         <div style={tableStyle}>
           <VxeGrid
+            ref={ref => (tableExposed.value = ref as VxeGridInstance<any>)}
+            border
+            showOverflow
             columns={columns.value}
             loading={loading.value}
             data={tableData.value}
-            pagerConfig={pagerConfig.value}
-            minHeight={minHeight.value ?? 210}
+            minHeight={minHeight.value ?? 310}
             rowConfig={rowConfig.value}
-            {...ctx.attrs}
+            id={cache.value}
+            toolbarConfig={toolbarConfig.value}
+            customConfig={customConfig.value}
+            columnConfig={{
+              resizable: true,
+            }}
             {...internalTableProps.value}
           >
             {{
+              pager() {
+                return hidePagination.value ? null : (
+                  <div style="text-align: right; padding: .5em 0;">
+                    <Pagination
+                      showQuickJumper
+                      showSizeChanger
+                      total={total.value}
+                      defaultPageSize={defaultPageSize.value ?? 20}
+                      showTotal={total => {
+                        if (total === 0) return null;
+                        return `共 ${total} 条数据`;
+                      }}
+                      onChange={(page, pageSize) => {
+                        handleSearch({ page, pageSize });
+                      }}
+                    />
+                  </div>
+                );
+              },
               ...ctx.slots,
+              loading() {
+                return (
+                  <div style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center;">
+                    <Spin />
+                  </div>
+                );
+              },
             }}
           </VxeGrid>
         </div>
@@ -242,4 +306,4 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
 export type TfVxeTableProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
-> = TfTablePropsMap<TableData, SearchData, "antd">;
+> = TfTablePropsMap<TableData, SearchData, "vxe-table">;

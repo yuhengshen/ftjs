@@ -1,16 +1,18 @@
 import { defineTfTable, useTableInject } from "tf-core";
-import type { TfTableColumn, TfTablePropsMap } from "tf-core";
+import type { TfTableColumn, TfTablePropsMap, ValueOf } from "tf-core";
 import {
   VxeGrid,
   VxeGridProps,
   VxeGridSlots,
   VxeGridInstance,
   VxeGridPropTypes,
+  VxeColumnSlotTypes,
 } from "vxe-table";
 import { TfFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
-import { computed, CSSProperties, onMounted, ref, watchEffect } from "vue";
+import { computed, CSSProperties, h, onMounted, ref, watchEffect } from "vue";
 import { Pagination, Spin } from "ant-design-vue";
+import { Edit, EditMap, editMap } from "../antd-table/column-edit";
 
 declare module "tf-core" {
   interface TableTypeMap<
@@ -56,7 +58,13 @@ interface VxeTableExposed<
  * 列定义
  */
 type VxeTableColumn<TableData extends Record<string, any>> =
-  TfTableColumn<TableData> & Omit<VxeGridPropTypes.Column<TableData>, "title">;
+  TfTableColumn<TableData> &
+    Omit<VxeGridPropTypes.Column<TableData>, "title" | "editRender"> & {
+      /**
+       * 行内编辑
+       */
+      edit?: keyof EditMap<TableData> | ValueOf<EditMap<TableData>>;
+    };
 
 /**
  * 内部表格 props
@@ -167,13 +175,51 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       };
     });
 
+    const enableEdit = computed(() => {
+      return tableColumns.value.some(
+        column => column.edit || column.slots?.edit,
+      );
+    });
+
     const columns = computed(() => {
       return tableColumns.value.map(column => {
+        let editObj = column.edit as Edit<any, any> | undefined;
+        if (typeof editObj === "string") {
+          editObj = {
+            type: editObj as keyof EditMap<any>,
+            props: {},
+          };
+        }
+
+        const slots = {
+          edit: editObj
+            ? (params: VxeColumnSlotTypes.EditSlotParams) => {
+                const { row } = params;
+                const type = editObj.type;
+                const field = editObj.field ?? column.field;
+                return h(editMap[type], {
+                  ...editObj.props,
+                  value: row[field],
+                  "onUpdate:value": (value: any) => {
+                    row[field] = value;
+                  },
+                });
+              }
+            : null,
+          ...column.slots,
+        };
+
+        // vxe-table slots，不能是 null 或 undefined
+        if (slots.edit == null) {
+          delete (slots as any).edit;
+        }
+
         return {
           minWidth: 120,
           align: "center" as const,
+          editRender: editObj || column.slots?.edit ? {} : undefined,
           ...column,
-          dataIndex: column.field,
+          slots,
         };
       });
     });
@@ -193,6 +239,15 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
           buttons: "buttons",
           toolSuffix: "tools",
         },
+      };
+    });
+
+    const editConfig = computed<VxeGridProps<any>["editConfig"]>(() => {
+      if (!enableEdit.value) return undefined;
+      return {
+        mode: "row",
+        showStatus: true,
+        trigger: "manual",
       };
     });
 
@@ -255,6 +310,8 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             columnConfig={{
               resizable: true,
             }}
+            keepSource={enableEdit.value}
+            editConfig={editConfig.value}
             {...internalTableProps.value}
           >
             {{

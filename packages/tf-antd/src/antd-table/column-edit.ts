@@ -1,7 +1,7 @@
 import { Input, InputProps, SelectProps, Select } from "ant-design-vue";
 import { Component } from "vue";
 
-interface Edit<Type, Props> {
+export interface Edit<Type, Props> {
   type: Type;
   field?: string;
   props?: Props;

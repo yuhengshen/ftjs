@@ -19,7 +19,7 @@ export type RecordPath<T, Depth extends number = 5> = Depth extends -1
     : // 对象递归
       T extends Record<string, any>
       ? ValueOf<{
-          [K in keyof T]: K extends string
+          [K in keyof T]-?: K extends string
             ? `${K}` | `${K}.${RecordPath<T[K], Sub1[Depth]>}`
             : never;
         }>

@@ -74,7 +74,7 @@ type VxeTableColumn<TableData extends Record<string, any>> =
  * 内部表格 props
  */
 interface InternalVxeTableProps<TableData extends Record<string, any>>
-  extends Omit<VxeGridProps<TableData>, "columns"> {}
+  extends Omit<VxeGridProps<TableData>, "columns" | "minHeight"> {}
 
 /**
  * 表格插槽
@@ -101,10 +101,18 @@ interface VxeExtendedProps<
    */
   fitFlexHeight?: boolean;
   /**
-   * 自适应父元素(flex布局)剩余高度时，最小高度
+   * 最小高度
    * @default 210
    */
   minHeight?: number;
+  /**
+   * vxe-table 树形配置
+   */
+  treeConfig?: VxeGridProps<TableData>["treeConfig"];
+  /**
+   * vxe-table 行配置
+   */
+  rowConfig?: VxeGridProps<TableData>["rowConfig"];
   /**
    * 是否隐藏搜索
    * @default false
@@ -131,7 +139,7 @@ interface VxePagination {
 }
 
 export const TfVxeTable = defineTfTable<"vxe-table">(
-  (_p, ctx) => {
+  (_, ctx) => {
     const {
       formColumns,
       tableColumns,
@@ -148,6 +156,8 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       minHeight,
       hideSearch,
       hidePagination,
+      rowConfig: _rowConfig,
+      treeConfig,
       onSearch,
       "onUpdate:exposed": onUpdateExposed,
     } = useTableInject<any, any, "vxe-table">()!;
@@ -176,6 +186,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     const rowConfig = computed(() => {
       return {
         keyField: keyField.value,
+        ..._rowConfig.value,
       };
     });
 
@@ -279,8 +290,9 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       height = "100%";
     }
 
+    const current = ref(1);
+
     async function refresh() {
-      await formExposed.value?.resetToDefault();
       await handleSearch();
       isEdit.value = false;
     }
@@ -319,6 +331,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             data={tableData.value}
             minHeight={minHeight.value ?? 310}
             rowConfig={rowConfig.value}
+            treeConfig={treeConfig.value}
             id={cache.value}
             toolbarConfig={toolbarConfig.value}
             customConfig={customConfig.value}
@@ -336,6 +349,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
                 return hidePagination.value ? null : (
                   <div style="text-align: right; padding: .5em 0;">
                     <Pagination
+                      v-model:current={current.value}
                       showQuickJumper
                       showSizeChanger
                       total={total.value}
@@ -374,6 +388,8 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     "exposed",
     "onUpdate:exposed",
     "hideSearch",
+    "rowConfig",
+    "treeConfig",
   ],
 );
 

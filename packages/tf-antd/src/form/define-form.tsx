@@ -102,7 +102,6 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
             style="margin-left: 10px;"
             type="primary"
             danger
-            htmlType="reset"
             onClick={() => resetToDefault()}
           >
             重置

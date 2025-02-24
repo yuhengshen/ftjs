@@ -13,6 +13,7 @@ import rangePicker, {
 } from "./components/range-picker";
 import radio, { TfFormColumnRadio } from "./components/radio";
 import textarea, { TfFormColumnTextarea } from "./components/textarea";
+import upload, { TfFormColumnUpload } from "./components/upload";
 import { FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
@@ -41,6 +42,8 @@ export interface AntdColumnBase<FormData extends Record<string, any>>
 
 /**
  * 全部的 antd column 集合
+ *
+ * todo:: 允许外部注册 类型
  */
 export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnDatePicker<FormData>
@@ -48,7 +51,8 @@ export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnRadio<FormData>
   | TfFormColumnSelect<FormData>
   | TfFormColumnTextarea<FormData>
-  | TfFormColumnInput<FormData>;
+  | TfFormColumnInput<FormData>
+  | TfFormColumnUpload<FormData>;
 
 export const formRenderMap = {
   input,
@@ -57,6 +61,7 @@ export const formRenderMap = {
   radio,
   "date-picker": datePicker,
   "range-picker": rangePicker,
+  upload,
 };
 
 declare module "tf-core" {

@@ -14,8 +14,9 @@ import {
   TreeProps,
   Modal,
   Tree,
+  FormInstance,
 } from "ant-design-vue";
-import { computed, ref, toValue, useId, watchEffect } from "vue";
+import { computed, Ref, ref, toValue, useId, watchEffect } from "vue";
 import { formRenderMap } from "./register";
 
 export const useRules = () => {
@@ -37,7 +38,7 @@ export const useRules = () => {
   return { rules };
 };
 
-const useExposed = () => {
+const useExposed = (formRef: Ref<FormInstance | undefined>) => {
   const {
     "onUpdate:exposed": onUpdateExposed,
     resetToDefault,
@@ -50,6 +51,7 @@ const useExposed = () => {
       getFormData,
       resetToDefault,
       setAsDefault,
+      formInstance: formRef.value!,
     });
   });
 };
@@ -60,6 +62,9 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
       form,
       width: _width,
       internalFormProps: _formProps,
+      hideFooter,
+      hideConfirm,
+      hideReset,
       onSubmit,
       getFormData,
       resetToDefault,
@@ -70,7 +75,9 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
     // 获取表单值
     const { rules } = useRules();
 
-    useExposed();
+    const formRef = ref<FormInstance>();
+
+    useExposed(formRef);
 
     const formProps = computed<FormProps>(() => {
       return {
@@ -92,26 +99,45 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
     const id = useId();
 
     return () => (
-      <Form name={id} style={{ width }} {...ctx.attrs} {...formProps.value}>
+      <Form
+        ref={formRef}
+        name={id}
+        style={{ width }}
+        {...ctx.attrs}
+        {...formProps.value}
+      >
         {ctx.slots.formContent()}
-        <FormItem label=" " colon={false}>
-          <Button type="primary" htmlType="submit">
-            提交
-          </Button>
-          <Button
-            style="margin-left: 10px;"
-            type="primary"
-            danger
-            onClick={() => resetToDefault()}
-          >
-            重置
-          </Button>
-        </FormItem>
+        {!hideFooter.value && (
+          <FormItem label=" " colon={false}>
+            {!hideConfirm.value && (
+              <Button type="primary" htmlType="submit">
+                提交
+              </Button>
+            )}
+            {!hideReset.value && (
+              <Button
+                style="margin-left: 10px;"
+                type="primary"
+                danger
+                onClick={() => resetToDefault()}
+              >
+                重置
+              </Button>
+            )}
+          </FormItem>
+        )}
       </Form>
     );
   },
   formRenderMap,
-  ["exposed", "onUpdate:exposed", "width"],
+  [
+    "exposed",
+    "onUpdate:exposed",
+    "width",
+    "hideFooter",
+    "hideConfirm",
+    "hideReset",
+  ],
 );
 
 export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
@@ -131,7 +157,9 @@ export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
     } = useFormInject()!;
     const { rules } = useRules();
 
-    useExposed();
+    const formRef = ref<FormInstance>();
+
+    useExposed(formRef);
 
     const formProps = computed<FormProps>(() => {
       return {
@@ -305,6 +333,7 @@ export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
           style={{
             gap: "10px 0",
           }}
+          ref={formRef}
           {...ctx.attrs}
           {...formProps.value}
         >

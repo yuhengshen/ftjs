@@ -52,10 +52,6 @@ interface VxeTableExposed<
    * 表格暴露的方法
    */
   tableExposed: VxeGridInstance<TableData>;
-  /**
-   * 是否处于编辑状态
-   */
-  isEdit: boolean;
 }
 
 /**
@@ -294,14 +290,10 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
 
     async function refresh() {
       await handleSearch();
-      isEdit.value = false;
     }
-
-    const isEdit = ref(false);
 
     watchEffect(() => {
       onUpdateExposed?.({
-        isEdit: isEdit.value,
         refresh,
         formExposed: formExposed.value!,
         tableExposed: tableExposed.value!,
@@ -340,8 +332,6 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             }}
             keepSource={enableEdit.value}
             editConfig={editConfig.value}
-            onEditActivated={() => (isEdit.value = true)}
-            onEditClosed={() => (isEdit.value = false)}
             {...internalTableProps.value}
           >
             {{

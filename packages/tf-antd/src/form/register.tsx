@@ -14,7 +14,7 @@ import rangePicker, {
 import radio, { TfFormColumnRadio } from "./components/radio";
 import textarea, { TfFormColumnTextarea } from "./components/textarea";
 import upload, { TfFormColumnUpload } from "./components/upload";
-import { FormProps } from "ant-design-vue";
+import { FormInstance, FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
   | VNode
@@ -30,6 +30,7 @@ export interface FormExposed<T extends Record<string, any>> {
   getFormData: FormInject<T, "antd">["getFormData"];
   resetToDefault: FormInject<T, "antd">["resetToDefault"];
   setAsDefault: FormInject<T, "antd">["setAsDefault"];
+  formInstance: FormInstance;
 }
 
 export interface AntdColumnBase<FormData extends Record<string, any>>
@@ -74,6 +75,21 @@ declare module "tf-core" {
          * 表格宽度
          */
         width?: string;
+        /**
+         * 隐藏底部按钮
+         * @default false
+         */
+        hideFooter?: boolean;
+        /**
+         * 隐藏确认按钮
+         * @default false
+         */
+        hideConfirm?: boolean;
+        /**
+         * 隐藏重置按钮
+         * @default false
+         */
+        hideReset?: boolean;
         exposed?: FormExposed<_FormData>;
         "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
       };

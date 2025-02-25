@@ -70,7 +70,16 @@ type VxeTableColumn<TableData extends Record<string, any>> =
  * 内部表格 props
  */
 interface InternalVxeTableProps<TableData extends Record<string, any>>
-  extends Omit<VxeGridProps<TableData>, "columns" | "minHeight"> {}
+  extends Omit<
+    VxeGridProps<TableData>,
+    | "columns"
+    | "minHeight"
+    | "treeConfig"
+    | "rowConfig"
+    | "customConfig"
+    | "toolbarConfig"
+    | "columnConfig"
+  > {}
 
 /**
  * 表格插槽
@@ -109,6 +118,18 @@ interface VxeExtendedProps<
    * vxe-table 行配置
    */
   rowConfig?: VxeGridProps<TableData>["rowConfig"];
+  /**
+   * vxe-table 自定义配置
+   */
+  customConfig?: VxeGridProps<TableData>["customConfig"];
+  /**
+   * vxe-table 工具栏配置
+   */
+  toolbarConfig?: VxeGridProps<TableData>["toolbarConfig"];
+  /**
+   * vxe-table 列配置
+   */
+  columnConfig?: VxeGridProps<TableData>["columnConfig"];
   /**
    * 是否隐藏搜索
    * @default false
@@ -153,6 +174,9 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       hideSearch,
       hidePagination,
       rowConfig: _rowConfig,
+      customConfig: _customConfig,
+      toolbarConfig: _toolbarConfig,
+      columnConfig: _columnConfig,
       treeConfig,
       onSearch,
       "onUpdate:exposed": onUpdateExposed,
@@ -239,6 +263,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       return {
         storage: true,
         enabled: cache.value != null,
+        ..._customConfig.value,
       };
     });
 
@@ -250,6 +275,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
           buttons: "buttons",
           toolSuffix: "tools",
         },
+        ..._toolbarConfig.value,
       };
     });
 
@@ -264,10 +290,18 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       };
     });
 
+    const columnConfig = computed<VxeGridProps<any>["columnConfig"]>(() => {
+      return {
+        resizable: true,
+        ..._columnConfig.value,
+      };
+    });
+
     let containerStyle: CSSProperties = {
       display: "flex",
       flexDirection: "column",
       gap: "10px",
+      width: "100%",
     };
     let tableStyle: CSSProperties;
     const containerRef = ref<HTMLDivElement>();
@@ -327,9 +361,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
             id={cache.value}
             toolbarConfig={toolbarConfig.value}
             customConfig={customConfig.value}
-            columnConfig={{
-              resizable: true,
-            }}
+            columnConfig={columnConfig.value}
             keepSource={enableEdit.value}
             editConfig={editConfig.value}
             {...internalTableProps.value}
@@ -380,6 +412,9 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     "hideSearch",
     "rowConfig",
     "treeConfig",
+    "customConfig",
+    "toolbarConfig",
+    "columnConfig",
   ],
 );
 

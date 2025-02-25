@@ -1,10 +1,15 @@
-import { FormInject, TfFormColumnBase } from "tf-core";
+import {
+  CommonFormItemProps,
+  FormInject,
+  TfFormColumnBase,
+  ValueOf,
+} from "tf-core";
 import type {
   RuleType,
   StoreValue,
   ValidatorRule,
 } from "ant-design-vue/es/form/interface";
-import type { MaybeRefOrGetter, VNode } from "vue";
+import type { Component, MaybeRefOrGetter, VNode } from "vue";
 import input, { TfFormColumnInput } from "./components/input";
 import select, { TfFormColumnSelect } from "./components/select";
 import datePicker, { TfFormColumnDatePicker } from "./components/date-picker";
@@ -42,9 +47,15 @@ export interface AntdColumnBase<FormData extends Record<string, any>>
 }
 
 /**
+ * 允许外部注册类型
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface RegisterColumnMap<FormData extends Record<string, any>> {
+  // name: AntdColumnBase<FormData>;
+}
+
+/**
  * 全部的 antd column 集合
- *
- * todo:: 允许外部注册 类型
  */
 export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnDatePicker<FormData>
@@ -53,9 +64,11 @@ export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnSelect<FormData>
   | TfFormColumnTextarea<FormData>
   | TfFormColumnInput<FormData>
-  | TfFormColumnUpload<FormData>;
+  | TfFormColumnUpload<FormData>
+  // 外部自定义的部分
+  | ValueOf<RegisterColumnMap<FormData>>;
 
-export const formRenderMap = {
+export const formRenderMap: Record<string, Component> = {
   input,
   textarea,
   select,
@@ -64,6 +77,13 @@ export const formRenderMap = {
   "range-picker": rangePicker,
   upload,
 };
+
+export function registerForm<T extends keyof RegisterColumnMap<any>>(
+  type: T,
+  Component: Component<CommonFormItemProps<RegisterColumnMap<any>[T]>>,
+) {
+  formRenderMap[type] = Component;
+}
 
 declare module "tf-core" {
   interface FormTypeMap<_FormData extends Record<string, any>> {

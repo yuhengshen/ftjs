@@ -107,7 +107,7 @@ interface VxeExtendedProps<
   fitFlexHeight?: boolean;
   /**
    * 最小高度
-   * @default 210
+   * @default 310
    */
   minHeight?: number;
   /**

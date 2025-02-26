@@ -19,6 +19,19 @@ import rangePicker, {
 import radio, { TfFormColumnRadio } from "./components/radio";
 import textarea, { TfFormColumnTextarea } from "./components/textarea";
 import upload, { TfFormColumnUpload } from "./components/upload";
+import cascader, { TfFormColumnCascader } from "./components/cascader";
+import autoComplete, {
+  TfFormColumnAutoComplete,
+} from "./components/auto-complete";
+import checkbox, { TfFormColumnCheckbox } from "./components/checkbox";
+import inputNumber, {
+  TfFormColumnInputNumber,
+} from "./components/input-number";
+import mentions, { TfFormColumnMentions } from "./components/mentions";
+import rate, { TfFormColumnRate } from "./components/rate";
+import slider, { TfFormColumnSlider } from "./components/slider";
+import switchComponent, { TfFormColumnSwitch } from "./components/switch";
+import treeSelect, { TfFormColumnTreeSelect } from "./components/tree-select";
 import { FormInstance, FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
@@ -65,6 +78,15 @@ export type FormColumn<FormData extends Record<string, any>> =
   | TfFormColumnTextarea<FormData>
   | TfFormColumnInput<FormData>
   | TfFormColumnUpload<FormData>
+  | TfFormColumnCascader<FormData>
+  | TfFormColumnAutoComplete<FormData>
+  | TfFormColumnCheckbox<FormData>
+  | TfFormColumnInputNumber<FormData>
+  | TfFormColumnMentions<FormData>
+  | TfFormColumnRate<FormData>
+  | TfFormColumnSlider<FormData>
+  | TfFormColumnSwitch<FormData>
+  | TfFormColumnTreeSelect<FormData>
   // 外部自定义的部分
   | ValueOf<RegisterColumnMap<FormData>>;
 
@@ -76,6 +98,15 @@ export const formRenderMap: Record<string, Component> = {
   "date-picker": datePicker,
   "range-picker": rangePicker,
   upload,
+  cascader,
+  "auto-complete": autoComplete,
+  checkbox,
+  "input-number": inputNumber,
+  mentions,
+  rate,
+  slider,
+  switch: switchComponent,
+  "tree-select": treeSelect,
 };
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(

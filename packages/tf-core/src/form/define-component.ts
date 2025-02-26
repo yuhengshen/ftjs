@@ -101,6 +101,10 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
     name: "TfFormContainer",
   });
 
+  // q: 为什么需要定义 runtimeProps，而非直接使用 attrs
+  // a: 1. 因为 attrs 无法处理默认值，缩写等情况
+  //     如：<tf-form hide-footer /> -> hide-footer 不能被转化为 <tf-form :hide-footer="true" />
+  //    2. attrs 本省不是响应式的数据，无法 watch [ If you need reactivity, use a prop ]
   const runtimeProps = [
     "cache",
     "columns",

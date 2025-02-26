@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
     "release": "tsx ../../scripts/release.ts",
     "pub": "tsx ../../scripts/publish.ts"
   },

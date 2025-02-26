@@ -13,7 +13,7 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: true,
-    minify: true,
+    minify: false,
     lib: {
       entry: "./src/index.ts",
       formats: ["es"],

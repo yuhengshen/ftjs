@@ -1,9 +1,5 @@
 import { execSync } from "node:child_process";
-import { readFileSync } from "node:fs";
-
-const { version } = JSON.parse(
-  readFileSync("package.json", { encoding: "utf8" }),
-);
+import { version } from "../package.json" assert { type: "json" };
 
 let command = "pnpm publish --access public --no-git-checks";
 

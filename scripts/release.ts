@@ -1,35 +1,25 @@
 import { execSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import process from "node:process";
 
-const { version: oldVersion, name: _name } = JSON.parse(
-  readFileSync("package.json", { encoding: "utf8" }),
-);
+const oldPkg = JSON.parse(readFileSync("package.json", { encoding: "utf-8" }));
 
-execSync("pnpm exec bumpp --no-commit --no-tag --no-push", {
+execSync("pnpm exec bumpp -r --no-commit --no-push --no-tag", {
   stdio: "inherit",
 });
+const pkg = JSON.parse(readFileSync("package.json", { encoding: "utf-8" }));
 
-const { version } = JSON.parse(
-  readFileSync("package.json", { encoding: "utf8" }),
-);
-
-if (oldVersion === version) {
-  console.log("canceled");
-  process.exit();
+if (oldPkg.version === pkg.version) {
+  console.log("Version is not updated");
+  process.exit(1);
 }
 
 execSync("pnpm run build", { stdio: "inherit" });
 execSync("git add .", { stdio: "inherit" });
 
-const name = (_name as string).replace("/", "-");
-
-const str = `${name}v${version}`;
-
-execSync(`git commit -m "chore: release ${str}"`, {
+execSync(`git commit -m "chore: release v${pkg.version}"`, {
   stdio: "inherit",
 });
 
-execSync(`git tag -a ${str} -m "${str}"`, {
+execSync(`git tag -a v${pkg.version} -m "Release version ${pkg.version}"`, {
   stdio: "inherit",
 });

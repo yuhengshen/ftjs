@@ -1,13 +1,12 @@
 {
   "name": "tf-element",
-  "version": "0.0.2-beta.1",
+  "version": "1.0.8",
   "keywords": [],
   "author": "",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "release": "tsx ../../scripts/release.ts",
     "pub": "tsx ../../scripts/publish.ts"
   },
   "exports": {

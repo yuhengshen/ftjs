@@ -1,6 +1,6 @@
 {
   "name": "tf-core",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -10,7 +10,6 @@
     "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "release": "tsx ../../scripts/release.ts",
     "pub": "tsx ../../scripts/publish.ts"
   },
   "exports": {

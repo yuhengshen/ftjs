@@ -1,6 +1,6 @@
 {
   "name": "tf",
-  "version": "0.0.0",
+  "version": "1.0.8",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -10,14 +10,9 @@
   },
   "scripts": {
     "play": "pnpm --filter tf-playground dev",
-    "build-core": "turbo run build --filter tf-core",
-    "build-antd": "turbo run build --filter tf-antd",
-    "release-core": "pnpm --filter tf-core release",
-    "release-antd": "pnpm --filter tf-antd release",
-    "release-ele": "pnpm --filter tf-element release",
-    "pub-core": "pnpm --filter tf-core pub",
-    "pub-antd": "pnpm --filter tf-antd pub",
-    "pub-ele": "pnpm --filter tf-element pub",
+    "build": "turbo run build",
+    "release": "tsx ./scripts/release.ts",
+    "pub:all": "pnpm --parallel run pub",
     "prepare": "husky",
     "format": "prettier --write .",
     "lint": "eslint --fix ."
@@ -27,6 +22,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.4.1",
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "bumpp": "^10.0.3",

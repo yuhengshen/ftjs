@@ -14,7 +14,6 @@ import {
 } from "vue";
 import {
   cloneDeep,
-  isEqualStrArr,
   get,
   has,
   set,
@@ -191,16 +190,18 @@ export const useForm = <
   let tmpDefaultForm: FormData;
 
   // 需要监听的表单字段
-  let unWatchList: { field: string; cancel: () => void }[] = [];
-  const expectHideFields = ref<string[]>([]);
+  let unWatchList: { field: string; cancel: (() => void)[] }[] = [];
+  const hideFieldSet = ref<Set<string>>(new Set());
 
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
-    const set = new Set<string>(expectHideFields.value);
     return columns.value
       .filter(column => {
-        const key = getField(column) as any;
-        return !set.has(key) && (columnsChecked.value?.includes(key) ?? true);
+        const key = getField(column);
+        return (
+          !hideFieldSet.value.has(key) &&
+          (columnsChecked.value?.includes(key) ?? true)
+        );
       })
       .sort((a, b) => {
         const keyA = getField(a);
@@ -220,78 +221,84 @@ export const useForm = <
     return acc;
   }, {}) as any;
 
-  watch(
-    visibleColumns,
-    () => {
-      addFormDefaultValue();
-      runFieldWatchFn();
-    },
-    {
-      immediate: true,
-    },
-  );
-
-  watch(
-    form,
-    () => {
-      checkExpectColumns();
-    },
-    {
-      deep: true,
-    },
-  );
-
   onMounted(() => {
-    checkExpectColumns();
+    addFormDefaultValue();
+    runFieldWatch();
+  });
+
+  onUnmounted(() => {
+    unWatchList.forEach(({ cancel }) => cancel.forEach(c => c()));
   });
 
   /**
    * 运行表单字段监听函数
    */
-  function runFieldWatchFn() {
-    const needNewWatchList = columns.value.filter(column => column.watch);
-    const oldUnWatchList = unWatchList.filter(({ field, cancel }) => {
-      const index = needNewWatchList.findIndex(column => {
-        const watchField = column.field ?? column.fields![0];
-        return watchField === field;
-      });
-      if (index !== -1) {
-        needNewWatchList.splice(index, 1);
-        return true;
-      }
-      cancel();
-      return false;
-    });
-    const newUnWatchList = needNewWatchList.map(column => {
-      let watchObj = column.watch!;
-      if (typeof watchObj === "function") {
-        watchObj = {
-          handler: watchObj,
-        };
-      }
-      const watchField = column.field ?? column.fields![0];
-      return {
-        cancel: watch(
-          () => {
-            return get(form.value, watchField);
-          },
-          (val, oldVal) => {
-            watchObj.handler({ val, oldVal, form: form.value });
-          },
-          {
-            immediate: watchObj.immediate,
-            deep: watchObj.deep,
-          },
-        ),
-        field: watchField,
-      };
-    });
-    unWatchList = [...oldUnWatchList, ...newUnWatchList];
-  }
+  function runFieldWatch() {
+    unWatchList = columns.value
+      .filter(column => column.watch || column.control)
+      .map(column => {
+        const field = getField(column);
+        const cancel: (() => void)[] = [];
 
-  onUnmounted(() => {
-    unWatchList.forEach(({ cancel }) => cancel());
-  });
+        let watchObj = column.watch;
+        const control = column.control;
+        if (typeof watchObj === "function") {
+          watchObj = {
+            handler: watchObj,
+          };
+        }
+        if (watchObj) {
+          cancel.push(
+            watch(
+              () => {
+                return get(form.value, field);
+              },
+              (val, oldVal) => {
+                watchObj.handler({ val, oldVal, form: form.value });
+              },
+              {
+                immediate: watchObj.immediate,
+                deep: watchObj.deep,
+              },
+            ),
+          );
+        }
+        if (control) {
+          cancel.push(
+            watch(
+              () => get(form.value, field),
+              val => {
+                control.forEach(({ field, value }) => {
+                  let show = true;
+                  if (typeof value === "function") {
+                    show = value({
+                      formData: form.value,
+                      val,
+                    });
+                  } else {
+                    show = Array.isArray(value)
+                      ? (value as any[]).includes(val)
+                      : val === value;
+                  }
+                  if (show) {
+                    hideFieldSet.value.delete(field);
+                  } else {
+                    hideFieldSet.value.add(field);
+                  }
+                });
+              },
+              {
+                immediate: true,
+              },
+            ),
+          );
+        }
+        return {
+          field,
+          cancel,
+        };
+      });
+  }
 
   /**
    * 重置表单为默认值
@@ -303,10 +310,9 @@ export const useForm = <
     if (!sync) await nextTick();
     if (tmpDefaultForm) {
       form.value = cloneDeep(tmpDefaultForm);
-
       return;
     }
-    form.value = visibleColumns.value.reduce<FormData>((prev, column) => {
+    form.value = columns.value.reduce<FormData>((prev, column) => {
       const fields = column.fields ? column.fields : [column.field!];
       const valueArr = column.fields ? (column.value ?? []) : [column.value];
       fields.forEach((field, idx) => {
@@ -324,10 +330,10 @@ export const useForm = <
   };
 
   /**
-   * 如果有字段是新加的, 则加默认值
+   * 加默认值
    */
   function addFormDefaultValue() {
-    visibleColumns.value.forEach(column => {
+    columns.value.forEach(column => {
       const fields = column.fields ? column.fields : [column.field!];
       const valueArr = column.fields ? (column.value ?? []) : [column.value];
       fields.forEach((field, idx) => {
@@ -336,48 +342,6 @@ export const useForm = <
         }
       });
     });
-  }
-
-  /**
-   * 检查需要隐藏的字段
-   */
-  function checkExpectColumns() {
-    const expectHideSet = new Set<string>();
-    columns.value
-      .filter(column => column.control)
-      .forEach(column => {
-        const columnField = column.field ?? column.fields![0];
-        column.control!.forEach(expectItem => {
-          const targetColumn = columns.value.find(column => {
-            const field = column.field ?? column.fields![0];
-            return field === expectItem.field;
-          });
-          if (!targetColumn)
-            return console.warn("找不到关联的字段", expectItem.field);
-
-          const targetField = targetColumn.field ?? targetColumn.fields![0];
-          const expectValue = get(form.value, columnField);
-
-          let hide = false;
-          if (typeof expectItem.value === "function") {
-            hide = !expectItem.value({
-              formData: form.value,
-              val: expectValue,
-            });
-          } else {
-            hide = Array.isArray(expectItem.value)
-              ? !(expectItem.value as any).includes(expectValue)
-              : expectItem.value !== expectValue;
-          }
-          if (hide) {
-            expectHideSet.add(targetField);
-          }
-        });
-      });
-
-    const newExpectHideFields = [...expectHideSet];
-    if (isEqualStrArr(expectHideFields.value, newExpectHideFields)) return;
-    expectHideFields.value = newExpectHideFields;
   }
 
   /**

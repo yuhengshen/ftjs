@@ -1,7 +1,13 @@
 <script setup lang="tsx">
-import { TfTable, TfFormProps, TfTableProps } from "tf-antd";
+import {
+  TfTable,
+  TfFormProps,
+  TfTableProps,
+  TfFormSearch,
+  TfForm,
+} from "tf-antd";
 import { ref } from "vue";
-import { FormItem, Button } from "ant-design-vue";
+import { Button } from "ant-design-vue";
 
 const likesOptions = ref([
   { label: "1111111", value: 1 },
@@ -101,8 +107,8 @@ const formData = ref<FormData>({
 const total = ref(0);
 const loading = ref(false);
 
-const onSubmit = async (formData: FormData, { pagination }) => {
-  console.log("search", formData, pagination);
+const onSubmit = async (formData: FormData) => {
+  console.log("search", formData);
   let index = Math.floor(Math.random() * 100);
   loading.value = true;
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -280,18 +286,21 @@ const tableData = ref<TableData[]>([]);
 
 <template>
   <div>
-    <!-- <TfFormSearch
+    <hr />
+    <TfFormSearch
       v-model:form-data="formData"
       :columns="columns"
+      cache="form1"
       @submit="onSubmit"
     />
     <hr />
     <TfForm
       v-model:form-data="formData"
       :columns="columns"
+      cache="form2"
       @submit="onSubmit"
-    /> -->
-    <!-- <hr /> -->
+    />
+    <hr />
     <div
       style="
         height: 100vh;

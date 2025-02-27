@@ -36,6 +36,7 @@ jobs:
         uses: requarks/changelog-action@v1
         with:
           tag: ${{ github.ref_name }}
+          token: ${{ secrets.GIT_TOKEN }}
 
       - name: Create Release for Tag
         id: release_tag

@@ -232,7 +232,12 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
                 const { row } = params;
                 const type = editObj.type;
                 const field = editObj.field ?? column.field;
-                return h(editMap[type], {
+                const component = editMap.get(type);
+                if (!component) {
+                  console.warn(`[tf-antd] 不支持的编辑类型: ${type}`);
+                  return "";
+                }
+                return h(component, {
                   ...editObj.props,
                   value: row[field],
                   "onUpdate:value": (value: any) => {

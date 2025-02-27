@@ -90,30 +90,30 @@ export type FormColumn<FormData extends Record<string, any>> =
   // 外部自定义的部分
   | ValueOf<RegisterColumnMap<FormData>>;
 
-export const formRenderMap: Record<string, Component> = {
-  input,
-  textarea,
-  select,
-  radio,
-  "date-picker": datePicker,
-  "range-picker": rangePicker,
-  upload,
-  cascader,
-  "auto-complete": autoComplete,
-  checkbox,
-  "input-number": inputNumber,
-  mentions,
-  rate,
-  slider,
-  switch: switchComponent,
-  "tree-select": treeSelect,
-};
+export const formRenderMap = new Map<string, Component>([
+  ["input", input],
+  ["textarea", textarea],
+  ["select", select],
+  ["radio", radio],
+  ["date-picker", datePicker],
+  ["range-picker", rangePicker],
+  ["upload", upload],
+  ["cascader", cascader],
+  ["auto-complete", autoComplete],
+  ["checkbox", checkbox],
+  ["input-number", inputNumber],
+  ["mentions", mentions],
+  ["rate", rate],
+  ["slider", slider],
+  ["switch", switchComponent],
+  ["tree-select", treeSelect],
+]);
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(
   type: T,
   Component: Component<CommonFormItemProps<RegisterColumnMap<any>[T]>>,
 ) {
-  formRenderMap[type] = Component;
+  formRenderMap.set(type, Component);
 }
 
 declare module "tf-core" {

@@ -12,7 +12,7 @@ export interface EditMap<_TableData extends Record<string, any>> {
   select: Edit<"select", SelectProps>;
 }
 
-export const editMap: Record<keyof EditMap<any>, Component> = {
-  input: Input,
-  select: Select,
-};
+export const editMap = new Map<keyof EditMap<any>, Component>([
+  ["input", Input],
+  ["select", Select],
+]);

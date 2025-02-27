@@ -1,4 +1,5 @@
 import {
+  Component,
   computed,
   defineComponent,
   EmitsOptions,
@@ -99,7 +100,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
       >
     >,
   ) => any,
-  renderMap: any,
+  renderMap: Map<string, Component>,
   _runtimeProps: RuntimeProps<
     TupleKeys<FormTypeMap<any>[Type]["extendedProps"]>
   >[] & {
@@ -153,12 +154,13 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
           formContent: () =>
             visibleColumns.value.map(column => {
               // 需要保证 column.type 在 renderMap 中存在
-              if (!renderMap[column.type]) {
-                throw new Error(
-                  `[tf-core]: column.type ${column.type} not found`,
+              if (!renderMap.has(column.type)) {
+                console.warn(
+                  `[tf-core]: 没有配置 column.type ${column.type}, 请检查该组件是否注册`,
                 );
+                return null;
               }
-              const component = renderMap[column.type];
+              const component = renderMap.get(column.type)!;
               return h(component, {
                 column: column,
                 // 是否为查看模式

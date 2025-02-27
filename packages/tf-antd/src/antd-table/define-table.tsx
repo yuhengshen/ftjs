@@ -479,7 +479,7 @@ function useEdit<T extends Record<string, any>>(
           edit = column.edit;
         }
         const field = edit.field ?? column.field;
-        const component = editMap[edit.type];
+        const component = editMap.get(edit.type);
         if (component) {
           return h(component, {
             ...edit.props,

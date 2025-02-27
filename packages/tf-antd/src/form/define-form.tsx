@@ -134,9 +134,9 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
     "exposed",
     "onUpdate:exposed",
     "width",
-    "hideFooter",
-    "hideConfirm",
-    "hideReset",
+    ["hideFooter", { type: Boolean }],
+    ["hideConfirm", { type: Boolean }],
+    ["hideReset", { type: Boolean }],
   ],
 );
 

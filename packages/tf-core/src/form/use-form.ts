@@ -170,7 +170,7 @@ export const useForm = <
       columns: FormTypeMap<FormData>[Type]["columns"][];
     },
   formData: Ref<FormData | undefined>,
-  runtimeProps: string[],
+  runtimePropsKeys: string[],
 ) => {
   const columns = computed(() => toValue(props.columns));
 
@@ -211,7 +211,7 @@ export const useForm = <
       });
   });
 
-  const customProps = runtimeProps.reduce((acc, event: string) => {
+  const customProps = runtimePropsKeys.reduce((acc, event: string) => {
     if (event.startsWith("on")) {
       acc[event] = props[event];
     } else {

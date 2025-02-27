@@ -1,7 +1,13 @@
 import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
 import { TfTableColumn } from "./columns";
 import { useTable } from "./use-table";
-import { TfFormColumnBase } from "../form";
+import {
+  getPropsKeys,
+  RuntimeProps,
+  TfFormColumnBase,
+  transferVueArrayPropsToObject,
+} from "../form";
+import { TupleKeys } from "../type-helper";
 export interface TableTypeMap<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any>,
@@ -95,26 +101,30 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
       SlotsType<TableTypeMap<any, any>[Type]["tableSlots"]>
     >,
   ) => any,
-  _runtimeProps: string[],
+  _runtimeProps: RuntimeProps<
+    TupleKeys<TableTypeMap<any, any>[Type]["extendedProps"]>
+  >[] & {
+    length: TupleKeys<TableTypeMap<any, any>[Type]["extendedProps"]>["length"];
+  },
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
     name: "TfTableContainer",
   });
 
-  const runtimeProps = [
+  const runtimeProps: RuntimeProps<any[]>[] = [
     "cache",
     "columns",
     "searchColumns",
     "total",
     "defaultPageSize",
-    "loading",
+    ["loading", { type: Boolean }],
     "internalTableProps",
     "internalFormProps",
     "tableData",
     "keyField",
     ..._runtimeProps,
-  ] as any;
+  ];
 
   return defineComponent(
     <
@@ -127,11 +137,11 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
         SlotsType<TableTypeMap<TableData, SearchData>[Type]["tableSlots"]>
       >,
     ) => {
-      useTable<TableData, SearchData, Type>(props, runtimeProps);
+      useTable<TableData, SearchData, Type>(props, getPropsKeys(runtimeProps));
       return () => h(TableComponent, null, ctx.slots);
     },
     {
-      props: runtimeProps,
+      props: transferVueArrayPropsToObject(runtimeProps),
       name: "TfTable",
     },
   );

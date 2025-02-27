@@ -9,6 +9,12 @@ import {
 } from "vue";
 import { useForm } from "./use-form";
 import { TfFormColumnBase } from "./columns";
+import {
+  getPropsKeys,
+  RuntimeProps,
+  transferVueArrayPropsToObject,
+} from "../utils";
+import { TupleKeys } from "../type-helper";
 
 export interface FormTypeMap<_FormData extends Record<string, any>> {
   default: {
@@ -94,7 +100,11 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
     >,
   ) => any,
   renderMap: any,
-  _runtimeProps: string[],
+  _runtimeProps: RuntimeProps<
+    TupleKeys<FormTypeMap<any>[Type]["extendedProps"]>
+  >[] & {
+    length: TupleKeys<FormTypeMap<any>[Type]["extendedProps"]>["length"];
+  },
 ) => {
   const FormComponent = defineComponent(setup, {
     inheritAttrs: false,
@@ -103,9 +113,9 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
 
   // q: 为什么需要定义 runtimeProps，而非直接使用 attrs
   // a: 1. 因为 attrs 无法处理默认值，缩写等情况
-  //     如：<tf-form hide-footer /> -> hide-footer 不能被转化为 <tf-form :hide-footer="true" />
-  //    2. attrs 本省不是响应式的数据，无法 watch [ If you need reactivity, use a prop ]
-  const runtimeProps = [
+  //     如：<tf-form hide-footer /> -> hide-footer 不能被自动转化为 <tf-form :hide-footer="true" />
+  //    2. attrs 自身不是响应式的数据，无法 watch [ If you need reactivity, use a prop ]
+  const runtimeProps: RuntimeProps<any>[] = [
     "cache",
     "columns",
     "formData",
@@ -113,7 +123,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
     "onSubmit",
     "onUpdate:formData",
     ..._runtimeProps,
-  ] as any;
+  ];
 
   return defineComponent(
     <FormData extends Record<string, any>>(
@@ -134,7 +144,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
       const { visibleColumns } = useForm<FormData, Type>(
         props,
         formData,
-        _runtimeProps,
+        getPropsKeys(_runtimeProps),
       );
 
       return () =>
@@ -159,7 +169,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
         });
     },
     {
-      props: runtimeProps,
+      props: transferVueArrayPropsToObject(runtimeProps),
       name: "TfForm",
     },
   );

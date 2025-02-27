@@ -26,7 +26,7 @@ export const useTable = <
   Type extends keyof TableTypeMap<TableData, FormData>,
 >(
   props: TfTableIntrinsicProps<TableData, FormData, Type>,
-  runtimeProps: string[],
+  runtimePropsKeys: string[],
 ) => {
   type FormColumn = TableTypeMap<TableData, FormData>[Type]["formColumn"];
 
@@ -46,7 +46,7 @@ export const useTable = <
     return props.columns;
   });
 
-  const injectProps = runtimeProps.reduce(
+  const injectProps = runtimePropsKeys.reduce(
     (acc, key) => {
       if (key.startsWith("on")) {
         acc[key] = props[key];

@@ -2,7 +2,6 @@ import {
   computed,
   ref,
   watch,
-  onMounted,
   onUnmounted,
   nextTick,
   toValue,
@@ -160,6 +159,17 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
   };
 };
 
+/**
+ * 结构提取 columns 的 field 和 value
+ */
+const getFieldsAndValues = <T extends Record<string, any>>(
+  column: TfFormColumnBase<T>,
+) => {
+  const fields = column.fields || [column.field!];
+  const values = column.fields ? column.value || [] : [column.value];
+  return { fields, values };
+};
+
 export const useForm = <
   FormData extends Record<string, any>,
   Type extends keyof FormTypeMap<FormData>,
@@ -190,7 +200,7 @@ export const useForm = <
   let tmpDefaultForm: FormData;
 
   // 需要监听的表单字段
-  let unWatchList: { field: string; cancel: (() => void)[] }[] = [];
+  const watchMap = new Map<string, () => void>();
   const hideFieldSet = ref<Set<string>>(new Set());
 
   // 需要显示的表单字段
@@ -221,83 +231,95 @@ export const useForm = <
     return acc;
   }, {}) as any;
 
-  onMounted(() => {
-    addFormDefaultValue();
-    runFieldWatch();
-  });
+  watch(
+    columns,
+    (_v, _o, onCleanup) => {
+      onCleanup(() => {
+        watchMap.forEach(cancel => cancel());
+        watchMap.clear();
+        hideFieldSet.value.clear();
+        console.warn(`[tf-core] 检测到columns在改变，应该尽量避免变动`);
+      });
+      addFormDefaultValue();
+      runFieldWatch();
+    },
+    {
+      immediate: true,
+    },
+  );
 
   onUnmounted(() => {
-    unWatchList.forEach(({ cancel }) => cancel.forEach(c => c()));
+    watchMap.forEach(cancel => cancel());
   });
 
   /**
-   * 运行表单字段监听函数
+   * 运行表单字段监听(watch, controls)函数
    */
   function runFieldWatch() {
-    unWatchList = columns.value
-      .filter(column => column.watch || column.control)
-      .map(column => {
-        const field = getField(column);
-        const cancel: (() => void)[] = [];
+    columns.value.forEach(column => {
+      let watchObj = column.watch;
+      const control = column.control;
 
-        let watchObj = column.watch;
-        const control = column.control;
-        if (typeof watchObj === "function") {
-          watchObj = {
-            handler: watchObj,
-          };
-        }
-        if (watchObj) {
-          cancel.push(
-            watch(
-              () => {
-                return get(form.value, field);
-              },
-              (val, oldVal) => {
-                watchObj.handler({ val, oldVal, form: form.value });
-              },
-              {
-                immediate: watchObj.immediate,
-                deep: watchObj.deep,
-              },
-            ),
-          );
-        }
-        if (control) {
-          cancel.push(
-            watch(
-              () => get(form.value, field),
-              val => {
-                control.forEach(({ field, value }) => {
-                  let show = true;
-                  if (typeof value === "function") {
-                    show = value({
-                      formData: form.value,
-                      val,
-                    });
-                  } else {
-                    show = Array.isArray(value)
-                      ? (value as any[]).includes(val)
-                      : val === value;
-                  }
-                  if (show) {
-                    hideFieldSet.value.delete(field);
-                  } else {
-                    hideFieldSet.value.add(field);
-                  }
-                });
-              },
-              {
-                immediate: true,
-              },
-            ),
-          );
-        }
-        return {
-          field,
-          cancel,
+      if (!watchObj && !control) return;
+
+      const field = getField(column);
+      const cancel: (() => void)[] = [];
+
+      if (typeof watchObj === "function") {
+        watchObj = {
+          handler: watchObj,
         };
+      }
+      if (watchObj) {
+        cancel.push(
+          watch(
+            () => {
+              return get(form.value, field);
+            },
+            (val, oldVal) => {
+              watchObj.handler({ val, oldVal, form: form.value });
+            },
+            {
+              immediate: watchObj.immediate,
+              deep: watchObj.deep,
+            },
+          ),
+        );
+      }
+      if (control) {
+        cancel.push(
+          watch(
+            () => get(form.value, field),
+            val => {
+              control.forEach(({ field, value }) => {
+                let show = true;
+                if (typeof value === "function") {
+                  show = value({
+                    formData: form.value,
+                    val,
+                  });
+                } else {
+                  show = Array.isArray(value)
+                    ? (value as any[]).includes(val)
+                    : val === value;
+                }
+                if (show) {
+                  hideFieldSet.value.delete(field);
+                } else {
+                  hideFieldSet.value.add(field);
+                }
+              });
+            },
+            {
+              immediate: true,
+            },
+          ),
+        );
+      }
+      watchMap.set(field, () => {
+        cancel.forEach(c => c());
       });
+    });
   }
 
   /**
@@ -313,10 +335,9 @@ export const useForm = <
       return;
     }
     form.value = columns.value.reduce<FormData>((prev, column) => {
-      const fields = column.fields ? column.fields : [column.field!];
-      const valueArr = column.fields ? (column.value ?? []) : [column.value];
+      const { fields, values } = getFieldsAndValues(column);
       fields.forEach((field, idx) => {
-        set(prev, field, cloneDeep(valueArr[idx]));
+        set(prev, field, cloneDeep(values[idx]));
       });
       return prev;
     }, {} as FormData);
@@ -334,26 +355,24 @@ export const useForm = <
    */
   function addFormDefaultValue() {
     columns.value.forEach(column => {
-      const fields = column.fields ? column.fields : [column.field!];
-      const valueArr = column.fields ? (column.value ?? []) : [column.value];
+      const { fields, values } = getFieldsAndValues(column);
       fields.forEach((field, idx) => {
-        if (valueArr[idx] != null && !has(form.value, field)) {
-          set(form.value, field, cloneDeep(valueArr[idx]));
+        if (values[idx] != null && !has(form.value, field)) {
+          set(form.value, field, cloneDeep(values[idx]));
         }
       });
     });
   }
 
   /**
-   * 获取表单当先展示出的表单值
+   * 获取表单当前展示出的表单值
    */
   const getFormData: GetFormData<FormData> = () => {
     const formData: FormData = {} as FormData;
     visibleColumns.value.forEach(usefulColumn => {
-      const fields = usefulColumn.fields ?? [usefulColumn.field!];
+      const { fields } = getFieldsAndValues(usefulColumn);
       fields.forEach(field => {
-        const value = get(form.value, field);
-        set(formData, field, value);
+        set(formData, field, get(form.value, field));
       });
     });
     return formData;

@@ -13,7 +13,7 @@ export const isEmptyStrOrNull = (val: any) => {
 };
 
 export const cloneDeep = <T>(obj: T) => {
-  if (typeof obj === "object") {
+  if (typeof obj === "object" && obj !== null) {
     return JSON.parse(JSON.stringify(obj)) as T;
   }
   return obj;

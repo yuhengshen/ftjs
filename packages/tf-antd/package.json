@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons-vue": ">=7.0.0",
-    "vue": ">=3.0.0",
+    "vue": ">=3.3.0",
     "tf-core": ">=1.0.0",
     "ant-design-vue": ">=4.0.0",
     "dayjs": ">=1.0.0",

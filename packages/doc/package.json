@@ -1,0 +1,26 @@
+{
+  "name": "doc",
+  "version": "0.0.1",
+  "description": "tf-core 文档",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "vitepress": "^1.6.3",
+    "tf-core": "workspace:*",
+    "tf-antd": "workspace:*",
+    "ant-design-vue": "catalog:",
+    "vue": "catalog:",
+    "vxe-table": "catalog:",
+    "vxe-pc-ui": "catalog:"
+  },
+  "overrides": {
+    "vxe-pc-ui": "catalog:",
+    "vxe-table": "catalog:",
+    "xe-utils": "catalog:"
+  },
+  "devDependencies": {}
+}

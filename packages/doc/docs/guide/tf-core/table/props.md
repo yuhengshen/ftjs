@@ -48,7 +48,12 @@
 <script setup>
   import Demo from "./demo.vue";
 </script>
+
+:::raw
+
 <Demo />
+
+:::
 
 ### 代码示例
 
@@ -58,7 +63,7 @@
 
 ### TableTypeMap
 
-不同适配器的表格可以通过 `TableTypeMap` 定义自己的属性。详细信息请参考[适配器开发](../adapter/index.md)。
+不同适配器的表格可以通过 `TableTypeMap` 定义自己的属性。详细信息请参考[适配器开发](../adapter/development.md)。
 
 ## 列配置
 
@@ -102,4 +107,4 @@
 - `tableData`
 - `keyField`
 
-适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](../adapter/index.md)。
+适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](../adapter/development.md)。

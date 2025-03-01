@@ -6,10 +6,17 @@ interface TableData {
   id: string;
   name: string;
   age: number;
+  address: string;
+  tel: string;
+  email: string;
+  status: number;
+  createTime: string;
+  updateTime: string;
 }
 
 interface SearchData {
   name?: string;
+  age?: number;
   gender?: number;
 }
 
@@ -24,6 +31,37 @@ const columns: TfVxeTableProps<TableData, SearchData>["columns"] = [
   {
     field: "age",
     title: "年龄",
+    search: {
+      type: "input",
+      props: {
+        type: "number",
+      },
+    },
+  },
+  {
+    field: "address",
+    title: "地址",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "tel",
+    title: "电话",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "email",
+    title: "邮箱",
+    search: {
+      type: "input",
+    },
+  },
+  {
+    field: "status",
+    title: "状态",
   },
 ];
 
@@ -41,19 +79,46 @@ const searchColumns: TfVxeTableProps<TableData, SearchData>["searchColumns"] = [
   },
 ];
 
-const tableData = ref<TableData[]>([{ id: "1", name: "张三", age: 18 }]);
+const createTableData = () => {
+  tableData.value = Array.from({ length: 20 }, (_, index) => ({
+    id: index.toString(),
+    name: `张三${index}`,
+    age: 18,
+    address: "北京",
+    tel: "12345678901",
+    email: "zhangsan@163.com",
+    status: 1,
+    createTime: "2021-01-01",
+    updateTime: "2021-01-01",
+  }));
+};
+
+const tableData = ref<TableData[]>([]);
 
 const handleSearch = (searchData: SearchData) => {
   console.log(searchData);
+  loading.value = true;
+  setTimeout(() => {
+    createTableData();
+    loading.value = false;
+  }, 1000);
 };
+
+const loading = ref(false);
 </script>
 
 <template>
-  <TfVxeTable
-    v-model:tableData="tableData"
-    :columns="columns"
-    :searchColumns="searchColumns"
-    cache="table-cache-key"
-    @search="handleSearch"
-  />
+  <div
+    style="height: 600px; overflow: auto; display: flex; flex-direction: column"
+  >
+    <!-- table自动占据 flex 剩余空间 -->
+    <TfVxeTable
+      v-model:tableData="tableData"
+      :columns
+      :loading
+      :searchColumns
+      cache="table-cache-key"
+      @search="handleSearch"
+    />
+  </div>
 </template>

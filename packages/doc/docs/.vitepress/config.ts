@@ -28,8 +28,8 @@ export default defineConfig({
         {
           text: "TF Core",
           items: [
-            { text: "什么是 TF Core", link: "/guide/tf-core/introduction" },
-            { text: "列定义", link: "/guide/tf-core/form/column" },
+            { text: "介绍", link: "/guide/tf-core/introduction" },
+            { text: "Form 列定义", link: "/guide/tf-core/form/column" },
             {
               text: "Form 其他 Props",
               link: "/guide/tf-core/form/props",
@@ -89,6 +89,22 @@ export default defineConfig({
     footer: {
       message: "Released under the MIT License.",
       copyright: "Copyright © 2025-present",
+    },
+    docFooter: {
+      prev: "上一篇",
+      next: "下一篇",
+    },
+    darkModeSwitchLabel: "外观",
+    returnToTopLabel: "返回顶部",
+    sidebarMenuLabel: "菜单",
+    lastUpdatedText: "上次更新",
+    editLink: {
+      text: "在 GitHub 上编辑此页",
+      pattern:
+        "https://github.com/yuhengshen/tf/edit/main/packages/doc/docs/:path",
+    },
+    outline: {
+      label: "本页内容",
     },
   },
 });

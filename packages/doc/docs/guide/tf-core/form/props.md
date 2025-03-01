@@ -81,7 +81,7 @@ const handleSubmit = (formData: FormData) => {
 
 ### FormTypeMap
 
-不同适配器的表单可以通过 `FormTypeMap` 定义自己的属性。详细信息请参考[适配器开发](./adapter.md)
+不同适配器的表单可以通过 `FormTypeMap` 定义自己的属性。详细信息请参考[适配器开发](../adapter/development.md)
 
 ## 运行时属性
 
@@ -94,4 +94,4 @@ const handleSubmit = (formData: FormData) => {
 - `onSubmit`
 - `onUpdate:formData`
 
-适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](./adapter.md)。
+适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](../adapter/development.md)。

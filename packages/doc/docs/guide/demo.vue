@@ -22,7 +22,7 @@ const controlPlaceholder = ref("等一会儿，就可以显示被控制字段");
 
 setTimeout(() => {
   controlOptions.value.push({ label: "显示被控字段", value: 1 });
-  controlPlaceholder.value = "你可以选择显示被控字段";
+  controlPlaceholder.value = "你可以选择[显示被控字段]";
 }, 5000);
 
 const columns: TfFormProps<FormData>["columns"] = [
@@ -62,7 +62,7 @@ const columns: TfFormProps<FormData>["columns"] = [
       {
         validator: (_, value) => {
           if (value !== 1) {
-            return Promise.reject("选择1才能看到效果");
+            return Promise.reject("选择[显示被控字段]才能看到效果");
           }
           return Promise.resolve();
         },
@@ -93,7 +93,5 @@ const onSubmit = async (data: FormData) => {
 </script>
 
 <template>
-  <div>
-    <TfForm :columns="columns" @submit="onSubmit" />
-  </div>
+  <TfForm :columns="columns" @submit="onSubmit" />
 </template>

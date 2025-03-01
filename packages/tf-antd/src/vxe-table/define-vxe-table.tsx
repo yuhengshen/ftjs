@@ -198,7 +198,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     };
 
     onMounted(() => {
-      if (initSearch.value ?? true) {
+      if (initSearch.value) {
         handleSearch();
       }
     });
@@ -276,10 +276,6 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
       return {
         custom: true,
         zoom: true,
-        slots: {
-          buttons: "buttons",
-          toolPrefix: "tools",
-        },
         ..._toolbarConfig.value,
       };
     });

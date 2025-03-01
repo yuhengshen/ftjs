@@ -278,7 +278,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
         zoom: true,
         slots: {
           buttons: "buttons",
-          toolSuffix: "tools",
+          toolPrefix: "tools",
         },
         ..._toolbarConfig.value,
       };

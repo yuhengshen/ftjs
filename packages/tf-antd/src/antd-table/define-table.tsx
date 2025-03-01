@@ -425,13 +425,13 @@ export const TfTable = defineTfTable<"antd">(
     "onExpandedRowsChange",
     "onResizeColumn",
     "onSearch",
-    "initSearch",
+    ["initSearch", { type: Boolean, default: true }],
     "fitFlexHeight",
     "minHeight",
-    "hidePagination",
+    ["hidePagination", { type: Boolean }],
     "exposed",
     "onUpdate:exposed",
-    "hideSearch",
+    ["hideSearch", { type: Boolean }],
   ],
 );
 

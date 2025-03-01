@@ -408,7 +408,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
   },
   [
     "onSearch",
-    ["initSearch", { type: Boolean }],
+    ["initSearch", { type: Boolean, default: true }],
     "fitFlexHeight",
     "minHeight",
     ["hidePagination", { type: Boolean }],

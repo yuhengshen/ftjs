@@ -2,6 +2,8 @@ import { PropType, unref } from "vue";
 import { RecordPath, Unrefs } from "./type-helper";
 import { TfFormColumnBase } from "./form/columns";
 
+export const isBrowser = typeof window !== "undefined";
+
 export const getField = <T extends Record<string, any>>(
   column: TfFormColumnBase<T>,
 ) => {
@@ -81,7 +83,7 @@ export const unrefs = <T>(obj: T) => {
  */
 export const getStorage = (key: string, cache?: string) => {
   let value = {};
-  if (cache) {
+  if (cache && isBrowser) {
     try {
       const storageStr = localStorage.getItem(key);
       if (storageStr) {
@@ -104,7 +106,7 @@ export const getStorage = (key: string, cache?: string) => {
  * @param cache 缓存名称
  */
 export const setStorage = (key: string, value: any, cache?: string) => {
-  if (cache) {
+  if (cache && isBrowser) {
     let obj = {};
     const storageStr = localStorage.getItem(key);
     if (storageStr) {

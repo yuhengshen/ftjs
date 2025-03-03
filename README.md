@@ -8,26 +8,28 @@
 
 tf 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件库。
 
-## Features
+## 特性
 
 - columns 配置简单灵活。
 - 可自定义的组件和完善类型提示。
 - 性能优异，只重渲染变更的数据。
 
-## Adapter
+## 适配器
 
-| ant-design-vue                                 | element-plus | naive-ui |
-| :--------------------------------------------- | :----------- | :------- |
-| ✔️ 完成 [tf-antd](/packages/tf-antd/README.md) | 🚧 进行中    | 📈计划   |
+| [ant-design-vue](https://github.com/vueComponent/ant-design-vue) | ✔️ 已完成 [tf-antd](/packages/tf-antd/README.md) |
+| :--------------------------------------------------------------- | :----------------------------------------------- |
+| [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                        |
+| [vant](https://github.com/youzan/vant)                           | 📈计划                                           |
+| [naive-ui](https://github.com/tusen-ai/naive-ui)                 | 📈计划                                           |
 
-## Document wip
+## 文档
 
-请在 [tf-doc.yhs.ink](https://tf-doc.yhs.ink) 查看。
+请在 [tf-docs.yhs.ink](https://tf-docs.yhs.ink) 查看。
 
-## ChangeLog
+## 变更记录
 
-请参考 [CHANGELOG.md](./CHANGELOG.md)。
+请参考 [Release](https://github.com/yuhengshen/tf/releases)。
 
-## License
+## 许可证
 
-[MIT](../../LICENSE)
+[MIT](./LICENSE)

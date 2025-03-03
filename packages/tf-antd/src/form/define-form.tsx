@@ -60,7 +60,7 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
   (_, ctx) => {
     const {
       form,
-      width: _width,
+      width,
       internalFormProps: _formProps,
       hideFooter,
       hideConfirm,
@@ -69,8 +69,6 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
       getFormData,
       resetToDefault,
     } = useFormInject<any, "antd">()!;
-
-    const width = _width.value ?? "500px";
 
     // 获取表单值
     const { rules } = useRules();
@@ -133,7 +131,7 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
   [
     "exposed",
     "onUpdate:exposed",
-    "width",
+    ["width", { type: String, default: "500px" }],
     ["hideFooter", { type: Boolean }],
     ["hideConfirm", { type: Boolean }],
     ["hideReset", { type: Boolean }],

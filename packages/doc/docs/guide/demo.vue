@@ -80,10 +80,11 @@ const columns: TfFormProps<FormData>["columns"] = [
     field: "control3",
     // 可以设置默认值
     hide() {
-      // 我命由我不由天，显不显示我自己说了算
       // 这里是一个 vue computed getter 函数，返回值为 true 时，字段会隐藏
       return Math.random() > 0.5;
     },
+    // 也可以是普通的布尔值
+    // hide: true,
   },
 ];
 

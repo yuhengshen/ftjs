@@ -33,5 +33,5 @@ features:
   - icon: 🛠️
     title: 适配器
     details: Ant-design-vue 适配器。
-    link: /tf-antd/introduction
+    link: /tf-antd
 ---

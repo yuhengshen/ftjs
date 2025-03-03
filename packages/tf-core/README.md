@@ -7,9 +7,9 @@
 
 核心模块
 
-## Document wip
+## 文档
 
-请在 [tf-doc.yhs.ink](https://tf-doc.yhs.ink) 查看。
+请查看 [tf-core 文档](https://tf-docs.yhs.ink/tf-core/introduction.html)。
 
 ## License
 

@@ -12,7 +12,7 @@ export default defineConfig({
       {
         text: "适配器",
         items: [
-          { text: "TF Antd", link: "/tf-antd/introduction" },
+          { text: "TF Antd", link: "/tf-antd/" },
           { text: "TF Element 🚧", link: "#" },
           { text: "TF Vant 🚧", link: "#" },
         ],
@@ -46,7 +46,7 @@ export default defineConfig({
                   link: "/guide/tf-core/adapter/development",
                 },
                 { text: "API 参考", link: "/guide/tf-core/adapter/api" },
-                { text: "TF Antd", link: "/tf-antd/introduction" },
+                { text: "TF Antd", link: "/tf-antd" },
                 { text: "TF Element 🚧", link: "#" },
                 { text: "TF Vant 🚧", link: "#" },
               ],
@@ -57,28 +57,20 @@ export default defineConfig({
       "/tf-antd/": [
         {
           text: "介绍",
+          link: "/tf-antd/",
+        },
+        {
+          text: "表单",
           items: [
-            { text: "什么是 TF Antd", link: "/tf-antd/introduction" },
-            { text: "快速上手", link: "/tf-antd/quickstart" },
+            { text: "TfForm", link: "/tf-antd/components/form/" },
+            { text: "TfSearchForm", link: "/tf-antd/components/form-search/" },
           ],
         },
         {
-          text: "表单组件",
-          items: [{ text: "Input 输入框", link: "/tf-antd/components/input" }],
-        },
-        {
-          text: "表格组件",
+          text: "表格",
           items: [
             { text: "Table", link: "/tf-antd/components/table" },
             { text: "VxeTable", link: "/tf-antd/components/vxe-table" },
-          ],
-        },
-        {
-          text: "API",
-          items: [
-            { text: "Form", link: "/tf-antd/api/form" },
-            { text: "Field", link: "/tf-antd/api/field" },
-            { text: "Validator", link: "/tf-antd/api/validator" },
           ],
         },
       ],

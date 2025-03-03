@@ -71,8 +71,10 @@ export interface TfFormColumnBase<FormData extends Record<string, any>> {
      *
      */
     value:
+      | boolean
       | string
       | number
+      | boolean[]
       | string[]
       | number[]
       | /** 返回值表示这个字段是否显示 */ (({

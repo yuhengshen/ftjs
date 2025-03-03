@@ -24,9 +24,6 @@ const columns: TfVxeTableProps<TableData, SearchData>["columns"] = [
   {
     field: "name",
     title: "姓名",
-    search: {
-      type: "input",
-    },
   },
   {
     field: "age",

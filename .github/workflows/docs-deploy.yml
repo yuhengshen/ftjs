@@ -38,6 +38,4 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./packages/doc/docs/.vitepress/dist
-          alias-domains: |
-            tf-docs.vercel.app
+          working-directory: packages/doc/docs/.vitepress/dist

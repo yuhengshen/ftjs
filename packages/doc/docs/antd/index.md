@@ -28,8 +28,8 @@ pnpm i @ftjs/antd
 | ------------ | -------------------------------- | --------------------------------------------- |
 | FtForm       | 基础表单组件                     | [查看文档](./components/form/index.md)        |
 | FtFormSearch | 搜索表单组件                     | [查看文档](./components/form-search/index.md) |
-| FtTable      | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table.md)             |
-| FtVxeTable   | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table.md)         |
+| FtTable      | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table/index.md)       |
+| FtVxeTable   | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table/index.md)   |
 
 ## 示例
 

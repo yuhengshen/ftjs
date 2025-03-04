@@ -1,0 +1,48 @@
+{
+  "name": "@ftjs/antd",
+  "version": "0.1.1",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
+    "pub": "tsx ../../scripts/publish.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@ant-design/icons-vue": "catalog:",
+    "ant-design-vue": "catalog:",
+    "dayjs": "^1.11.13",
+    "@ftjs/core": "workspace:*",
+    "vue": "catalog:",
+    "vue-component-type-helpers": "catalog:",
+    "vxe-table": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "peerDependencies": {
+    "@ant-design/icons-vue": ">=7.0.0",
+    "vue": ">=3.3.0",
+    "@ftjs/core": ">=0.0.1",
+    "ant-design-vue": ">=4.0.0",
+    "dayjs": ">=1.0.0",
+    "vxe-table": ">=4.0.0"
+  }
+}

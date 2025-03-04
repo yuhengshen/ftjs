@@ -1,0 +1,28 @@
+{
+  "name": "@ftjs/doc",
+  "version": "0.1.1",
+  "description": "ftjs 文档",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "dependencies": {
+    "@ftjs/antd": "workspace:*",
+    "@ftjs/core": "workspace:*",
+    "ant-design-vue": "catalog:",
+    "vitepress": "^1.6.3",
+    "vue": "catalog:",
+    "vxe-pc-ui": "catalog:",
+    "vxe-table": "catalog:"
+  },
+  "overrides": {
+    "vxe-pc-ui": "catalog:",
+    "vxe-table": "catalog:",
+    "xe-utils": "catalog:"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue-jsx": "catalog:"
+  }
+}

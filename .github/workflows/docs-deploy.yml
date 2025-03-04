@@ -1,0 +1,41 @@
+name: Deploy Docs to Vercel
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "packages/doc/docs/**"
+      - ".github/workflows/docs-deploy.yml"
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.4.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build deps
+        run: pnpm build
+
+      - name: Build docs
+        run: pnpm --filter @ftjs/doc docs:build
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: packages/doc/docs/.vitepress/dist

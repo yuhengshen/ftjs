@@ -1,0 +1,112 @@
+import type { MaybeRefOrGetter } from "vue";
+import { RecordPath } from "../type-helper";
+
+type WatchHandler<FormData extends Record<string, any>> = (params: {
+  val: any;
+  oldVal: any;
+  form: FormData;
+}) => void;
+
+type Watch<FormData extends Record<string, any>> =
+  | WatchHandler<FormData>
+  | {
+      handler: WatchHandler<FormData>;
+      deep?: boolean;
+      immediate?: boolean;
+    };
+
+/**
+ * 实现方需要继承这个interface
+ */
+export interface FtFormColumnBase<FormData extends Record<string, any>> {
+  /**
+   * 字段名 `fields` 和 `field` 至少有一个存在
+   *
+   * `field` 优先级高于 `fields`
+   *
+   * 如果是在 TableColumns 中，则默认继承其中的 field
+   */
+  field?: RecordPath<FormData>;
+  /**
+   * 字段名数组，当表单需要返回多个值时，使用这个字段
+   *
+   * 如： [startTime, endTime]
+   *
+   * 注意： 第一个字段需要尽量是基础类型的值(这个值会用于watch, expect等操作)，后面可以包含详情
+   *
+   * 如人员信息: [staffId, staffInfoObj, deptInfoObj, ...]
+   */
+  fields?: string[];
+  /**
+   * 字段标题
+   *
+   * 如果是在 TableColumns 中，则默认继承其中的 title
+   */
+  title?: MaybeRefOrGetter<string>;
+  /**
+   * 是否隐藏
+   */
+  hide?: MaybeRefOrGetter<boolean>;
+  /**
+   * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
+   */
+  watch?: Watch<FormData>;
+  /**
+   * 字段默认值
+   */
+  value?: any;
+  /**
+   * 控制其他字段基于此值的显示规则
+   *
+   * 当其他字段值符合`value`时，控制字段显示，否则隐藏
+   */
+  control?: {
+    /**
+     * 控制字段
+     */
+    field: string;
+    /**
+     * 条件，可以是一个值，也可以是一个函数
+     *
+     *
+     */
+    value:
+      | boolean
+      | string
+      | number
+      | boolean[]
+      | string[]
+      | number[]
+      | /** 返回值表示这个字段是否显示 */ (({
+          formData,
+          val,
+        }: {
+          formData: FormData;
+          val: any;
+        }) => boolean);
+  }[];
+
+  valueGetter?: (val: any) => any;
+  valueSetter?: (val: any) => any;
+
+  /**
+   * props 配置，子类定义
+   */
+  props?: any;
+  /**
+   * slots 配置，子类定义
+   */
+  slots?: {};
+
+  /**
+   * 排序
+   *
+   * @default index
+   */
+  sort?: number;
+
+  /**
+   * 是否查看模式
+   */
+  isView?: MaybeRefOrGetter<boolean>;
+}

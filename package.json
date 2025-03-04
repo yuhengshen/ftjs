@@ -1,0 +1,45 @@
+{
+  "name": "ftjs",
+  "version": "0.1.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=18.12.0",
+    "pnpm": ">=9.12.0"
+  },
+  "scripts": {
+    "play": "pnpm --filter ftjs-playground dev",
+    "build": "turbo run build",
+    "release": "tsx ./scripts/release.ts",
+    "pub:all": "pnpm --parallel run pub",
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "lint": "eslint --fix ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.4.1",
+  "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
+    "bumpp": "^10.0.3",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "^10.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "catalog:",
+    "tsx": "^4.19.3",
+    "turbo": "^2.4.2",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,vue,css,less,scss,json,md}": [
+      "prettier --write"
+    ]
+  }
+}

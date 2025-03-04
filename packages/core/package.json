@@ -1,0 +1,44 @@
+{
+  "name": "@ftjs/core",
+  "version": "0.1.1",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "pub": "tsx ../../scripts/publish.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "@vitest/ui": "catalog:",
+    "@vue/test-utils": "catalog:",
+    "happy-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "vitest": "catalog:",
+    "vue-tsc": "catalog:",
+    "vue": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0"
+  }
+}

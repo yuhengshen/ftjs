@@ -1,0 +1,7 @@
+dist
+node_modules
+.turbo
+**/.vitepress/cache
+**/.vitepress/dist
+**/.vitepress/.temp
+.vercel

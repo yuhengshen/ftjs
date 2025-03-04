@@ -8,3 +8,4 @@ export type {
 
 export * from "./antd-table/define-table";
 export * from "./vxe-table/define-vxe-table";
+export * from "./antd-table/column-edit";

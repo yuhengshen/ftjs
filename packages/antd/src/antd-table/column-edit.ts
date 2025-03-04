@@ -16,3 +16,10 @@ export const editMap = new Map<keyof EditMap<any>, Component>([
   ["input", Input],
   ["select", Select],
 ]);
+
+export const registerEdit = (
+  type: keyof EditMap<any>,
+  component: Component,
+) => {
+  editMap.set(type, component);
+};

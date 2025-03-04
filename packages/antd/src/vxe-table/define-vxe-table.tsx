@@ -372,6 +372,7 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
                       v-model:current={current.value}
                       showQuickJumper
                       showSizeChanger
+                      showLessItems
                       total={total.value}
                       defaultPageSize={defaultPageSize.value}
                       showTotal={total => {

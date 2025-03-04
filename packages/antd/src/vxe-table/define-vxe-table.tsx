@@ -185,7 +185,7 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
       if (!pagination && !hidePagination.value) {
         pagination = {
           page: 1,
-          pageSize: defaultPageSize.value ?? 20,
+          pageSize: defaultPageSize.value!,
         };
       }
       await onSearch(formData, { pagination });
@@ -373,7 +373,7 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
                       showQuickJumper
                       showSizeChanger
                       total={total.value}
-                      defaultPageSize={defaultPageSize.value ?? 20}
+                      defaultPageSize={defaultPageSize.value}
                       showTotal={total => {
                         if (total === 0) return null;
                         return `共 ${total} 条数据`;

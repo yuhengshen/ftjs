@@ -201,7 +201,7 @@ export const FtTable = defineFtTable<"antd">(
       if (!pagination && !hidePagination.value) {
         pagination = {
           page: 1,
-          pageSize: defaultPageSize.value ?? 20,
+          pageSize: defaultPageSize.value!,
         };
       }
       onSearch(formData, { pagination });
@@ -233,7 +233,7 @@ export const FtTable = defineFtTable<"antd">(
           ? (false as const)
           : {
               total: total.value,
-              defaultPageSize: defaultPageSize.value ?? 20,
+              defaultPageSize: defaultPageSize.value,
               current: currentPage.value,
               onChange: (page: number, pageSize: number) => {
                 currentPage.value = page;

@@ -56,6 +56,8 @@ export interface FtTableIntrinsicProps<
   total?: number;
   /**
    * 默认每页条数
+   *
+   * @default 20
    */
   defaultPageSize?: number;
   /**
@@ -117,7 +119,7 @@ export function defineFtTable<Type extends keyof TableTypeMap<any, any>>(
     "columns",
     "searchColumns",
     "total",
-    "defaultPageSize",
+    ["defaultPageSize", { type: Number, default: 20 }],
     ["loading", { type: Boolean }],
     "internalTableProps",
     "internalFormProps",

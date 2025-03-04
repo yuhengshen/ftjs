@@ -234,12 +234,12 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
     field: string;
     /**
      * 条件，可以是一个值，也可以是一个函数
-     *
-     *
      */
     value:
+      | boolean
       | string
       | number
+      | boolean[]
       | string[]
       | number[]
       | /** 返回值表示这个字段是否显示 */ (({

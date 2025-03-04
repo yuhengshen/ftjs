@@ -5,7 +5,7 @@ import { RecordPath } from "../type-helper";
  *
  * @public
  */
-export interface TfTableColumn<TableData extends Record<string, any>> {
+export interface FtTableColumn<TableData extends Record<string, any>> {
   /**
    * 列标题
    */

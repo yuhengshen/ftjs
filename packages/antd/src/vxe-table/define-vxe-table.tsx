@@ -1,5 +1,5 @@
-import { defineTfTable, useTableInject } from "@ftjs/core";
-import type { TfTableColumn, TfTablePropsMap, ValueOf } from "@ftjs/core";
+import { defineFtTable, useTableInject } from "@ftjs/core";
+import type { FtTableColumn, FtTablePropsMap, ValueOf } from "@ftjs/core";
 import {
   VxeGrid,
   VxeGridProps,
@@ -8,7 +8,7 @@ import {
   VxeGridPropTypes,
   VxeColumnSlotTypes,
 } from "vxe-table";
-import { TfFormSearch } from "../form/define-form";
+import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
 import { computed, CSSProperties, h, onMounted, ref, watchEffect } from "vue";
 import { Pagination, Spin } from "ant-design-vue";
@@ -58,7 +58,7 @@ interface VxeTableExposed<
  * 列定义
  */
 type VxeTableColumn<TableData extends Record<string, any>> =
-  TfTableColumn<TableData> &
+  FtTableColumn<TableData> &
     Omit<VxeGridPropTypes.Column<TableData>, "title" | "editRender"> & {
       /**
        * 行内编辑
@@ -155,7 +155,7 @@ interface VxePagination {
   pageSize: number;
 }
 
-export const TfVxeTable = defineTfTable<"vxe-table">(
+export const FtVxeTable = defineFtTable<"vxe-table">(
   (_, ctx) => {
     const {
       formColumns,
@@ -338,7 +338,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
     return () => (
       <div ref={containerRef} style={containerStyle}>
         {!hideSearch.value && (
-          <TfFormSearch
+          <FtFormSearch
             v-model:exposed={formExposed.value}
             cache={cache.value}
             columns={formColumns.value}
@@ -419,7 +419,7 @@ export const TfVxeTable = defineTfTable<"vxe-table">(
   ],
 );
 
-export type TfVxeTableProps<
+export type FtVxeTableProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
-> = TfTablePropsMap<TableData, SearchData, "vxe-table">;
+> = FtTablePropsMap<TableData, SearchData, "vxe-table">;

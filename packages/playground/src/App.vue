@@ -1,10 +1,10 @@
 <script setup lang="tsx">
 import {
-  TfTable,
-  TfFormProps,
-  TfTableProps,
-  TfFormSearch,
-  TfForm,
+  FtTable,
+  FtFormProps,
+  FtTableProps,
+  FtFormSearch,
+  FtForm,
 } from "@ftjs/antd";
 import { ref } from "vue";
 import { Button } from "ant-design-vue";
@@ -28,7 +28,7 @@ interface FormData {
   };
 }
 
-const columns: TfFormProps<FormData>["columns"] = [
+const columns: FtFormProps<FormData>["columns"] = [
   {
     type: "input",
     field: "extraInfo.name",
@@ -159,7 +159,7 @@ interface TableData {
   address13: string;
 }
 
-const tableColumns: TfTableProps<TableData>["columns"] = [
+const tableColumns: FtTableProps<TableData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -287,14 +287,14 @@ const tableData = ref<TableData[]>([]);
 <template>
   <div>
     <hr />
-    <TfFormSearch
+    <FtFormSearch
       v-model:form-data="formData"
       :columns="columns"
       cache="form1"
       @submit="onSubmit"
     />
     <hr />
-    <TfForm
+    <FtForm
       v-model:form-data="formData"
       :columns="columns"
       cache="form2"
@@ -310,7 +310,7 @@ const tableData = ref<TableData[]>([]);
         flex-direction: column;
       "
     >
-      <TfTable
+      <FtTable
         :columns="tableColumns"
         :loading
         :total
@@ -327,7 +327,7 @@ const tableData = ref<TableData[]>([]);
             <Button>操作</Button>
           </div>
         </template>
-      </TfTable>
+      </FtTable>
     </div>
   </div>
 </template>

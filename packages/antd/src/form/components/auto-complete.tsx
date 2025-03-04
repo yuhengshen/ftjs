@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnAutoComplete<T extends Record<string, any>>
+export interface FtFormColumnAutoComplete<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 自动补全
@@ -13,7 +13,7 @@ export interface TfFormColumnAutoComplete<T extends Record<string, any>>
   props?: Refs<AutoCompleteProps>;
 }
 
-export default defineFormComponent<TfFormColumnAutoComplete<any>>(props => {
+export default defineFormComponent<FtFormColumnAutoComplete<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

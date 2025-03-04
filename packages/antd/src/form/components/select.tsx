@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { computed, toValue, unref } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnSelect<T extends Record<string, any>>
+export interface FtFormColumnSelect<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 选择器
@@ -13,7 +13,7 @@ export interface TfFormColumnSelect<T extends Record<string, any>>
   props?: Refs<SelectProps>;
 }
 
-export default defineFormComponent<TfFormColumnSelect<any>>(props => {
+export default defineFormComponent<FtFormColumnSelect<any>>(props => {
   const { valueComputed, isView } = useFormItem({
     props,
   });

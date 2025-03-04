@@ -1,5 +1,5 @@
 import { computed, ComputedRef, inject, provide } from "vue";
-import { TableTypeMap, TfTableIntrinsicProps } from "./define-components";
+import { TableTypeMap, FtTableIntrinsicProps } from "./define-components";
 import { SplitEventKeys } from "../type-helper";
 
 const provideTableKey = Symbol("@ftjs/core-table-provide");
@@ -9,7 +9,7 @@ type TableInject<
   FormData extends Record<string, any> = TableData,
   Type extends keyof TableTypeMap<TableData, FormData> = "default",
 > = SplitEventKeys<
-  TfTableIntrinsicProps<TableData, FormData, Type> &
+  FtTableIntrinsicProps<TableData, FormData, Type> &
     TableTypeMap<TableData, FormData>[Type]["extendedProps"]
 > & {
   formColumns: ComputedRef<
@@ -25,7 +25,7 @@ export const useTable = <
   FormData extends Record<string, any>,
   Type extends keyof TableTypeMap<TableData, FormData>,
 >(
-  props: TfTableIntrinsicProps<TableData, FormData, Type>,
+  props: FtTableIntrinsicProps<TableData, FormData, Type>,
   runtimePropsKeys: string[],
 ) => {
   type FormColumn = TableTypeMap<TableData, FormData>[Type]["formColumn"];

@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnInputNumber<T extends Record<string, any>>
+export interface FtFormColumnInputNumber<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 输入框
@@ -13,7 +13,7 @@ export interface TfFormColumnInputNumber<T extends Record<string, any>>
   props?: Refs<InputNumberProps>;
 }
 
-export default defineFormComponent<TfFormColumnInputNumber<any>>(props => {
+export default defineFormComponent<FtFormColumnInputNumber<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

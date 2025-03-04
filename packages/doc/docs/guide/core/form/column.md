@@ -91,7 +91,7 @@ const columns = [
     control: [
       {
         field: "age",
-        value: "tf", // 当 name 为 "tf" 时显示 age 字段
+        value: "ftjs", // 当 name 为 "ftjs" 时显示 age 字段
       },
     ],
   },
@@ -185,7 +185,7 @@ const columns = [
 详细的类型定义请参考以下接口：
 
 ```typescript
-interface TfFormColumnBase<FormData extends Record<string, any>> {
+interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *

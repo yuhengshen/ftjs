@@ -1,5 +1,5 @@
 import { computed, toValue } from "vue";
-import { TfFormColumnBase } from "./columns";
+import { FtFormColumnBase } from "./columns";
 import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
 import { CommonFormItemProps, FormTypeMap } from "./define-component";
@@ -27,7 +27,7 @@ export const useFormItem = <
   FromData extends Record<string, any>,
   Type extends keyof FormTypeMap<FromData>,
 >(
-  options: UseFormItemOptions<TfFormColumnBase<FormData>, Type>,
+  options: UseFormItemOptions<FtFormColumnBase<FormData>, Type>,
 ) => {
   let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数

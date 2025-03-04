@@ -42,13 +42,13 @@
 
 ```vue
 <script setup lang="ts">
-import { TfFormProps, TfFormSearch, TfForm } from "@ftjs/antd";
+import { FtFormProps, FtFormSearch, FtForm } from "@ftjs/antd";
 
 interface FormData {
   name: string;
 }
 
-const columns: TfFormProps<FormData>["columns"] = [
+const columns: FtFormProps<FormData>["columns"] = [
   {
     field: "name",
     type: "input",
@@ -65,10 +65,10 @@ const handleSubmit = (formData: FormData) => {
 
 <template>
   <!-- 基础用法 -->
-  <tf-form v-model:formData="formData" :columns="columns" />
+  <ft-form v-model:formData="formData" :columns="columns" />
 
   <!-- 启用缓存 -->
-  <tf-form-search
+  <ft-form-search
     v-model:formData="formData"
     :columns="columns"
     cache="form-cache-key"

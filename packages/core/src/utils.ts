@@ -1,11 +1,11 @@
 import { PropType, unref } from "vue";
 import { RecordPath, Unrefs } from "./type-helper";
-import { TfFormColumnBase } from "./form/columns";
+import { FtFormColumnBase } from "./form/columns";
 
 export const isBrowser = typeof window !== "undefined";
 
 export const getField = <T extends Record<string, any>>(
-  column: TfFormColumnBase<T>,
+  column: FtFormColumnBase<T>,
 ) => {
   return (column.field ?? column.fields?.[0]) as RecordPath<T>;
 };

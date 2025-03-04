@@ -9,7 +9,7 @@ import {
   VNode,
 } from "vue";
 import { useForm } from "./use-form";
-import { TfFormColumnBase } from "./columns";
+import { FtFormColumnBase } from "./columns";
 import {
   getPropsKeys,
   RuntimeProps,
@@ -23,16 +23,16 @@ export interface FormTypeMap<_FormData extends Record<string, any>> {
     extendedProps: {};
     internalFormProps: {};
     columns:
-      | (TfFormColumnBase<any> & {
+      | (FtFormColumnBase<any> & {
           type: "custom";
         })
-      | (TfFormColumnBase<any> & {
+      | (FtFormColumnBase<any> & {
           type: "custom2";
         });
   };
 }
 
-export interface TfFormIntrinsicProps<
+export interface FtFormIntrinsicProps<
   FormData extends Record<string, any>,
   Type extends keyof FormTypeMap<FormData>,
 > {
@@ -43,7 +43,7 @@ export interface TfFormIntrinsicProps<
   /**
    * v-model:formData 的值
    *
-   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 TfForm内部会生成一个内部值
+   * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 FtForm内部会生成一个内部值
    */
   formData?: FormData;
   /**
@@ -67,17 +67,17 @@ export interface TfFormIntrinsicProps<
 /**
  * 每一个表单组件的 props
  */
-export interface CommonFormItemProps<T extends TfFormColumnBase<any>> {
+export interface CommonFormItemProps<T extends FtFormColumnBase<any>> {
   /** column 定义 */
   column: T;
   /** 是否查看模式 */
   isView: boolean;
 }
 
-export type TfFormPropsMap<
+export type FtFormPropsMap<
   FormData extends Record<string, any>,
   Type extends keyof FormTypeMap<FormData>,
-> = TfFormIntrinsicProps<FormData, Type> &
+> = FtFormIntrinsicProps<FormData, Type> &
   FormTypeMap<FormData>[Type]["extendedProps"] & {
     columns: FormTypeMap<FormData>[Type]["columns"][];
   };
@@ -85,7 +85,7 @@ export type TfFormPropsMap<
 /**
  * 定义表单容器组件
  */
-export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
+export const defineFtForm = <Type extends keyof FormTypeMap<any>>(
   setup: (
     props: {},
     ctx: SetupContext<
@@ -109,12 +109,12 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
 ) => {
   const FormComponent = defineComponent(setup, {
     inheritAttrs: false,
-    name: "TfFormContainer",
+    name: "FtFormContainer",
   });
 
   // q: 为什么需要定义 runtimeProps，而非直接使用 attrs
   // a: 1. 因为 attrs 无法处理默认值，缩写等情况
-  //     如：<tf-form hide-footer /> -> hide-footer 不能被自动转化为 <tf-form :hide-footer="true" />
+  //     如：<ft-form hide-footer /> -> hide-footer 不能被自动转化为 <ft-form :hide-footer="true" />
   //    2. attrs 自身不是响应式的数据，无法 watch [ If you need reactivity, use a prop ]
   const runtimeProps: RuntimeProps<any>[] = [
     "cache",
@@ -128,7 +128,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
 
   return defineComponent(
     <FormData extends Record<string, any>>(
-      props: TfFormPropsMap<FormData, Type>,
+      props: FtFormPropsMap<FormData, Type>,
       ctx: SetupContext<
         EmitsOptions,
         SlotsType<FormTypeMap<FormData>[Type]["formSlots"]>
@@ -172,7 +172,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
     },
     {
       props: transferVueArrayPropsToObject(runtimeProps),
-      name: "TfForm",
+      name: "FtForm",
     },
   );
 };
@@ -180,7 +180,7 @@ export const defineTfForm = <Type extends keyof FormTypeMap<any>>(
 /**
  * 定义表单组件
  */
-export function defineFormComponent<T extends TfFormColumnBase<any>>(
+export function defineFormComponent<T extends FtFormColumnBase<any>>(
   setup: (props: CommonFormItemProps<T>, ctx: SetupContext) => () => VNode,
 ) {
   return defineComponent(setup, {

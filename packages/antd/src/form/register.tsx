@@ -1,7 +1,7 @@
 import {
   CommonFormItemProps,
   FormInject,
-  TfFormColumnBase,
+  FtFormColumnBase,
   ValueOf,
 } from "@ftjs/core";
 import type {
@@ -10,28 +10,28 @@ import type {
   ValidatorRule,
 } from "ant-design-vue/es/form/interface";
 import type { Component, MaybeRefOrGetter, VNode } from "vue";
-import input, { TfFormColumnInput } from "./components/input";
-import select, { TfFormColumnSelect } from "./components/select";
-import datePicker, { TfFormColumnDatePicker } from "./components/date-picker";
+import input, { FtFormColumnInput } from "./components/input";
+import select, { FtFormColumnSelect } from "./components/select";
+import datePicker, { FtFormColumnDatePicker } from "./components/date-picker";
 import rangePicker, {
-  TfFormColumnRangePicker,
+  FtFormColumnRangePicker,
 } from "./components/range-picker";
-import radio, { TfFormColumnRadio } from "./components/radio";
-import textarea, { TfFormColumnTextarea } from "./components/textarea";
-import upload, { TfFormColumnUpload } from "./components/upload";
-import cascader, { TfFormColumnCascader } from "./components/cascader";
+import radio, { FtFormColumnRadio } from "./components/radio";
+import textarea, { FtFormColumnTextarea } from "./components/textarea";
+import upload, { FtFormColumnUpload } from "./components/upload";
+import cascader, { FtFormColumnCascader } from "./components/cascader";
 import autoComplete, {
-  TfFormColumnAutoComplete,
+  FtFormColumnAutoComplete,
 } from "./components/auto-complete";
-import checkbox, { TfFormColumnCheckbox } from "./components/checkbox";
+import checkbox, { FtFormColumnCheckbox } from "./components/checkbox";
 import inputNumber, {
-  TfFormColumnInputNumber,
+  FtFormColumnInputNumber,
 } from "./components/input-number";
-import mentions, { TfFormColumnMentions } from "./components/mentions";
-import rate, { TfFormColumnRate } from "./components/rate";
-import slider, { TfFormColumnSlider } from "./components/slider";
-import switchComponent, { TfFormColumnSwitch } from "./components/switch";
-import treeSelect, { TfFormColumnTreeSelect } from "./components/tree-select";
+import mentions, { FtFormColumnMentions } from "./components/mentions";
+import rate, { FtFormColumnRate } from "./components/rate";
+import slider, { FtFormColumnSlider } from "./components/slider";
+import switchComponent, { FtFormColumnSwitch } from "./components/switch";
+import treeSelect, { FtFormColumnTreeSelect } from "./components/tree-select";
 import { FormInstance, FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
@@ -52,7 +52,7 @@ export interface FormExposed<T extends Record<string, any>> {
 }
 
 export interface AntdColumnBase<FormData extends Record<string, any>>
-  extends TfFormColumnBase<FormData> {
+  extends FtFormColumnBase<FormData> {
   /**
    * 校验规则
    */
@@ -71,22 +71,22 @@ export interface RegisterColumnMap<FormData extends Record<string, any>> {
  * 全部的 antd column 集合
  */
 export type FormColumn<FormData extends Record<string, any>> =
-  | TfFormColumnDatePicker<FormData>
-  | TfFormColumnRangePicker<FormData>
-  | TfFormColumnRadio<FormData>
-  | TfFormColumnSelect<FormData>
-  | TfFormColumnTextarea<FormData>
-  | TfFormColumnInput<FormData>
-  | TfFormColumnUpload<FormData>
-  | TfFormColumnCascader<FormData>
-  | TfFormColumnAutoComplete<FormData>
-  | TfFormColumnCheckbox<FormData>
-  | TfFormColumnInputNumber<FormData>
-  | TfFormColumnMentions<FormData>
-  | TfFormColumnRate<FormData>
-  | TfFormColumnSlider<FormData>
-  | TfFormColumnSwitch<FormData>
-  | TfFormColumnTreeSelect<FormData>
+  | FtFormColumnDatePicker<FormData>
+  | FtFormColumnRangePicker<FormData>
+  | FtFormColumnRadio<FormData>
+  | FtFormColumnSelect<FormData>
+  | FtFormColumnTextarea<FormData>
+  | FtFormColumnInput<FormData>
+  | FtFormColumnUpload<FormData>
+  | FtFormColumnCascader<FormData>
+  | FtFormColumnAutoComplete<FormData>
+  | FtFormColumnCheckbox<FormData>
+  | FtFormColumnInputNumber<FormData>
+  | FtFormColumnMentions<FormData>
+  | FtFormColumnRate<FormData>
+  | FtFormColumnSlider<FormData>
+  | FtFormColumnSwitch<FormData>
+  | FtFormColumnTreeSelect<FormData>
   // 外部自定义的部分
   | ValueOf<RegisterColumnMap<FormData>>;
 

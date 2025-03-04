@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnCascader<T extends Record<string, any>>
+export interface FtFormColumnCascader<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 级联选择器
@@ -13,7 +13,7 @@ export interface TfFormColumnCascader<T extends Record<string, any>>
   props?: Refs<CascaderProps>;
 }
 
-export default defineFormComponent<TfFormColumnCascader<any>>(props => {
+export default defineFormComponent<FtFormColumnCascader<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

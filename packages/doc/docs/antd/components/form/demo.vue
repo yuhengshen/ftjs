@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TfForm, TfFormProps } from "@ftjs/antd";
+import { FtForm, FtFormProps } from "@ftjs/antd";
 import { ref } from "vue";
 
 interface FormData {
@@ -8,7 +8,7 @@ interface FormData {
   control: string;
 }
 
-const columns: TfFormProps<FormData>["columns"] = [
+const columns: FtFormProps<FormData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -36,5 +36,5 @@ const formData = ref({} as FormData);
 </script>
 
 <template>
-  <tf-form v-model:formData="formData" :columns="columns" />
+  <ft-form v-model:formData="formData" :columns="columns" />
 </template>

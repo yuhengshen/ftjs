@@ -1,10 +1,10 @@
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
 import {
-  defineTfForm,
+  defineFtForm,
   getField,
   set,
   useFormInject,
-  TfFormPropsMap,
+  FtFormPropsMap,
 } from "@ftjs/core";
 import {
   FormProps,
@@ -56,7 +56,7 @@ const useExposed = (formRef: Ref<FormInstance | undefined>) => {
   });
 };
 
-export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
+export const FtForm = /*#__PURE__*/ defineFtForm<"antd">(
   (_, ctx) => {
     const {
       form,
@@ -138,7 +138,7 @@ export const TfForm = /*#__PURE__*/ defineTfForm<"antd">(
   ],
 );
 
-export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
+export const FtFormSearch = /*#__PURE__*/ defineFtForm<"antdSearch">(
   (_, ctx) => {
     const {
       form,
@@ -170,7 +170,7 @@ export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
         wrapperCol: {
           style: {
             // 这样定义宽度，可以方便后续修改
-            width: `var(--tf-form-control-width, 200px)`,
+            width: `var(--ft-form-control-width, 200px)`,
           },
         },
         ..._formProps.value,
@@ -338,7 +338,7 @@ export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
           {ctx.slots.formContent()}
           <FormItem
             style={{
-              "--tf-form-control-width": "220px",
+              "--ft-form-control-width": "220px",
             }}
           >
             <div style="display: flex; gap: 10px;">
@@ -368,10 +368,10 @@ export const TfFormSearch = /*#__PURE__*/ defineTfForm<"antdSearch">(
   ["exposed", "onUpdate:exposed"],
 );
 
-export type TfFormProps<FormData extends Record<string, any>> = TfFormPropsMap<
+export type FtFormProps<FormData extends Record<string, any>> = FtFormPropsMap<
   FormData,
   "antd"
 >;
 
-export type TfFormSearchProps<FormData extends Record<string, any>> =
-  TfFormPropsMap<FormData, "antdSearch">;
+export type FtFormSearchProps<FormData extends Record<string, any>> =
+  FtFormPropsMap<FormData, "antdSearch">;

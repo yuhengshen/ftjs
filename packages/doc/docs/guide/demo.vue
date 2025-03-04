@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { TfForm, TfFormProps } from "@ftjs/antd";
+import { FtForm, FtFormProps } from "@ftjs/antd";
 
 interface FormData {
   obj: {
@@ -25,7 +25,7 @@ setTimeout(() => {
   controlPlaceholder.value = "你可以选择[显示被控字段]";
 }, 5000);
 
-const columns: TfFormProps<FormData>["columns"] = [
+const columns: FtFormProps<FormData>["columns"] = [
   {
     // 会提示已注册的类型，props类型也会根据 type 进行推导
     type: "input",
@@ -94,5 +94,5 @@ const onSubmit = async (data: FormData) => {
 </script>
 
 <template>
-  <TfForm :columns="columns" @submit="onSubmit" />
+  <FtForm :columns="columns" @submit="onSubmit" />
 </template>

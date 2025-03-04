@@ -4,7 +4,7 @@
 
 ## 简介
 
-@ftjs/antd 是 TF 生态系统的一部分，它基于 @ftjs/core 核心库，为 Ant Design Vue 组件库提供了适配实现。通过 @ftjs/antd，您可以使用 TF 的声明式 API 来快速构建基于 Ant Design Vue 的表单和表格，同时保持完整的类型安全和灵活的扩展能力。
+@ftjs/antd 是 ftjs 生态系统的一部分，它基于 @ftjs/core 核心库，为 Ant Design Vue 组件库提供了适配实现。通过 @ftjs/antd，您可以使用 ftjs 的声明式 API 来快速构建基于 Ant Design Vue 的表单和表格，同时保持完整的类型安全和灵活的扩展能力。
 
 ## 特性
 
@@ -26,10 +26,10 @@ pnpm i @ftjs/antd
 
 | 组件名       | 说明                             | 文档链接                                      |
 | ------------ | -------------------------------- | --------------------------------------------- |
-| TfForm       | 基础表单组件                     | [查看文档](./components/form/index.md)        |
-| TfFormSearch | 搜索表单组件                     | [查看文档](./components/form-search/index.md) |
-| TfTable      | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table.md)             |
-| TfVxeTable   | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table.md)         |
+| FtForm       | 基础表单组件                     | [查看文档](./components/form/index.md)        |
+| FtFormSearch | 搜索表单组件                     | [查看文档](./components/form-search/index.md) |
+| FtTable      | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table.md)             |
+| FtVxeTable   | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table.md)         |
 
 ## 示例
 

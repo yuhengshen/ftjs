@@ -67,13 +67,13 @@
 
 ## 列配置
 
-表格列配置继承自 `TfTableColumn`，包含以下核心属性：
+表格列配置继承自 `FtTableColumn`，包含以下核心属性：
 
 | 属性名 | 说明     | 类型                        | 默认值 |
 | ------ | -------- | --------------------------- | ------ |
 | field  | 列字段名 | `RecordPath<TableData>`     | -      |
 | title  | 列标题   | `string`                    | -      |
-| search | 搜索配置 | `TfFormColumn` 由适配器定义 | -      |
+| search | 搜索配置 | `FtFormColumn` 由适配器定义 | -      |
 
 ### 搜索配置
 

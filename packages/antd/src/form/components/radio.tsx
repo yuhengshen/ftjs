@@ -5,7 +5,7 @@ import { computed, toValue, unref } from "vue";
 import { RadioGroupChildOption } from "ant-design-vue/es/radio/Group";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnRadio<T extends Record<string, any>>
+export interface FtFormColumnRadio<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 单选框
@@ -14,7 +14,7 @@ export interface TfFormColumnRadio<T extends Record<string, any>>
   props?: Refs<RadioGroupProps>;
 }
 
-export default defineFormComponent<TfFormColumnRadio<any>>(props => {
+export default defineFormComponent<FtFormColumnRadio<any>>(props => {
   const { valueComputed, isView } = useFormItem({
     props,
   });

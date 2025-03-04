@@ -8,7 +8,7 @@
 如果需要定制逻辑，可以 clone 对应的代码，然后根据需要进行修改。
 :::
 
-- [@ftjs/antd](https://github.com/yuhengshen/tf/tree/main/packages/@ftjs/antd)
+- [@ftjs/antd](https://github.com/yuhengshen/ftjs/tree/main/packages/antd)
 
 ## 适配器概述
 
@@ -51,13 +51,13 @@ import {
   Refs,
   unrefs,
   useFormItem,
-  TfFormColumnBase,
+  FtFormColumnBase,
 } from "@ftjs/core";
 import { FormItem, Input, InputProps } from "ui-library-vue";
 import { toValue } from "vue";
 
 export interface FormColumnInput<T extends Record<string, any>>
-  extends TfFormColumnBase<T> {
+  extends FtFormColumnBase<T> {
   /**
    * 输入框
    */
@@ -139,16 +139,16 @@ declare module "@ftjs/core" {
 一般，Form 表单至少要两种形态，一种用来提交数据，一种用来搜索
 :::
 
-使用 `defineTfForm` 函数定义表单容器：
+使用 `defineFtForm` 函数定义表单容器：
 
 ```typescript
 // src/form/define-form.tsx
-import { defineTfForm, useFormInject } from "@ftjs/core";
+import { defineFtForm, useFormInject } from "@ftjs/core";
 import { Form, Button } from "ui-library-vue";
 import { computed, ref } from "vue";
 import { formRenderMap } from "./register";
 
-export const TfForm = defineTfForm<"uiLibrary">(
+export const FtForm = defineFtForm<"uiLibrary">(
   (_, ctx) => {
     const {
       // ...从 inject 中获取相关属性和方法
@@ -163,26 +163,26 @@ export const TfForm = defineTfForm<"uiLibrary">(
     // extendedProps 需要在这里进行声明，以保证运行时能拿到对应的 props
     // 这里的类型需要和 FormTypeMap 中定义的 extendedProps 类型一致，会进行 ts 类型提醒
     "width",
-    ["hideFooter", { type: Boolean }], // 多定义一些信息，如类型为布尔值，这样可以使用模板布尔值简写 <tf-form hide-footer />
+    ["hideFooter", { type: Boolean }], // 多定义一些信息，如类型为布尔值，这样可以使用模板布尔值简写 <ft-form hide-footer />
   ],
 );
 
-export const TfFormSearch = defineTfForm<"uiLibrarySearch">(// 与tf-form类型，但样式、extendedProps 往往有些差别...)
+export const FtFormSearch = defineFtForm<"uiLibrarySearch">(// 与ft-form类型，但样式、extendedProps 往往有些差别...)
 ```
 
 ::: tip
 define-table 的实现和 define-form 类似，这里就不赘述了
 :::
 
-4. 通过 TfFromPropsMap 和 namespace 来导出组件类型，给外部使用
+4. 通过 FtFromPropsMap 和 namespace 来导出组件类型，给外部使用
 
 ```typescript
-export type TfFormProps<FormData extends Record<string, any>> = TfFormPropsMap<
+export type FtFormProps<FormData extends Record<string, any>> = FtFormPropsMap<
   FormData,
   "uiLibrary"
 >;
-export type TfFormSearchProps<FormData extends Record<string, any>> =
-  TfFormPropsMap<FormData, "uiLibrarySearch">;
+export type FtFormSearchProps<FormData extends Record<string, any>> =
+  FtFormPropsMap<FormData, "uiLibrarySearch">;
 ```
 
 ## 最佳实践

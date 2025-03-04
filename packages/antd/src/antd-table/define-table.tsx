@@ -1,18 +1,18 @@
 import {
   cloneDeep,
-  defineTfTable,
+  defineFtTable,
   get,
   set,
   useTableInject,
   ValueOf,
 } from "@ftjs/core";
-import type { TfTableColumn, TableTypeMap, TfTablePropsMap } from "@ftjs/core";
+import type { FtTableColumn, TableTypeMap, FtTablePropsMap } from "@ftjs/core";
 import {
   Table,
   TableColumnType,
   TableProps as AntTableProps,
 } from "ant-design-vue";
-import { TfFormSearch } from "../form/define-form";
+import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
 import {
   computed,
@@ -92,7 +92,7 @@ interface TableExposed<
  * 列定义
  */
 interface TableColumn<TableData extends Record<string, any>>
-  extends TfTableColumn<TableData>,
+  extends FtTableColumn<TableData>,
     Omit<TableColumnType<TableData>, "title" | "dataIndex"> {
   /**
    * 行内编辑
@@ -172,7 +172,7 @@ interface Pagination {
   pageSize: number;
 }
 
-export const TfTable = defineTfTable<"antd">(
+export const FtTable = defineFtTable<"antd">(
   (_p, ctx) => {
     const {
       formColumns,
@@ -384,7 +384,7 @@ export const TfTable = defineTfTable<"antd">(
     return () => (
       <div ref={containerRef} style={containerStyle}>
         {!hideSearch.value && (
-          <TfFormSearch
+          <FtFormSearch
             v-model:exposed={formExposed.value}
             cache={cache.value}
             columns={formColumns.value}
@@ -435,10 +435,10 @@ export const TfTable = defineTfTable<"antd">(
   ],
 );
 
-export type TfTableProps<
+export type FtTableProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any> = TableData,
-> = TfTablePropsMap<TableData, SearchData, "antd">;
+> = FtTablePropsMap<TableData, SearchData, "antd">;
 
 function useEdit<T extends Record<string, any>>(
   tableData: Ref<T[] | undefined>,
@@ -483,7 +483,7 @@ function useEdit<T extends Record<string, any>>(
         if (component) {
           return h(component, {
             ...edit.props,
-            class: "tf-table-edit",
+            class: "ft-table-edit",
             value: get(scopeProps.record, field),
             "onUpdate:value": (value: any) => {
               set(scopeProps.record, field, value);

@@ -2,19 +2,19 @@
 layout: home
 
 hero:
-  name: TF Components
+  name: ftjs
   text: Table Form 配置化
   tagline: 简单、强大、高效、灵活的表格、表单组件库
   image:
     src: /logo.png
-    alt: TF Components
+    alt: ftjs
   actions:
     - theme: brand
       text: 快速开始
       link: /guide/getting-started
     - theme: alt
       text: 在 GitHub 上查看
-      link: https://github.com/yuhengshen/tf
+      link: https://github.com/yuhengshen/ftjs
 
 features:
   - icon: 🎯
@@ -33,5 +33,5 @@ features:
   - icon: 🛠️
     title: 适配器
     details: Ant-design-vue 适配器。
-    link: /antd/introduction
+    link: /antd/index
 ---

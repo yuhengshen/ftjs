@@ -18,7 +18,7 @@ type Watch<FormData extends Record<string, any>> =
 /**
  * 实现方需要继承这个interface
  */
-export interface TfFormColumnBase<FormData extends Record<string, any>> {
+export interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *

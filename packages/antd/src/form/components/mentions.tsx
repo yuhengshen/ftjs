@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnMentions<T extends Record<string, any>>
+export interface FtFormColumnMentions<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 提及
@@ -13,7 +13,7 @@ export interface TfFormColumnMentions<T extends Record<string, any>>
   props?: Refs<MentionsProps>;
 }
 
-export default defineFormComponent<TfFormColumnMentions<any>>(props => {
+export default defineFormComponent<FtFormColumnMentions<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

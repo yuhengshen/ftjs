@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnCheckbox<T extends Record<string, any>>
+export interface FtFormColumnCheckbox<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 复选框
@@ -13,7 +13,7 @@ export interface TfFormColumnCheckbox<T extends Record<string, any>>
   props?: Refs<CheckboxGroupProps>;
 }
 
-export default defineFormComponent<TfFormColumnCheckbox<any>>(props => {
+export default defineFormComponent<FtFormColumnCheckbox<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

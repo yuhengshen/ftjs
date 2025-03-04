@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnSwitch<T extends Record<string, any>>
+export interface FtFormColumnSwitch<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 开关
@@ -13,7 +13,7 @@ export interface TfFormColumnSwitch<T extends Record<string, any>>
   props?: Refs<SwitchProps>;
 }
 
-export default defineFormComponent<TfFormColumnSwitch<any>>(props => {
+export default defineFormComponent<FtFormColumnSwitch<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

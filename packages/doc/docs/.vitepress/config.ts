@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "TF Components",
+  title: "ftjs",
   description: "基于 Vue 3 的表格表单处理解决方案",
   lang: "zh-CN",
   lastUpdated: true,
@@ -62,8 +62,8 @@ export default defineConfig({
         {
           text: "表单",
           items: [
-            { text: "TfForm", link: "/antd/components/form/" },
-            { text: "TfSearchForm", link: "/antd/components/form-search/" },
+            { text: "FtForm", link: "/antd/components/form/" },
+            { text: "FtSearchForm", link: "/antd/components/form-search/" },
           ],
         },
         {
@@ -76,7 +76,9 @@ export default defineConfig({
       ],
     },
 
-    socialLinks: [{ icon: "github", link: "https://github.com/yuhengshen/tf" }],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/yuhengshen/ftjs" },
+    ],
 
     footer: {
       message: "Released under the MIT License.",
@@ -93,7 +95,7 @@ export default defineConfig({
     editLink: {
       text: "在 GitHub 上编辑此页",
       pattern:
-        "https://github.com/yuhengshen/tf/edit/main/packages/doc/docs/:path",
+        "https://github.com/yuhengshen/ftjs/edit/main/packages/doc/docs/:path",
     },
     outline: {
       label: "本页内容",

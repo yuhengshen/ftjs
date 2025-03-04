@@ -1,10 +1,10 @@
 import { defineComponent, EmitsOptions, h, SetupContext, SlotsType } from "vue";
-import { TfTableColumn } from "./columns";
+import { FtTableColumn } from "./columns";
 import { useTable } from "./use-table";
 import {
   getPropsKeys,
   RuntimeProps,
-  TfFormColumnBase,
+  FtFormColumnBase,
   transferVueArrayPropsToObject,
 } from "../form";
 import { TupleKeys } from "../type-helper";
@@ -14,8 +14,8 @@ export interface TableTypeMap<
 > {
   default: {
     tableSlots: {};
-    tableColumn: TfTableColumn<TableData>;
-    formColumn: TfFormColumnBase<SearchData>;
+    tableColumn: FtTableColumn<TableData>;
+    formColumn: FtFormColumnBase<SearchData>;
     extendedProps: {};
     internalFormProps: {};
     internalTableProps: {};
@@ -33,7 +33,7 @@ export type TableColumn<
   search?: TableTypeMap<TableData, SearchData>[Type]["formColumn"];
 };
 
-export interface TfTableIntrinsicProps<
+export interface FtTableIntrinsicProps<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any>,
   type extends keyof TableTypeMap<TableData, SearchData>,
@@ -86,14 +86,14 @@ export interface TfTableIntrinsicProps<
   keyField?: string;
 }
 
-export type TfTablePropsMap<
+export type FtTablePropsMap<
   TableData extends Record<string, any>,
   SearchData extends Record<string, any>,
   Type extends keyof TableTypeMap<TableData, SearchData>,
-> = TfTableIntrinsicProps<TableData, SearchData, Type> &
+> = FtTableIntrinsicProps<TableData, SearchData, Type> &
   TableTypeMap<TableData, SearchData>[Type]["extendedProps"];
 
-export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
+export function defineFtTable<Type extends keyof TableTypeMap<any, any>>(
   setup: (
     props: {},
     ctx: SetupContext<
@@ -109,7 +109,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
 ) {
   const TableComponent = defineComponent(setup, {
     inheritAttrs: false,
-    name: "TfTableContainer",
+    name: "FtTableContainer",
   });
 
   const runtimeProps: RuntimeProps<any[]>[] = [
@@ -131,7 +131,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
       TableData extends Record<string, any>,
       SearchData extends Record<string, any> = TableData,
     >(
-      props: TfTablePropsMap<TableData, SearchData, Type>,
+      props: FtTablePropsMap<TableData, SearchData, Type>,
       ctx: SetupContext<
         EmitsOptions,
         SlotsType<TableTypeMap<TableData, SearchData>[Type]["tableSlots"]>
@@ -142,7 +142,7 @@ export function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
     },
     {
       props: transferVueArrayPropsToObject(runtimeProps),
-      name: "TfTable",
+      name: "FtTable",
     },
   );
 }

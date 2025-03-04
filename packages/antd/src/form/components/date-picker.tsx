@@ -3,7 +3,7 @@ import { FormItem, DatePicker, DatePickerProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
-export interface TfFormColumnDatePicker<T extends Record<string, any>>
+export interface FtFormColumnDatePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 日期选择器
@@ -12,7 +12,7 @@ export interface TfFormColumnDatePicker<T extends Record<string, any>>
   props?: Refs<DatePickerProps>;
 }
 
-export default defineFormComponent<TfFormColumnDatePicker<any>>(props => {
+export default defineFormComponent<FtFormColumnDatePicker<any>>(props => {
   const { valueComputed, isView } = useFormItem<any, "antd">({ props });
 
   const formItemProps = useFormItemProps(props.column);

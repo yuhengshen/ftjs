@@ -20,8 +20,8 @@ import {
   getStorage,
   setStorage,
 } from "../utils";
-import { FormTypeMap, TfFormIntrinsicProps } from "./define-component";
-import { TfFormColumnBase } from "./columns";
+import { FormTypeMap, FtFormIntrinsicProps } from "./define-component";
+import { FtFormColumnBase } from "./columns";
 import { RecordPath, SplitEventKeys } from "../type-helper";
 import { ExposeWithComment } from "./types";
 
@@ -53,10 +53,10 @@ const provideFormKey = Symbol("@ftjs/core-form-provide");
  * 缓存展示项
  */
 const useColumnsChecked = <FormData extends Record<string, any>>(
-  columns: ComputedRef<TfFormColumnBase<FormData>[]>,
+  columns: ComputedRef<FtFormColumnBase<FormData>[]>,
   cache?: string,
 ) => {
-  const storageKey = `tf-form-columns-checked-obj`;
+  const storageKey = `ftjs-form-columns-checked-obj`;
 
   const columnsV = computed(() => {
     const entries = columns.value.map(e => {
@@ -107,10 +107,10 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
  * 缓存排序项
  */
 const useColumnsSorted = <FormData extends Record<string, any>>(
-  columns: ComputedRef<TfFormColumnBase<FormData>[]>,
+  columns: ComputedRef<FtFormColumnBase<FormData>[]>,
   cache?: string,
 ) => {
-  const storageKey = `tf-form-columns-sorted-obj`;
+  const storageKey = `tfjs-form-columns-sorted-obj`;
 
   const columnsV = computed(() => {
     const entries = columns.value.map((e, idx) => {
@@ -163,7 +163,7 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
  * 结构提取 columns 的 field 和 value
  */
 const getFieldsAndValues = <T extends Record<string, any>>(
-  column: TfFormColumnBase<T>,
+  column: FtFormColumnBase<T>,
 ) => {
   const fields = column.fields || [column.field!];
   const values = column.fields ? column.value || [] : [column.value];
@@ -174,7 +174,7 @@ export const useForm = <
   FormData extends Record<string, any>,
   Type extends keyof FormTypeMap<FormData>,
 >(
-  props: TfFormIntrinsicProps<FormData, Type> &
+  props: FtFormIntrinsicProps<FormData, Type> &
     FormTypeMap<FormData>[Type]["extendedProps"] & {
       columns: FormTypeMap<FormData>[Type]["columns"][];
     },

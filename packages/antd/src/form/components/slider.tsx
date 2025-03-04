@@ -4,7 +4,7 @@ import { useFormItemProps } from "../composables";
 import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnSlider<T extends Record<string, any>>
+export interface FtFormColumnSlider<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 滑块
@@ -13,7 +13,7 @@ export interface TfFormColumnSlider<T extends Record<string, any>>
   props?: Refs<SliderProps>;
 }
 
-export default defineFormComponent<TfFormColumnSlider<any>>(props => {
+export default defineFormComponent<FtFormColumnSlider<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

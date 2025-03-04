@@ -1,14 +1,14 @@
-# TfVxeTable 表格组件
+# FtVxeTable 表格组件
 
-> TfVxeTable 是 @ftjs/antd 提供的基于 VXE-Table 实现的表格组件，提供了更强大的表格功能和更高的性能，特别适合大数据量的表格展示和复杂的表格操作。
+> FtVxeTable 是 @ftjs/antd 提供的基于 VXE-Table 实现的表格组件，提供了更强大的表格功能和更高的性能，特别适合大数据量的表格展示和复杂的表格操作。
 
 ## 基本用法
 
-TfVxeTable 组件通过 `columns` 属性定义表格列，通过 `tableData` 属性绑定表格数据，通过 `request` 属性定义数据请求方法。
+FtVxeTable 组件通过 `columns` 属性定义表格列，通过 `tableData` 属性绑定表格数据，通过 `request` 属性定义数据请求方法。
 
 ```vue
 <script setup lang="ts">
-import { TfVxeTable } from "@ftjs/antd";
+import { FtVxeTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -60,13 +60,13 @@ const request = async (
 </script>
 
 <template>
-  <tf-vxe-table :columns="columns" :request="request" />
+  <ft-vxe-table :columns="columns" :request="request" />
 </template>
 ```
 
 ## 组件属性
 
-TfVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table 特有的属性：
+FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table 特有的属性：
 
 | 属性名             | 说明                          | 类型                                                                      | 默认值  |
 | ------------------ | ----------------------------- | ------------------------------------------------------------------------- | ------- |
@@ -83,11 +83,11 @@ TfVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table �
 | internalFormProps  | 搜索表单的原生属性            | `FormProps`                                                               | -       |
 | exposed            | 表格暴露的方法                | `VxeTableExposed<TableData, SearchData>`                                  | -       |
 
-## 与 TfTable 的差异
+## 与 FtTable 的差异
 
-TfVxeTable 组件与 TfTable 组件相比，有以下主要差异：
+FtVxeTable 组件与 FtTable 组件相比，有以下主要差异：
 
-1. **底层实现**：TfVxeTable 基于 VXE-Table 实现，而 TfTable 基于 Ant Design Vue 的 Table 组件实现
+1. **底层实现**：FtVxeTable 基于 VXE-Table 实现，而 FtTable 基于 Ant Design Vue 的 Table 组件实现
 2. **性能优势**：VXE-Table 在大数据量场景下有更好的性能表现
 3. **功能特性**：
    - 支持虚拟滚动，适合大数据量展示
@@ -98,7 +98,7 @@ TfVxeTable 组件与 TfTable 组件相比，有以下主要差异：
 
 ## 表格列配置
 
-TfVxeTable 的列配置继承了 VXE-Table 的列配置，并扩展了搜索相关的配置：
+FtVxeTable 的列配置继承了 VXE-Table 的列配置，并扩展了搜索相关的配置：
 
 | 属性名   | 说明       | 类型                                 | 默认值   |
 | -------- | ---------- | ------------------------------------ | -------- |
@@ -142,7 +142,7 @@ TfVxeTable 的列配置继承了 VXE-Table 的列配置，并扩展了搜索相�
 
 ```vue
 <script setup lang="ts">
-import { TfVxeTable } from "@ftjs/antd";
+import { FtVxeTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -170,7 +170,7 @@ const tableData = Array.from({ length: 10000 }).map((_, index) => ({
 </script>
 
 <template>
-  <tf-vxe-table
+  <ft-vxe-table
     :columns="columns"
     :tableData="tableData"
     :internalTableProps="{
@@ -187,7 +187,7 @@ const tableData = Array.from({ length: 10000 }).map((_, index) => ({
 
 ```vue
 <script setup lang="ts">
-import { TfVxeTable } from "@ftjs/antd";
+import { FtVxeTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -223,7 +223,7 @@ const handleCellChange = (row: TableData, field: string, value: any) => {
 </script>
 
 <template>
-  <tf-vxe-table
+  <ft-vxe-table
     :columns="columns"
     :tableData="tableData"
     :internalTableProps="{
@@ -241,7 +241,7 @@ const handleCellChange = (row: TableData, field: string, value: any) => {
 
 ```vue
 <script setup lang="ts">
-import { TfVxeTable } from "@ftjs/antd";
+import { FtVxeTable } from "@ftjs/antd";
 import { ref } from "vue";
 
 interface TableData {
@@ -279,7 +279,7 @@ const exportTable = () => {
 <template>
   <div>
     <a-button @click="exportTable">导出数据</a-button>
-    <tf-vxe-table
+    <ft-vxe-table
       v-model:exposed="tableExposed"
       :columns="columns"
       :tableData="tableData"
@@ -292,7 +292,7 @@ const exportTable = () => {
 
 ```vue
 <script setup lang="ts">
-import { TfVxeTable } from "@ftjs/antd";
+import { FtVxeTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -323,7 +323,7 @@ const tableData = [
 </script>
 
 <template>
-  <tf-vxe-table
+  <ft-vxe-table
     :columns="columns"
     :tableData="tableData"
     :internalTableProps="{

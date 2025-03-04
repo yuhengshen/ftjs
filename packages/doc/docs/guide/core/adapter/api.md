@@ -13,7 +13,7 @@
 用于定义表单组件。
 
 ```typescript
-function defineFormComponent<T extends TfFormColumnBase<any>>(
+function defineFormComponent<T extends FtFormColumnBase<any>>(
   setup: (props: CommonFormItemProps<T>, _: SetupContext) => () => VNode,
 ): Component;
 ```
@@ -26,12 +26,12 @@ function defineFormComponent<T extends TfFormColumnBase<any>>(
 
 - Vue 组件
 
-#### `defineTfForm`
+#### `defineFtForm`
 
 用于定义表单容器组件。
 
 ```typescript
-function defineTfForm<Type extends keyof FormTypeMap<any>>(
+function defineFtForm<Type extends keyof FormTypeMap<any>>(
   setup: (props: {}, ctx: SetupContext) => any,
   renderMap: Map<string, Component>,
   runtimeProps: RuntimeProps<any>[],
@@ -79,12 +79,12 @@ const { form, columns, onSubmit, getFormData, resetToDefault } = useFormInject<
 
 ### 表格相关 API
 
-#### `defineTfTable`
+#### `defineFtTable`
 
 用于定义表格容器组件。
 
 ```typescript
-function defineTfTable<Type extends keyof TableTypeMap<any, any>>(
+function defineFtTable<Type extends keyof TableTypeMap<any, any>>(
   setup: (props: {}, ctx: SetupContext) => any,
   runtimeProps: RuntimeProps<any>[],
 ): Component;
@@ -152,18 +152,18 @@ interface FormTypeMap<_FormData extends Record<string, any>> {
     formSlots: {};
     extendedProps: {};
     internalFormProps: {};
-    columns: TfFormColumnBase<any>;
+    columns: FtFormColumnBase<any>;
   };
   // 适配器可以扩展此接口
 }
 ```
 
-#### `TfFormColumnBase`
+#### `FtFormColumnBase`
 
 表单列的基础类型定义。
 
 ```typescript
-export interface TfFormColumnBase<FormData extends Record<string, any>> {
+export interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *
@@ -260,7 +260,7 @@ export interface TfFormColumnBase<FormData extends Record<string, any>> {
 表单项组件的通用属性。
 
 ```typescript
-interface CommonFormItemProps<T extends TfFormColumnBase<any>> {
+interface CommonFormItemProps<T extends FtFormColumnBase<any>> {
   /** column 定义 */
   column: T;
   /** 是否查看模式 */
@@ -281,8 +281,8 @@ interface TableTypeMap<
 > {
   default: {
     tableSlots: {};
-    tableColumn: TfTableColumn<TableData>;
-    formColumn: TfFormColumnBase<SearchData>;
+    tableColumn: FtTableColumn<TableData>;
+    formColumn: FtFormColumnBase<SearchData>;
     extendedProps: {};
     internalFormProps: {};
     internalTableProps: {};
@@ -291,12 +291,12 @@ interface TableTypeMap<
 }
 ```
 
-#### `TfTableColumn`
+#### `FtTableColumn`
 
 表格列的基础类型定义。
 
 ```typescript
-interface TfTableColumn<TableData extends Record<string, any>> {
+interface FtTableColumn<TableData extends Record<string, any>> {
   /**
    * 列标题
    */

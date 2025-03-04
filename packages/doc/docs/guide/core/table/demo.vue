@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TfVxeTableProps, TfVxeTable } from "@ftjs/antd";
+import { FtVxeTableProps, FtVxeTable } from "@ftjs/antd";
 import { ref } from "vue";
 
 interface TableData {
@@ -20,7 +20,7 @@ interface SearchData {
   gender?: number;
 }
 
-const columns: TfVxeTableProps<TableData, SearchData>["columns"] = [
+const columns: FtVxeTableProps<TableData, SearchData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -62,7 +62,7 @@ const columns: TfVxeTableProps<TableData, SearchData>["columns"] = [
   },
 ];
 
-const searchColumns: TfVxeTableProps<TableData, SearchData>["searchColumns"] = [
+const searchColumns: FtVxeTableProps<TableData, SearchData>["searchColumns"] = [
   {
     field: "gender",
     title: "性别",
@@ -109,7 +109,7 @@ const loading = ref(false);
     style="height: 600px; overflow: auto; display: flex; flex-direction: column"
   >
     <!-- table自动占据 flex 剩余空间 -->
-    <TfVxeTable
+    <FtVxeTable
       v-model:tableData="tableData"
       :columns
       :loading

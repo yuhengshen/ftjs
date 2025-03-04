@@ -3,7 +3,7 @@ import { FormItem, Rate, RateProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { AntdColumnBase } from "../register";
 
-export interface TfFormColumnRate<T extends Record<string, any>>
+export interface FtFormColumnRate<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
    * 评分
@@ -12,7 +12,7 @@ export interface TfFormColumnRate<T extends Record<string, any>>
   props?: Refs<RateProps>;
 }
 
-export default defineFormComponent<TfFormColumnRate<any>>(props => {
+export default defineFormComponent<FtFormColumnRate<any>>(props => {
   const { valueComputed, isView } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

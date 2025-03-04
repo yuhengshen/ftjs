@@ -1,14 +1,14 @@
-# TfTable 表格组件
+# FtTable 表格组件
 
-> TfTable 是 @ftjs/antd 提供的表格组件，基于 Ant Design Vue 的 Table 组件实现，提供了声明式的表格定义和数据处理能力，并集成了搜索表单功能。
+> FtTable 是 @ftjs/antd 提供的表格组件，基于 Ant Design Vue 的 Table 组件实现，提供了声明式的表格定义和数据处理能力，并集成了搜索表单功能。
 
 ## 基本用法
 
-TfTable 组件通过 `columns` 属性定义表格列，通过 `tableData` 属性绑定表格数据，通过 `request` 属性定义数据请求方法。
+FtTable 组件通过 `columns` 属性定义表格列，通过 `tableData` 属性绑定表格数据，通过 `request` 属性定义数据请求方法。
 
 ```vue
 <script setup lang="ts">
-import { TfTable } from "@ftjs/antd";
+import { FtTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -60,13 +60,13 @@ const request = async (
 </script>
 
 <template>
-  <tf-table :columns="columns" :request="request" />
+  <ft-table :columns="columns" :request="request" />
 </template>
 ```
 
 ## 组件属性
 
-TfTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design Vue 特有的属性：
+FtTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design Vue 特有的属性：
 
 | 属性名             | 说明                                | 类型                                                                      | 默认值  |
 | ------------------ | ----------------------------------- | ------------------------------------------------------------------------- | ------- |
@@ -97,7 +97,7 @@ TfTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design Vue
 
 ## 表格列配置
 
-TfTable 的列配置继承了 Ant Design Vue 的 TableColumnType，并扩展了搜索相关的配置：
+FtTable 的列配置继承了 Ant Design Vue 的 TableColumnType，并扩展了搜索相关的配置：
 
 | 属性名  | 说明       | 类型                                | 默认值   |
 | ------- | ---------- | ----------------------------------- | -------- |
@@ -140,7 +140,7 @@ TfTable 的列配置继承了 Ant Design Vue 的 TableColumnType，并扩展了�
 
 ```vue
 <script setup lang="ts">
-import { TfTable } from "@ftjs/antd";
+import { FtTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -203,7 +203,7 @@ const tableData = [
 </script>
 
 <template>
-  <tf-table :columns="columns" :tableData="tableData" />
+  <ft-table :columns="columns" :tableData="tableData" />
 </template>
 ```
 
@@ -211,7 +211,7 @@ const tableData = [
 
 ```vue
 <script setup lang="ts">
-import { TfTable } from "@ftjs/antd";
+import { FtTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -259,7 +259,7 @@ const tableData = [
 </script>
 
 <template>
-  <tf-table :columns="columns" :tableData="tableData" />
+  <ft-table :columns="columns" :tableData="tableData" />
 </template>
 ```
 
@@ -267,7 +267,7 @@ const tableData = [
 
 ```vue
 <script setup lang="ts">
-import { TfTable } from "@ftjs/antd";
+import { FtTable } from "@ftjs/antd";
 
 interface TableData {
   id: string;
@@ -297,7 +297,7 @@ const handleSelectionChange = (selectedRows: TableData[]) => {
 </script>
 
 <template>
-  <tf-table
+  <ft-table
     :columns="columns"
     :tableData="tableData"
     :internalTableProps="{

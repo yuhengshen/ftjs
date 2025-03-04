@@ -1,12 +1,12 @@
-# tf
+# ftjs
 
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/core?label=@ftjs/core)
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/antd?label=@ftjs/antd)
-![GitHub License](https://img.shields.io/github/license/yuhengshen/tf)
+![GitHub License](https://img.shields.io/github/license/yuhengshen/ftjs)
 
 ---
 
-tf 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件库。
+ftjs 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件库。
 
 ## 特性
 
@@ -24,11 +24,11 @@ tf 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件库�
 
 ## 文档
 
-请在 [tf-docs.yhs.ink](https://tf-docs.yhs.ink) 查看。
+请在 [ftjs-docs.yhs.ink](https://ftjs-docs.yhs.ink) 查看。
 
 ## 变更记录
 
-请参考 [Release](https://github.com/yuhengshen/tf/releases)。
+请参考 [Release](https://github.com/yuhengshen/ftjs/releases)。
 
 ## 许可证
 

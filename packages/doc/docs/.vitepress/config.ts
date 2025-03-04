@@ -1,6 +1,9 @@
 import { defineConfig } from "vitepress";
-
+import vueJsx from "@vitejs/plugin-vue-jsx";
 export default defineConfig({
+  vite: {
+    plugins: [vueJsx()],
+  },
   title: "ftjs",
   description: "基于 Vue 3 的表格表单处理解决方案",
   lang: "zh-CN",
@@ -69,8 +72,8 @@ export default defineConfig({
         {
           text: "表格",
           items: [
-            { text: "Table", link: "/antd/components/table" },
-            { text: "VxeTable", link: "/antd/components/vxe-table" },
+            { text: "Table", link: "/antd/components/table/" },
+            { text: "VxeTable", link: "/antd/components/vxe-table/" },
           ],
         },
       ],

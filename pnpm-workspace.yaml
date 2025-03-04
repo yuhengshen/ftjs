@@ -23,7 +23,7 @@ catalog:
   "@vue/test-utils": ^2.4.6
   happy-dom: ^17.0.2
   prettier: ^3.5.0
-  vxe-pc-ui: 4.3.95
-  vxe-table: 4.11.10
+  vxe-pc-ui: 4.3.99
+  vxe-table: 4.11.15
   xe-utils: 3.5.14
   vue-component-type-helpers: ^2.2.0

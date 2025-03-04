@@ -11,7 +11,7 @@ import {
 import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
 import { computed, CSSProperties, h, onMounted, ref, watchEffect } from "vue";
-import { Pagination, Spin } from "ant-design-vue";
+import { Pagination, Spin, Divider } from "ant-design-vue";
 import { Edit, EditMap, editMap } from "../antd-table/column-edit";
 
 declare module "@ftjs/core" {
@@ -131,11 +131,6 @@ interface VxeExtendedProps<
    */
   columnConfig?: VxeGridProps<TableData>["columnConfig"];
   /**
-   * 是否隐藏搜索
-   * @default false
-   */
-  hideSearch?: boolean;
-  /**
    * 是否隐藏分页
    * @default false
    */
@@ -171,7 +166,6 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
       initSearch,
       fitFlexHeight,
       minHeight,
-      hideSearch,
       hidePagination,
       rowConfig: _rowConfig,
       customConfig: _customConfig,
@@ -337,14 +331,17 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
 
     return () => (
       <div ref={containerRef} style={containerStyle}>
-        {!hideSearch.value && (
-          <FtFormSearch
-            v-model:exposed={formExposed.value}
-            cache={cache.value}
-            columns={formColumns.value}
-            onSubmit={() => handleSearch()}
-            {...internalFormProps.value}
-          />
+        {formColumns.value.length > 0 && (
+          <>
+            <FtFormSearch
+              v-model:exposed={formExposed.value}
+              cache={cache.value}
+              columns={formColumns.value}
+              onSubmit={() => handleSearch()}
+              {...internalFormProps.value}
+            />
+            <Divider dashed style="margin: 0" />
+          </>
         )}
 
         <div style={tableStyle}>
@@ -410,7 +407,6 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
     ["hidePagination", { type: Boolean }],
     "exposed",
     "onUpdate:exposed",
-    ["hideSearch", { type: Boolean }],
     "rowConfig",
     "treeConfig",
     "customConfig",

@@ -11,6 +11,7 @@ import {
   Table,
   TableColumnType,
   TableProps as AntTableProps,
+  Divider,
 } from "ant-design-vue";
 import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
@@ -142,11 +143,6 @@ interface ExtendedProps<
    */
   minHeight?: number;
   /**
-   * 是否隐藏搜索
-   * @default false
-   */
-  hideSearch?: boolean;
-  /**
    * 是否隐藏分页
    * @default false
    */
@@ -188,7 +184,6 @@ export const FtTable = defineFtTable<"antd">(
       initSearch,
       fitFlexHeight,
       minHeight,
-      hideSearch,
       hidePagination,
       onSearch,
       onChange,
@@ -273,7 +268,7 @@ export const FtTable = defineFtTable<"antd">(
     };
     let tableStyle: CSSProperties;
     const containerRef = ref<HTMLDivElement>();
-
+    const tableRef = ref<InstanceType<typeof Table>>();
     /**
      * 计算表格高度
      */
@@ -299,7 +294,7 @@ export const FtTable = defineFtTable<"antd">(
         (header?.clientHeight ?? 0) -
         (footer?.clientHeight ?? 0);
 
-      const minHeightValue = minHeight.value ?? 210;
+      const minHeightValue = minHeight.value!;
       if (y < minHeightValue) y = minHeightValue;
       _scrollY.value = y;
     };
@@ -330,7 +325,7 @@ export const FtTable = defineFtTable<"antd">(
             calcTableHeight();
           }, 100);
         });
-        resizeObserver.observe(containerRef.value!);
+        resizeObserver.observe(tableRef.value?.$el);
       });
       onUnmounted(() => {
         resizeObserver.disconnect();
@@ -383,14 +378,17 @@ export const FtTable = defineFtTable<"antd">(
 
     return () => (
       <div ref={containerRef} style={containerStyle}>
-        {!hideSearch.value && (
-          <FtFormSearch
-            v-model:exposed={formExposed.value}
-            cache={cache.value}
-            columns={formColumns.value}
-            onSubmit={() => handleSearch()}
-            {...internalFormProps.value}
-          />
+        {formColumns.value.length > 0 && (
+          <>
+            <FtFormSearch
+              v-model:exposed={formExposed.value}
+              cache={cache.value}
+              columns={formColumns.value}
+              onSubmit={() => handleSearch()}
+              {...internalFormProps.value}
+            />
+            <Divider dashed style="margin: 0" />
+          </>
         )}
         {(ctx.slots.buttons || ctx.slots.tools) && (
           <div>
@@ -399,6 +397,7 @@ export const FtTable = defineFtTable<"antd">(
           </div>
         )}
         <Table
+          ref={tableRef}
           style={tableStyle}
           columns={columns.value}
           loading={loading.value}
@@ -427,11 +426,10 @@ export const FtTable = defineFtTable<"antd">(
     "onSearch",
     ["initSearch", { type: Boolean, default: true }],
     "fitFlexHeight",
-    "minHeight",
+    ["minHeight", { type: Number, default: 210 }],
     ["hidePagination", { type: Boolean }],
     "exposed",
     "onUpdate:exposed",
-    ["hideSearch", { type: Boolean }],
   ],
 );
 

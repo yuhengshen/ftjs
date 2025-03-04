@@ -1,7 +1,7 @@
 # tf
 
-![NPM Version](https://img.shields.io/npm/v/tf-core?label=tf-core)
-![NPM Version](https://img.shields.io/npm/v/tf-antd?label=tf-antd)
+![NPM Version](https://img.shields.io/npm/v/@ftjs/core?label=@ftjs/core)
+![NPM Version](https://img.shields.io/npm/v/@ftjs/antd?label=@ftjs/antd)
 ![GitHub License](https://img.shields.io/github/license/yuhengshen/tf)
 
 ---
@@ -16,11 +16,11 @@ tf 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件库�
 
 ## 适配器
 
-| [ant-design-vue](https://github.com/vueComponent/ant-design-vue) | ✔️ 已完成 [tf-antd](/packages/tf-antd/README.md) |
-| :--------------------------------------------------------------- | :----------------------------------------------- |
-| [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                        |
-| [vant](https://github.com/youzan/vant)                           | 📈计划                                           |
-| [naive-ui](https://github.com/tusen-ai/naive-ui)                 | 📈计划                                           |
+| [ant-design-vue](https://github.com/vueComponent/ant-design-vue) | ✔️ 已完成 [@ftjs/antd](/packages/@ftjs/antd/README.md) |
+| :--------------------------------------------------------------- | :----------------------------------------------------- |
+| [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                              |
+| [vant](https://github.com/youzan/vant)                           | 📈计划                                                 |
+| [naive-ui](https://github.com/tusen-ai/naive-ui)                 | 📈计划                                                 |
 
 ## 文档
 

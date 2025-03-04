@@ -18,9 +18,9 @@ hero:
 
 features:
   - icon: 🎯
-    title: TF Core
+    title: Core
     details: 提供定义适配器的规范、类型工具和辅助定义函数。
-    link: /guide/tf-core/introduction
+    link: /guide/core/introduction
   - icon: 🚀
     title: 高性能
     details: 基于 Vue 3 开发，高效且灵活进行表单控制、联动、校验和监测。
@@ -33,5 +33,5 @@ features:
   - icon: 🛠️
     title: 适配器
     details: Ant-design-vue 适配器。
-    link: /tf-antd
+    link: /antd/introduction
 ---

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { TfForm, TfFormProps } from "tf-antd";
+import { TfForm, TfFormProps } from "@ftjs/antd";
 
 interface FormData {
   obj: {

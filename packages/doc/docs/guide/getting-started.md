@@ -17,13 +17,13 @@
 使用 pnpm 安装（推荐）基础库：
 
 ```bash
-pnpm i tf-core
+pnpm i @ftjs/core
 ```
 
 安装适配器（ant-design-vue）：
 
 ```bash
-pnpm i tf-antd
+pnpm i @ftjs/antd
 ```
 
 ## 示例

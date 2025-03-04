@@ -12,9 +12,9 @@ export default defineConfig({
       {
         text: "适配器",
         items: [
-          { text: "TF Antd", link: "/tf-antd/" },
-          { text: "TF Element 🚧", link: "#" },
-          { text: "TF Vant 🚧", link: "#" },
+          { text: "@ftjs/antd", link: "/antd/" },
+          { text: "@ftjs/element 🚧", link: "#" },
+          { text: "@ftjs/vant 🚧", link: "#" },
         ],
       },
     ],
@@ -26,51 +26,51 @@ export default defineConfig({
           items: [{ text: "快速开始", link: "/guide/getting-started" }],
         },
         {
-          text: "TF Core",
+          text: "Core",
           items: [
-            { text: "介绍", link: "/guide/tf-core/introduction" },
-            { text: "Form 列定义", link: "/guide/tf-core/form/column" },
+            { text: "介绍", link: "/guide/core/introduction" },
+            { text: "Form 列定义", link: "/guide/core/form/column" },
             {
               text: "Form 其他 Props",
-              link: "/guide/tf-core/form/props",
+              link: "/guide/core/form/props",
             },
             {
               text: "Table Props",
-              link: "/guide/tf-core/table/props",
+              link: "/guide/core/table/props",
             },
             {
               text: "适配器",
               items: [
                 {
                   text: "适配器开发",
-                  link: "/guide/tf-core/adapter/development",
+                  link: "/guide/core/adapter/development",
                 },
-                { text: "API 参考", link: "/guide/tf-core/adapter/api" },
-                { text: "TF Antd", link: "/tf-antd" },
-                { text: "TF Element 🚧", link: "#" },
-                { text: "TF Vant 🚧", link: "#" },
+                { text: "API 参考", link: "/guide/core/adapter/api" },
+                { text: "@ftjs/antd", link: "/antd" },
+                { text: "@ftjs/element 🚧", link: "#" },
+                { text: "@ftjs/vant 🚧", link: "#" },
               ],
             },
           ],
         },
       ],
-      "/tf-antd/": [
+      "/antd/": [
         {
           text: "介绍",
-          link: "/tf-antd/",
+          link: "/antd/",
         },
         {
           text: "表单",
           items: [
-            { text: "TfForm", link: "/tf-antd/components/form/" },
-            { text: "TfSearchForm", link: "/tf-antd/components/form-search/" },
+            { text: "TfForm", link: "/antd/components/form/" },
+            { text: "TfSearchForm", link: "/antd/components/form-search/" },
           ],
         },
         {
           text: "表格",
           items: [
-            { text: "Table", link: "/tf-antd/components/table" },
-            { text: "VxeTable", link: "/tf-antd/components/vxe-table" },
+            { text: "Table", link: "/antd/components/table" },
+            { text: "VxeTable", link: "/antd/components/vxe-table" },
           ],
         },
       ],

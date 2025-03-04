@@ -1,6 +1,6 @@
 {
   "name": "tf-playground",
-  "version": "1.0.13",
+  "version": "0.0.1",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "catalog:",
-    "tf-antd": "workspace:*",
-    "tf-core": "workspace:*",
+    "@ftjs/antd": "workspace:*",
+    "@ftjs/core": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:"
   },

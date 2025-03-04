@@ -1,7 +1,7 @@
 {
-  "name": "doc",
-  "version": "1.0.13",
-  "description": "tf-core 文档",
+  "name": "@ftjs/docs",
+  "version": "0.0.1",
+  "description": "ftjs 文档",
   "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev docs",
@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "vitepress": "^1.6.3",
-    "tf-core": "workspace:*",
-    "tf-antd": "workspace:*",
+    "@ftjs/core": "workspace:*",
+    "@ftjs/antd": "workspace:*",
     "ant-design-vue": "catalog:",
     "vue": "catalog:",
     "vxe-table": "catalog:",

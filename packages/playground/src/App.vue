@@ -5,7 +5,7 @@ import {
   TfTableProps,
   TfFormSearch,
   TfForm,
-} from "tf-antd";
+} from "@ftjs/antd";
 import { ref } from "vue";
 import { Button } from "ant-design-vue";
 

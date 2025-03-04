@@ -30,7 +30,7 @@ jobs:
         run: pnpm build
 
       - name: Build docs
-        run: pnpm --filter doc docs:build
+        run: pnpm --filter @ftjs/doc docs:build
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25

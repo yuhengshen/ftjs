@@ -12,7 +12,7 @@
 | columns            | 表格列定义         | `TableColumn<TableData, SearchData, type>[]` | -       |
 | searchColumns      | 列定义外的搜索条件 | `FormColumn<SearchData>[]`                   | -       |
 | total              | 表格总条数         | `number`                                     | -       |
-| defaultPageSize    | 默认每页条数       | `number`                                     | -       |
+| defaultPageSize    | 默认每页条数       | `number`                                     | `20`    |
 | loading            | 是否显示加载状态   | `boolean`                                    | `false` |
 | internalFormProps  | 内部表单组件配置   | `object`                                     | -       |
 | internalTableProps | 内部表格组件配置   | `object`                                     | -       |

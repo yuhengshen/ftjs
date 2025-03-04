@@ -4,7 +4,7 @@
 
 ## 基本用法
 
-FtFormSearch 组件一般通过 table 的 column 中 search 属性来间接使用。针对搜索场景进行了优化，提供了更便捷的搜索体验和缓存配置。
+FtFormSearch 组件一般通过 table 的 column 中 search 属性来间接使用。针对搜索场景进行了优化，提供了更便捷的搜索体验和搜索配置缓存。
 
 <<< ./demo.vue
 

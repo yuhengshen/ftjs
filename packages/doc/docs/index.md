@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: ftjs
-  text: Table Form 配置化
-  tagline: 简单、强大、高效、灵活的表格、表单组件库
+  text: Form Table 强类型配置
+  tagline: UI 无关，类型强大，扩展灵活的 Vue 表格、表单组件
   image:
     src: /logo.png
     alt: ftjs

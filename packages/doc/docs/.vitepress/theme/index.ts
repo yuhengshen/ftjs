@@ -8,6 +8,9 @@ import { ConfigProvider } from "ant-design-vue";
 import zhCN from "ant-design-vue/lib/locale/zh_CN";
 import { h } from "vue";
 
+// 导入自定义样式
+import "./custom.css";
+
 export default {
   enhanceApp(ctx: EnhanceAppContext) {
     DefaultTheme.enhanceApp(ctx);

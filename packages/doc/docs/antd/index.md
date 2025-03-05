@@ -17,7 +17,7 @@
 ## 安装
 
 ```bash
-pnpm i @ftjs/antd
+npm i @ftjs/antd // [!=npm auto]
 ```
 
 ## 组件列表

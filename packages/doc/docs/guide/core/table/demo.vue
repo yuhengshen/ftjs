@@ -106,6 +106,7 @@ const loading = ref(false);
 
 <template>
   <div
+    class="vp-raw"
     style="height: 600px; overflow: auto; display: flex; flex-direction: column"
   >
     <!-- table自动占据 flex 剩余空间 -->

@@ -238,7 +238,6 @@ export const useForm = <
         watchMap.forEach(cancel => cancel());
         watchMap.clear();
         hideFieldSet.value.clear();
-        console.warn(`[@ftjs/core] 检测到columns在改变，应该尽量避免变动`);
       });
       addFormDefaultValue();
       runFieldWatch();

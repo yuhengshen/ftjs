@@ -26,7 +26,11 @@ export default defineFormComponent<FtFormColumnInputNumber<any>>(props => {
         {toValue(isView.value) ? (
           <div>{valueComputed.value}</div>
         ) : (
-          <InputNumber v-model:value={valueComputed.value} {..._props} />
+          <InputNumber
+            v-model:value={valueComputed.value}
+            placeholder={`请输入${formItemProps.value.label}`}
+            {..._props}
+          />
         )}
       </FormItem>
     );

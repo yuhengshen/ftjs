@@ -1,5 +1,8 @@
 import { defineConfig } from "vitepress";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { tabsMarkdownPlugin } from "vitepress-plugin-tabs";
+import { npmCommandsMarkdownPlugin } from "vitepress-plugin-npm-commands";
+
 export default defineConfig({
   vite: {
     plugins: [vueJsx()],
@@ -41,19 +44,19 @@ export default defineConfig({
               text: "Table Props",
               link: "/guide/core/table/props",
             },
+          ],
+        },
+        {
+          text: "适配器",
+          items: [
             {
-              text: "适配器",
-              items: [
-                {
-                  text: "适配器开发",
-                  link: "/guide/core/adapter/development",
-                },
-                { text: "API 参考", link: "/guide/core/adapter/api" },
-                { text: "@ftjs/antd", link: "/antd" },
-                { text: "@ftjs/element 🚧", link: "#" },
-                { text: "@ftjs/vant 🚧", link: "#" },
-              ],
+              text: "适配器开发",
+              link: "/guide/core/adapter/development",
             },
+            { text: "API 参考", link: "/guide/core/adapter/api" },
+            { text: "@ftjs/antd", link: "/antd" },
+            { text: "@ftjs/element 🚧", link: "#" },
+            { text: "@ftjs/vant 🚧", link: "#" },
           ],
         },
       ],
@@ -102,6 +105,12 @@ export default defineConfig({
     },
     outline: {
       label: "本页内容",
+    },
+  },
+  markdown: {
+    config: md => {
+      md.use(tabsMarkdownPlugin);
+      md.use(npmCommandsMarkdownPlugin);
     },
   },
 });

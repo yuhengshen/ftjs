@@ -1,5 +1,5 @@
 import DefaultTheme from "vitepress/theme";
-import type { EnhanceAppContext } from "vitepress";
+import type { Theme } from "vitepress";
 import pcUi from "vxe-pc-ui";
 import table from "vxe-table";
 import "vxe-table/lib/style.css";
@@ -7,14 +7,16 @@ import "vxe-pc-ui/lib/style.css";
 import { ConfigProvider } from "ant-design-vue";
 import zhCN from "ant-design-vue/lib/locale/zh_CN";
 import { h } from "vue";
+import { enhanceAppWithTabs } from "vitepress-plugin-tabs/client";
 
 // 导入自定义样式
 import "./custom.css";
 
 export default {
-  enhanceApp(ctx: EnhanceAppContext) {
+  enhanceApp(ctx) {
     DefaultTheme.enhanceApp(ctx);
     ctx.app.use(pcUi).use(table);
+    enhanceAppWithTabs(ctx.app);
   },
   Layout: () => {
     return h(
@@ -23,4 +25,4 @@ export default {
       { default: () => h(DefaultTheme.Layout) },
     );
   },
-};
+} satisfies Theme;

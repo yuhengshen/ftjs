@@ -6,15 +6,19 @@
 
 FtFormSearch 组件一般通过 table 的 column 中 search 属性来间接使用。针对搜索场景进行了优化，提供了更便捷的搜索体验和搜索配置缓存。
 
-<<< ./demo.vue
-
 <script setup lang="ts">
 import FormSearch from "./demo.vue";
 </script>
 
-::: raw
+:::tabs
+
+== 示例
 
 <FormSearch />
+
+== 代码
+
+<<< ./demo.vue
 
 :::
 

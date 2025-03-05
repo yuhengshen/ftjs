@@ -23,7 +23,10 @@ const columns: FtFormProps<FormData>["columns"] = [
     title: "年龄",
     type: "input-number",
     control: [{ field: "control", value: 1 }],
-    rules: [{ pattern: /^1$/, message: "请输入1，测试控制" }],
+    rules: [
+      { pattern: /^1$/, message: "请输入1，测试控制" },
+      { required: true, message: "请输入年龄" },
+    ],
   },
   {
     field: "control",
@@ -33,8 +36,14 @@ const columns: FtFormProps<FormData>["columns"] = [
 ];
 
 const formData = ref({} as FormData);
+
+const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+  wrapperCol: {
+    span: 14,
+  },
+};
 </script>
 
 <template>
-  <ft-form v-model:formData="formData" :columns="columns" />
+  <ft-form v-model:formData="formData" :columns :internalFormProps />
 </template>

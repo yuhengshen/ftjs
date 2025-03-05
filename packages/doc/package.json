@@ -23,6 +23,8 @@
     "xe-utils": "catalog:"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue-jsx": "catalog:"
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "vitepress-plugin-npm-commands": "^0.7.0",
+    "vitepress-plugin-tabs": "^0.6.0"
   }
 }

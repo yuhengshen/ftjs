@@ -49,15 +49,15 @@
   import Demo from "./demo.vue";
 </script>
 
-:::raw
+:::tabs
+== 示例
 
 <Demo />
 
-:::
-
-### 代码示例
+== 代码
 
 <<< ./demo.vue
+:::
 
 ## 扩展属性类型
 

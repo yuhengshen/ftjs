@@ -228,6 +228,12 @@ importers:
       '@vitejs/plugin-vue-jsx':
         specifier: 'catalog:'
         version: 4.1.1(vite@5.4.14(@types/node@22.13.8))(vue@3.5.13(typescript@5.8.2))
+      vitepress-plugin-npm-commands:
+        specifier: ^0.7.0
+        version: 0.7.0(vitepress-plugin-tabs@0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2)))(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))
+      vitepress-plugin-tabs:
+        specifier: ^0.6.0
+        version: 0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2))
 
   packages/playground:
     dependencies:
@@ -2241,6 +2247,10 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
+  klona@2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
+    engines: {node: '>= 8'}
+
   kolorist@1.8.0:
     resolution: {integrity: sha512-Y+60/zizpJ3HRH8DCss+q95yr6145JXZo46OTpFvDZWLfRCE4qChOyk1b26nMaNpfHHgxagk9dXT5OP0Tfe+dQ==}
 
@@ -2466,6 +2476,10 @@ packages:
   npm-run-path@5.3.0:
     resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  npm-to-yarn@3.0.1:
+    resolution: {integrity: sha512-tt6PvKu4WyzPwWUzy/hvPFqn+uwXO0K1ZHka8az3NnrhWJDmSqI8ncWq0fkL0k/lmmi5tAC11FXwXuh0rFbt1A==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
   nypm@0.5.4:
     resolution: {integrity: sha512-X0SNNrZiGU8/e/zAB7sCTtdxWTMSIO73q+xuKgglm2Yvzwlo8UoC5FNySQFCvl84uPaeADkqHUZUkWy4aH4xOA==}
@@ -3066,6 +3080,18 @@ packages:
         optional: true
       yaml:
         optional: true
+
+  vitepress-plugin-npm-commands@0.7.0:
+    resolution: {integrity: sha512-P/5L+HXBv4ii3k6ZwcZrU9FoSMSUWjWx65ArXwlM/blQveqQpJfOUEunOnZN8O0pOcRx7bEfWaD+PAuHZOi9Lw==}
+    peerDependencies:
+      vitepress: ^1.0.0
+      vitepress-plugin-tabs: ^0.6.0
+
+  vitepress-plugin-tabs@0.6.0:
+    resolution: {integrity: sha512-35mQUbI6lcVrLj0PpwautXm8LiV6Gz5ZDlklVRf/0KDd6gGs8HaZztqOxdffnzCiKIFLURBx930xq28it9jQTg==}
+    peerDependencies:
+      vitepress: ^1.0.0
+      vue: ^3.3.8
 
   vitepress@1.6.3:
     resolution: {integrity: sha512-fCkfdOk8yRZT8GD9BFqusW3+GggWYZ/rYncOfmgcDtP3ualNHCAg+Robxp2/6xfH1WwPHtGpPwv7mbA3qomtBw==}
@@ -5321,6 +5347,8 @@ snapshots:
 
   kleur@3.0.3: {}
 
+  klona@2.0.6: {}
+
   kolorist@1.8.0: {}
 
   levn@0.4.1:
@@ -5543,6 +5571,8 @@ snapshots:
   npm-run-path@5.3.0:
     dependencies:
       path-key: 4.0.0
+
+  npm-to-yarn@3.0.1: {}
 
   nypm@0.5.4:
     dependencies:
@@ -6089,6 +6119,18 @@ snapshots:
       jiti: 2.4.2
       tsx: 4.19.3
       yaml: 2.7.0
+
+  vitepress-plugin-npm-commands@0.7.0(vitepress-plugin-tabs@0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2)))(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2)):
+    dependencies:
+      klona: 2.0.6
+      npm-to-yarn: 3.0.1
+      vitepress: 1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2)
+      vitepress-plugin-tabs: 0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2))
+
+  vitepress-plugin-tabs@0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2)):
+    dependencies:
+      vitepress: 1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2)
+      vue: 3.5.13(typescript@5.8.2)
 
   vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2):
     dependencies:

@@ -6,15 +6,19 @@
 
 FtForm 组件通过 `columns` 属性定义表单项，通过 `v-model:formData` 绑定表单数据。
 
-<<< ./demo.vue
-
 <script setup lang="ts">
 import Form from "./demo.vue";
 </script>
 
-::: raw
+:::tabs
+
+== 示例
 
 <Form />
+
+== 代码
+
+<<< ./demo.vue
 
 :::
 

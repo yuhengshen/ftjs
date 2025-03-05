@@ -204,7 +204,10 @@ const toolbarConfig: FtVxeTableProps<TableData, SearchData>["toolbarConfig"] = {
 </script>
 
 <template>
-  <div style="height: 600px; display: flex; flex-direction: column">
+  <div
+    class="vp-raw"
+    style="height: 600px; display: flex; flex-direction: column"
+  >
     <FtVxeTable
       v-model:tableData="tableData"
       v-model:exposed="tableExposed"

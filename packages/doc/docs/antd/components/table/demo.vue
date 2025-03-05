@@ -203,7 +203,10 @@ createTableData();
 </script>
 
 <template>
-  <div style="height: 600px; display: flex; flex-direction: column">
+  <div
+    class="vp-raw"
+    style="height: 600px; display: flex; flex-direction: column"
+  >
     <FtTable
       v-model:tableData="tableData"
       v-model:exposed="tableExposed"

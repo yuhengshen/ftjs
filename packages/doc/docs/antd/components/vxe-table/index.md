@@ -10,41 +10,44 @@ FtVxeTable 组件通过 `columns` 属性定义表格列，通过 `tableData` 属
 import Table from "./demo.vue";
 </script>
 
-::: raw
+:::tabs
+
+== 示例
 
 <Table />
 
-:::
+== 代码
 
 <<< ./demo.vue
+
+:::
 
 ## 组件属性
 
 FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table 特有的属性：
 
-| 属性名             | 说明                          | 类型                                                                      | 默认值              |
-| ------------------ | ----------------------------- | ------------------------------------------------------------------------- | ------------------- |
-| columns            | 表格列定义                    | `VxeTableColumn<TableData, SearchData>[]`                                 | `[]`                |
-| searchColumns      | 额外的搜索条件                | `FormColumn<SearchData>[]`                                                | `[]`                |
-| tableData          | 表格数据                      | `TableData[]`                                                             | `[]`                |
-| total              | 数据总数                      | `number`                                                                  | `0`                 |
-| loading            | 加载状态                      | `boolean`                                                                 | `false`             |
-| request            | 数据请求方法                  | `(params: SearchParams) => Promise<{ data: TableData[]; total: number }>` | -                   |
-| defaultPageSize    | 默认每页条数                  | `number`                                                                  | `20`                |
-| keyField           | 行数据的唯一标识字段          | `string`                                                                  | `vxe-table内部维护` |
-| cache              | 搜索条件缓存标识              | `string`                                                                  | -                   |
-| internalTableProps | VXE-Table Grid 组件的原生属性 | `VxeGridProps`                                                            | -                   |
-| internalFormProps  | 搜索表单的原生属性            | `FtFormSearchProps`                                                       | -                   |
-| exposed            | 表格暴露的方法                | `VxeTableExposed<TableData, SearchData>`                                  | -                   |
-| initSearch         | 是否初始化搜索                | `boolean`                                                                 | `true`              |
-| fitFlexHeight      | 是否自适应父元素剩余高度      | `boolean`                                                                 | `true`              |
-| minHeight          | 最小高度                      | `number`                                                                  | `310`               |
-| hidePagination     | 是否隐藏分页                  | `boolean`                                                                 | `false`             |
-| treeConfig         | 树形表格配置                  | `VxeGridProps["treeConfig"]`                                              | -                   |
-| rowConfig          | 行配置                        | `VxeGridProps["rowConfig"]`                                               | -                   |
-| customConfig       | 自定义配置                    | `VxeGridProps["customConfig"]`                                            | -                   |
-| toolbarConfig      | 工具栏配置                    | `VxeGridProps["toolbarConfig"]`                                           | -                   |
-| columnConfig       | 列配置                        | `VxeGridProps["columnConfig"]`                                            | -                   |
+| 属性名             | 说明                          | 类型                                                           | 默认值              |
+| ------------------ | ----------------------------- | -------------------------------------------------------------- | ------------------- |
+| columns            | 表格列定义                    | `FtVxeTableProps<TableData, SearchData>["columns"]`            | `[]`                |
+| searchColumns      | 额外的搜索条件                | `FtVxeTableProps<TableData, SearchData>["searchColumns"]`      | `[]`                |
+| tableData          | 表格数据                      | `TableData[]`                                                  | `[]`                |
+| total              | 数据总数                      | `number`                                                       | `0`                 |
+| loading            | 加载状态                      | `boolean`                                                      | `false`             |
+| defaultPageSize    | 默认每页条数                  | `number`                                                       | `20`                |
+| keyField           | 行数据的唯一标识字段          | `string`                                                       | `vxe-table内部维护` |
+| cache              | 搜索条件缓存标识              | `string`                                                       | -                   |
+| internalTableProps | VXE-Table Grid 组件的原生属性 | `FtVxeTableProps<TableData, SearchData>["internalTableProps"]` | -                   |
+| internalFormProps  | 搜索表单的原生属性            | `FtVxeTableProps<TableData, SearchData>["internalFormProps"]`  | -                   |
+| exposed            | 表格暴露的方法                | `FtVxeTableProps<TableData, SearchData>["exposed"]`            | -                   |
+| initSearch         | 是否初始化搜索                | `boolean`                                                      | `true`              |
+| fitFlexHeight      | 是否自适应父元素剩余高度      | `boolean`                                                      | `true`              |
+| minHeight          | 最小高度                      | `number`                                                       | `310`               |
+| hidePagination     | 是否隐藏分页                  | `boolean`                                                      | `false`             |
+| treeConfig         | 树形表格配置                  | `FtVxeTableProps<TableData, SearchData>["treeConfig"]`         | -                   |
+| rowConfig          | 行配置                        | `FtVxeTableProps<TableData, SearchData>["rowConfig"]`          | -                   |
+| customConfig       | 自定义配置                    | `FtVxeTableProps<TableData, SearchData>["customConfig"]`       | -                   |
+| toolbarConfig      | 工具栏配置                    | `FtVxeTableProps<TableData, SearchData>["toolbarConfig"]`      | -                   |
+| columnConfig       | 列配置                        | `FtVxeTableProps<TableData, SearchData>["columnConfig"]`       | -                   |
 
 ## 表格列配置
 

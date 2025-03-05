@@ -10,13 +10,17 @@ FtTable 组件通过 `columns` 属性定义表格列，通过 `v-model:tableData
 import Table from "./demo.vue";
 </script>
 
-::: raw
+:::tabs
+
+== 示例
 
 <Table />
 
-:::
+== 代码
 
 <<< ./demo.vue
+
+:::
 
 ## 组件属性
 
@@ -29,14 +33,14 @@ FtTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design Vue
 | searchColumns      | 附加搜索条件（不依赖于表格列）                        | `FormColumn<S>[]`                                      | -       |
 | cache              | 表格配置缓存标识                                      | `string`                                               | -       |
 | total              | 表格数据总数                                          | `number`                                               | -       |
-| defaultPageSize    | 默认每页条数                                          | `number`                                               | 20      |
+| defaultPageSize    | 默认每页条数                                          | `number`                                               | `20`    |
 | loading            | 是否显示加载状态                                      | `boolean`                                              | `false` |
 | keyField           | 表格行唯一标识字段                                    | `string`                                               | `"id"`  |
 | internalTableProps | Ant Design Vue Table 组件的原生属性（部分属性被移除） | [TableProps](https://antdv.com/components/table#table) | -       |
 | internalFormProps  | FtFormSearch 组件的属性                               | `FtFormSearchProps`                                    | -       |
 | initSearch         | 是否初始化搜索                                        | `boolean`                                              | `true`  |
 | fitFlexHeight      | 是否自适应父元素剩余高度                              | `boolean`                                              | `true`  |
-| minHeight          | 自适应高度时的最小高度                                | `number`                                               | 210     |
+| minHeight          | 自适应高度时的最小高度                                | `number`                                               | `210`   |
 | hidePagination     | 是否隐藏分页                                          | `boolean`                                              | `false` |
 | exposed            | 表格暴露的方法                                        | `TableExposed<T, S>`                                   | -       |
 

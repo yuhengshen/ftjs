@@ -91,8 +91,14 @@ const columns: FtFormProps<FormData>["columns"] = [
 const onSubmit = async (data: FormData) => {
   console.log(data);
 };
+
+const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+  wrapperCol: {
+    span: 14,
+  },
+};
 </script>
 
 <template>
-  <FtForm :columns="columns" @submit="onSubmit" />
+  <FtForm :columns :internal-form-props @submit="onSubmit" />
 </template>

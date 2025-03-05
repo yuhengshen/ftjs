@@ -14,28 +14,30 @@
 
 ## 安装
 
-使用 pnpm 安装（推荐）基础库：
+安装（推荐）基础库：
 
 ```bash
-pnpm i @ftjs/core
+npm i @ftjs/core // [!=npm auto]
 ```
 
 安装适配器（ant-design-vue）：
 
 ```bash
-pnpm i @ftjs/antd
+npm i @ftjs/antd // [!=npm auto]
 ```
-
-## 示例
 
 <script setup lang="ts">
 import Demo from "./demo.vue";
 </script>
 
-::: raw
-<Demo />
-:::
+:::tabs
 
-## 代码
+== 示例
+
+<Demo />
+
+== 代码
 
 <<< ./demo.vue
+
+:::

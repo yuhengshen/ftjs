@@ -100,7 +100,7 @@ export const FtForm = /*#__PURE__*/ defineFtForm<"antd">(
       <Form
         ref={formRef}
         name={id}
-        style={{ width }}
+        style={{ width: width.value }}
         {...ctx.attrs}
         {...formProps.value}
       >

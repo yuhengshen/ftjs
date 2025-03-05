@@ -16,7 +16,11 @@ export interface TableTypeMap<
     tableSlots: {};
     tableColumn: FtTableColumn<TableData>;
     formColumn: FtFormColumnBase<SearchData>;
-    extendedProps: {};
+    extendedProps: {
+      // for testing
+      testProps: string;
+      onTestEvent: () => void;
+    };
     internalFormProps: {};
     internalTableProps: {};
   };

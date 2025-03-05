@@ -14,6 +14,9 @@ export const isEmptyStrOrNull = (val: any) => {
   return val === "" || val == null;
 };
 
+/**
+ * 深拷贝(简化版)
+ */
 export const cloneDeep = <T>(obj: T) => {
   if (typeof obj === "object" && obj !== null) {
     return JSON.parse(JSON.stringify(obj)) as T;
@@ -133,7 +136,9 @@ export type RuntimeProps<T extends readonly any[] = []> =
       },
     ];
 
-export const transferVueArrayPropsToObject = (arr: RuntimeProps[]) => {
+export function transferVueArrayPropsToObject<T extends readonly any[] = []>(
+  arr: RuntimeProps<T>[],
+) {
   // any 避免与 泛型推断冲突
   const props: any = {};
 
@@ -146,7 +151,7 @@ export const transferVueArrayPropsToObject = (arr: RuntimeProps[]) => {
   });
 
   return props;
-};
+}
 
 export const getPropsKeys = (arr: RuntimeProps<any>[]) => {
   return arr.map(item => {

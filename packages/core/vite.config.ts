@@ -28,5 +28,8 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
     },
+    typecheck: {
+      include: ["src/**/*.{test,spec}-d.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    },
   },
 });

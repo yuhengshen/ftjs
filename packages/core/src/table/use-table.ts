@@ -4,7 +4,7 @@ import { SplitEventKeys } from "../type-helper";
 
 const provideTableKey = Symbol("@ftjs/core-table-provide");
 
-type TableInject<
+export type TableInject<
   TableData extends Record<string, any>,
   FormData extends Record<string, any> = TableData,
   Type extends keyof TableTypeMap<TableData, FormData> = "default",

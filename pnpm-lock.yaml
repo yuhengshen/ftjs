@@ -235,52 +235,6 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0(vitepress@1.6.3(@algolia/client-search@5.20.3)(@types/node@22.13.8)(async-validator@4.2.5)(postcss@8.5.3)(search-insights@2.17.3)(typescript@5.8.2))(vue@3.5.13(typescript@5.8.2))
 
-  packages/playground:
-    dependencies:
-      '@ant-design/icons-vue':
-        specifier: 'catalog:'
-        version: 7.0.1(vue@3.5.13(typescript@5.8.2))
-      '@ftjs/antd':
-        specifier: workspace:*
-        version: link:../antd
-      '@ftjs/core':
-        specifier: workspace:*
-        version: link:../core
-      ant-design-vue:
-        specifier: 'catalog:'
-        version: 4.2.6(vue@3.5.13(typescript@5.8.2))
-      vue:
-        specifier: 'catalog:'
-        version: 3.5.13(typescript@5.8.2)
-    devDependencies:
-      '@eslint/js':
-        specifier: 'catalog:'
-        version: 9.21.0
-      '@vitejs/plugin-vue':
-        specifier: 'catalog:'
-        version: 5.2.1(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
-      '@vitejs/plugin-vue-jsx':
-        specifier: 'catalog:'
-        version: 4.1.1(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0))(vue@3.5.13(typescript@5.8.2))
-      eslint:
-        specifier: 'catalog:'
-        version: 9.21.0(jiti@2.4.2)
-      typescript:
-        specifier: 'catalog:'
-        version: 5.8.2
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.25.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)
-      vite:
-        specifier: 'catalog:'
-        version: 6.2.0(@types/node@22.13.8)(jiti@2.4.2)(tsx@4.19.3)(yaml@2.7.0)
-      vue-component-type-helpers:
-        specifier: ^2.2.0
-        version: 2.2.6
-      vue-tsc:
-        specifier: 'catalog:'
-        version: 2.2.0(typescript@5.8.2)
-
 packages:
 
   '@algolia/autocomplete-core@1.17.7':

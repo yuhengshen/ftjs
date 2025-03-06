@@ -11,6 +11,7 @@ import {
 import { useForm } from "./use-form";
 import { FtFormColumnBase } from "./columns";
 import {
+  getField,
   getPropsKeys,
   RuntimeProps,
   transferVueArrayPropsToObject,
@@ -134,7 +135,7 @@ export const defineFtForm = <Type extends keyof FormTypeMap<any>>(
         SlotsType<FormTypeMap<FormData>[Type]["formSlots"]>
       >,
     ) => {
-      // v-model:formData 支持
+      // v-model:formData 支持(重置，设置默认值)
       const formData = computed({
         get: () => props.formData,
         set(v) {
@@ -165,7 +166,7 @@ export const defineFtForm = <Type extends keyof FormTypeMap<any>>(
                 column: column,
                 // 是否为查看模式
                 isView: column.isView,
-                key: column.field ?? column.fields?.[0],
+                key: getField(column),
               });
             }),
         });

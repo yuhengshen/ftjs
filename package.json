@@ -9,13 +9,13 @@
     "pnpm": ">=9.12.0"
   },
   "scripts": {
-    "play": "pnpm --filter ftjs-playground dev",
     "build": "turbo run build",
     "release": "tsx ./scripts/release.ts",
     "pub:all": "pnpm --parallel run pub",
     "prepare": "husky",
     "format": "prettier --write .",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "test": "pnpm --filter @ftjs/core test"
   },
   "keywords": [],
   "author": "",

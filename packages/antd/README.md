@@ -9,7 +9,7 @@ ant-design-vue 适配器
 
 ## 文档
 
-请查看 [@ftjs/antd 文档](https://ftjs-docs.yhs.ink/@ftjs/antd/introduction.html)。
+请查看 [@ftjs/antd 文档](https://ftjs-docs.yhs.ink/antd/)。
 
 ## 许可证
 

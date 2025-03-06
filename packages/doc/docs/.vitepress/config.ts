@@ -47,6 +47,15 @@ export default defineConfig({
           ],
         },
         {
+          text: "Form 示例",
+          items: [
+            {
+              text: "恢复默认值",
+              link: "/guide/examples/reset-to-default/",
+            },
+          ],
+        },
+        {
           text: "适配器",
           items: [
             {

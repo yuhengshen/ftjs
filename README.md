@@ -3,6 +3,7 @@
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/core?label=@ftjs/core)
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/antd?label=@ftjs/antd)
 ![GitHub License](https://img.shields.io/github/license/yuhengshen/ftjs)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/yuhengshen/ftjs/test.yml?branch=main&label=test)
 
 ---
 
@@ -21,7 +22,6 @@ ftjs 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件�
 | :--------------------------------------------------------------- | :------------------------------------------------------ |
 | [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                               |
 | [vant](https://github.com/youzan/vant)                           | 📈计划                                                  |
-| [naive-ui](https://github.com/tusen-ai/naive-ui)                 | 📈计划                                                  |
 
 ## 文档
 

@@ -16,6 +16,7 @@ import {
 import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
 import {
+  Component,
   computed,
   CSSProperties,
   h,
@@ -29,7 +30,7 @@ import {
   watchEffect,
 } from "vue";
 import type { ComponentSlots } from "vue-component-type-helpers";
-import { editMap, EditMap } from "./column-edit";
+import { editMap, EditMap, isComponentTuple } from "./column-edit";
 
 declare module "@ftjs/core" {
   interface TableTypeMap<
@@ -477,13 +478,26 @@ function useEdit<T extends Record<string, any>>(
           edit = column.edit;
         }
         const field = edit.field ?? column.field;
-        const component = editMap.get(edit.type);
-        if (component) {
+        const componentOrTuple = editMap.get(edit.type);
+
+        if (componentOrTuple) {
+          let component: Component;
+          let model = "value";
+          if (isComponentTuple(componentOrTuple)) {
+            component = componentOrTuple[0];
+            const info = componentOrTuple[1];
+            if (info.model) {
+              model = info.model;
+            }
+          } else {
+            component = componentOrTuple;
+          }
+
           return h(component, {
             ...edit.props,
             class: "ft-table-edit",
-            value: get(scopeProps.record, field),
-            "onUpdate:value": (value: any) => {
+            [model]: get(scopeProps.record, field),
+            [`onUpdate:${model}`]: (value: any) => {
               set(scopeProps.record, field, value);
             },
           });

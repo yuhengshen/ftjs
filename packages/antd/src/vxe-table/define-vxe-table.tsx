@@ -10,9 +10,22 @@ import {
 } from "vxe-table";
 import { FtFormSearch } from "../form/define-form";
 import type { FormColumn, FormExposed } from "../form/register";
-import { computed, CSSProperties, h, onMounted, ref, watchEffect } from "vue";
+import {
+  Component,
+  computed,
+  CSSProperties,
+  h,
+  onMounted,
+  ref,
+  watchEffect,
+} from "vue";
 import { Pagination, Spin, Divider } from "ant-design-vue";
-import { Edit, EditMap, editMap } from "../antd-table/column-edit";
+import {
+  Edit,
+  EditMap,
+  editMap,
+  isComponentTuple,
+} from "../antd-table/column-edit";
 
 declare module "@ftjs/core" {
   interface TableTypeMap<
@@ -226,18 +239,33 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
                 const { row } = params;
                 const type = editObj.type;
                 const field = editObj.field ?? column.field;
-                const component = editMap.get(type);
-                if (!component) {
+                const componentOrTuple = editMap.get(type);
+                if (!componentOrTuple) {
                   console.warn(`[@ftjs/antd] 不支持的编辑类型: ${type}`);
                   return "";
                 }
-                return h(component, {
+                let component: Component;
+                let model = "value";
+                if (isComponentTuple(componentOrTuple)) {
+                  component = componentOrTuple[0];
+                  const info = componentOrTuple[1];
+                  if (info.model) {
+                    model = info.model;
+                  }
+                } else {
+                  component = componentOrTuple;
+                }
+
+                const modelEvent = `onUpdate:${model}`;
+
+                const props = {
                   ...editObj.props,
-                  value: row[field],
-                  "onUpdate:value": (value: any) => {
+                  [model]: row[field],
+                  [modelEvent]: (value: any) => {
                     row[field] = value;
                   },
-                });
+                };
+                return h(component, props);
               }
             : null,
           ...column.slots,

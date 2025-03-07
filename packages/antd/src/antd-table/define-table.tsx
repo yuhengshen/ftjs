@@ -3,6 +3,7 @@ import {
   defineFtTable,
   get,
   set,
+  unrefs,
   useTableInject,
   ValueOf,
 } from "@ftjs/core";
@@ -494,7 +495,7 @@ function useEdit<T extends Record<string, any>>(
           }
 
           return h(component, {
-            ...edit.props,
+            ...unrefs(edit.props),
             class: "ft-table-edit",
             [model]: get(scopeProps.record, field),
             [`onUpdate:${model}`]: (value: any) => {

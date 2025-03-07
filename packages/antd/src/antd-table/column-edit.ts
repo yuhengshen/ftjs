@@ -1,3 +1,4 @@
+import { Refs } from "@ftjs/core";
 import {
   Input,
   InputProps,
@@ -15,9 +16,9 @@ export interface Edit<Type, Props> {
 }
 
 export interface EditMap<_TableData extends Record<string, any>> {
-  input: Edit<"input", InputProps>;
-  select: Edit<"select", SelectProps>;
-  switch: Edit<"switch", SwitchProps>;
+  input: Edit<"input", Refs<InputProps>>;
+  select: Edit<"select", Refs<SelectProps>>;
+  switch: Edit<"switch", Refs<SwitchProps>>;
 }
 
 export interface ComponentInfo {

@@ -13,6 +13,14 @@ export interface Edit<Type, Props> {
   type: Type;
   field?: string;
   props?: Props;
+  /**
+   * 获取值转化
+   */
+  valueGetter?: (value: any) => any;
+  /**
+   * 设置值转化
+   */
+  valueSetter?: (value: any) => any;
 }
 
 export interface EditMap<_TableData extends Record<string, any>> {

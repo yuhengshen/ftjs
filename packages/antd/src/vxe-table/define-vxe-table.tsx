@@ -1,4 +1,4 @@
-import { defineFtTable, unrefs, useTableInject } from "@ftjs/core";
+import { defineFtTable, get, set, unrefs, useTableInject } from "@ftjs/core";
 import type { FtTableColumn, FtTablePropsMap, ValueOf } from "@ftjs/core";
 import {
   VxeGrid,
@@ -258,11 +258,20 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
 
                 const modelEvent = `onUpdate:${model}`;
 
+                const { valueGetter, valueSetter } = editObj ?? {};
+                let value = get(row, field);
+                if (valueGetter) {
+                  value = valueGetter(value);
+                }
+
                 const props = {
                   ...unrefs(editObj.props),
-                  [model]: row[field],
+                  [model]: value,
                   [modelEvent]: (value: any) => {
-                    row[field] = value;
+                    if (valueSetter) {
+                      value = valueSetter(value);
+                    }
+                    set(row, field, value);
                   },
                 };
                 return h(component, props);

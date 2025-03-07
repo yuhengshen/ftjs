@@ -494,14 +494,25 @@ function useEdit<T extends Record<string, any>>(
             component = componentOrTuple;
           }
 
-          return h(component, {
+          const { valueGetter, valueSetter } = edit;
+
+          let value = get(scopeProps.record, field);
+          if (valueGetter) {
+            value = valueGetter(value);
+          }
+
+          const props = {
             ...unrefs(edit.props),
             class: "ft-table-edit",
-            [model]: get(scopeProps.record, field),
+            [model]: value,
             [`onUpdate:${model}`]: (value: any) => {
+              if (valueSetter) {
+                value = valueSetter(value);
+              }
               set(scopeProps.record, field, value);
             },
-          });
+          };
+          return h(component, props);
         }
       }
     };

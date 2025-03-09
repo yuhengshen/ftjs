@@ -1,4 +1,4 @@
-import { computed, toValue } from "vue";
+import { computed } from "vue";
 import { FtFormColumnBase } from "./columns";
 import { useFormInject } from "./use-form";
 import { isEmptyStrOrNull, get, set } from "../utils";
@@ -74,12 +74,7 @@ export const useFormItem = <
     },
   });
 
-  const isView = computed(() => {
-    return toValue(props.column.isView) ?? props.isView;
-  });
-
   return {
     valueComputed,
-    isView,
   };
 };

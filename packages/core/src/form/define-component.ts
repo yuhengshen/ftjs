@@ -6,6 +6,7 @@ import {
   h,
   SetupContext,
   SlotsType,
+  toValue,
   VNode,
 } from "vue";
 import { useForm } from "./use-form";
@@ -47,6 +48,10 @@ export interface FtFormIntrinsicProps<
    * 如果`formData`不为`undefined`或者`null`，则双向绑定这个值，否则 FtForm内部会生成一个内部值
    */
   formData?: FormData;
+  /**
+   * 是否查看模式
+   */
+  isView?: boolean;
   /**
    * 内部 form 组件 props
    */
@@ -123,6 +128,7 @@ export const defineFtForm = <Type extends keyof FormTypeMap<any>>(
     "formData",
     "internalFormProps",
     "onSubmit",
+    "isView",
     "onUpdate:formData",
     ..._runtimeProps,
   ];
@@ -162,10 +168,13 @@ export const defineFtForm = <Type extends keyof FormTypeMap<any>>(
                 return null;
               }
               const component = renderMap.get(column.type)!;
+
+              const isView = toValue(column.isView) ?? props.isView;
+
               return h(component, {
                 column: column,
                 // 是否为查看模式
-                isView: column.isView,
+                isView: isView,
                 key: getField(column),
               });
             }),

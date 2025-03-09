@@ -1,7 +1,6 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, TreeSelect, TreeSelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnTreeSelect<T extends Record<string, any>>
@@ -14,7 +13,7 @@ export interface FtFormColumnTreeSelect<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnTreeSelect<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -25,7 +24,7 @@ export default defineFormComponent<FtFormColumnTreeSelect<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           <TreeSelect

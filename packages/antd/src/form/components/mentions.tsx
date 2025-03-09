@@ -1,7 +1,6 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Mentions, MentionsProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnMentions<T extends Record<string, any>>
@@ -14,7 +13,7 @@ export interface FtFormColumnMentions<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnMentions<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -23,7 +22,7 @@ export default defineFormComponent<FtFormColumnMentions<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           <Mentions v-model:value={valueComputed.value} {..._props} />

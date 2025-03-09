@@ -21,13 +21,13 @@ const clickInputValue = "点击了";
 renderMap.set(
   "input",
   defineFormComponent<any>(props => {
-    const { valueComputed, isView } = useFormItem({ props });
+    const { valueComputed } = useFormItem({ props });
 
     return () => {
       return (
         <div
           class="mock-input"
-          data-view={JSON.stringify(isView.value)}
+          data-view={JSON.stringify(props.isView)}
           data-value={valueComputed.value}
           data-title={toValue(props.column.title)}
           onClick={() => {
@@ -43,12 +43,12 @@ renderMap.set(
 renderMap.set(
   "select",
   defineFormComponent<any>(props => {
-    const { valueComputed, isView } = useFormItem({ props });
+    const { valueComputed } = useFormItem({ props });
 
     return () => {
       const _props = unrefs(props.column.props);
 
-      const text = isView.value
+      const text = props.isView
         ? _props.options.find(e => e.value === valueComputed.value)?.label
         : valueComputed.value;
 
@@ -56,7 +56,7 @@ renderMap.set(
         <div
           class="mock-select"
           data-title={toValue(props.column.title)}
-          data-view={JSON.stringify(isView.value)}
+          data-view={JSON.stringify(props.isView)}
           data-value={valueComputed.value}
         >
           {text}

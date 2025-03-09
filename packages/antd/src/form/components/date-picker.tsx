@@ -1,7 +1,6 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, DatePicker, DatePickerProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 export interface FtFormColumnDatePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -13,7 +12,7 @@ export interface FtFormColumnDatePicker<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnDatePicker<any>>(props => {
-  const { valueComputed, isView } = useFormItem<any, "antd">({ props });
+  const { valueComputed } = useFormItem<any, "antd">({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -25,7 +24,7 @@ export default defineFormComponent<FtFormColumnDatePicker<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           // @ts-expect-error 类型推断错误

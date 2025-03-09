@@ -1,7 +1,6 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Cascader, CascaderProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnCascader<T extends Record<string, any>>
@@ -14,7 +13,7 @@ export interface FtFormColumnCascader<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnCascader<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -27,7 +26,7 @@ export default defineFormComponent<FtFormColumnCascader<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           <Cascader

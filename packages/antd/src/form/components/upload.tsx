@@ -1,7 +1,7 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, UploadProps, Upload } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue, VNodeChild } from "vue";
+import { VNodeChild } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnUpload<T extends Record<string, any>>
@@ -17,7 +17,7 @@ export interface FtFormColumnUpload<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnUpload<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -26,13 +26,13 @@ export default defineFormComponent<FtFormColumnUpload<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           <Upload v-model:file-list={valueComputed.value} {..._props}>
             {props.column.slots.default({
               value: valueComputed.value,
-              isView: isView.value,
+              isView: props.isView,
             })}
           </Upload>
         )}

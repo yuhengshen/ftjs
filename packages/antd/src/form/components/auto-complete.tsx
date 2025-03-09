@@ -1,7 +1,6 @@
 import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, AutoComplete, AutoCompleteProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnAutoComplete<T extends Record<string, any>>
@@ -14,7 +13,7 @@ export interface FtFormColumnAutoComplete<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnAutoComplete<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -25,7 +24,7 @@ export default defineFormComponent<FtFormColumnAutoComplete<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        {toValue(isView.value) ? (
+        {props.isView ? (
           <div>{valueComputed.value}</div>
         ) : (
           <AutoComplete

@@ -13,7 +13,7 @@ export interface FtFormColumnRate<T extends Record<string, any>>
 }
 
 export default defineFormComponent<FtFormColumnRate<any>>(props => {
-  const { valueComputed, isView } = useFormItem({ props });
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -24,7 +24,7 @@ export default defineFormComponent<FtFormColumnRate<any>>(props => {
       <FormItem {...formItemProps.value}>
         <Rate
           v-model:value={valueComputed.value}
-          disabled={isView.value}
+          disabled={props.isView}
           {..._props}
         />
       </FormItem>

@@ -4,6 +4,7 @@ import { useFormItemProps } from "../composables";
 import { RangePickerProps } from "ant-design-vue/es/date-picker";
 import dayjs from "dayjs";
 import { AntdColumnBase } from "../register";
+import { computed } from "vue";
 
 export interface FtFormColumnRangePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -20,6 +21,13 @@ export default defineFormComponent<FtFormColumnRangePicker<any>>(props => {
   });
 
   const formItemProps = useFormItemProps(props.column);
+
+  const viewText = computed(() => {
+    if (props.isView) {
+      return valueComputed.value.join(" ~ ");
+    }
+    return "";
+  });
 
   return () => {
     const unrefsProps = unrefs(props.column.props) as any;
@@ -39,7 +47,7 @@ export default defineFormComponent<FtFormColumnRangePicker<any>>(props => {
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{valueComputed.value}</div>
+          <div>{viewText.value}</div>
         ) : (
           <RangePicker v-model:value={valueComputed.value} {..._props} />
         )}

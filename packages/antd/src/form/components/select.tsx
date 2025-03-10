@@ -3,6 +3,7 @@ import { FormItem, Select, SelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, unref } from "vue";
 import { AntdColumnBase } from "../register";
+import { isViewOptionsStyle } from "../style";
 
 export interface FtFormColumnSelect<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -24,7 +25,7 @@ export default defineFormComponent<FtFormColumnSelect<any>>(props => {
     return `请选择${formItemProps.value.label}`;
   });
 
-  const isViewText = computed(() => {
+  const isViewTextVNode = computed(() => {
     const options = unref(props.column.props?.options);
     const isMultiple = props.column.props?.mode === "multiple";
     const arr = isMultiple ? valueComputed.value : [valueComputed.value];
@@ -32,10 +33,9 @@ export default defineFormComponent<FtFormColumnSelect<any>>(props => {
       return arr
         .map((e: any) => {
           const option = options.find(o => o.value === e);
-          return option?.label;
+          return <span>{option?.label}</span>;
         })
-        .filter(Boolean)
-        .join(", ");
+        .filter(Boolean);
     }
     return valueComputed.value;
   });
@@ -45,7 +45,7 @@ export default defineFormComponent<FtFormColumnSelect<any>>(props => {
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{isViewText.value}</div>
+          <div style={isViewOptionsStyle}>{isViewTextVNode.value}</div>
         ) : (
           <Select
             v-model:value={valueComputed.value}

@@ -20,16 +20,14 @@ export default defineFormComponent<FtFormColumnAutoComplete<any>>(props => {
   return () => {
     const _props = unrefs(props.column.props);
 
-    const placeholder = `请输入${formItemProps.value.label}`;
-
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{valueComputed.value}</div>
+          <div>{valueComputed.value || "-"}</div>
         ) : (
           <AutoComplete
             v-model:value={valueComputed.value}
-            placeholder={placeholder}
+            placeholder={`请输入${formItemProps.value.label}`}
             allowClear
             {..._props}
           />

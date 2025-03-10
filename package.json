@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "turbo run build",
+    "doc": "pnpm --filter @ftjs/doc docs:dev",
     "release": "tsx ./scripts/release.ts",
     "pub:all": "pnpm --parallel run pub",
     "prepare": "husky",

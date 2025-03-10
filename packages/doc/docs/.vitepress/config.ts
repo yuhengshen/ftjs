@@ -2,10 +2,19 @@ import { defineConfig } from "vitepress";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { tabsMarkdownPlugin } from "vitepress-plugin-tabs";
 import { npmCommandsMarkdownPlugin } from "vitepress-plugin-npm-commands";
+import { fileURLToPath } from "url";
+import path from "path";
+
+const __dirname = fileURLToPath(import.meta.url);
 
 export default defineConfig({
   vite: {
     plugins: [vueJsx()],
+    resolve: {
+      alias: {
+        "@ftjs/antd": path.resolve(__dirname, "../../../../antd/src/index.ts"),
+      },
+    },
   },
   title: "ftjs",
   description: "基于 Vue 3 的表格表单处理解决方案",
@@ -52,6 +61,10 @@ export default defineConfig({
             {
               text: "恢复默认值",
               link: "/guide/examples/reset-to-default/",
+            },
+            {
+              text: "查看视图",
+              link: "/guide/examples/is-view/",
             },
           ],
         },

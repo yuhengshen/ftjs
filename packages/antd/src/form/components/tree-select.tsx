@@ -2,6 +2,8 @@ import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, TreeSelect, TreeSelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { AntdColumnBase } from "../register";
+import { computed, toValue } from "vue";
+import { isViewOptionsStyle } from "../style";
 
 export interface FtFormColumnTreeSelect<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -17,6 +19,33 @@ export default defineFormComponent<FtFormColumnTreeSelect<any>>(props => {
 
   const formItemProps = useFormItemProps(props.column);
 
+  const isViewText = computed(() => {
+    if (props.isView && valueComputed.value) {
+      const vNodes: any[] = [];
+      const isMultiple = toValue(props.column.props?.multiple);
+      const options = toValue(props.column.props?.treeData) || [];
+      const traverse = (options: any[], values: string[]) => {
+        if (vNodes.length === values.length) {
+          return;
+        }
+        for (const option of options) {
+          if (values.includes(option.value)) {
+            vNodes.push(<span>{option.label}</span>);
+          }
+          if (option.children) {
+            traverse(option.children, values);
+          }
+        }
+      };
+      traverse(
+        options,
+        isMultiple ? valueComputed.value : [valueComputed.value],
+      );
+      return vNodes;
+    }
+    return ["-"];
+  });
+
   return () => {
     const _props = unrefs(props.column.props);
 
@@ -25,7 +54,7 @@ export default defineFormComponent<FtFormColumnTreeSelect<any>>(props => {
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{valueComputed.value}</div>
+          <div style={isViewOptionsStyle}>{isViewText.value}</div>
         ) : (
           <TreeSelect
             v-model:value={valueComputed.value}

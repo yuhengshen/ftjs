@@ -1,7 +1,7 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { FtFormColumnBase } from "./columns";
 import { useFormInject } from "./use-form";
-import { isEmptyStrOrNull, get, set } from "../utils";
+import { get, set } from "../utils";
 import { CommonFormItemProps, FormTypeMap } from "./define-component";
 
 interface UseFormItemOptions<
@@ -40,6 +40,9 @@ export const useFormItem = <
   }
 
   const { form } = useFormInject<FormData, Type>()!;
+
+  const fieldsData = ref([]);
+
   /**
    * form 中的值处理
    */
@@ -47,11 +50,22 @@ export const useFormItem = <
     get() {
       let val;
       if (props.column.fields) {
-        val = props.column.fields
-          .map(field => {
-            return get(form.value, field);
-          })
-          .filter(e => !isEmptyStrOrNull(e));
+        const length = Math.max(
+          props.column.fields.length,
+          fieldsData.value.length,
+        );
+        const valArr: any[] = Array(length).fill(undefined);
+        for (let i = 0; i < length; i++) {
+          // 优先从 form.value 获取，以获取外部变更
+          const field = props.column.fields![i];
+          if (field && field !== "-") {
+            valArr[i] = get(form.value, field);
+          }
+          if (fieldsData.value[i]) {
+            valArr[i] = fieldsData.value[i];
+          }
+        }
+        val = valArr;
       } else if (props.column.field) {
         val = get(form.value, props.column.field);
       } else {
@@ -63,8 +77,14 @@ export const useFormItem = <
     set(val) {
       if (valueSetter) val = valueSetter(val);
       if (props.column.fields) {
+        const valArr = val ?? [];
+        fieldsData.value = valArr;
         props.column.fields.forEach((field, index) => {
-          set(form.value, field, val?.[index]);
+          const v = valArr[index];
+          if (field === "-") {
+            return;
+          }
+          set(form.value, field, v);
         });
       } else if (props.column.field) {
         set(form.value, props.column.field, val);

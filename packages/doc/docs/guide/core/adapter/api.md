@@ -177,11 +177,11 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
    *
    * 如： [startTime, endTime]
    *
-   * 注意： 第一个字段需要尽量是基础类型的值(这个值会用于watch, expect等操作)，后面可以包含详情
+   * 注意： 第一个字段需要尽量是基础类型的值(这个值会用于watch, expect等操作)，中间字段则可以用'-'来忽略，后面字段可以直接忽略
    *
    * 如人员信息: [staffId, staffInfoObj, deptInfoObj, ...]
    */
-  fields?: string[];
+  fields?: (RecordPath<FormData> | "-")[];
   /**
    * 字段标题
    *

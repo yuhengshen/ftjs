@@ -17,7 +17,7 @@ import Demo from "./demo.vue";
 
 == 代码
 
-<<< ./demo.vue
+<<< ./demo.vue{tsx-vue}
 :::
 
 :::tip 提示

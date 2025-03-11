@@ -2,6 +2,10 @@
 
 > @ftjs/antd 是基于 @ftjs/core 的 Ant Design Vue 适配器，提供了与 Ant Design Vue 组件库的无缝集成。
 
+::: info 按需使用
+预制的 `FtForm`、`FtFormSearch`、`FtTable`、`FtVxeTable` 可以按需使用，你也可以根据项目需求将特定组件源码拷贝一份自己去修改。得益于 treeshaking 机制，未使用的组件不会增加打包体积。
+:::
+
 ## 简介
 
 @ftjs/antd 是 ftjs 生态系统的一部分，它基于 @ftjs/core 核心库，为 Ant Design Vue 组件库提供了适配实现。通过 @ftjs/antd，您可以使用 ftjs 的声明式 API 来快速构建基于 Ant Design Vue 的表单和表格，同时保持完整的类型安全和灵活的扩展能力。

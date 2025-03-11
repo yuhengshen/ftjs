@@ -58,7 +58,7 @@ const tableColumns = [
 
 - 定义列的显示名称
 - 在 table 中默认继承 table 的 title
-- 支持动态设置
+- 响应式属性
 
 ### 隐藏控制（hide）
 
@@ -69,7 +69,6 @@ const tableColumns = [
 ### 默认值（value）
 
 - 设置字段的初始值
-- 支持各种数据类型
 
 ## 高级特性
 
@@ -127,6 +126,7 @@ const columns = [
       });
     },
     valueSetter: val => {
+      // 通过 unResolvedMap 存储未上传完成的文件信息
       unResolvedMap.clear();
       const url = val.map((e: any) => {
         const url = e.url ?? e.response?.url;
@@ -140,6 +140,10 @@ const columns = [
   },
 ];
 ```
+
+::: tip
+上传文件往往在一个项目往往是统一的处理方式，建议将 `column` 定义抽离出来，方便维护。
+:::
 
 ### 监听机制（watch）
 
@@ -168,7 +172,6 @@ const columns = [
 
 #### 查看模式（isView）
 
-- 控制字段是否为只读状态
 - 渲染性能更好
 - 支持动态切换
 

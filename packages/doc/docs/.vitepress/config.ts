@@ -56,15 +56,11 @@ export default defineConfig({
           ],
         },
         {
-          text: "Form 示例",
+          text: "示例",
           items: [
             {
-              text: "恢复默认值",
-              link: "/guide/examples/reset-to-default/",
-            },
-            {
-              text: "查看视图",
-              link: "/guide/examples/is-view/",
+              text: "antd 示例",
+              link: "/antd/examples/reset-to-default/",
             },
           ],
         },
@@ -99,6 +95,19 @@ export default defineConfig({
           items: [
             { text: "Table", link: "/antd/components/table/" },
             { text: "VxeTable", link: "/antd/components/vxe-table/" },
+          ],
+        },
+        {
+          text: "示例",
+          items: [
+            {
+              text: "恢复默认值",
+              link: "/antd/examples/reset-to-default/",
+            },
+            {
+              text: "查看视图",
+              link: "/antd/examples/is-view/",
+            },
           ],
         },
       ],

@@ -187,7 +187,7 @@ const columns: FtFormProps<FormData>["columns"] = [
     type: "tree-select",
     title: "树选择",
     field: "treeSelect",
-    value: "leaf1",
+    value: ["leaf1"],
     props: {
       multiple: true,
       treeData: [

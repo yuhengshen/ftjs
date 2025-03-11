@@ -12,6 +12,7 @@
     "@ftjs/antd": "workspace:*",
     "@ftjs/core": "workspace:*",
     "ant-design-vue": "catalog:",
+    "@ant-design/icons-vue": "catalog:",
     "vitepress": "^1.6.3",
     "vue": "catalog:",
     "vxe-pc-ui": "catalog:",

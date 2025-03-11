@@ -77,6 +77,10 @@ export default defineConfig({
             { text: "@ftjs/vant 🚧", link: "#" },
           ],
         },
+        {
+          text: "其他",
+          items: [{ text: "FAQ", link: "/guide/core/qa/" }],
+        },
       ],
       "/antd/": [
         {

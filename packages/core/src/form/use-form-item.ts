@@ -1,8 +1,18 @@
-import { computed, ref } from "vue";
+import { computed, ref, VNodeChild } from "vue";
 import { FtFormColumnBase } from "./columns";
 import { useFormInject } from "./use-form";
 import { get, set } from "../utils";
 import { CommonFormItemProps, FormTypeMap } from "./define-component";
+
+type Slots = (props: {
+  value: any;
+  isView: boolean;
+  [key: string]: any;
+}) => VNodeChild;
+
+export type CommonSlots<T extends readonly string[]> = {
+  [K in T[number]]?: Slots;
+};
 
 interface UseFormItemOptions<
   FormData extends Record<string, any>,
@@ -94,7 +104,30 @@ export const useFormItem = <
     },
   });
 
+  /**
+   * 通用 slots，
+   * 如果 props 不一致，在组件定义时覆写
+   */
+  let slots: Record<string, (props: any) => VNodeChild> | undefined;
+
+  if (props.column.slots) {
+    slots = Object.fromEntries(
+      Object.entries<Slots>(props.column.slots).map(([key, value]) => {
+        return [
+          key,
+          scopedProps =>
+            value({
+              value: valueComputed.value,
+              isView: props.isView,
+              scopedProps,
+            }),
+        ];
+      }),
+    );
+  }
+
   return {
     valueComputed,
+    slots,
   };
 };

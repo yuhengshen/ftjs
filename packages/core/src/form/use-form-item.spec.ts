@@ -271,4 +271,27 @@ describe("useFormItem", () => {
     expect(mockForm.value.address.city).toBeUndefined();
     expect(mockForm.value.address.street).toBeUndefined();
   });
+
+  it("应该能处理slots", () => {
+    mockColumn = {
+      field: "age",
+      slots: {
+        clearIcon: ({ value, isView }) => {
+          return `value: ${value}, isView: ${isView}`;
+        },
+      },
+    };
+
+    mockProps = {
+      column: mockColumn,
+      isView: true,
+    };
+
+    const { slots } = useFormItem({
+      props: mockProps,
+    });
+
+    expect(slots).toBeDefined();
+    expect(slots?.clearIcon?.()).toBe("value: 30, isView: true");
+  });
 });

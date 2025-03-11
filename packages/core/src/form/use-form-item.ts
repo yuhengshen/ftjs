@@ -108,7 +108,7 @@ export const useFormItem = <
    * 通用 slots，
    * 如果 props 不一致，在组件定义时覆写
    */
-  let slots: Record<string, (props: any) => VNodeChild> | undefined;
+  let slots: Record<string, (props?: any) => VNodeChild> | undefined;
 
   if (props.column.slots) {
     slots = Object.fromEntries(

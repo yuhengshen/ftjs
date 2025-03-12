@@ -371,7 +371,11 @@ export const useForm = <
     visibleColumns.value.forEach(usefulColumn => {
       const { fields } = getFieldsAndValues(usefulColumn);
       fields.forEach(field => {
-        set(formData, field, get(form.value, field));
+        let value = get(form.value, field);
+        if (usefulColumn.formatGetFormData) {
+          value = usefulColumn.formatGetFormData(value);
+        }
+        set(formData, field, value);
       });
     });
     return formData;

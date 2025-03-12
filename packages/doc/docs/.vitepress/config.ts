@@ -116,6 +116,10 @@ export default defineConfig({
               text: "图片上传",
               link: "/antd/examples/upload/",
             },
+            {
+              text: "格式化表单结果",
+              link: "/antd/examples/format-get-form-data/",
+            },
           ],
         },
       ],

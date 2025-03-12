@@ -70,6 +70,10 @@ const tableColumns = [
 
 - 设置字段的初始值
 
+### 格式化表单获取值（formatGetFormData）
+
+- 获取表单有效值时的格式化函数，不影响表单内部实际值，[查看示例](/antd/examples/format-get-form-data/)
+
 ## 高级特性
 
 ### 字段联动（control）
@@ -256,6 +260,11 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
 
   valueGetter?: (val: any) => any;
   valueSetter?: (val: any) => any;
+
+  /**
+   * getFormData 时，对数据进行格式化，不会影响 Form 中的值
+   */
+  formatGetFormData?: (val: any) => any;
 
   /**
    * props 配置，子类定义

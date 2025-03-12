@@ -233,6 +233,11 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
   valueSetter?: (val: any) => any;
 
   /**
+   * getFormData 时，对数据进行格式化，不会影响 Form 中的值
+   */
+  formatGetFormData?: (val: any) => any;
+
+  /**
    * props 配置，子类定义
    */
   props?: any;

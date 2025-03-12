@@ -70,8 +70,7 @@ export const useFormItem = <
           const field = props.column.fields![i];
           if (field && field !== "-") {
             valArr[i] = get(form.value, field);
-          }
-          if (fieldsData.value[i]) {
+          } else if (fieldsData.value[i]) {
             valArr[i] = fieldsData.value[i];
           }
         }

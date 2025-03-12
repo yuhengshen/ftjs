@@ -112,6 +112,10 @@ export default defineConfig({
               text: "查看视图",
               link: "/antd/examples/is-view/",
             },
+            {
+              text: "图片上传",
+              link: "/antd/examples/upload/",
+            },
           ],
         },
       ],

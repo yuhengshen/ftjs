@@ -1,7 +1,13 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import {
+  CommonSlots,
+  defineFormComponent,
+  Refs,
+  unrefs,
+  useFormItem,
+} from "@ftjs/core";
 import { FormItem, UploadProps, Upload } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { computed, toValue, VNodeChild } from "vue";
+import { computed, toValue } from "vue";
 import { AntdColumnBase } from "../register";
 
 export interface FtFormColumnUpload<T extends Record<string, any>>
@@ -11,13 +17,11 @@ export interface FtFormColumnUpload<T extends Record<string, any>>
    */
   type: "upload";
   props?: Refs<UploadProps>;
-  slots: {
-    default: (ctx: { value: any; isView: boolean }) => VNodeChild;
-  };
+  slots: CommonSlots<["default"]>;
 }
 
 export default defineFormComponent<FtFormColumnUpload<any>>(props => {
-  const { valueComputed } = useFormItem({ props });
+  const { valueComputed, slots } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
@@ -30,22 +34,19 @@ export default defineFormComponent<FtFormColumnUpload<any>>(props => {
 
     return (
       <FormItem {...formItemProps.value}>
-        <Upload
-          v-model:file-list={valueComputed.value}
-          {..._props}
-          disabled={disabled.value}
-        >
-          {props.isView ? (
-            !valueComputed.value || valueComputed.value.length === 0 ? (
-              <div>-</div>
-            ) : null
-          ) : (
-            props.column.slots.default({
-              value: valueComputed.value,
-              isView: props.isView,
-            })
-          )}
-        </Upload>
+        {props.isView ? (
+          <Upload file-list={valueComputed.value} {..._props} disabled={true}>
+            {!valueComputed.value?.length && <div>-</div>}
+          </Upload>
+        ) : (
+          <Upload
+            v-model:file-list={valueComputed.value}
+            {..._props}
+            disabled={disabled.value}
+          >
+            {slots}
+          </Upload>
+        )}
       </FormItem>
     );
   };

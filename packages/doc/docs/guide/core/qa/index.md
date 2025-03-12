@@ -85,14 +85,19 @@ export default defineFormComponent<FtFormColumnInput<any>>(props => {
 
 ## 为什么对于 fields 解构的值，valueGetter 中的参数是一个包含 undefined 的数组？
 
-为了保持解构值一一对应，value 的值是一个与 fields **长度相同**的数组，如果某个字段在 Form 中没有值，则会被设置为 undefined。对其进行处理时，可能需要先过滤掉 undefined 的值。
+为了保持解构值一一对应，value 的值是一个与 fields **长度相同**的数组，如果某个字段在 Form 中没有值，则会被设置为 undefined。对其进行处理时，可能需要先处理 undefined 的值。
 
 ```ts
 const column = {
   fields: ["a", "_", "b"],
-  valueGetter(v) {
+  valueGetter(list) {
     // 默认 [undefined, undefined, undefined]
-    const arr = (v || [])?.filter(Boolean);
+    const arr = list?.forEach(v => {
+      if (v == null) {
+        // ...
+      }
+      // ...
+    });
     // 其他业务逻辑
     return arr;
   },

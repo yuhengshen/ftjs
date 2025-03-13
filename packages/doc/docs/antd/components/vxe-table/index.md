@@ -43,11 +43,6 @@ FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table �
 | fitFlexHeight      | 是否自适应父元素剩余高度      | `boolean`                                                      | `true`              |
 | minHeight          | 最小高度                      | `number`                                                       | `310`               |
 | hidePagination     | 是否隐藏分页                  | `boolean`                                                      | `false`             |
-| treeConfig         | 树形表格配置                  | `FtVxeTableProps<TableData, SearchData>["treeConfig"]`         | -                   |
-| rowConfig          | 行配置                        | `FtVxeTableProps<TableData, SearchData>["rowConfig"]`          | -                   |
-| customConfig       | 自定义配置                    | `FtVxeTableProps<TableData, SearchData>["customConfig"]`       | -                   |
-| toolbarConfig      | 工具栏配置                    | `FtVxeTableProps<TableData, SearchData>["toolbarConfig"]`      | -                   |
-| columnConfig       | 列配置                        | `FtVxeTableProps<TableData, SearchData>["columnConfig"]`       | -                   |
 
 ## 表格列配置
 

@@ -83,16 +83,7 @@ type VxeTableColumn<TableData extends Record<string, any>> =
  * 内部表格 props
  */
 interface InternalVxeTableProps<TableData extends Record<string, any>>
-  extends Omit<
-    VxeGridProps<TableData>,
-    | "columns"
-    | "minHeight"
-    | "treeConfig"
-    | "rowConfig"
-    | "customConfig"
-    | "toolbarConfig"
-    | "columnConfig"
-  > {}
+  extends Omit<VxeGridProps<TableData>, "columns" | "minHeight"> {}
 
 /**
  * 表格插槽
@@ -124,26 +115,6 @@ interface VxeExtendedProps<
    */
   minHeight?: number;
   /**
-   * vxe-table 树形配置
-   */
-  treeConfig?: VxeGridProps<TableData>["treeConfig"];
-  /**
-   * vxe-table 行配置
-   */
-  rowConfig?: VxeGridProps<TableData>["rowConfig"];
-  /**
-   * vxe-table 自定义配置
-   */
-  customConfig?: VxeGridProps<TableData>["customConfig"];
-  /**
-   * vxe-table 工具栏配置
-   */
-  toolbarConfig?: VxeGridProps<TableData>["toolbarConfig"];
-  /**
-   * vxe-table 列配置
-   */
-  columnConfig?: VxeGridProps<TableData>["columnConfig"];
-  /**
    * 是否隐藏分页
    * @default false
    */
@@ -168,7 +139,7 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
     const {
       formColumns,
       tableColumns,
-      internalTableProps,
+      internalTableProps: _internalTableProps,
       internalFormProps,
       tableData,
       loading,
@@ -180,11 +151,6 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
       fitFlexHeight,
       minHeight,
       hidePagination,
-      rowConfig: _rowConfig,
-      customConfig: _customConfig,
-      toolbarConfig: _toolbarConfig,
-      columnConfig: _columnConfig,
-      treeConfig,
       onSearch,
       "onUpdate:exposed": onUpdateExposed,
     } = useTableInject<any, any, "vxe-table">()!;
@@ -208,13 +174,6 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
       if (initSearch.value) {
         handleSearch();
       }
-    });
-
-    const rowConfig = computed(() => {
-      return {
-        keyField: keyField.value,
-        ..._rowConfig.value,
-      };
     });
 
     const enableEdit = computed(() => {
@@ -295,37 +254,45 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
       });
     });
 
-    const customConfig = computed<VxeGridProps<any>["customConfig"]>(() => {
+    // 做一些默认定制
+    const internalTableProps = computed<InternalVxeTableProps<any>>(() => {
+      const {
+        columnConfig,
+        editConfig,
+        toolbarConfig,
+        customConfig,
+        rowConfig,
+      } = _internalTableProps.value ?? {};
       return {
-        storage: true,
-        enabled: cache.value != null,
-        ..._customConfig.value,
-      };
-    });
-
-    const toolbarConfig = computed<VxeGridProps<any>["toolbarConfig"]>(() => {
-      return {
-        custom: true,
-        zoom: true,
-        ..._toolbarConfig.value,
-      };
-    });
-
-    const editConfig = computed<VxeGridProps<any>["editConfig"]>(() => {
-      if (!enableEdit.value) return undefined;
-      return {
-        mode: "row",
-        showStatus: true,
-        trigger: "manual",
-        autoClear: false,
-        autoPos: true,
-      };
-    });
-
-    const columnConfig = computed<VxeGridProps<any>["columnConfig"]>(() => {
-      return {
-        resizable: true,
-        ..._columnConfig.value,
+        ..._internalTableProps.value,
+        columnConfig: {
+          resizable: true,
+          ...columnConfig,
+        },
+        editConfig: enableEdit.value
+          ? {
+              mode: "row",
+              showStatus: true,
+              trigger: "manual",
+              autoClear: false,
+              autoPos: true,
+              ...editConfig,
+            }
+          : undefined,
+        toolbarConfig: {
+          custom: true,
+          zoom: true,
+          ...toolbarConfig,
+        },
+        customConfig: {
+          storage: true,
+          enabled: cache.value != null,
+          ...customConfig,
+        },
+        rowConfig: {
+          keyField: keyField.value,
+          ...rowConfig,
+        },
       };
     });
 
@@ -391,14 +358,8 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
             loading={loading.value}
             data={tableData.value}
             minHeight={minHeight.value ?? 310}
-            rowConfig={rowConfig.value}
-            treeConfig={treeConfig.value}
             id={cache.value}
-            toolbarConfig={toolbarConfig.value}
-            customConfig={customConfig.value}
-            columnConfig={columnConfig.value}
             keepSource={enableEdit.value}
-            editConfig={editConfig.value}
             {...internalTableProps.value}
           >
             {{
@@ -445,11 +406,6 @@ export const FtVxeTable = defineFtTable<"vxe-table">(
     ["hidePagination", { type: Boolean }],
     "exposed",
     "onUpdate:exposed",
-    "rowConfig",
-    "treeConfig",
-    "customConfig",
-    "toolbarConfig",
-    "columnConfig",
   ],
 );
 

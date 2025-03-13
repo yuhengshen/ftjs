@@ -195,10 +195,15 @@ const handleSelectionChange = (selection: TableData[]) => {
 // 初始化加载数据
 createTableData();
 
-const toolbarConfig: FtVxeTableProps<TableData, SearchData>["toolbarConfig"] = {
-  slots: {
-    buttons: "buttons",
-    tools: "tools",
+const internalTableProps: FtVxeTableProps<
+  TableData,
+  SearchData
+>["internalTableProps"] = {
+  toolbarConfig: {
+    slots: {
+      buttons: "buttons",
+      tools: "tools",
+    },
   },
 };
 </script>
@@ -214,7 +219,7 @@ const toolbarConfig: FtVxeTableProps<TableData, SearchData>["toolbarConfig"] = {
       :columns
       :loading
       :total
-      :toolbarConfig
+      :internal-table-props
       cache="vxe-table-demo-cache"
       @search="handleSearch"
     >

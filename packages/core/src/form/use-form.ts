@@ -5,11 +5,9 @@ import {
   onUnmounted,
   nextTick,
   toValue,
-  Ref,
-  unref,
-  provide,
-  inject,
   ComputedRef,
+  inject,
+  provide,
 } from "vue";
 import {
   cloneDeep,
@@ -20,34 +18,18 @@ import {
   getStorage,
   setStorage,
 } from "../utils";
-import { FormTypeMap, FtFormIntrinsicProps } from "./define-component";
 import { FtFormColumnBase } from "./columns";
-import { RecordPath, SplitEventKeys } from "../type-helper";
-import { ExposeWithComment } from "./types";
+import { RecordPath } from "../type-helper";
 
-export type FormInject<
-  FormData extends Record<string, any>,
-  Type extends keyof FormTypeMap<FormData>,
-> = Pick<
-  ExposeWithComment<FormData, Type>,
-  | "form"
-  | "columnsChecked"
-  | "columnsSort"
-  | "visibleColumns"
-  | "internalFormProps"
-  | "onSubmit"
-  | "getFormData"
-  | "resetToDefault"
-  | "setAsDefault"
-  | "resetColumnsSort"
-  | "resetColumnsChecked"
-  | "cache"
-> &
-  SplitEventKeys<FormTypeMap<FormData>[Type]["extendedProps"]> & {
-    columns: ComputedRef<FormTypeMap<FormData>[Type]["columns"][]>;
-  };
+interface FormInject {
+  form: ComputedRef<Record<string, any>>;
+}
 
 const provideFormKey = Symbol("@ftjs/core-form-provide");
+
+export const useFormInject = () => {
+  return inject<FormInject>(provideFormKey);
+};
 
 /**
  * 缓存展示项
@@ -159,6 +141,30 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
   };
 };
 
+export interface FtBaseFormProps<F extends Record<string, any>> {
+  /**
+   * v-model:formData 的值
+   */
+  formData?: F;
+  "onUpdate:formData"?: (value: F) => void;
+  /**
+   * 提交表单
+   */
+  onSubmit?: (formData: F) => Promise<void> | void;
+  /**
+   * 是否查看模式
+   */
+  isView?: boolean;
+  /**
+   * 表单列
+   */
+  columns: FtFormColumnBase<F>[];
+  /**
+   * 用于缓存配置，不填则不缓存
+   */
+  cache?: string;
+}
+
 /**
  * 结构提取 columns 的 field 和 value
  */
@@ -170,23 +176,30 @@ const getFieldsAndValues = <T extends Record<string, any>>(
   return { fields, values };
 };
 
-export const useForm = <
-  FormData extends Record<string, any>,
-  Type extends keyof FormTypeMap<FormData>,
->(
-  props: FtFormIntrinsicProps<FormData, Type> &
-    FormTypeMap<FormData>[Type]["extendedProps"] & {
-      columns: FormTypeMap<FormData>[Type]["columns"][];
-    },
-  formData: Ref<FormData | undefined>,
-  runtimePropsKeys: string[],
-) => {
-  const columns = computed(() => toValue(props.columns));
+export type ExtractFormData<P extends FtBaseFormProps<any>> =
+  P extends FtBaseFormProps<infer F> ? F : never;
 
-  const formLocal = ref({} as FormData);
-  const form = (
-    unref(formData) != null ? formData : formLocal
-  ) as Ref<FormData>;
+export type ExtractColumns<P extends FtBaseFormProps<any>> =
+  P extends FtBaseFormProps<any> ? P["columns"] : never;
+
+export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
+  const columns = computed(() => props.columns as ExtractColumns<P>);
+
+  const formLocal = ref(props.formData ?? {});
+
+  if (props.formData == null) {
+    props["onUpdate:formData"]?.(formLocal.value);
+  }
+
+  const form = computed({
+    get() {
+      return formLocal.value;
+    },
+    set(v) {
+      formLocal.value = v;
+      props["onUpdate:formData"]?.(v);
+    },
+  });
 
   const { columnsChecked, resetColumnsChecked } = useColumnsChecked(
     columns,
@@ -197,7 +210,7 @@ export const useForm = <
     props.cache,
   );
 
-  let tmpDefaultForm: FormData;
+  let tmpDefaultForm: ExtractFormData<P>;
 
   // 需要监听的表单字段
   const watchMap = new Map<string, () => void>();
@@ -219,17 +232,8 @@ export const useForm = <
         const aSort = columnsSort.value[keyA] ?? 0;
         const bSort = columnsSort.value[keyB] ?? 0;
         return aSort - bSort;
-      });
+      }) as ExtractColumns<P>;
   });
-
-  const customProps = runtimePropsKeys.reduce((acc, event: string) => {
-    if (event.startsWith("on")) {
-      acc[event] = props[event];
-    } else {
-      acc[event] = computed(() => props[event]);
-    }
-    return acc;
-  }, {}) as any;
 
   watch(
     columns,
@@ -333,19 +337,19 @@ export const useForm = <
       form.value = cloneDeep(tmpDefaultForm);
       return;
     }
-    form.value = columns.value.reduce<FormData>((prev, column) => {
+    form.value = columns.value.reduce<ExtractFormData<P>>((prev, column) => {
       const { fields, values } = getFieldsAndValues(column);
       fields.forEach((field, idx) => {
         set(prev, field, cloneDeep(values[idx]));
       });
       return prev;
-    }, {} as FormData);
+    }, {} as ExtractFormData<P>);
   };
 
   /**
    * 设置当前表单的默认值，如果参数为空，则将`当前表单值`设置为默认值
    */
-  const setAsDefault: SetAsDefault<FormData> = (v?) => {
+  const setAsDefault: SetAsDefault<ExtractFormData<P>> = (v?) => {
     tmpDefaultForm = cloneDeep(v ?? form.value);
   };
 
@@ -366,8 +370,8 @@ export const useForm = <
   /**
    * 获取表单当前展示出的表单值
    */
-  const getFormData: GetFormData<FormData> = () => {
-    const formData: FormData = {} as FormData;
+  const getFormData: GetFormData<ExtractFormData<P>> = () => {
+    const formData = {} as ExtractFormData<P>;
     visibleColumns.value.forEach(usefulColumn => {
       const { fields } = getFieldsAndValues(usefulColumn);
       fields.forEach(field => {
@@ -381,41 +385,21 @@ export const useForm = <
     return formData;
   };
 
-  const internalFormProps = computed(() => props.internalFormProps);
-
-  const cache = computed(() => props.cache);
-
-  provide<FormInject<FormData, Type>>(provideFormKey, {
+  provide(provideFormKey, {
     form,
-    columnsChecked,
-    columnsSort,
-    columns,
-    visibleColumns,
-    internalFormProps,
-    cache,
-    getFormData,
-    resetToDefault,
-    setAsDefault,
-    onSubmit: props.onSubmit,
-    resetColumnsChecked,
-    resetColumnsSort,
-    ...customProps,
   });
 
   return {
     form,
     visibleColumns,
+    columnsChecked,
+    columnsSort,
     resetToDefault,
     getFormData,
     setAsDefault,
+    resetColumnsChecked,
+    resetColumnsSort,
   };
-};
-
-export const useFormInject = <
-  FormData extends Record<string, any>,
-  Type extends keyof FormTypeMap<FormData>,
->() => {
-  return inject<FormInject<FormData, Type>>(provideFormKey);
 };
 
 export type GetFormData<FormData extends Record<string, any>> = () => FormData;

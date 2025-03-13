@@ -3,7 +3,7 @@
 > @ftjs/antd 是基于 @ftjs/core 的 Ant Design Vue 适配器，提供了与 Ant Design Vue 组件库的无缝集成。
 
 ::: info 按需使用
-预制的 `FtForm`、`FtFormSearch`、`FtTable`、`FtVxeTable` 可以按需使用，你也可以根据项目需求将特定组件源码拷贝一份自己去修改。得益于 treeshaking 机制，未使用的组件不会增加打包体积。
+预制的 `FtAntdForm`、`FtAntdFormSearch`、`FtTable`、`FtVxeTable` 可以按需使用，你也可以根据项目需求将特定组件源码拷贝一份自己去修改。得益于 treeshaking 机制，未使用的组件不会增加打包体积。
 :::
 
 ## 简介
@@ -28,12 +28,12 @@ npm i @ftjs/antd // [!=npm auto]
 
 @ftjs/antd 提供了以下核心组件：
 
-| 组件名       | 说明                             | 文档链接                                      |
-| ------------ | -------------------------------- | --------------------------------------------- |
-| FtForm       | 基础表单组件                     | [查看文档](./components/form/index.md)        |
-| FtFormSearch | 搜索表单组件                     | [查看文档](./components/form-search/index.md) |
-| FtTable      | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table/index.md)       |
-| FtVxeTable   | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table/index.md)   |
+| 组件名           | 说明                             | 文档链接                                      |
+| ---------------- | -------------------------------- | --------------------------------------------- |
+| FtAntdForm       | 基础表单组件                     | [查看文档](./components/form/index.md)        |
+| FtAntdFormSearch | 搜索表单组件                     | [查看文档](./components/form-search/index.md) |
+| FtAntTable       | 基于 Ant Design Table 的表格组件 | [查看文档](./components/table/index.md)       |
+| FtVxeTable       | 基于 VXE-Table 的表格组件        | [查看文档](./components/vxe-table/index.md)   |
 
 ## 示例
 

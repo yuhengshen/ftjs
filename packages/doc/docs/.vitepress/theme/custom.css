@@ -12,11 +12,6 @@
   background: transparent;
 }
 
-.ant-pagination {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .vxe-table--scroll-y-handle,
 .vxe-table--body-inner-wrapper {
   /* 阻止滚动穿透 */

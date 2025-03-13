@@ -38,7 +38,6 @@ FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table �
 | cache              | 搜索条件缓存标识              | `string`                                                       | -                   |
 | internalTableProps | VXE-Table Grid 组件的原生属性 | `FtVxeTableProps<TableData, SearchData>["internalTableProps"]` | -                   |
 | internalFormProps  | 搜索表单的原生属性            | `FtVxeTableProps<TableData, SearchData>["internalFormProps"]`  | -                   |
-| exposed            | 表格暴露的方法                | `FtVxeTableProps<TableData, SearchData>["exposed"]`            | -                   |
 | initSearch         | 是否初始化搜索                | `boolean`                                                      | `true`              |
 | fitFlexHeight      | 是否自适应父元素剩余高度      | `boolean`                                                      | `true`              |
 | minHeight          | 最小高度                      | `number`                                                       | `310`               |
@@ -48,30 +47,27 @@ FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table �
 
 FtVxeTable 的列配置继承了 [VXE-Table 的列配置](https://vxetable.cn/#/column/api)，并扩展了搜索相关的配置：
 
-| 属性名 | 说明     | 类型                                      | 默认值 |
-| ------ | -------- | ----------------------------------------- | ------ |
-| field  | 列字段名 | `string`                                  | -      |
-| title  | 列标题   | `string`                                  | -      |
-| search | 搜索配置 | `FormColumn<SearchData>`                  | -      |
-| edit   | 编辑配置 | `keyof EditMap<T> \| ValueOf<EditMap<T>>` | -      |
+| 属性名 | 说明     | 类型                                          | 默认值 |
+| ------ | -------- | --------------------------------------------- | ------ |
+| field  | 列字段名 | `string`                                      | -      |
+| title  | 列标题   | `string`                                      | -      |
+| search | 搜索配置 | `FtAntdFormColumn<SearchData> \| type-string` | -      |
+| edit   | 编辑配置 | `keyof EditMap<T> \| ValueOf<EditMap<T>>`     | -      |
 
 ## 事件
 
-| 事件名           | 说明             | 回调参数                                                                 |
-| ---------------- | ---------------- | ------------------------------------------------------------------------ |
-| search           | 搜索事件         | `(searchData: SearchData, info: { pagination?: VxePagination }) => void` |
-| update:tableData | 表格数据更新事件 | `(tableData: TableData[]) => void`                                       |
-| update:exposed   | 表格方法暴露事件 | `(exposed: VxeTableExposed<TableData, SearchData>) => void`              |
+| 事件名           | 说明             | 回调参数                           |
+| ---------------- | ---------------- | ---------------------------------- |
+| search           | 搜索事件         | `() => void`                       |
+| update:tableData | 表格数据更新事件 | `(tableData: TableData[]) => void` |
 
 ## 方法
 
-通过 `v-model:exposed` 事件可以获取表格实例，实例提供以下方法：
-
-| 方法名       | 说明            | 参数 | 返回值                       |
-| ------------ | --------------- | ---- | ---------------------------- |
-| refresh      | 刷新表格数据    | -    | `Promise<void>`              |
-| formExposed  | 表单暴露的方法  | -    | `FormExposed<SearchData>`    |
-| tableExposed | 获取VXE表格实例 | -    | `VxeGridInstance<TableData>` |
+| 方法名  | 说明         | 参数 | 返回值                       |
+| ------- | ------------ | ---- | ---------------------------- |
+| refresh | 刷新表格数据 | -    | `Promise<void>`              |
+| formRef | 表单实例     | -    | `FormSearchInstance`         |
+| gridRef | 表格实例     | -    | `VxeGridInstance<TableData>` |
 
 ## 插槽
 

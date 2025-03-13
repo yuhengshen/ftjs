@@ -10,13 +10,8 @@ import {
   unrefs,
   getStorage,
   setStorage,
-  transferVueArrayPropsToObject,
-  getPropsKeys,
 } from "./utils";
 import { ref } from "vue";
-
-// 从 utils.ts 导入类型定义
-import type { RuntimeProps } from "./utils";
 
 /**
  * 创建模拟localStorage的辅助函数
@@ -300,60 +295,6 @@ describe("utils", () => {
       // 验证结果
       expect(localStorageMock.getItem).not.toHaveBeenCalled();
       expect(localStorageMock.setItem).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("transferVueArrayPropsToObject", () => {
-    type Props = ["prop1", "prop2", "prop3"];
-
-    it("应该将字符串数组转换为对象", () => {
-      const props: RuntimeProps<Props>[] = ["prop1", "prop2", "prop3"];
-      const result = transferVueArrayPropsToObject(props);
-
-      expect(result).toEqual({
-        prop1: {},
-        prop2: {},
-        prop3: {},
-      });
-    });
-
-    it("应该将带配置的数组项转换为对象", () => {
-      const props: RuntimeProps<Props>[] = [
-        "prop1",
-        ["prop2", { type: String, required: true }],
-        ["prop3", { default: "default value" }],
-      ];
-
-      const result = transferVueArrayPropsToObject(props);
-
-      expect(result).toEqual({
-        prop1: {},
-        prop2: { type: String, required: true },
-        prop3: { default: "default value" },
-      });
-    });
-  });
-
-  describe("getPropsKeys", () => {
-    type Props = ["prop1", "prop2", "prop3"];
-
-    it("应该从字符串数组中提取属性名", () => {
-      const props: RuntimeProps<Props>[] = ["prop1", "prop2", "prop3"];
-      const result = getPropsKeys(props);
-
-      expect(result).toEqual(["prop1", "prop2", "prop3"]);
-    });
-
-    it("应该从带配置的数组项中提取属性名", () => {
-      const props: RuntimeProps<Props>[] = [
-        "prop1",
-        ["prop2", { type: String, required: true }],
-        ["prop3", { default: "default value" }],
-      ];
-
-      const result = getPropsKeys(props);
-
-      expect(result).toEqual(["prop1", "prop2", "prop3"]);
     });
   });
 });

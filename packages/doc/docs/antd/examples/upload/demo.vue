@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { reactive, ref } from "vue";
-import { FormColumn, FtForm, FtFormProps } from "@ftjs/antd";
+import { FtAntdFormColumn, FtAntdForm, FtAntdFormProps } from "@ftjs/antd";
 import { Button, UploadFile, UploadProps } from "ant-design-vue";
 import { RecordPath } from "@ftjs/core";
 import { PlusOutlined } from "@ant-design/icons-vue";
@@ -28,8 +28,6 @@ interface UploadResponse {
 }
 
 const mockUpload = async (formData: FormData) => {
-  console.log(formData);
-
   await delay(1000);
   const now = Date.now();
   return {
@@ -106,10 +104,10 @@ function createUploadImage<UploadData extends Record<string, any>>(
       });
       return urls;
     },
-  } satisfies FormColumn<UploadData>;
+  } satisfies FtAntdFormColumn<UploadData>;
 }
 
-const columns: FtFormProps<UploadData>["columns"] = [
+const columns: FtAntdFormProps<UploadData>["columns"] = [
   createUploadImage<UploadData>({
     title: "单图片",
     fields: ["file"],
@@ -131,7 +129,7 @@ const onSubmit = async (data: UploadData) => {
   console.log(data);
 };
 
-const internalFormProps: FtFormProps<UploadData>["internalFormProps"] = {
+const internalFormProps: FtAntdFormProps<UploadData>["internalFormProps"] = {
   wrapperCol: {
     span: 14,
   },
@@ -140,6 +138,6 @@ const internalFormProps: FtFormProps<UploadData>["internalFormProps"] = {
 
 <template>
   <div>
-    <FtForm :columns :internal-form-props @submit="onSubmit" />
+    <FtAntdForm :columns :internal-form-props @submit="onSubmit" />
   </div>
 </template>

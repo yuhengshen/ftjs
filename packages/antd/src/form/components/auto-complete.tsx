@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, AutoComplete, AutoCompleteProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 
 export interface FtFormColumnAutoComplete<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -12,7 +12,7 @@ export interface FtFormColumnAutoComplete<T extends Record<string, any>>
   props?: Refs<AutoCompleteProps>;
 }
 
-export default defineFormComponent<FtFormColumnAutoComplete<any>>(props => {
+export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

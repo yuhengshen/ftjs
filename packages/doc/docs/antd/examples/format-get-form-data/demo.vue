@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { FtForm, FtFormProps } from "@ftjs/antd";
+import { FtAntdForm, FtAntdFormProps } from "@ftjs/antd";
 
 interface FormData {
   name: string;
 }
 
-const columns: FtFormProps<FormData>["columns"] = [
+const columns: FtAntdFormProps<FormData>["columns"] = [
   {
     type: "input",
     title: "姓名",
@@ -20,7 +20,7 @@ const onSubmit = async (data: FormData) => {
   console.log(data);
 };
 
-const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+const internalFormProps: FtAntdFormProps<FormData>["internalFormProps"] = {
   wrapperCol: {
     span: 14,
   },
@@ -29,6 +29,6 @@ const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
 
 <template>
   <div>
-    <FtForm :columns :internal-form-props @submit="onSubmit" />
+    <FtAntdForm :columns :internal-form-props @submit="onSubmit" />
   </div>
 </template>

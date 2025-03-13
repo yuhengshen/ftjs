@@ -1,9 +1,9 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Radio, RadioGroupProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, unref } from "vue";
 import { RadioGroupChildOption } from "ant-design-vue/es/radio/Group";
-import { AntdColumnBase, VueNode } from "../register";
+import { AntdColumnBase, defineFormItem, VueNode } from "../register";
 import { isSimpleOption } from "../utils";
 
 export interface FtFormColumnRadio<T extends Record<string, any>>
@@ -15,7 +15,7 @@ export interface FtFormColumnRadio<T extends Record<string, any>>
   props?: Refs<RadioGroupProps>;
 }
 
-export default defineFormComponent<FtFormColumnRadio<any>>(props => {
+export default defineFormItem<FtFormColumnRadio<any>>(props => {
   const { valueComputed } = useFormItem({
     props,
   });

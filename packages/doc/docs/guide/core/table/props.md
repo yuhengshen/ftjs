@@ -6,18 +6,18 @@
 
 表格组件的基础属性配置包含以下核心属性：
 
-| 属性名             | 说明               | 类型                                         | 默认值  |
-| ------------------ | ------------------ | -------------------------------------------- | ------- |
-| cache              | 表格配置缓存标识   | `string`                                     | -       |
-| columns            | 表格列定义         | `TableColumn<TableData, SearchData, type>[]` | -       |
-| searchColumns      | 列定义外的搜索条件 | `FormColumn<SearchData>[]`                   | -       |
-| total              | 表格总条数         | `number`                                     | -       |
-| defaultPageSize    | 默认每页条数       | `number`                                     | `20`    |
-| loading            | 是否显示加载状态   | `boolean`                                    | `false` |
-| internalFormProps  | 内部表单组件配置   | `object`                                     | -       |
-| internalTableProps | 内部表格组件配置   | `object`                                     | -       |
-| tableData          | 表格数据           | `TableData[]`                                | -       |
-| keyField           | 表格行唯一标识字段 | `string`                                     | -       |
+| 属性名             | 说明               | 类型                                               | 默认值  |
+| ------------------ | ------------------ | -------------------------------------------------- | ------- |
+| cache              | 表格配置缓存标识   | `string`                                           | -       |
+| columns            | 表格列定义         | `FtAntdTableColumn<TableData, SearchData, type>[]` | -       |
+| searchColumns      | 列定义外的搜索条件 | `FtAntdFormColumn<SearchData>[]`                   | -       |
+| total              | 表格总条数         | `number`                                           | -       |
+| defaultPageSize    | 默认每页条数       | `number`                                           | `20`    |
+| loading            | 是否显示加载状态   | `boolean`                                          | `false` |
+| internalFormProps  | 内部表单组件配置   | `object`                                           | -       |
+| internalTableProps | 内部表格组件配置   | `object`                                           | -       |
+| tableData          | 表格数据           | `TableData[]`                                      | -       |
+| keyField           | 表格行唯一标识字段 | `string`                                           | -       |
 
 ### cache
 
@@ -59,12 +59,6 @@
 <<< ./demo.vue
 :::
 
-## 扩展属性类型
-
-### TableTypeMap
-
-不同适配器的表格可以通过 `TableTypeMap` 定义自己的属性。详细信息请参考[适配器开发](../adapter/development.md)。
-
 ## 列配置
 
 表格列配置继承自 `FtTableColumn`，包含以下核心属性：
@@ -91,20 +85,3 @@
   },
 }
 ```
-
-## 运行时属性
-
-系统会自动注入以下运行时属性：
-
-- `cache`
-- `columns`
-- `searchColumns`
-- `total`
-- `defaultPageSize`
-- `loading`
-- `internalFormProps`
-- `internalTableProps`
-- `tableData`
-- `keyField`
-
-适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](../adapter/development.md)。

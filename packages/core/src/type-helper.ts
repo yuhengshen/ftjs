@@ -1,4 +1,4 @@
-import { ComputedRef, MaybeRef, Ref } from "vue";
+import { MaybeRef, Ref } from "vue";
 
 /**
  * 临时工具类型减1
@@ -44,45 +44,4 @@ export type Unrefs<T> = {
  */
 export type Refs<T> = {
   [K in keyof T]: T[K] extends Ref<any> ? T[K] : MaybeRef<T[K]>;
-};
-
-/**
- * 工具类型：将对象的属性转换为元组
- *
- * @deprecated 元祖推算的元素顺序不确定，所以实际上无法使用，替换为 {@link WithLengthKeys}
- */
-export type TupleKeys<T> = UnionToTuple<keyof T>;
-
-/**
- * 工具类型：将联合类型转换为元组
- *
- * @deprecated 元祖推算的元素顺序不确定，所以实际上无法使用
- */
-type UnionToTuple<T> = (
-  (T extends any ? (t: T) => T : never) extends infer U
-    ? (U extends any ? (u: U) => any : never) extends (v: infer V) => any
-      ? V
-      : never
-    : never
-) extends (_: any) => infer W
-  ? [...UnionToTuple<Exclude<T, W>>, W]
-  : [];
-
-/**
- * 工具类型：得到一个具有指定长度的数组，且每个元素唯一
- */
-export type WithLengthKeys<T> = (keyof T)[] & {
-  length: TupleKeys<T>["length"];
-};
-
-/**
- * 工具类型：将对象中所有属性值分流，分为事件和非事件
- *
- * 事件可为空。
- * 属性为可为空的计算属性，本身一定存在。
- */
-export type SplitEventKeys<T> = {
-  [K in keyof T as K extends `on${string}` ? K : never]?: T[K];
-} & {
-  [K in keyof T as K extends `on${string}` ? never : K]-?: ComputedRef<T[K]>;
 };

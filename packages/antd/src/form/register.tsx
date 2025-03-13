@@ -1,15 +1,16 @@
-import {
-  CommonFormItemProps,
-  FormInject,
-  FtFormColumnBase,
-  ValueOf,
-} from "@ftjs/core";
+import { FtFormColumnBase, ValueOf } from "@ftjs/core";
 import type {
   RuleType,
   StoreValue,
   ValidatorRule,
 } from "ant-design-vue/es/form/interface";
-import type { Component, MaybeRefOrGetter, VNode } from "vue";
+import {
+  defineComponent,
+  SetupContext,
+  type Component,
+  type MaybeRefOrGetter,
+  type VNode,
+} from "vue";
 import input, { FtFormColumnInput } from "./components/input";
 import select, { FtFormColumnSelect } from "./components/select";
 import datePicker, { FtFormColumnDatePicker } from "./components/date-picker";
@@ -32,7 +33,6 @@ import rate, { FtFormColumnRate } from "./components/rate";
 import slider, { FtFormColumnSlider } from "./components/slider";
 import switchComponent, { FtFormColumnSwitch } from "./components/switch";
 import treeSelect, { FtFormColumnTreeSelect } from "./components/tree-select";
-import { FormInstance, FormProps } from "ant-design-vue";
 
 export type VNodeChildAtom =
   | VNode
@@ -43,13 +43,6 @@ export type VNodeChildAtom =
   | undefined
   | void;
 export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
-
-export interface FormExposed<T extends Record<string, any>> {
-  getFormData: FormInject<T, "antd">["getFormData"];
-  resetToDefault: FormInject<T, "antd">["resetToDefault"];
-  setAsDefault: FormInject<T, "antd">["setAsDefault"];
-  formInstance: FormInstance;
-}
 
 export interface AntdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
@@ -67,10 +60,26 @@ export interface RegisterColumnMap<FormData extends Record<string, any>> {
   // name: AntdColumnBase<FormData>;
 }
 
+export interface FormItemProps<Column extends AntdColumnBase<any>> {
+  column: Column;
+  isView: boolean;
+}
+
+export function defineFormItem<Column extends AntdColumnBase<any>>(
+  setup: (props: FormItemProps<Column>, ctx: SetupContext) => any,
+) {
+  return defineComponent(setup, {
+    props: {
+      column: Object,
+      isView: Boolean,
+    } as any,
+  });
+}
+
 /**
  * 全部的 antd column 集合
  */
-export type FormColumn<FormData extends Record<string, any>> =
+export type FtAntdFormColumn<FormData extends Record<string, any>> =
   | FtFormColumnDatePicker<FormData>
   | FtFormColumnRangePicker<FormData>
   | FtFormColumnRadio<FormData>
@@ -111,51 +120,9 @@ export const formRenderMap = new Map<string, Component>([
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(
   type: T,
-  Component: Component<CommonFormItemProps<RegisterColumnMap<any>[T]>>,
+  Component: any,
 ) {
   formRenderMap.set(type, Component);
-}
-
-declare module "@ftjs/core" {
-  interface FormTypeMap<_FormData extends Record<string, any>> {
-    antd: {
-      formSlots: {};
-      columns: FormColumn<_FormData>;
-      extendedProps: {
-        /**
-         * 表格宽度
-         */
-        width?: string;
-        /**
-         * 隐藏底部按钮
-         * @default false
-         */
-        hideFooter?: boolean;
-        /**
-         * 隐藏确认按钮
-         * @default false
-         */
-        hideConfirm?: boolean;
-        /**
-         * 隐藏重置按钮
-         * @default false
-         */
-        hideReset?: boolean;
-        exposed?: FormExposed<_FormData>;
-        "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
-      };
-      internalFormProps: FormProps;
-    };
-    antdSearch: {
-      formSlots: {};
-      columns: FormColumn<_FormData>;
-      extendedProps: {
-        exposed?: FormExposed<_FormData>;
-        "onUpdate:exposed"?: (exposed: FormExposed<_FormData>) => void;
-      };
-      internalFormProps: FormProps;
-    };
-  }
 }
 
 /**

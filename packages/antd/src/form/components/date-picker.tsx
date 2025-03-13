@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, DatePicker, DatePickerProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 export interface FtFormColumnDatePicker<T extends Record<string, any>>
   extends AntdColumnBase<T> {
   /**
@@ -11,8 +11,8 @@ export interface FtFormColumnDatePicker<T extends Record<string, any>>
   props?: Refs<DatePickerProps>;
 }
 
-export default defineFormComponent<FtFormColumnDatePicker<any>>(props => {
-  const { valueComputed } = useFormItem<any, "antd">({ props });
+export default defineFormItem<FtFormColumnDatePicker<any>>(props => {
+  const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 

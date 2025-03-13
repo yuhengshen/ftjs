@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FtFormSearch, FtFormSearchProps } from "@ftjs/antd";
+import { FtAntdFormSearch, FtAntdFormSearchProps } from "@ftjs/antd";
 import { ref } from "vue";
 
 interface SearchData {
@@ -8,7 +8,7 @@ interface SearchData {
   control: string;
 }
 
-const columns: FtFormSearchProps<SearchData>["columns"] = [
+const columns: FtAntdFormSearchProps<SearchData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -40,7 +40,7 @@ const handleSearch = (data: SearchData) => {
 </script>
 
 <template>
-  <ft-form-search
+  <ft-antd-form-search
     v-model:formData="searchData"
     :columns="columns"
     cache="@ftjs/antd-search-form-demo"

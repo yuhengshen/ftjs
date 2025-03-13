@@ -19,7 +19,7 @@ hero:
 features:
   - icon: 🎯
     title: Core
-    details: 提供定义适配器的规范、类型工具和辅助定义函数。
+    details: 提供定义适配器的规范、类型工具、基础 Props。
     link: /guide/core/introduction
   - icon: 🚀
     title: 高性能

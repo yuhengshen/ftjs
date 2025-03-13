@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { ref } from "vue";
-import { FtForm, FtFormProps } from "@ftjs/antd";
+import { FtAntdForm, FtAntdFormProps } from "@ftjs/antd";
 import { Switch, ButtonGroup, Tag, Button } from "ant-design-vue";
 
 interface FormData {
@@ -26,7 +26,7 @@ const isView = ref(true);
 
 const autoCompleteOptions = ref<{ value: string; label: string }[]>([]);
 
-const columns: FtFormProps<FormData>["columns"] = [
+const columns: FtAntdFormProps<FormData>["columns"] = [
   {
     type: "auto-complete",
     title: "自动补全",
@@ -245,7 +245,7 @@ const onSubmit = async (data: FormData) => {
   console.log(data);
 };
 
-const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+const internalFormProps: FtAntdFormProps<FormData>["internalFormProps"] = {
   wrapperCol: {
     span: 14,
   },
@@ -262,7 +262,7 @@ const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
       />
     </ButtonGroup>
     <hr />
-    <FtForm
+    <FtAntdForm
       :is-view="isView"
       :columns
       :internal-form-props

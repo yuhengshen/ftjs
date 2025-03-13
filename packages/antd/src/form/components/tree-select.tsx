@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, TreeSelect, TreeSelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 import { computed, toValue } from "vue";
 import { isViewOptionsStyle } from "../style";
 
@@ -14,7 +14,7 @@ export interface FtFormColumnTreeSelect<T extends Record<string, any>>
   props?: Refs<TreeSelectProps>;
 }
 
-export default defineFormComponent<FtFormColumnTreeSelect<any>>(props => {
+export default defineFormItem<FtFormColumnTreeSelect<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

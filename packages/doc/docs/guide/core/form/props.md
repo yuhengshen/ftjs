@@ -42,13 +42,13 @@
 
 ```vue
 <script setup lang="ts">
-import { FtFormProps, FtFormSearch, FtForm } from "@ftjs/antd";
+import { FtAntdFormProps, FtAntdFormSearch, FtAntdForm } from "@ftjs/antd";
 
 interface FormData {
   name: string;
 }
 
-const columns: FtFormProps<FormData>["columns"] = [
+const columns: FtAntdFormProps<FormData>["columns"] = [
   {
     field: "name",
     type: "input",
@@ -68,7 +68,7 @@ const handleSubmit = (formData: FormData) => {
   <ft-form v-model:formData="formData" :columns="columns" />
 
   <!-- 启用缓存 -->
-  <ft-form-search
+  <ft-antd-form-search
     v-model:formData="formData"
     :columns="columns"
     cache="form-cache-key"
@@ -76,22 +76,3 @@ const handleSubmit = (formData: FormData) => {
   />
 </template>
 ```
-
-## 扩展属性类型
-
-### FormTypeMap
-
-不同适配器的表单可以通过 `FormTypeMap` 定义自己的属性。详细信息请参考[适配器开发](../adapter/development.md)
-
-## 运行时属性
-
-系统会自动注入以下运行时属性：
-
-- `cache`
-- `columns`
-- `formData`
-- `internalFormProps`
-- `onSubmit`
-- `onUpdate:formData`
-
-适配器需要注入自己的运行时 props，详细信息请参考[适配器开发](../adapter/development.md)。

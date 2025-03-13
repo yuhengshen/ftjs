@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { FtVxeTable, FtVxeTableProps } from "@ftjs/antd";
-import { h, ref } from "vue";
+import { h, ref, useTemplateRef } from "vue";
 import { Button, ButtonGroup, Tag } from "ant-design-vue";
 
 interface TableData {
@@ -38,12 +38,7 @@ const columns: FtVxeTableProps<TableData, SearchData>["columns"] = [
     title: "年龄",
     width: 100,
     sortable: true,
-    search: {
-      type: "input-number",
-      props: {
-        placeholder: "请输入年龄",
-      },
-    },
+    search: "input-number",
     edit: "input",
   },
   {
@@ -139,7 +134,7 @@ const columns: FtVxeTableProps<TableData, SearchData>["columns"] = [
 const tableData = ref<TableData[]>([]);
 const loading = ref(false);
 const total = ref(0);
-const tableExposed = ref<FtVxeTableProps<TableData, SearchData>["exposed"]>();
+const tableRef = useTemplateRef("table");
 
 // 生成模拟数据
 const createTableData = () => {
@@ -158,11 +153,13 @@ const createTableData = () => {
 };
 
 // 处理搜索
-const handleSearch = (searchData: SearchData, info: any) => {
-  console.log("搜索条件:", searchData);
-  console.log("分页信息:", info.pagination);
-
+const handleSearch = () => {
   loading.value = true;
+
+  const pagination = tableRef.value?.getPagination();
+  const searchInfo = tableRef.value?.getSearchInfo();
+
+  console.log(pagination, searchInfo);
 
   // 模拟异步请求
   setTimeout(() => {
@@ -173,18 +170,24 @@ const handleSearch = (searchData: SearchData, info: any) => {
 
 // 编辑行
 const handleEdit = (row: TableData) => {
-  tableExposed.value?.tableExposed.setEditRow(row);
+  const gridRef = tableRef.value?.gridRef;
+  if (gridRef) {
+    gridRef.setEditRow(row);
+  }
 };
 
 // 保存编辑
 const handleSave = (row: TableData) => {
-  tableExposed.value?.tableExposed.clearEdit();
+  tableRef.value?.gridRef?.clearEdit();
 };
 
 // 取消编辑
 const handleCancel = async (row: TableData) => {
-  await tableExposed.value?.tableExposed.clearEdit();
-  tableExposed.value?.tableExposed.revertData(row);
+  const gridRef = tableRef.value?.gridRef;
+  if (gridRef) {
+    await gridRef.clearEdit();
+    gridRef.revertData(row);
+  }
 };
 
 // 处理表格选择事件
@@ -206,6 +209,10 @@ const internalTableProps: FtVxeTableProps<
     },
   },
 };
+
+const handleSortChange = (...args: any[]) => {
+  console.log("排序", args);
+};
 </script>
 
 <template>
@@ -214,14 +221,15 @@ const internalTableProps: FtVxeTableProps<
     style="height: 600px; display: flex; flex-direction: column"
   >
     <FtVxeTable
+      ref="table"
       v-model:tableData="tableData"
-      v-model:exposed="tableExposed"
       :columns
       :loading
       :total
       :internal-table-props
       cache="vxe-table-demo-cache"
       @search="handleSearch"
+      @sort-change="handleSortChange"
     >
       <template #buttons>
         <ButtonGroup>

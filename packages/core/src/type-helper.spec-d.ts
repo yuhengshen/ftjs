@@ -1,14 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import {
-  RecordPath,
-  Refs,
-  SplitEventKeys,
-  TupleKeys,
-  Unref,
-  Unrefs,
-  ValueOf,
-  WithLengthKeys,
-} from "./type-helper";
+import { RecordPath, Refs, Unref, Unrefs, ValueOf } from "./type-helper";
 import { ComputedRef, MaybeRef, Ref } from "vue";
 
 describe("type-helper", () => {
@@ -81,39 +72,5 @@ describe("type-helper", () => {
       b: ComputedRef<string>;
       c: MaybeRef<{ c1: Ref<string> }>;
     }>();
-  });
-
-  it("TupleKeys", () => {
-    type Obj = {
-      a: number;
-      b: { c: string };
-    };
-
-    expectTypeOf<TupleKeys<Obj>["length"]>().toEqualTypeOf<2>();
-  });
-
-  it("WithLengthKeys", () => {
-    type Obj = {
-      a: number;
-      b: { c: string };
-    };
-
-    expectTypeOf<WithLengthKeys<Obj>>().toEqualTypeOf<
-      ("a" | "b")[] & { length: 2 }
-    >();
-  });
-
-  it("SplitEventKeys", () => {
-    type Obj = {
-      name: string;
-      onClick: () => void;
-    };
-    expectTypeOf<SplitEventKeys<Obj>>().toEqualTypeOf<
-      {
-        onClick?: () => void;
-      } & {
-        name: ComputedRef<string>;
-      }
-    >();
   });
 });

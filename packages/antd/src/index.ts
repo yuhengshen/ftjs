@@ -1,11 +1,10 @@
 export * from "./form/define-form";
 export { registerForm } from "./form/register";
 export type {
-  FormColumn,
+  FtAntdFormColumn,
   AntdColumnBase,
   RegisterColumnMap,
 } from "./form/register";
 
-export * from "./antd-table/define-table";
-export * from "./vxe-table/define-vxe-table";
-export * from "./antd-table/column-edit";
+export * from "./vxe-table";
+export * from "./antd-table";

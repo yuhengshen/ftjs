@@ -1,8 +1,6 @@
 import { computed, ref, VNodeChild } from "vue";
-import { FtFormColumnBase } from "./columns";
-import { useFormInject } from "./use-form";
 import { get, set } from "../utils";
-import { CommonFormItemProps, FormTypeMap } from "./define-component";
+import { FtBaseFormProps, useFormInject } from "./use-form";
 
 type Slots = (props: {
   value: any;
@@ -14,12 +12,9 @@ export type CommonSlots<T extends readonly string[]> = {
   [K in T[number]]?: Slots;
 };
 
-interface UseFormItemOptions<
-  FormData extends Record<string, any>,
-  Type extends keyof FormTypeMap<FormData>,
-> {
+interface UseFormItemOptions<P extends FtBaseFormProps<any>> {
   /** 通用 props */
-  props: CommonFormItemProps<FormTypeMap<FormData>[Type]["columns"]>;
+  props: P;
   /**
    * set 转换
    */
@@ -33,12 +28,7 @@ interface UseFormItemOptions<
 /**
  * 通用的 form item 组件处理，处理 form 中的值
  */
-export const useFormItem = <
-  FromData extends Record<string, any>,
-  Type extends keyof FormTypeMap<FromData>,
->(
-  options: UseFormItemOptions<FtFormColumnBase<FormData>, Type>,
-) => {
+export const useFormItem = (options: UseFormItemOptions<any>) => {
   let { props, valueGetter, valueSetter } = options;
   // column 有自定义的转换函数
   if (props.column.valueGetter) {
@@ -49,7 +39,7 @@ export const useFormItem = <
     valueSetter = props.column.valueSetter;
   }
 
-  const { form } = useFormInject<FormData, Type>()!;
+  const { form } = useFormInject()!;
 
   const fieldsData = ref([]);
 
@@ -105,7 +95,6 @@ export const useFormItem = <
 
   /**
    * 通用 slots，
-   * 如果 props 不一致，在组件定义时覆写
    */
   let slots: Record<string, (props?: any) => VNodeChild> | undefined;
 

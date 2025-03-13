@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { FtForm, FtFormProps } from "@ftjs/antd";
+import { ref, useTemplateRef } from "vue";
+import { FtAntdForm, FtAntdFormProps } from "@ftjs/antd";
 import { Button, ButtonGroup, message } from "ant-design-vue";
 
 interface FormData {
@@ -9,7 +9,7 @@ interface FormData {
   };
 }
 
-const columns: FtFormProps<FormData>["columns"] = [
+const columns: FtAntdFormProps<FormData>["columns"] = [
   {
     // 会提示已注册的类型，props类型也会根据 type 进行推导
     type: "input",
@@ -24,18 +24,18 @@ const onSubmit = async (data: FormData) => {
   console.log(data);
 };
 
-const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+const internalFormProps: FtAntdFormProps<FormData>["internalFormProps"] = {
   wrapperCol: {
     span: 14,
   },
 };
 
-const exposed = ref<FtFormProps<FormData>["exposed"]>();
+const form = useTemplateRef("form");
 
 const setAsDefault = (v?: FormData) => {
   // 有参数，则以参数为默认值
   // 无参数，则以当前值为默认值
-  exposed.value?.setAsDefault(v);
+  form.value?.setAsDefault(v);
   message.success("设置默认值成功");
 };
 </script>
@@ -57,11 +57,6 @@ const setAsDefault = (v?: FormData) => {
       <Button @click="setAsDefault()">以当前值为默认值</Button>
     </ButtonGroup>
     <hr />
-    <FtForm
-      v-model:exposed="exposed"
-      :columns
-      :internal-form-props
-      @submit="onSubmit"
-    />
+    <FtAntdForm ref="form" :columns :internal-form-props @submit="onSubmit" />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FtForm, FtFormProps } from "@ftjs/antd";
+import { FtAntdForm, FtAntdFormProps } from "@ftjs/antd";
 import { ref } from "vue";
 
 interface FormData {
@@ -8,7 +8,7 @@ interface FormData {
   control: string;
 }
 
-const columns: FtFormProps<FormData>["columns"] = [
+const columns: FtAntdFormProps<FormData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -37,7 +37,7 @@ const columns: FtFormProps<FormData>["columns"] = [
 
 const formData = ref({} as FormData);
 
-const internalFormProps: FtFormProps<FormData>["internalFormProps"] = {
+const internalFormProps: FtAntdFormProps<FormData>["internalFormProps"] = {
   wrapperCol: {
     span: 14,
   },

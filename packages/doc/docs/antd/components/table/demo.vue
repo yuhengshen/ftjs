@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import { FtTable, FtTableProps } from "@ftjs/antd";
+import { FtAntdTable, FtAntdTableProps } from "@ftjs/antd";
 import { Button, ButtonGroup } from "ant-design-vue";
-import { h, ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 interface TableData {
   id: string;
@@ -18,7 +18,9 @@ interface SearchData {
   status?: number;
 }
 
-const columns: FtTableProps<TableData, SearchData>["columns"] = [
+const tableRef = useTemplateRef("table");
+
+const columns: FtAntdTableProps<TableData, SearchData>["columns"] = [
   {
     field: "name",
     title: "姓名",
@@ -87,7 +89,7 @@ const columns: FtTableProps<TableData, SearchData>["columns"] = [
     fixed: "right",
     // 使用 column 数据类型提示更加准确
     customRender: ({ record }) => {
-      const editMap = tableExposed.value?.editRowMap;
+      const editMap = tableRef.value?.editRowMap;
       const isEditing = editMap?.has(record);
       return (
         <ButtonGroup>
@@ -133,7 +135,6 @@ const columns: FtTableProps<TableData, SearchData>["columns"] = [
 const tableData = ref<TableData[]>([]);
 const loading = ref(false);
 const total = ref(0);
-const tableExposed = ref<FtTableProps<TableData, SearchData>["exposed"]>();
 
 // 生成模拟数据
 const createTableData = () => {
@@ -151,9 +152,9 @@ const createTableData = () => {
 };
 
 // 处理搜索
-const handleSearch = (searchData: SearchData, info: any) => {
-  console.log("搜索条件:", searchData);
-  console.log("分页信息:", info.pagination);
+const handleSearch = () => {
+  // console.log("搜索条件:", searchData);
+  // console.log("分页信息:", info.pagination);
 
   loading.value = true;
 
@@ -166,7 +167,7 @@ const handleSearch = (searchData: SearchData, info: any) => {
 
 // 编辑行
 const handleEdit = (row: TableData) => {
-  tableExposed.value?.setEditRow(row);
+  tableRef.value?.setEditRow(row);
 };
 
 // 保存编辑
@@ -176,21 +177,21 @@ const handleSave = (row: TableData) => {
     if (!row.id) {
       row.id = Date.now().toString();
     }
-    tableExposed.value?.saveEditRow(row);
+    tableRef.value?.saveEditRow(row);
     loading.value = false;
   }, 800);
 };
 
 // 取消编辑
 const handleCancel = (row: TableData) => {
-  tableExposed.value?.cancelEditRow(row);
+  tableRef.value?.cancelEditRow(row);
 };
 
 // 新增
 const handleAdd = () => {
   const row = {} as TableData;
   tableData.value?.unshift(row);
-  tableExposed.value?.setEditRow(row);
+  tableRef.value?.setEditRow(row);
 };
 
 // 删除
@@ -207,9 +208,9 @@ createTableData();
     class="vp-raw"
     style="height: 600px; display: flex; flex-direction: column"
   >
-    <FtTable
+    <FtAntdTable
+      ref="table"
       v-model:tableData="tableData"
-      v-model:exposed="tableExposed"
       :columns="columns"
       :loading="loading"
       :total="total"
@@ -229,6 +230,6 @@ createTableData();
           <Button>标记</Button>
         </ButtonGroup>
       </template>
-    </FtTable>
+    </FtAntdTable>
   </div>
 </template>

@@ -1,4 +1,4 @@
-import { PropType, unref } from "vue";
+import { unref } from "vue";
 import { RecordPath, Unrefs } from "./type-helper";
 import { FtFormColumnBase } from "./form/columns";
 
@@ -122,43 +122,4 @@ export const setStorage = (key: string, value: any, cache?: string) => {
     obj[cache] = value;
     localStorage.setItem(key, JSON.stringify(obj));
   }
-};
-
-export type RuntimeProps<T extends readonly any[] = []> =
-  | T[number]
-  | [
-      T[number],
-      {
-        type?: PropType<any> | true | null;
-        required?: boolean;
-        default?: any;
-        validator?(value: unknown, props: any): boolean;
-      },
-    ];
-
-export function transferVueArrayPropsToObject<T extends readonly any[] = []>(
-  arr: RuntimeProps<T>[],
-) {
-  // any 避免与 泛型推断冲突
-  const props: any = {};
-
-  arr.forEach(item => {
-    if (typeof item === "string") {
-      props[item] = {};
-    } else {
-      props[item[0]] = item[1] || {};
-    }
-  });
-
-  return props;
-}
-
-export const getPropsKeys = (arr: RuntimeProps<any>[]) => {
-  return arr.map(item => {
-    if (typeof item === "string") {
-      return item;
-    } else {
-      return item[0];
-    }
-  });
 };

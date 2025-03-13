@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Textarea, TextAreaProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 
 export interface FtFormColumnTextarea<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -12,7 +12,7 @@ export interface FtFormColumnTextarea<T extends Record<string, any>>
   props?: Refs<TextAreaProps>;
 }
 
-export default defineFormComponent<FtFormColumnTextarea<any>>(props => {
+export default defineFormItem<FtFormColumnTextarea<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

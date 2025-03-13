@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, InputNumber, InputNumberProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 
 export interface FtFormColumnInputNumber<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -12,7 +12,7 @@ export interface FtFormColumnInputNumber<T extends Record<string, any>>
   props?: Refs<InputNumberProps>;
 }
 
-export default defineFormComponent<FtFormColumnInputNumber<any>>(props => {
+export default defineFormItem<FtFormColumnInputNumber<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

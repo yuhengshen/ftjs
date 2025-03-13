@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, CheckboxGroup, CheckboxGroupProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase, VueNode } from "../register";
+import { AntdColumnBase, defineFormItem, VueNode } from "../register";
 import { computed, toValue } from "vue";
 import { isSimpleOption } from "../utils";
 import { isViewOptionsStyle } from "../style";
@@ -14,7 +14,7 @@ export interface FtFormColumnCheckbox<T extends Record<string, any>>
   props?: Refs<CheckboxGroupProps>;
 }
 
-export default defineFormComponent<FtFormColumnCheckbox<any>>(props => {
+export default defineFormItem<FtFormColumnCheckbox<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

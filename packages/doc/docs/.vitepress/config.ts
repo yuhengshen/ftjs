@@ -67,11 +67,6 @@ export default defineConfig({
         {
           text: "适配器",
           items: [
-            {
-              text: "适配器开发",
-              link: "/guide/core/adapter/development",
-            },
-            { text: "API 参考", link: "/guide/core/adapter/api" },
             { text: "@ftjs/antd", link: "/antd" },
             { text: "@ftjs/element 🚧", link: "#" },
             { text: "@ftjs/vant 🚧", link: "#" },
@@ -90,7 +85,7 @@ export default defineConfig({
         {
           text: "表单",
           items: [
-            { text: "FtForm", link: "/antd/components/form/" },
+            { text: "FtAntdForm", link: "/antd/components/form/" },
             { text: "FtSearchForm", link: "/antd/components/form-search/" },
           ],
         },

@@ -30,14 +30,3 @@ import Demo from "./demo.vue";
 3. 设置完默认值后，再次修改表单，然后点击重置按钮，表单将恢复到设置的默认值
 
 :::
-
-:::info API 参考
-
-- `exposed.setAsDefault(value?)`: 设置表单默认值
-
-  - 不传参数时，以当前表单值为默认值
-  - 传入参数时，以参数值为默认值
-
-- `exposed.resetToDefault()`: 重置表单到默认值
-
-:::

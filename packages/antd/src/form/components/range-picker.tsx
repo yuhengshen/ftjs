@@ -1,9 +1,9 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, RangePicker } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { RangePickerProps } from "ant-design-vue/es/date-picker";
 import dayjs from "dayjs";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 import { computed } from "vue";
 
 export interface FtFormColumnRangePicker<T extends Record<string, any>>
@@ -15,7 +15,7 @@ export interface FtFormColumnRangePicker<T extends Record<string, any>>
   props?: Refs<RangePickerProps>;
 }
 
-export default defineFormComponent<FtFormColumnRangePicker<any>>(props => {
+export default defineFormItem<FtFormColumnRangePicker<any>>(props => {
   const { valueComputed } = useFormItem({
     props,
   });

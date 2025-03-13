@@ -1,8 +1,8 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Select, SelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, unref } from "vue";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 import { isViewOptionsStyle } from "../style";
 
 export interface FtFormColumnSelect<T extends Record<string, any>>
@@ -14,7 +14,7 @@ export interface FtFormColumnSelect<T extends Record<string, any>>
   props?: Refs<SelectProps>;
 }
 
-export default defineFormComponent<FtFormColumnSelect<any>>(props => {
+export default defineFormItem<FtFormColumnSelect<any>>(props => {
   const { valueComputed } = useFormItem({
     props,
   });

@@ -1,74 +1,44 @@
-import { computed, ComputedRef, inject, provide } from "vue";
-import { TableTypeMap, FtTableIntrinsicProps } from "./define-components";
-import { SplitEventKeys } from "../type-helper";
+import { computed } from "vue";
+import { FtBaseTableProps, FtTableColumn } from "./types";
+import { FtFormColumnBase } from "../form";
 
-const provideTableKey = Symbol("@ftjs/core-table-provide");
-
-export type TableInject<
-  TableData extends Record<string, any>,
-  FormData extends Record<string, any> = TableData,
-  Type extends keyof TableTypeMap<TableData, FormData> = "default",
-> = SplitEventKeys<
-  FtTableIntrinsicProps<TableData, FormData, Type> &
-    TableTypeMap<TableData, FormData>[Type]["extendedProps"]
-> & {
-  formColumns: ComputedRef<
-    TableTypeMap<TableData, FormData>[Type]["formColumn"][]
-  >;
-  tableColumns: ComputedRef<
-    TableTypeMap<TableData, FormData>[Type]["tableColumn"][]
-  >;
-};
+type ExtractSearchColumn<P extends FtBaseTableProps<any, any, any>> =
+  P extends FtBaseTableProps<any, any, infer C>
+    ? C extends string
+      ? never
+      : C
+    : never;
 
 export const useTable = <
-  TableData extends Record<string, any>,
-  FormData extends Record<string, any>,
-  Type extends keyof TableTypeMap<TableData, FormData>,
+  P extends FtBaseTableProps<any, FtTableColumn<any>, FtFormColumnBase<any>>,
 >(
-  props: FtTableIntrinsicProps<TableData, FormData, Type>,
-  runtimePropsKeys: string[],
+  props: P,
 ) => {
-  type FormColumn = TableTypeMap<TableData, FormData>[Type]["formColumn"];
-
-  const formColumns = computed<FormColumn[]>(() => {
+  const formColumns = computed(() => {
     const fromTable = props.columns
       .filter(e => e.search)
-      .map(e => ({
-        field: e.field,
-        title: e.title,
-        ...e.search!,
-      }));
+      .map(e => {
+        if (typeof e.search === "string") {
+          return {
+            field: e.field,
+            title: e.title,
+            type: e.search,
+          };
+        }
 
-    return [...fromTable, ...(props.searchColumns ?? [])];
+        return {
+          field: e.field,
+          title: e.title,
+          ...e.search!,
+        };
+      });
+
+    return [
+      ...fromTable,
+      ...(props.searchColumns ?? []),
+    ] as ExtractSearchColumn<P>[];
   });
-
-  const tableColumns = computed(() => {
-    return props.columns;
-  });
-
-  const injectProps = runtimePropsKeys.reduce(
-    (acc, key) => {
-      if (key.startsWith("on")) {
-        acc[key] = props[key];
-      } else {
-        acc[key] = computed(() => props[key]);
-      }
-      return acc;
-    },
-    {} as Record<string, any>,
-  );
-
-  provide(provideTableKey, {
+  return {
     formColumns,
-    tableColumns,
-    ...injectProps,
-  });
-};
-
-export const useTableInject = <
-  TableData extends Record<string, any>,
-  FormData extends Record<string, any> = TableData,
-  Type extends keyof TableTypeMap<TableData, FormData> = "default",
->() => {
-  return inject<TableInject<TableData, FormData, Type>>(provideTableKey);
+  };
 };

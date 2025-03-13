@@ -1,14 +1,8 @@
-import {
-  CommonSlots,
-  defineFormComponent,
-  Refs,
-  unrefs,
-  useFormItem,
-} from "@ftjs/core";
+import { CommonSlots, Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, UploadProps, Upload } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, toValue } from "vue";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 
 export interface FtFormColumnUpload<T extends Record<string, any>>
   extends AntdColumnBase<T> {
@@ -20,7 +14,7 @@ export interface FtFormColumnUpload<T extends Record<string, any>>
   slots: CommonSlots<["default"]>;
 }
 
-export default defineFormComponent<FtFormColumnUpload<any>>(props => {
+export default defineFormItem<FtFormColumnUpload<any>>(props => {
   const { valueComputed, slots } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

@@ -1,7 +1,7 @@
-import { defineFormComponent, Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem } from "@ftjs/core";
 import { FormItem, Switch, SwitchProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
-import { AntdColumnBase } from "../register";
+import { AntdColumnBase, defineFormItem } from "../register";
 import { computed } from "vue";
 
 export interface FtFormColumnSwitch<T extends Record<string, any>>
@@ -13,7 +13,7 @@ export interface FtFormColumnSwitch<T extends Record<string, any>>
   props?: Refs<SwitchProps>;
 }
 
-export default defineFormComponent<FtFormColumnSwitch<any>>(props => {
+export default defineFormItem<FtFormColumnSwitch<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);

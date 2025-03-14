@@ -1,5 +1,5 @@
 export * from "./form/define-form";
-export { registerForm } from "./form/register";
+export { registerForm, defineFormItem } from "./form/register";
 export type {
   FtAntdFormColumn,
   AntdColumnBase,

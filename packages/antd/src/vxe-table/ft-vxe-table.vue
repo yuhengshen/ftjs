@@ -211,7 +211,7 @@ defineExpose({
    * 获取搜索信息
    */
   getSearchInfo() {
-    return searchRef.value?.getFormData() ?? {};
+    return (searchRef.value?.getFormData() ?? {}) as S;
   },
 });
 </script>

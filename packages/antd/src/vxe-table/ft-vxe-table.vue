@@ -14,7 +14,7 @@ import {
   ref,
   useTemplateRef,
 } from "vue";
-import { VxeColumnSlotTypes, VxeGridInstance } from "vxe-table";
+import { VxeColumnSlotTypes, VxeGridInstance, VxeGrid } from "vxe-table";
 import { Edit, EditMap, editMap, isComponentTuple } from "../antd-table";
 import { Pagination, Divider, Spin } from "ant-design-vue";
 import { FtAntdFormSearch } from "../form/define-form";

@@ -213,6 +213,12 @@ const internalTableProps: FtVxeTableProps<
 const handleSortChange = (...args: any[]) => {
   console.log("排序", args);
 };
+
+const handleGetSortInfo = () => {
+  const sortInfo = tableRef.value?.gridRef?.getSortColumns();
+  console.log(tableRef.value?.gridRef);
+  console.log("排序信息", sortInfo);
+};
 </script>
 
 <template>
@@ -234,7 +240,7 @@ const handleSortChange = (...args: any[]) => {
       <template #buttons>
         <ButtonGroup>
           <Button>新增</Button>
-          <Button>审核</Button>
+          <Button @click="handleGetSortInfo">获取排序信息</Button>
         </ButtonGroup>
       </template>
       <template #tools>

@@ -181,6 +181,7 @@ const current = ref(1);
 const pageSize = ref(props.defaultPageSize);
 
 async function refresh() {
+  current.value = 1;
   await props.onSearch?.();
 }
 
@@ -213,6 +214,10 @@ defineExpose({
   getSearchInfo() {
     return (searchRef.value?.getFormData() ?? {}) as S;
   },
+  /**
+   * 刷新表格(会重置分页)
+   */
+  refresh,
 });
 </script>
 
@@ -257,7 +262,7 @@ defineExpose({
               showLessItems
               :total
               :defaultPageSize
-              @change="refresh"
+              @change="() => onSearch?.()"
             />
           </div>
         </template>

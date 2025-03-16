@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
 import { useForm } from "@ftjs/core";
-import { FtAntdFormProps, useRules } from "./define-form";
+import { FtAntdFormProps, useRules } from "./index";
 import {
   FormInstance,
   FormProps,

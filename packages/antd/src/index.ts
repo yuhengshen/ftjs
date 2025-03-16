@@ -1,4 +1,4 @@
-export * from "./form/define-form";
+export * from "./form";
 export { registerForm, defineFormItem } from "./form/register";
 export type {
   FtAntdFormColumn,

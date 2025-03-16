@@ -5,7 +5,7 @@ import type {
   FtTableColumn,
 } from "@ftjs/core";
 import { TableColumnType, TableProps as AntTableProps } from "ant-design-vue";
-import { FtAntdFormSearchProps } from "../form/define-form";
+import { FtAntdFormSearchProps } from "../form";
 import type { FtAntdFormColumn } from "../form/register";
 import { EditMap } from "./column-edit";
 

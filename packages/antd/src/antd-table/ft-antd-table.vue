@@ -15,7 +15,7 @@ import {
   useTemplateRef,
 } from "vue";
 import { Table, TableProps } from "ant-design-vue";
-import { FtAntdFormSearch } from "../form/define-form";
+import { FtAntdFormSearch } from "../form";
 import { useEdit } from "./use-edit";
 import { Divider } from "ant-design-vue";
 

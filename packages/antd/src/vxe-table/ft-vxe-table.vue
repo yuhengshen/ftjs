@@ -17,7 +17,7 @@ import {
 import { VxeColumnSlotTypes, VxeGridInstance, VxeGrid } from "vxe-table";
 import { Edit, EditMap, editMap, isComponentTuple } from "../antd-table";
 import { Pagination, Divider, Spin } from "ant-design-vue";
-import { FtAntdFormSearch } from "../form/define-form";
+import { FtAntdFormSearch } from "../form";
 
 defineOptions({
   name: "FtAntdVxeTable",

@@ -5,7 +5,7 @@ import type {
   ValueOf,
 } from "@ftjs/core";
 import { VxeGridProps, VxeGridPropTypes } from "vxe-table";
-import { FtAntdFormSearchProps } from "../form/define-form";
+import { FtAntdFormSearchProps } from "../form";
 import type { FtAntdFormColumn } from "../form/register";
 import type { EditMap } from "../antd-table/column-edit";
 

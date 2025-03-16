@@ -1,14 +1,13 @@
-import type { FtBaseTableProps, FtTableColumn, ValueOf } from "@ftjs/core";
+import type {
+  ExtractColumnType,
+  FtBaseTableProps,
+  FtTableColumn,
+  ValueOf,
+} from "@ftjs/core";
 import { VxeGridProps, VxeGridPropTypes } from "vxe-table";
 import { FtAntdFormSearchProps } from "../form/define-form";
 import type { FtAntdFormColumn } from "../form/register";
 import type { EditMap } from "../antd-table/column-edit";
-
-type ExtractType<T> = T extends {
-  type: infer U;
-}
-  ? U
-  : never;
 
 /**
  * 列定义
@@ -16,7 +15,10 @@ type ExtractType<T> = T extends {
 type VxeTableColumn<
   T extends Record<string, any>,
   S extends Record<string, any>,
-> = FtTableColumn<T, FtAntdFormColumn<S> | ExtractType<FtAntdFormColumn<S>>> &
+> = FtTableColumn<
+  T,
+  FtAntdFormColumn<S> | ExtractColumnType<FtAntdFormColumn<S>>
+> &
   Omit<VxeGridPropTypes.Column<T>, "title" | "editRender"> & {
     /**
      * 行内编辑

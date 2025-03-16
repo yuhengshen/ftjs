@@ -1,5 +1,12 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { RecordPath, Refs, Unref, Unrefs, ValueOf } from "./type-helper";
+import {
+  ExtractColumnType,
+  RecordPath,
+  Refs,
+  Unref,
+  Unrefs,
+  ValueOf,
+} from "./type-helper";
 import { ComputedRef, MaybeRef, Ref } from "vue";
 
 describe("type-helper", () => {
@@ -72,5 +79,13 @@ describe("type-helper", () => {
       b: ComputedRef<string>;
       c: MaybeRef<{ c1: Ref<string> }>;
     }>();
+  });
+
+  it("ExtractColumnType", () => {
+    type Obj = {
+      type: "input";
+    };
+
+    expectTypeOf<ExtractColumnType<Obj>>().toEqualTypeOf<"input">();
   });
 });

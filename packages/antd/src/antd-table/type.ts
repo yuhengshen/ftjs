@@ -1,15 +1,13 @@
 import { ValueOf } from "@ftjs/core";
-import type { FtBaseTableProps, FtTableColumn } from "@ftjs/core";
+import type {
+  ExtractColumnType,
+  FtBaseTableProps,
+  FtTableColumn,
+} from "@ftjs/core";
 import { TableColumnType, TableProps as AntTableProps } from "ant-design-vue";
 import { FtAntdFormSearchProps } from "../form/define-form";
 import type { FtAntdFormColumn } from "../form/register";
 import { EditMap } from "./column-edit";
-
-type ExtractType<T> = T extends {
-  type: infer U;
-}
-  ? U
-  : never;
 
 /**
  * 列定义
@@ -19,7 +17,7 @@ export interface FtAntdTableColumn<
   S extends Record<string, any>,
 > extends FtTableColumn<
       T,
-      FtAntdFormColumn<S> | ExtractType<FtAntdFormColumn<S>>
+      FtAntdFormColumn<S> | ExtractColumnType<FtAntdFormColumn<S>>
     >,
     Omit<TableColumnType<T>, "title" | "dataIndex"> {
   /**

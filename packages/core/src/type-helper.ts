@@ -45,3 +45,12 @@ export type Unrefs<T> = {
 export type Refs<T> = {
   [K in keyof T]: T[K] extends Ref<any> ? T[K] : MaybeRef<T[K]>;
 };
+
+/**
+ * 工具类型：提取 Column 的类型
+ */
+export type ExtractColumnType<T> = T extends {
+  type: infer U;
+}
+  ? U
+  : never;

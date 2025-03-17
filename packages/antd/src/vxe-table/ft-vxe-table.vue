@@ -14,7 +14,12 @@ import {
   ref,
   useTemplateRef,
 } from "vue";
-import { VxeColumnSlotTypes, VxeGridInstance, VxeGrid } from "vxe-table";
+import {
+  VxeColumnSlotTypes,
+  VxeGridInstance,
+  VxeGrid,
+  VxeGridSlots,
+} from "vxe-table";
 import { Edit, EditMap, editMap, isComponentTuple } from "../antd-table";
 import { Pagination, Divider, Spin } from "ant-design-vue";
 import { FtAntdFormSearch } from "../form";
@@ -23,6 +28,8 @@ defineOptions({
   name: "FtAntdVxeTable",
   inheritAttrs: false,
 });
+
+defineSlots<VxeGridSlots>();
 
 const props = withDefaults(defineProps<FtVxeTableProps<T, S>>(), {
   initSearch: true,
@@ -248,8 +255,8 @@ defineExpose({
         :keepSource="enableEdit"
         v-bind="{ ...$attrs, ...internalTableProps }"
       >
-        <template #pager>
-          <slot v-if="$slots.pager" name="pager" />
+        <template #pager="slotData">
+          <slot v-if="$slots.pager" name="pager" v-bind="slotData" />
           <div
             v-else-if="!hidePagination"
             style="text-align: right; padding: 0.5em 0"
@@ -267,8 +274,8 @@ defineExpose({
           </div>
         </template>
 
-        <template #loading>
-          <slot v-if="$slots.loading" name="loading" />
+        <template #loading="slotData">
+          <slot v-if="$slots.loading" name="loading" v-bind="slotData" />
           <div
             v-else
             style="

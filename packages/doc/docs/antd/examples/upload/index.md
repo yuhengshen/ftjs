@@ -12,6 +12,10 @@ import Demo from "./demo.vue";
 == 代码
 
 <<< ./demo.vue
+
+== createUpload.tsx
+
+<<< ./createUpload.tsx
 :::
 
 :::tip 提示

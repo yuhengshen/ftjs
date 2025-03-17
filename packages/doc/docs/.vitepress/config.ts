@@ -115,6 +115,10 @@ export default defineConfig({
               text: "格式化表单结果",
               link: "/antd/examples/format-get-form-data/",
             },
+            {
+              text: "自定义查看/编辑",
+              link: "/antd/examples/custom-render/",
+            },
           ],
         },
       ],

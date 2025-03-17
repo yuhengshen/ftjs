@@ -45,5 +45,5 @@ const internalFormProps: FtAntdFormProps<FormData>["internalFormProps"] = {
 </script>
 
 <template>
-  <ft-form v-model:formData="formData" :columns :internalFormProps />
+  <ft-antd-form v-model:formData="formData" :columns :internalFormProps />
 </template>

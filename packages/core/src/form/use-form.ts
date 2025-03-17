@@ -23,14 +23,16 @@ import {
 import { FtFormColumnBase } from "./columns";
 import { RecordPath } from "../type-helper";
 
-interface FormInject {
-  form: ComputedRef<Record<string, any>>;
+interface FormInject<F extends Record<string, any>> {
+  form: ComputedRef<F>;
 }
 
 const provideFormKey = Symbol("@ftjs/core-form-provide");
 
-export const useFormInject = () => {
-  return inject<FormInject>(provideFormKey);
+export const useFormInject = <
+  F extends Record<string, any> = Record<string, any>,
+>() => {
+  return inject<FormInject<F>>(provideFormKey);
 };
 
 /**

@@ -1,16 +1,16 @@
-import type { MaybeRefOrGetter } from "vue";
+import type { MaybeRefOrGetter, VNodeChild } from "vue";
 import { RecordPath } from "../type-helper";
 
-type WatchHandler<FormData extends Record<string, any>> = (params: {
+type WatchHandler<F extends Record<string, any>> = (params: {
   val: any;
   oldVal: any;
-  form: FormData;
+  form: F;
 }) => void;
 
-type Watch<FormData extends Record<string, any>> =
-  | WatchHandler<FormData>
+type Watch<F extends Record<string, any>> =
+  | WatchHandler<F>
   | {
-      handler: WatchHandler<FormData>;
+      handler: WatchHandler<F>;
       deep?: boolean;
       immediate?: boolean;
     };
@@ -18,7 +18,7 @@ type Watch<FormData extends Record<string, any>> =
 /**
  * 实现方需要继承这个interface
  */
-export interface FtFormColumnBase<FormData extends Record<string, any>> {
+export interface FtFormColumnBase<F extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *
@@ -26,7 +26,7 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
    *
    * 如果是在 TableColumns 中，则默认继承其中的 field
    */
-  field?: RecordPath<FormData>;
+  field?: RecordPath<F>;
   /**
    * 字段名数组，当表单需要返回多个值时，使用这个字段
    *
@@ -36,7 +36,7 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
    *
    * 如人员信息: [staffId, staffInfoObj, deptInfoObj, ...]
    */
-  fields?: (RecordPath<FormData> | "-")[];
+  fields?: (RecordPath<F> | "-")[];
   /**
    * 字段标题
    *
@@ -50,7 +50,7 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
    */
-  watch?: Watch<FormData>;
+  watch?: Watch<F>;
   /**
    * 字段默认值
    */
@@ -81,7 +81,7 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
           formData,
           val,
         }: {
-          formData: FormData;
+          formData: F;
           val: any;
         }) => boolean);
   }[];
@@ -114,4 +114,12 @@ export interface FtFormColumnBase<FormData extends Record<string, any>> {
    * 是否查看模式
    */
   isView?: MaybeRefOrGetter<boolean>;
+  /**
+   * 自定义查看模式下的渲染
+   */
+  viewRender?: (props: { formData: F }) => VNodeChild;
+  /**
+   * 自定义编辑模式下的渲染
+   */
+  editRender?: (props: { formData: F }) => VNodeChild;
 }

@@ -1,29 +1,20 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { toValue } from "vue";
-import { FtAntdFormColumn, formRenderMap } from "./register";
+import { FtAntdFormColumn } from "./register";
 import { getField } from "@ftjs/core";
-
+import FormContentItem from "./form-content-item.vue";
 defineOptions({
   name: "FtAntdFormContent",
   inheritAttrs: false,
 });
 
-const props = defineProps<{
+defineProps<{
   columns: FtAntdFormColumn<F>[];
   isView?: boolean;
 }>();
-
-const isView = (column: FtAntdFormColumn<F>) => {
-  return toValue(column.isView) ?? props.isView;
-};
 </script>
 
 <template>
   <template v-for="column in columns" :key="getField(column)">
-    <component
-      :is="formRenderMap.get(column.type)"
-      :column="column"
-      :is-view="isView(column)"
-    />
+    <FormContentItem :column="column" :is-view="isView" />
   </template>
 </template>

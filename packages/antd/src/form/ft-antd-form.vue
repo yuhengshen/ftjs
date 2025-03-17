@@ -63,7 +63,13 @@ defineExpose({
   >
     <FormContent :columns="visibleColumns" :is-view="isView" />
 
-    <FormItem v-if="!hideFooter" label=" " :colon="false">
+    <slot name="footer"></slot>
+
+    <FormItem
+      v-if="!hideFooter && !$slots.footer && !isView"
+      label=" "
+      :colon="false"
+    >
       <Button v-if="!hideConfirm" type="primary" htmlType="submit">
         提交
       </Button>

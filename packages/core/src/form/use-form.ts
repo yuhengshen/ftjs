@@ -8,6 +8,8 @@ import {
   ComputedRef,
   inject,
   provide,
+  watchEffect,
+  ComputedGetter,
 } from "vue";
 import {
   cloneDeep,
@@ -36,7 +38,7 @@ export const useFormInject = () => {
  */
 const useColumnsChecked = <FormData extends Record<string, any>>(
   columns: ComputedRef<FtFormColumnBase<FormData>[]>,
-  cache?: string,
+  cache: ComputedGetter<string | undefined>,
 ) => {
   const storageKey = `ftjs-form-columns-checked-obj`;
 
@@ -47,11 +49,20 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
     });
     return Object.fromEntries(entries);
   });
-  const storageV = getStorage(storageKey, cache);
+  const storageV = computed(() => {
+    return getStorage(storageKey, toValue(cache));
+  });
 
   const vRef = ref<Record<RecordPath<FormData>, boolean>>(
-    Object.assign({}, columnsV.value, storageV),
+    {} as Record<RecordPath<FormData>, boolean>,
   );
+
+  watchEffect(() => {
+    vRef.value = {
+      ...columnsV.value,
+      ...storageV.value,
+    };
+  });
 
   const columnsChecked = computed<RecordPath<FormData>[]>({
     get() {
@@ -69,7 +80,7 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
         return [field, show];
       });
       vRef.value = Object.fromEntries(entries);
-      setStorage(storageKey, storageV, cache);
+      setStorage(storageKey, storageV, toValue(cache));
     },
   });
 
@@ -90,7 +101,7 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
  */
 const useColumnsSorted = <FormData extends Record<string, any>>(
   columns: ComputedRef<FtFormColumnBase<FormData>[]>,
-  cache?: string,
+  cache: ComputedGetter<string | undefined>,
 ) => {
   const storageKey = `tfjs-form-columns-sorted-obj`;
 
@@ -101,11 +112,20 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
     });
     return Object.fromEntries(entries);
   });
-  const storageV = getStorage(storageKey, cache);
+  const storageV = computed(() => {
+    return getStorage(storageKey, toValue(cache));
+  });
 
   const vRef = ref<Record<RecordPath<FormData>, number>>(
-    Object.assign({}, columnsV.value, storageV),
+    {} as Record<RecordPath<FormData>, number>,
   );
+
+  watchEffect(() => {
+    vRef.value = {
+      ...columnsV.value,
+      ...storageV.value,
+    };
+  });
 
   const columnsSort = computed<Record<RecordPath<FormData>, number>>({
     get() {
@@ -122,7 +142,7 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
         return [field, v[field]];
       });
       vRef.value = Object.fromEntries(entries);
-      setStorage(storageKey, storageV, cache);
+      setStorage(storageKey, storageV, toValue(cache));
     },
   });
 
@@ -203,11 +223,11 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
 
   const { columnsChecked, resetColumnsChecked } = useColumnsChecked(
     columns,
-    props.cache,
+    () => props.cache,
   );
   const { columnsSort, resetColumnsSort } = useColumnsSorted(
     columns,
-    props.cache,
+    () => props.cache,
   );
 
   let tmpDefaultForm: ExtractFormData<P>;

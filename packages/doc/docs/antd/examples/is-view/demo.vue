@@ -84,7 +84,7 @@ const columns: FtAntdFormProps<FormData>["columns"] = [
         },
         {
           value: "2",
-          label: <Tag color="pink">选项2</Tag>,
+          label: "选项二",
         },
       ],
     },
@@ -125,7 +125,7 @@ const columns: FtAntdFormProps<FormData>["columns"] = [
         "1",
         {
           value: "2",
-          label: <Tag color="blue">选项2</Tag>,
+          label: "选项2",
         },
       ],
     },
@@ -204,7 +204,7 @@ const columns: FtAntdFormProps<FormData>["columns"] = [
                   value: "parent 1-0",
                   children: [
                     {
-                      label: <Tag color="success">my leaf</Tag>,
+                      label: "my leaf",
                       value: "leaf1",
                     },
                     {

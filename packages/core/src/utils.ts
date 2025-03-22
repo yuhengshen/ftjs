@@ -40,16 +40,30 @@ export const get = (obj: any, path: string) => {
   return result;
 };
 
-export const set = (obj: any, path: string, value: any) => {
+export const set = (target: any, path: string, value: any) => {
+  if (path === "") return;
+
   const keys = path.split(".");
+  let obj: any = target;
   for (let i = 0; i < keys.length - 1; i++) {
     const key = keys[i];
-    if (!Reflect.has(obj, key)) {
-      Reflect.set(obj, key, {});
+    const nextKey = keys[i + 1];
+
+    if (typeof obj !== "object" || obj == null) {
+      throw new Error("set 赋值错误, target", obj);
     }
-    obj = Reflect.get(obj, key);
+
+    // 当前位置为空需要创建新对象
+    if (obj[key] == null) {
+      // 判断下一个键是否为有效的数组索引
+      obj[key] = /^\d+$/.test(nextKey) ? [] : {};
+    }
+
+    obj = obj[key];
   }
-  Reflect.set(obj, keys[keys.length - 1], value);
+
+  const lastKey = keys[keys.length - 1];
+  obj[lastKey] = value;
 };
 
 export const has = (obj: any, path: string) => {

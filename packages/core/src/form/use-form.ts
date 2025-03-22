@@ -2,7 +2,6 @@ import {
   computed,
   ref,
   watch,
-  onUnmounted,
   nextTick,
   toValue,
   ComputedRef,
@@ -10,6 +9,7 @@ import {
   provide,
   watchEffect,
   ComputedGetter,
+  onScopeDispose,
 } from "vue";
 import {
   cloneDeep,
@@ -273,7 +273,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
     },
   );
 
-  onUnmounted(() => {
+  onScopeDispose(() => {
     watchMap.forEach(cancel => cancel());
   });
 

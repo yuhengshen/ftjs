@@ -98,7 +98,6 @@ describe("utils", () => {
     it("应该正确设置数组的索引", () => {
       const obj = {};
       set(obj, "a.b.0", 123);
-      console.log(obj);
       expect(obj).toEqual({ a: { b: [123] } });
     });
   });

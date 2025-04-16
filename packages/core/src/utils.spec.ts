@@ -139,12 +139,12 @@ describe("utils", () => {
   });
 
   describe("getField", () => {
-    it("应该优先获取字段field", () => {
+    it("应该优先获取字段fields.[0]", () => {
       const column = {
         field: "field1",
         fields: ["field2", "field3"],
       };
-      expect(getField(column)).toBe("field1");
+      expect(getField(column)).toBe("field2");
     });
 
     it("应该获取字段fields的第一个元素", () => {

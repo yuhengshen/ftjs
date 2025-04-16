@@ -7,7 +7,7 @@ export const isBrowser = typeof window !== "undefined";
 export const getField = <T extends Record<string, any>>(
   column: FtFormColumnBase<T>,
 ) => {
-  return (column.field ?? column.fields?.[0]) as RecordPath<T>;
+  return (column.fields?.[0] ?? column.field) as RecordPath<T>;
 };
 
 export const isEmptyStrOrNull = (val: any) => {

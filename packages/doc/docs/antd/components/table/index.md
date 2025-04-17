@@ -39,7 +39,7 @@ FtAntdTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design
 | internalTableProps | Ant Design Vue Table 组件的原生属性（部分属性被移除） | [TableProps](https://antdv.com/components/table#table) | -       |
 | internalFormProps  | FtAntdFormSearch 组件的属性                           | `FtFormSearchProps`                                    | -       |
 | initSearch         | 是否初始化搜索                                        | `boolean`                                              | `true`  |
-| fitFlexHeight      | 是否自适应父元素剩余高度                              | `boolean`                                              | `true`  |
+| autoHeight         | 是否自适应高度                                        | `boolean`                                              | `true`  |
 | minHeight          | 自适应高度时的最小高度                                | `number`                                               | `210`   |
 | hidePagination     | 是否隐藏分页                                          | `boolean`                                              | `false` |
 

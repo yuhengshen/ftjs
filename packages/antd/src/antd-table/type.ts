@@ -47,12 +47,15 @@ export interface FtAntdTableProps<
   initSearch?: boolean;
 
   /**
-   * 是否自适应父元素(flex布局)剩余高度
+   * 是否自适应高度
    *
-   * 如果为true，则table会占据父元素的剩余高度，此时可以通过 {@link minHeight} 控制最小高度，避免高度不够展示内容
+   * 1. 父元素(flex column布局)剩余高度
+   * 2. 普通布局，占据父元素 100% 高度
+   *
+   * 可以通过 {@link minHeight} 控制最小高度，避免高度不够展示内容
    * @default true
    */
-  fitFlexHeight?: boolean;
+  autoHeight?: boolean;
   /**
    * 自适应父元素(flex布局)剩余高度时，最小高度
    * @default 210

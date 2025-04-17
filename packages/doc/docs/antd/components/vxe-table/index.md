@@ -39,7 +39,7 @@ FtVxeTable 组件继承了 @ftjs/core 的表格属性，并扩展了 VXE-Table �
 | internalTableProps | VXE-Table Grid 组件的原生属性 | `FtVxeTableProps<TableData, SearchData>["internalTableProps"]` | -                   |
 | internalFormProps  | 搜索表单的原生属性            | `FtVxeTableProps<TableData, SearchData>["internalFormProps"]`  | -                   |
 | initSearch         | 是否初始化搜索                | `boolean`                                                      | `true`              |
-| fitFlexHeight      | 是否自适应父元素剩余高度      | `boolean`                                                      | `true`              |
+| autoHeight         | 是否自适应高度                | `boolean`                                                      | `true`              |
 | minHeight          | 最小高度                      | `number`                                                       | `310`               |
 | hidePagination     | 是否隐藏分页                  | `boolean`                                                      | `false`             |
 

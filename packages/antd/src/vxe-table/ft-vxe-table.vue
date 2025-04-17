@@ -33,7 +33,7 @@ defineSlots<VxeGridSlots>();
 
 const props = withDefaults(defineProps<FtVxeTableProps<T, S>>(), {
   initSearch: true,
-  fitFlexHeight: true,
+  autoHeight: true,
   minHeight: 310,
   defaultPageSize: 20,
 });
@@ -171,11 +171,12 @@ let tableStyle: CSSProperties;
 const containerRef = ref<HTMLDivElement>();
 let height: string | undefined;
 
-if (props.fitFlexHeight) {
+if (props.autoHeight) {
   containerStyle = {
     ...containerStyle,
     flex: "1",
     minHeight: 0,
+    height: "100%",
   };
   tableStyle = {
     flex: "1",

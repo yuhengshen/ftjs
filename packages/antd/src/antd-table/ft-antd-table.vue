@@ -25,7 +25,7 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<FtAntdTableProps<T, S>>(), {
-  fitFlexHeight: true,
+  autoHeight: true,
   minHeight: 210,
   initSearch: true,
 });
@@ -121,11 +121,12 @@ const calcTableHeight = () => {
   _scrollY.value = y;
 };
 
-if (props.fitFlexHeight) {
+if (props.autoHeight) {
   containerStyle = {
     ...containerStyle,
     flex: "1",
     minHeight: 0,
+    height: "100%",
   };
   tableStyle = {
     flex: "1",

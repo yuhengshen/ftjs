@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FtVxeTableProps, FtVxeTable } from "@ftjs/antd";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 
 interface TableData {
   id: string;
@@ -92,7 +92,10 @@ const createTableData = () => {
 
 const tableData = ref<TableData[]>([]);
 
-const handleSearch = (searchData: SearchData) => {
+const tableRef = useTemplateRef("table");
+
+const handleSearch = () => {
+  const searchData = tableRef.value!.getSearchInfo();
   console.log(searchData);
   loading.value = true;
   setTimeout(() => {
@@ -105,12 +108,10 @@ const loading = ref(false);
 </script>
 
 <template>
-  <div
-    class="vp-raw"
-    style="height: 600px; overflow: auto; display: flex; flex-direction: column"
-  >
+  <div class="vp-raw" style="height: 600px">
     <!-- table自动占据 flex 剩余空间 -->
     <FtVxeTable
+      ref="table"
       v-model:tableData="tableData"
       :columns
       :loading

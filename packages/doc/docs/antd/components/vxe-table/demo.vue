@@ -222,10 +222,7 @@ const handleGetSortInfo = () => {
 </script>
 
 <template>
-  <div
-    class="vp-raw"
-    style="height: 600px; display: flex; flex-direction: column"
-  >
+  <div class="vp-raw" style="height: 600px">
     <FtVxeTable
       ref="table"
       v-model:tableData="tableData"

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useForm } from "@ftjs/core";
+import { getField, useForm } from "@ftjs/core";
 import { FtAntdFormSearchProps, useRules } from "./index";
 import {
   FormInstance,
@@ -73,7 +73,7 @@ const createColumnsTree = () => {
   const children: TreeNode[] = [];
 
   for (const column of props.columns) {
-    const key = column.field || (column.fields?.[0] as string);
+    const key = getField(column);
     children.push({
       title: column.title,
       key: key,

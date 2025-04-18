@@ -18,10 +18,12 @@ ftjs 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件�
 
 ## 适配器
 
-| [ant-design-vue](https://github.com/vueComponent/ant-design-vue) | ✔️ 已完成 [@ftjs/antd](https://ftjs-docs.yhs.ink/antd/) |
-| :--------------------------------------------------------------- | :------------------------------------------------------ |
-| [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                               |
-| [vant](https://github.com/youzan/vant)                           | 📈计划                                                  |
+| 适配器                                                           | 状态                                                          |
+| :--------------------------------------------------------------- | :------------------------------------------------------------ |
+| [ant-design-vue](https://github.com/vueComponent/ant-design-vue) | ✔️ 已完成 [@ftjs/antd](https://ftjs-docs.yhs.ink/antd/)       |
+| [tdesign-vue-next](https://github.com/Tencent/tdesign-vue-next)  | 🚧 进行中 [@ftjs/tdesign](https://ftjs-docs.yhs.ink/tdesign/) |
+| [element-plus](https://github.com/element-plus/element-plus)     | 🚧 进行中                                                     |
+| [vant](https://github.com/youzan/vant)                           | 📈计划                                                        |
 
 ## 文档
 

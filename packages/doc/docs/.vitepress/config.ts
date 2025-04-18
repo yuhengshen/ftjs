@@ -13,6 +13,10 @@ export default defineConfig({
     resolve: {
       alias: {
         "@ftjs/antd": path.resolve(__dirname, "../../../../antd/src/index.ts"),
+        "@ftjs/tdesign": path.resolve(
+          __dirname,
+          "../../../../tdesign/src/index.ts",
+        ),
       },
     },
   },
@@ -28,6 +32,7 @@ export default defineConfig({
         text: "适配器",
         items: [
           { text: "@ftjs/antd", link: "/antd/" },
+          { text: "@ftjs/tdesign", link: "/tdesign/" },
           { text: "@ftjs/element 🚧", link: "#" },
           { text: "@ftjs/vant 🚧", link: "#" },
         ],
@@ -68,6 +73,7 @@ export default defineConfig({
           text: "适配器",
           items: [
             { text: "@ftjs/antd", link: "/antd" },
+            { text: "@ftjs/tdesign", link: "/tdesign" },
             { text: "@ftjs/element 🚧", link: "#" },
             { text: "@ftjs/vant 🚧", link: "#" },
           ],
@@ -118,6 +124,22 @@ export default defineConfig({
             {
               text: "自定义查看/编辑",
               link: "/antd/examples/custom-render/",
+            },
+          ],
+        },
+      ],
+      "/tdesign/": [
+        {
+          text: "介绍",
+          link: "/tdesign/",
+        },
+        {
+          text: "表单",
+          items: [
+            { text: "FtTdForm", link: "/tdesign/components/form/" },
+            {
+              text: "FtTdSearchForm",
+              link: "/tdesign/components/form-search/",
             },
           ],
         },

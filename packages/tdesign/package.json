@@ -1,5 +1,5 @@
 {
-  "name": "@ftjs/antd",
+  "name": "@ftjs/tdesign",
   "version": "0.5.2",
   "keywords": [],
   "author": "",
@@ -23,13 +23,12 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@ant-design/icons-vue": "catalog:",
-    "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
     "@ftjs/core": "workspace:*",
+    "tdesign-vue-next": "catalog:",
+    "tdesign-icons-vue-next": "catalog:",
     "vue": "catalog:",
     "vue-component-type-helpers": "catalog:",
-    "vxe-table": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "typescript": "catalog:",
@@ -38,11 +37,9 @@
     "vue-tsc": "catalog:"
   },
   "peerDependencies": {
-    "@ant-design/icons-vue": ">=7.0.0",
     "vue": ">=3.3.0",
     "@ftjs/core": ">=0.0.1",
-    "ant-design-vue": ">=4.0.0",
     "dayjs": ">=1.0.0",
-    "vxe-table": ">=4.0.0"
+    "tdesign-vue-next": ">=1.11.5"
   }
 }

@@ -11,7 +11,7 @@ import {
   FormItem,
   Form,
 } from "ant-design-vue";
-import { computed, ref, useId } from "vue";
+import { computed, ref, toValue, useId } from "vue";
 import FormContent from "./form-content.vue";
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
 
@@ -75,7 +75,7 @@ const createColumnsTree = () => {
   for (const column of props.columns) {
     const key = getField(column);
     children.push({
-      title: column.title,
+      title: toValue(column.title),
       key: key,
       isLeaf: true,
     });

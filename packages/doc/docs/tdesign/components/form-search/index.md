@@ -20,6 +20,10 @@ import Form from "./demo.vue";
 
 <<< ./demo.vue
 
+== config.tsx
+
+<<< ../form/config.tsx
+
 :::
 
 ## 组件属性

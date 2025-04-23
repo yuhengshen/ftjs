@@ -5,7 +5,18 @@ import AutoComplete, {
   FtFormColumnAutoComplete,
 } from "./components/auto-complete";
 import Cascader, { FtFormColumnCascader } from "./components/cascader";
-
+import Checkbox, { FtFormColumnCheckbox } from "./components/checkbox";
+import ColorPicker, {
+  FtFormColumnColorPicker,
+} from "./components/color-picker";
+import DatePicker, { FtFormColumnDatePicker } from "./components/date-picker";
+import DateRangePicker, {
+  FtFormColumnDateRangePicker,
+} from "./components/date-range-picker";
+import Input, { FtFormColumnInput } from "./components/input";
+import InputNumber, {
+  FtFormColumnInputNumber,
+} from "./components/input-number";
 export interface TdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
   rules?: FormRule[];
@@ -18,7 +29,12 @@ export interface TdColumnBase<FormData extends Record<string, any>>
 export interface RegisterColumnMap<FormData extends Record<string, any>> {
   "auto-complete": FtFormColumnAutoComplete<FormData>;
   cascader: FtFormColumnCascader<FormData>;
-  // name: TdColumnBase<FormData>;
+  checkbox: FtFormColumnCheckbox<FormData>;
+  "color-picker": FtFormColumnColorPicker<FormData>;
+  "date-picker": FtFormColumnDatePicker<FormData>;
+  "date-range-picker": FtFormColumnDateRangePicker<FormData>;
+  input: FtFormColumnInput<FormData>;
+  "input-number": FtFormColumnInputNumber<FormData>;
 }
 
 export interface FormItemProps<Column extends TdColumnBase<any>> {
@@ -47,6 +63,12 @@ export type FtTdFormColumn<FormData extends Record<string, any>> =
 export const formRenderMap = new Map<string, Component>([
   ["auto-complete", AutoComplete],
   ["cascader", Cascader],
+  ["checkbox", Checkbox],
+  ["color-picker", ColorPicker],
+  ["date-picker", DatePicker],
+  ["date-range-picker", DateRangePicker],
+  ["input", Input],
+  ["input-number", InputNumber],
 ]);
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(

@@ -17,6 +17,7 @@ import Input, { FtFormColumnInput } from "./components/input";
 import InputNumber, {
   FtFormColumnInputNumber,
 } from "./components/input-number";
+import TagInput, { FtFormColumnTagInput } from "./components/tag-input";
 export interface TdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
   rules?: FormRule[];
@@ -35,6 +36,7 @@ export interface RegisterColumnMap<FormData extends Record<string, any>> {
   "date-range-picker": FtFormColumnDateRangePicker<FormData>;
   input: FtFormColumnInput<FormData>;
   "input-number": FtFormColumnInputNumber<FormData>;
+  "tag-input": FtFormColumnTagInput<FormData>;
 }
 
 export interface FormItemProps<Column extends TdColumnBase<any>> {
@@ -69,6 +71,7 @@ export const formRenderMap = new Map<string, Component>([
   ["date-range-picker", DateRangePicker],
   ["input", Input],
   ["input-number", InputNumber],
+  ["tag-input", TagInput],
 ]);
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(

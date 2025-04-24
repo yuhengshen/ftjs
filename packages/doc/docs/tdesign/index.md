@@ -1,6 +1,6 @@
 # @ftjs/tdesign
 
-> @ftjs/tdesign 是基于 @ftjs/core 的 TDesign Vue 适配器，提供了与 TDesign Vue Next组件库的无缝集成。
+> @ftjs/tdesign 是基于 @ftjs/core 的 TDesign 适配器，提供了与 TDesign Vue Next组件库的无缝集成。
 
 ## 简介
 

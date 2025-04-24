@@ -11,6 +11,7 @@ export interface Data {
   input: string;
   inputAdornment: string;
   inputNumber: number;
+  tagInput: string[];
 }
 
 export const columns: FtTdFormProps<Data>["columns"] = [
@@ -135,5 +136,11 @@ export const columns: FtTdFormProps<Data>["columns"] = [
     field: "inputNumber",
     title: "数字输入框",
     type: "input-number",
+  },
+  {
+    field: "tagInput",
+    title: "标签输入框",
+    type: "tag-input",
+    value: [],
   },
 ];

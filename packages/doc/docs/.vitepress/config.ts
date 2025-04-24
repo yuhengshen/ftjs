@@ -92,14 +92,14 @@ export default defineConfig({
           text: "表单",
           items: [
             { text: "FtAntdForm", link: "/antd/components/form/" },
-            { text: "FtSearchForm", link: "/antd/components/form-search/" },
+            { text: "FtAntdFormSearch", link: "/antd/components/form-search/" },
           ],
         },
         {
           text: "表格",
           items: [
-            { text: "Table", link: "/antd/components/table/" },
-            { text: "VxeTable", link: "/antd/components/vxe-table/" },
+            { text: "FtAntdTable", link: "/antd/components/table/" },
+            { text: "FtVxeTable", link: "/antd/components/vxe-table/" },
           ],
         },
         {

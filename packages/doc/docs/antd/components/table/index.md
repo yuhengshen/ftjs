@@ -1,10 +1,10 @@
-# FtTable 表格组件
+# FtAntdTable 表格组件
 
-> FtTable 是 @ftjs/antd 提供的基础表格组件，基于 Ant Design Vue 的 Table 组件实现，提供了声明式的表格定义、数据处理和行内编辑能力。
+> FtAntdTable 是 @ftjs/antd 提供的基础表格组件，基于 Ant Design Vue 的 Table 组件实现，提供了声明式的表格定义、数据处理和行内编辑能力。
 
 ## 基本用法
 
-FtTable 组件通过 `columns` 属性定义表格列，通过 `v-model:tableData` 绑定表格数据。
+FtAntdTable 组件通过 `columns` 属性定义表格列，通过 `v-model:tableData` 绑定表格数据。
 
 <script setup>
 import Demo from "./demo.vue";
@@ -75,7 +75,7 @@ FtAntdTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design
 | expandedRowsChange | 展开行变化事件   | 详见 Ant Design Vue Table 的 onExpandedRowsChange 事件 |
 | resizeColumn       | 列宽调整事件     | 详见 Ant Design Vue Table 的 onResizeColumn 事件       |
 
-## 方法
+## 实例方法和属性
 
 | 方法名        | 说明             | 参数                      | 返回值               |
 | ------------- | ---------------- | ------------------------- | -------------------- |
@@ -94,4 +94,4 @@ FtAntdTable 组件继承了 @ftjs/core 的表格属性，并扩展了 Ant Design
 | buttons | 表格顶部按钮区域 | -    |
 | tools   | 表格顶部工具区域 | -    |
 
-此外，FtTable 还支持 Ant Design Vue Table 的所有插槽。
+此外，FtAntdTable 还支持 Ant Design Vue Table 的所有插槽。

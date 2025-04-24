@@ -61,7 +61,7 @@ FtVxeTable 的列配置继承了 [VXE-Table 的列配置](https://vxetable.cn/#/
 | search           | 搜索事件         | `() => void`                       |
 | update:tableData | 表格数据更新事件 | `(tableData: TableData[]) => void` |
 
-## 方法
+## 实例方法和属性
 
 | 方法名  | 说明         | 参数 | 返回值                       |
 | ------- | ------------ | ---- | ---------------------------- |

@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem } from "@ftjs/core";
 import { FormItem, Tag, TagInput, TagInputProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -19,21 +19,19 @@ export default defineFormItem<FtFormColumnTagInput<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const _props = unrefs(props.column.props);
-
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
           <div style={isViewOptionsStyle}>
             {valueComputed.value?.map(str => {
-              return <Tag {..._props?.tagProps}>{str}</Tag>;
+              return <Tag {...props.unrefsProps?.tagProps}>{str}</Tag>;
             }) || "-"}
           </div>
         ) : (
           <TagInput
             v-model:value={valueComputed.value}
             placeholder={`请输入${formItemProps.value.label}`}
-            {..._props}
+            {...props.unrefsProps}
           />
         )}
       </FormItem>

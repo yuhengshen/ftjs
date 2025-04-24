@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem } from "@ftjs/core";
 import { FormItem, ColorPicker, ColorPickerProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -18,8 +18,6 @@ export default defineFormItem<FtFormColumnColorPicker<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const _props = unrefs(props.column.props);
-
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
@@ -39,7 +37,10 @@ export default defineFormItem<FtFormColumnColorPicker<any>>(props => {
           </div>
         ) : (
           // @ts-expect-error null 类型不兼容
-          <ColorPicker v-model:value={valueComputed.value} {..._props} />
+          <ColorPicker
+            v-model:value={valueComputed.value}
+            {...props.unrefsProps}
+          />
         )}
       </FormItem>
     );

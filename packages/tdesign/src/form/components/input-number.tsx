@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem } from "@ftjs/core";
 import { FormItem, InputNumber, InputNumberProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -18,8 +18,6 @@ export default defineFormItem<FtFormColumnInputNumber<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const _props = unrefs(props.column.props);
-
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
@@ -28,7 +26,7 @@ export default defineFormItem<FtFormColumnInputNumber<any>>(props => {
           <InputNumber
             v-model:value={valueComputed.value}
             placeholder={`请输入${formItemProps.value.label}`}
-            {..._props}
+            {...props.unrefsProps}
           />
         )}
       </FormItem>

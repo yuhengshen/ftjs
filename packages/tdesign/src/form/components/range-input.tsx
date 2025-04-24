@@ -1,22 +1,19 @@
 import { Refs, useFormItem } from "@ftjs/core";
-import {
-  FormItem,
-  DateRangePickerProps,
-  DateRangePicker,
-} from "tdesign-vue-next";
+import { FormItem, RangeInput, RangeInputProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
+import { isViewOptionsStyle } from "../style";
 
-export interface FtFormColumnDateRangePicker<T extends Record<string, any>>
+export interface FtFormColumnRangeInput<T extends Record<string, any>>
   extends TdColumnBase<T> {
   /**
-   * 日期范围选择器
+   * 范围输入框
    */
-  type: "date-range-picker";
-  props?: Refs<DateRangePickerProps>;
+  type: "range-input";
+  props?: Refs<RangeInputProps>;
 }
 
-export default defineFormItem<FtFormColumnDateRangePicker<any>>(props => {
+export default defineFormItem<FtFormColumnRangeInput<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
@@ -25,13 +22,12 @@ export default defineFormItem<FtFormColumnDateRangePicker<any>>(props => {
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>
-            {valueComputed.value ? valueComputed.value.join(" ~ ") : "-"}
+          <div style={isViewOptionsStyle}>
+            {valueComputed.value?.join(" ~ ") || "-"}
           </div>
         ) : (
-          <DateRangePicker
+          <RangeInput
             v-model:value={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
             {...props.unrefsProps}
           />
         )}

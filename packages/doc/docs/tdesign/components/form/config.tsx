@@ -1,6 +1,5 @@
 import { FtTdFormProps } from "@ftjs/tdesign";
 import { Tag } from "tdesign-vue-next";
-
 export interface Data {
   autoComplete: string;
   cascader: string;
@@ -12,6 +11,8 @@ export interface Data {
   inputAdornment: string;
   inputNumber: number;
   tagInput: string[];
+  radio: string;
+  rangeInput: string[];
 }
 
 export const columns: FtTdFormProps<Data>["columns"] = [
@@ -150,5 +151,27 @@ export const columns: FtTdFormProps<Data>["columns"] = [
         console.log(value);
       },
     },
+  },
+  {
+    field: "radio",
+    title: "单选框",
+    type: "radio",
+    value: "1",
+    props: {
+      theme: "button",
+      variant: "primary-filled",
+      options: [
+        {
+          label: "选项一",
+          value: "1",
+        },
+        { label: "选项二", value: "2" },
+      ],
+    },
+  },
+  {
+    field: "rangeInput",
+    title: "范围输入框",
+    type: "range-input",
   },
 ];

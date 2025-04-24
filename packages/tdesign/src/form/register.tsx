@@ -1,4 +1,4 @@
-import { FtFormColumnBase, ValueOf } from "@ftjs/core";
+import { FtFormColumnBase, Unrefs, ValueOf } from "@ftjs/core";
 import type { FormRule } from "tdesign-vue-next";
 import { defineComponent, SetupContext, type Component } from "vue";
 import AutoComplete, {
@@ -18,6 +18,8 @@ import InputNumber, {
   FtFormColumnInputNumber,
 } from "./components/input-number";
 import TagInput, { FtFormColumnTagInput } from "./components/tag-input";
+import Radio, { FtFormColumnRadio } from "./components/radio";
+import RangeInput, { FtFormColumnRangeInput } from "./components/range-input";
 export interface TdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
   rules?: FormRule[];
@@ -37,11 +39,14 @@ export interface RegisterColumnMap<FormData extends Record<string, any>> {
   input: FtFormColumnInput<FormData>;
   "input-number": FtFormColumnInputNumber<FormData>;
   "tag-input": FtFormColumnTagInput<FormData>;
+  radio: FtFormColumnRadio<FormData>;
+  "range-input": FtFormColumnRangeInput<FormData>;
 }
 
 export interface FormItemProps<Column extends TdColumnBase<any>> {
   column: Column;
   isView: boolean;
+  unrefsProps: Unrefs<Column["props"]>;
 }
 
 export function defineFormItem<Column extends TdColumnBase<any>>(
@@ -51,6 +56,7 @@ export function defineFormItem<Column extends TdColumnBase<any>>(
     props: {
       column: Object,
       isView: Boolean,
+      unrefsProps: Object,
     } as any,
   });
 }
@@ -72,6 +78,8 @@ export const formRenderMap = new Map<string, Component>([
   ["input", Input],
   ["input-number", InputNumber],
   ["tag-input", TagInput],
+  ["radio", Radio],
+  ["range-input", RangeInput],
 ]);
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(

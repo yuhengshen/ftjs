@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useFormInject } from "@ftjs/core";
+import { useFormInject, unrefs } from "@ftjs/core";
 import { FtTdFormColumn, formRenderMap } from "./register";
 import { computed, toValue } from "vue";
 defineOptions({
@@ -16,6 +16,10 @@ const { form } = useFormInject<F>()!;
 
 const isView = computed(() => {
   return toValue(props.column.isView) ?? props.isView;
+});
+
+const unrefsProps = computed(() => {
+  return unrefs(props.column.props);
 });
 </script>
 
@@ -35,7 +39,8 @@ const isView = computed(() => {
   <component
     v-else
     :is="formRenderMap.get(column.type)"
-    :column="column"
-    :is-view="isView"
+    :column
+    :is-view
+    :unrefs-props
   />
 </template>

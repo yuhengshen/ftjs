@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem } from "@ftjs/core";
 import { FormItem, Cascader, CascaderProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -20,7 +20,7 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const _props = unrefs(props.column.props) as CascaderProps;
+    const _props = props.unrefsProps as CascaderProps;
 
     const viewRender = () => {
       return renderCascaderText({

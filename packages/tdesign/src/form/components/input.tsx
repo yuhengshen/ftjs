@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem } from "@ftjs/core";
 import {
   FormItem,
   Input,
@@ -26,17 +26,15 @@ export default defineFormItem<FtFormColumnInput<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const _props = unrefs(props.column.props);
-
-    const append = _props?.append;
-    const prepend = _props?.prepend;
+    const append = props.unrefsProps?.append;
+    const prepend = props.unrefsProps?.prepend;
 
     function renderInput() {
       const inputVNode = (
         <Input
           v-model:value={valueComputed.value}
           placeholder={`请输入${formItemProps.value.label}`}
-          {..._props}
+          {...props.unrefsProps}
         />
       );
 

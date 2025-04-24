@@ -1,10 +1,5 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
-import {
-  FormItem,
-  DatePicker,
-  DatePickerProps,
-  SelectInputProps,
-} from "tdesign-vue-next";
+import { Refs, useFormItem } from "@ftjs/core";
+import { FormItem, DatePicker, DatePickerProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
 
@@ -23,23 +18,16 @@ export default defineFormItem<FtFormColumnDatePicker<any>>(props => {
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    // 内部类型不兼容
-    const _props = unrefs(props.column.props) as Omit<
-      DatePickerProps,
-      "selectInputProps"
-    > & {
-      selectInputProps?: SelectInputProps;
-    };
-
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
           <div>{valueComputed.value || "-"}</div>
         ) : (
+          // @ts-expect-error 当前版本类型bug不兼容
           <DatePicker
             v-model:value={valueComputed.value}
             placeholder={`请输入${formItemProps.value.label}`}
-            {..._props}
+            {...props.unrefsProps}
           />
         )}
       </FormItem>

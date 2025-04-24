@@ -1,7 +1,8 @@
 import { Refs, unrefs, useFormItem } from "@ftjs/core";
-import { FormItem, TagInput, TagInputProps } from "tdesign-vue-next";
+import { FormItem, Tag, TagInput, TagInputProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
+import { isViewOptionsStyle } from "../style";
 
 export interface FtFormColumnTagInput<T extends Record<string, any>>
   extends TdColumnBase<T> {
@@ -23,7 +24,11 @@ export default defineFormItem<FtFormColumnTagInput<any>>(props => {
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{valueComputed.value || "-"}</div>
+          <div style={isViewOptionsStyle}>
+            {valueComputed.value?.map(str => {
+              return <Tag {..._props?.tagProps}>{str}</Tag>;
+            }) || "-"}
+          </div>
         ) : (
           <TagInput
             v-model:value={valueComputed.value}

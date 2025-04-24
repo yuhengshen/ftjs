@@ -142,5 +142,13 @@ export const columns: FtTdFormProps<Data>["columns"] = [
     title: "标签输入框",
     type: "tag-input",
     value: [],
+    props: {
+      tagProps: {
+        theme: "primary",
+      },
+      onBlur: (value: string[]) => {
+        console.log(value);
+      },
+    },
   },
 ];

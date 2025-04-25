@@ -36,3 +36,4 @@ export interface FtTdFormSearchProps<F extends Record<string, any>>
 
 export { default as FtTdForm } from "./ft-td-form.vue";
 export { default as FtTdFormSearch } from "./ft-td-form-search.vue";
+export * from "./register";

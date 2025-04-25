@@ -1,5 +1,10 @@
 import { FtTdFormProps } from "@ftjs/tdesign";
 import { Tag } from "tdesign-vue-next";
+// 注册 upload 组件
+import register from "../../register-upload";
+
+register();
+
 export interface Data {
   autoComplete: string;
   cascader: string;
@@ -19,7 +24,10 @@ export interface Data {
   textarea: string;
   timePicker: string;
   treeSelect: string;
+  upload: string;
 }
+
+register();
 
 export const columns: FtTdFormProps<Data>["columns"] = [
   {
@@ -232,5 +240,11 @@ export const columns: FtTdFormProps<Data>["columns"] = [
         },
       ],
     },
+  },
+  {
+    field: "upload",
+    title: "上传",
+    type: "upload",
+    value: [],
   },
 ];

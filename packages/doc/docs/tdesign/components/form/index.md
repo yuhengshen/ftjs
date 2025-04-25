@@ -23,6 +23,11 @@ import Form from "./demo.vue";
 == config.tsx
 
 <<< ./config.tsx
+
+== register-upload.tsx
+
+<<< ../../register-upload.tsx
+
 :::
 
 ## 组件属性

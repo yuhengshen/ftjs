@@ -1,19 +1,19 @@
 import { Refs, useFormItem } from "@ftjs/core";
-import { FormItem, CheckboxGroup, CheckboxGroupProps } from "tdesign-vue-next";
+import { FormItem, Select, SelectProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
 import { viewRenderOptions } from "../utils";
 
-export interface FtFormColumnCheckbox<T extends Record<string, any>>
+export interface FtFormColumnSelect<T extends Record<string, any>>
   extends TdColumnBase<T> {
   /**
-   * 多选框
+   * 选择器
    */
-  type: "checkbox";
-  props?: Refs<CheckboxGroupProps>;
+  type: "select";
+  props?: Refs<SelectProps>;
 }
 
-export default defineFormItem<FtFormColumnCheckbox<any>>(props => {
+export default defineFormItem<FtFormColumnSelect<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
@@ -27,13 +27,12 @@ export default defineFormItem<FtFormColumnCheckbox<any>>(props => {
           viewRenderOptions({
             options,
             value: valueComputed.value,
-            multiple: true,
+            keys: props.unrefsProps?.keys,
+            multiple: props.unrefsProps?.multiple,
           })
         ) : (
-          <CheckboxGroup
-            v-model:value={valueComputed.value}
-            {...props.unrefsProps}
-          />
+          // @ts-expect-error 库类型错误
+          <Select v-model:value={valueComputed.value} {...props.unrefsProps} />
         )}
       </FormItem>
     );

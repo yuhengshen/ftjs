@@ -13,6 +13,12 @@ export interface Data {
   tagInput: string[];
   radio: string;
   rangeInput: string[];
+  select: string;
+  slider: number;
+  switch: boolean;
+  textarea: string;
+  timePicker: string;
+  treeSelect: string;
 }
 
 export const columns: FtTdFormProps<Data>["columns"] = [
@@ -173,5 +179,58 @@ export const columns: FtTdFormProps<Data>["columns"] = [
     field: "rangeInput",
     title: "范围输入框",
     type: "range-input",
+  },
+  {
+    field: "select",
+    title: "选择器",
+    type: "select",
+    props: {
+      options: [
+        { label: "选项一", value: "1" },
+        { label: "选项二", value: "2" },
+      ],
+    },
+  },
+  {
+    field: "slider",
+    title: "滑块",
+    type: "slider",
+  },
+  {
+    field: "switch",
+    title: "开关",
+    type: "switch",
+    value: true,
+    props: {
+      label: ["打开了", "关闭了"],
+    },
+  },
+  {
+    field: "textarea",
+    title: "文本域",
+    type: "textarea",
+  },
+  {
+    field: "timePicker",
+    title: "时间选择器",
+    type: "time-picker",
+  },
+  {
+    field: "treeSelect",
+    title: "树选择器",
+    type: "tree-select",
+    props: {
+      multiple: true,
+      data: [
+        {
+          label: "选项一",
+          value: "1",
+          children: [
+            { label: "子选项一", value: "1.1" },
+            { label: "子选项二", value: "1.2" },
+          ],
+        },
+      ],
+    },
   },
 ];

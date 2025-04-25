@@ -20,6 +20,12 @@ import InputNumber, {
 import TagInput, { FtFormColumnTagInput } from "./components/tag-input";
 import Radio, { FtFormColumnRadio } from "./components/radio";
 import RangeInput, { FtFormColumnRangeInput } from "./components/range-input";
+import Select, { FtFormColumnSelect } from "./components/select";
+import Slider, { FtFormColumnSlider } from "./components/slider";
+import Switch, { FtFormColumnSwitch } from "./components/switch";
+import Textarea, { FtFormColumnTextarea } from "./components/textarea";
+import TimePicker, { FtFormColumnTimePicker } from "./components/time-picker";
+import TreeSelect, { FtFormColumnTreeSelect } from "./components/tree-select";
 export interface TdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
   rules?: FormRule[];
@@ -28,7 +34,6 @@ export interface TdColumnBase<FormData extends Record<string, any>>
 /**
  * 允许外部注册类型
  */
-
 export interface RegisterColumnMap<FormData extends Record<string, any>> {
   "auto-complete": FtFormColumnAutoComplete<FormData>;
   cascader: FtFormColumnCascader<FormData>;
@@ -41,6 +46,12 @@ export interface RegisterColumnMap<FormData extends Record<string, any>> {
   "tag-input": FtFormColumnTagInput<FormData>;
   radio: FtFormColumnRadio<FormData>;
   "range-input": FtFormColumnRangeInput<FormData>;
+  select: FtFormColumnSelect<FormData>;
+  slider: FtFormColumnSlider<FormData>;
+  switch: FtFormColumnSwitch<FormData>;
+  textarea: FtFormColumnTextarea<FormData>;
+  "time-picker": FtFormColumnTimePicker<FormData>;
+  "tree-select": FtFormColumnTreeSelect<FormData>;
 }
 
 export interface FormItemProps<Column extends TdColumnBase<any>> {
@@ -80,6 +91,12 @@ export const formRenderMap = new Map<string, Component>([
   ["tag-input", TagInput],
   ["radio", Radio],
   ["range-input", RangeInput],
+  ["select", Select],
+  ["slider", Slider],
+  ["switch", Switch],
+  ["textarea", Textarea],
+  ["time-picker", TimePicker],
+  ["tree-select", TreeSelect],
 ]);
 
 export function registerForm<T extends keyof RegisterColumnMap<any>>(

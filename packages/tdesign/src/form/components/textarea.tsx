@@ -1,37 +1,34 @@
 import { Refs, useFormItem } from "@ftjs/core";
-import { FormItem, CheckboxGroup, CheckboxGroupProps } from "tdesign-vue-next";
+import { FormItem, Textarea, TextareaProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
-import { viewRenderOptions } from "../utils";
 
-export interface FtFormColumnCheckbox<T extends Record<string, any>>
+export interface FtFormColumnTextarea<T extends Record<string, any>>
   extends TdColumnBase<T> {
   /**
-   * 多选框
+   * 开关
    */
-  type: "checkbox";
-  props?: Refs<CheckboxGroupProps>;
+  type: "textarea";
+  props?: Refs<TextareaProps>;
 }
 
-export default defineFormItem<FtFormColumnCheckbox<any>>(props => {
+export default defineFormItem<FtFormColumnTextarea<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
 
   return () => {
-    const options = props.unrefsProps?.options || [];
-
+    const viewRender = () => {
+      return valueComputed.value ?? "-";
+    };
     return (
       <FormItem {...formItemProps.value}>
         {props.isView ? (
-          viewRenderOptions({
-            options,
-            value: valueComputed.value,
-            multiple: true,
-          })
+          <div>{viewRender()}</div>
         ) : (
-          <CheckboxGroup
+          <Textarea
             v-model:value={valueComputed.value}
+            placeholder={`请输入${props.column.title}`}
             {...props.unrefsProps}
           />
         )}

@@ -126,10 +126,12 @@ const allowDrop = ({ dropNode, dropPosition }) => {
 const onDrop = ({ dragNode, dropPosition, dropNode }) => {
   const list = columnsTree.value[0].children as TreeOptionData[];
   const fromIndex = list.findIndex(e => e.value === dragNode.value);
+  const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
+  const dropNodeIndex = list.findIndex(e => e.value === dropNode.value);
   const toIndex =
-    list.findIndex(e => e.value === dropNode.value) + dropPosition;
-  list.splice(toIndex, 0, dragNode);
+    dropPosition > 0 ? dropNodeIndex + dropPosition : dropNodeIndex;
+  list.splice(toIndex, 0, dragItem);
 };
 
 defineExpose({

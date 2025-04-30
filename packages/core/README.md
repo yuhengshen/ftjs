@@ -13,4 +13,4 @@
 
 ## License
 
-[MIT](../../LICENSE)
+[MIT](https://github.com/yuhengshen/ftjs/blob/main/LICENSE)

@@ -35,4 +35,4 @@ ftjs 是基于 [Vue 3](https://github.com/vuejs/core) 的表单和表格组件�
 
 ## 许可证
 
-[MIT](./LICENSE)
+[MIT](https://github.com/yuhengshen/ftjs/blob/main/LICENSE)

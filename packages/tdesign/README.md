@@ -13,4 +13,4 @@ tdesign-vue-next 适配器
 
 ## 许可证
 
-[MIT](../../LICENSE)
+[MIT](https://github.com/yuhengshen/ftjs/blob/main/LICENSE)

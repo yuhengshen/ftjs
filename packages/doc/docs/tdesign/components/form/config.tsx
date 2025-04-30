@@ -51,6 +51,7 @@ export const columns: FtTdFormProps<Data>["columns"] = [
     props: {
       multiple: true,
       minCollapsedNum: 1,
+      showAllLevels: false,
       options: [
         {
           label: "选项一",
@@ -89,7 +90,6 @@ export const columns: FtTdFormProps<Data>["columns"] = [
     value: ["1", "2"],
     props: {
       options: [
-        { label: "全选", checkAll: true },
         {
           label: () => {
             return <Tag theme="success">标签一</Tag>;

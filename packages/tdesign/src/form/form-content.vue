@@ -8,14 +8,29 @@ defineOptions({
   inheritAttrs: false,
 });
 
-defineProps<{
+const props = defineProps<{
   columns: FtTdFormColumn<F>[];
   isView?: boolean;
+  isSearch?: boolean;
 }>();
+
+const getStyle = (column: FtTdFormColumn<F>) => {
+  if (!props.isSearch) return;
+  const span2TypeList = ["date-range-picker"];
+  if (span2TypeList.includes(column.type)) {
+    return {
+      gridColumn: `span 2 / span 2`,
+    };
+  }
+};
 </script>
 
 <template>
   <template v-for="column in columns" :key="getField(column)">
-    <FormContentItem :column="column" :is-view="isView" />
+    <FormContentItem
+      :column="column"
+      :is-view="isView"
+      :style="getStyle(column)"
+    />
   </template>
 </template>

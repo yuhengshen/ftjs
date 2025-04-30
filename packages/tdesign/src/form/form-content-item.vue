@@ -4,7 +4,6 @@ import { FtTdFormColumn, formRenderMap } from "./register";
 import { computed, toValue } from "vue";
 defineOptions({
   name: "FtTdFormContentItem",
-  inheritAttrs: false,
 });
 
 const props = defineProps<{

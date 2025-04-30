@@ -32,7 +32,20 @@ export interface FtTdFormProps<F extends Record<string, any>>
 }
 
 export interface FtTdFormSearchProps<F extends Record<string, any>>
-  extends FtFormProps<F> {}
+  extends FtFormProps<F> {
+  /**
+   * 每一项的宽度，用于对齐搜索框，日期范围输入框宽度为2倍
+   *
+   * @default '280px'
+   */
+  width?: string;
+  /**
+   * 每一项的间距
+   *
+   * @default '15px 10px'
+   */
+  gap?: string;
+}
 
 export { default as FtTdForm } from "./ft-td-form.vue";
 export { default as FtTdFormSearch } from "./ft-td-form-search.vue";

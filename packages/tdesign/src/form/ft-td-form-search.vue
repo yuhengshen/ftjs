@@ -20,7 +20,10 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = defineProps<FtTdFormSearchProps<F>>();
+const props = withDefaults(defineProps<FtTdFormSearchProps<F>>(), {
+  width: "280px",
+  gap: "15px 20px",
+});
 
 const {
   visibleColumns,
@@ -177,13 +180,18 @@ defineExpose({
 
   <Form
     ref="formRef"
-    style="gap: 10px"
+    :style="{
+      gap,
+      display: 'grid',
+      gridTemplateColumns: `repeat(auto-fill, ${width})`,
+      '--td-comp-margin-xxl': 0,
+    }"
     :rules="rules"
     v-bind="{ ...$attrs, ...formProps }"
   >
-    <FormContent :columns="visibleColumns" :is-view="isView" />
+    <FormContent :columns="visibleColumns" :is-view="isView" is-search />
 
-    <FormItem style="--ft-form-control-width: 220px">
+    <FormItem>
       <div style="display: flex; gap: 10px">
         <Button v-if="cache" theme="primary" ghost @click="setting">
           <template #icon>

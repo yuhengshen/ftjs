@@ -143,6 +143,15 @@ export default defineConfig({
             },
           ],
         },
+        {
+          text: "示例",
+          items: [
+            {
+              text: "自定义组件 Upload",
+              link: "/tdesign/examples/custom-upload/",
+            },
+          ],
+        },
       ],
     },
 

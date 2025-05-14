@@ -22,11 +22,6 @@
 #### formData
 
 - 用于表单数据的双向绑定
-- 当值为 `undefined` 或 `null` 时，表单会自动生成内部值
-
-::: danger 注意事项
-使用双向绑定时，请勿将 `formData` 初始化为 `null` 或 `undefined`，否则表单数据将由内部状态管理接管。
-:::
 
 #### internalFormProps
 

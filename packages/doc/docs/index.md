@@ -35,7 +35,7 @@ features:
     details: Ant-design-vue 适配器。
     link: /antd/index
   - icon: 🛠️
-    title: 适配器
+    title: 适配器（开发中）
     details: TDesign Vue Next 适配器。
     link: /tdesign/index
 ---

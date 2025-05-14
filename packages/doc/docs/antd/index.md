@@ -21,7 +21,7 @@
 ## 安装
 
 ```bash
-npm i @ftjs/antd // [!=npm auto]
+npm i @ftjs/core @ftjs/antd // [!=npm auto]
 ```
 
 ## 组件列表

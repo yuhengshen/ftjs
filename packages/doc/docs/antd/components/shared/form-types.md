@@ -19,7 +19,11 @@
 | `switch`        | 开关       | [Switch](https://antdv.com/components/switch)                                 |
 | `textarea`      | 文本域     | [TextArea](https://antdv.com/components/input#components-input-demo-textarea) |
 | `tree-select`   | 树选择     | [TreeSelect](https://antdv.com/components/tree-select)                        |
-| `upload`        | 上传       | [Upload](https://antdv.com/components/upload)                                 |
+| ~~upload~~      | 上传       | [Upload](https://antdv.com/components/upload)                                 |
+
+::: warning
+`upload` 组件由于业务自定义程度较高，后期将删除，建议使用自定组件注册的形式实现，参照：[TDesign自定义组件Upload](/tdesign/examples/custom-upload/)
+:::
 
 ## 事件
 

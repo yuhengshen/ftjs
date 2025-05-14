@@ -16,7 +16,7 @@
 ## 安装
 
 ```bash
-npm i @ftjs/tdesign // [!=npm auto]
+npm i @ftjs/core @ftjs/tdesign // [!=npm auto]
 ```
 
 ## 组件列表

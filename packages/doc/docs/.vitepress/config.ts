@@ -32,7 +32,7 @@ export default defineConfig({
         text: "适配器",
         items: [
           { text: "@ftjs/antd", link: "/antd/" },
-          { text: "@ftjs/tdesign", link: "/tdesign/" },
+          { text: "@ftjs/tdesign 🚧", link: "/tdesign/" },
           { text: "@ftjs/element 🚧", link: "#" },
           { text: "@ftjs/vant 🚧", link: "#" },
         ],

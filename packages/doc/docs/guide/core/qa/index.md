@@ -2,7 +2,7 @@
 
 ## 为什么有些组件 column 没有 slots？
 
-slot 一般用在模板(html)代码中，是常用的内容定制机制。但在 column(js) 配置中，如果对应的 props 中已经存在相应的属性，则不再定义 slot，这样可以使配置更加单一。
+slot 一般用在模板 (HTML) 代码中，是常用的内容定制机制。但在 column (JS) 配置中，如果对应的 props 中已经存在相应的属性，则不再定义 slot，这样可以使配置更加单一。
 
 ### 示例：从 slot 到 props 的转换
 
@@ -29,6 +29,7 @@ const column = {
 ```
 
 ::: info
+
 column 保留了 slot 的定义，如果要用 `slots` 时，也可以在定义组件时，声明和使用 `slots`。
 
 ```tsx-vue
@@ -77,4 +78,15 @@ const column = {
     return arr;
   },
 };
+```
+
+## 为什么自定义组件时，对 valueComputed 进行赋值没有效果？
+
+valueComputed 本质是一个 vue computed 值，需要触发其中的 set 方法才能生效。
+
+```ts
+// 生效
+valueComputed.value = [1, 2];
+// 不生效
+valueComputed.value[0] = 1;
 ```

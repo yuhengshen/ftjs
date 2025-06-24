@@ -1,6 +1,6 @@
 {
   "name": "@ftjs/doc",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "ftjs 文档",
   "type": "module",
   "scripts": {

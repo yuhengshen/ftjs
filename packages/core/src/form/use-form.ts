@@ -236,7 +236,22 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
 
   // 需要监听的表单字段
   const watchMap = new Map<string, () => void>();
-  const hideFieldSet = ref<Set<string>>(new Set());
+  // 存储每个字段的控制条件：Map<被控制字段, Map<控制字段, 是否显示>>
+  const fieldControlMap = ref<Map<string, Map<string, boolean>>>(new Map());
+  // 计算得出的需要隐藏的字段集合
+  const hideFieldSet = computed(() => {
+    const hiddenFields = new Set<string>();
+
+    fieldControlMap.value.forEach((controlMap, targetField) => {
+      // 只有所有控制条件都为true时，字段才显示
+      const shouldShow = Array.from(controlMap.values()).every(Boolean);
+      if (!shouldShow) {
+        hiddenFields.add(targetField);
+      }
+    });
+
+    return hiddenFields;
+  });
 
   // 需要显示的表单字段
   const visibleColumns = computed(() => {
@@ -263,7 +278,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
       onCleanup(() => {
         watchMap.forEach(cancel => cancel());
         watchMap.clear();
-        hideFieldSet.value.clear();
+        fieldControlMap.value.clear();
       });
       addFormDefaultValue();
       runFieldWatch();
@@ -316,7 +331,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
           watch(
             () => get(form.value, field),
             val => {
-              control.forEach(({ field, value }) => {
+              control.forEach(({ field: targetField, value }) => {
                 let show = true;
                 if (typeof value === "function") {
                   show = value({
@@ -328,11 +343,13 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
                     ? (value as any[]).includes(val)
                     : val === value;
                 }
-                if (show) {
-                  hideFieldSet.value.delete(field);
-                } else {
-                  hideFieldSet.value.add(field);
+
+                // 确保目标字段的控制映射存在
+                if (!fieldControlMap.value.has(targetField)) {
+                  fieldControlMap.value.set(targetField, new Map());
                 }
+
+                fieldControlMap.value.get(targetField)!.set(field, show);
               });
             },
             {

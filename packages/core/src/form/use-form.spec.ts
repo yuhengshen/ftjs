@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { nextTick } from "vue";
 import { useForm, useFormInject } from "./use-form";
 import { FtFormColumnBase } from "./columns";
 import { getField } from "../utils";
@@ -328,6 +329,120 @@ describe("useForm", () => {
 
       // 验证注入的值
       expect(injected?.form.value).toEqual(form.value);
+    });
+  });
+
+  describe("多字段控制同一字段", () => {
+    it("应该正确处理多个字段控制同一个字段的情况", async () => {
+      interface FormData {
+        fieldA: string;
+        fieldB: string;
+        targetField: string;
+      }
+
+      const columns: FtFormColumnBase<FormData>[] = [
+        {
+          field: "fieldA",
+          title: "字段A",
+          control: [{ field: "targetField", value: "showA" }],
+        },
+        {
+          field: "fieldB",
+          title: "字段B",
+          control: [{ field: "targetField", value: "showB" }],
+        },
+        {
+          field: "targetField",
+          title: "目标字段",
+        },
+      ];
+
+      const { form, visibleColumns } = useForm({
+        columns,
+        formData: { fieldA: "", fieldB: "", targetField: "" },
+      });
+
+      // 初始状态：targetField应该被隐藏
+      expect(visibleColumns.value.map(c => c.field)).toEqual([
+        "fieldA",
+        "fieldB",
+      ]);
+
+      form.value.fieldA = "showA";
+      await nextTick();
+      expect(visibleColumns.value).toHaveLength(2);
+      expect(visibleColumns.value.map(c => c.field)).toEqual([
+        "fieldA",
+        "fieldB",
+      ]);
+
+      form.value.fieldB = "showB";
+      await nextTick();
+      expect(visibleColumns.value).toHaveLength(3);
+      expect(visibleColumns.value.map(c => c.field)).toEqual([
+        "fieldA",
+        "fieldB",
+        "targetField",
+      ]);
+
+      form.value.fieldA = "other";
+      await nextTick();
+      expect(visibleColumns.value).toHaveLength(2);
+      expect(visibleColumns.value.map(c => c.field)).toEqual([
+        "fieldA",
+        "fieldB",
+      ]);
+    });
+
+    it("应该正确处理函数类型的控制条件", async () => {
+      interface FormData {
+        fieldA: number;
+        fieldB: number;
+        targetField: string;
+      }
+
+      const columns: FtFormColumnBase<FormData>[] = [
+        {
+          field: "fieldA",
+          title: "字段A",
+          control: [
+            {
+              field: "targetField",
+              value: ({ val }) => val > 5,
+            },
+          ],
+        },
+        {
+          field: "fieldB",
+          title: "字段B",
+          control: [
+            {
+              field: "targetField",
+              value: ({ val }) => val < 10,
+            },
+          ],
+        },
+        {
+          field: "targetField",
+          title: "目标字段",
+        },
+      ];
+
+      const { form, visibleColumns } = useForm({
+        columns,
+        formData: { fieldA: 0, fieldB: 0, targetField: "" },
+      });
+
+      expect(visibleColumns.value).toHaveLength(2);
+
+      form.value.fieldA = 6;
+      form.value.fieldB = 8;
+      await nextTick();
+      expect(visibleColumns.value).toHaveLength(3);
+
+      form.value.fieldB = 11;
+      await nextTick();
+      expect(visibleColumns.value).toHaveLength(2);
     });
   });
 });

@@ -7,4 +7,3 @@ export type {
 } from "./form/register";
 
 export * from "./vxe-table";
-export * from "./antd-table";

@@ -12,6 +12,7 @@ import {
   h,
   onMounted,
   ref,
+  toValue,
   useTemplateRef,
 } from "vue";
 import {
@@ -19,8 +20,9 @@ import {
   VxeGridInstance,
   VxeGrid,
   VxeGridSlots,
+  VxeTablePropTypes,
 } from "vxe-table";
-import { Edit, EditMap, editMap, isComponentTuple } from "../antd-table";
+import { Edit, EditMap, editMap, isComponentTuple } from "./column-edit";
 import { Pagination, Divider, Spin } from "ant-design-vue";
 import { FtAntdFormSearch } from "../form";
 
@@ -52,7 +54,7 @@ const enableEdit = computed(() => {
 
 const columns = computed(() => {
   return props.columns.map(column => {
-    let editObj = column.edit as Edit<any, any> | undefined;
+    let editObj = column.edit as Edit<any, any, any> | undefined;
     if (typeof editObj === "string") {
       editObj = {
         type: editObj as keyof EditMap<any>,
@@ -122,6 +124,14 @@ const columns = computed(() => {
   });
 });
 
+const editRules = computed<VxeTablePropTypes.EditRules<T>>(() => {
+  const entries = props.columns.map(column => {
+    const editObj = column.edit as Edit<any, any, any> | undefined;
+    return [column.field, toValue(editObj?.rules)];
+  });
+  return Object.fromEntries(entries);
+});
+
 // 做一些默认定制
 const internalTableProps = computed<
   FtVxeTableProps<T, S>["internalTableProps"]
@@ -158,6 +168,7 @@ const internalTableProps = computed<
       keyField: props.keyField,
       ...rowConfig,
     },
+    editRules: editRules.value,
   };
 });
 

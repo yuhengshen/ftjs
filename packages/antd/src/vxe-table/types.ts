@@ -7,7 +7,7 @@ import type {
 import { VxeGridProps, VxeGridPropTypes } from "vxe-table";
 import { FtAntdFormSearchProps } from "../form";
 import type { FtAntdFormColumn } from "../form/register";
-import type { EditMap } from "../antd-table/column-edit";
+import type { EditMap } from "./column-edit";
 
 /**
  * 列定义
@@ -30,7 +30,10 @@ type VxeTableColumn<
  * 内部表格 props
  */
 interface InternalVxeTableProps<TableData extends Record<string, any>>
-  extends Omit<VxeGridProps<TableData>, "columns" | "minHeight"> {}
+  extends Omit<
+    VxeGridProps<TableData>,
+    "columns" | "minHeight" | "editRules"
+  > {}
 
 export interface FtVxeTableProps<
   T extends Record<string, any>,

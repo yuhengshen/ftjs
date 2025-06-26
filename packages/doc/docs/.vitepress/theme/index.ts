@@ -24,6 +24,7 @@ export default {
     const { isDark } = useData();
 
     watchEffect(() => {
+      if (typeof window === "undefined") return;
       // 设置 VXE-PC-UI 主题
       pcUi.setTheme(isDark.value ? "dark" : "light");
       // tdesign-vue-next

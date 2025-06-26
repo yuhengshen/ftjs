@@ -97,13 +97,10 @@ export default defineConfig({
         },
         {
           text: "表格",
-          items: [
-            { text: "FtAntdTable", link: "/antd/components/table/" },
-            { text: "FtVxeTable", link: "/antd/components/vxe-table/" },
-          ],
+          items: [{ text: "FtVxeTable", link: "/antd/components/vxe-table/" }],
         },
         {
-          text: "示例",
+          text: "表单示例",
           items: [
             {
               text: "恢复默认值",
@@ -124,6 +121,15 @@ export default defineConfig({
             {
               text: "自定义查看/编辑",
               link: "/antd/examples/custom-render/",
+            },
+          ],
+        },
+        {
+          text: "表格示例",
+          items: [
+            {
+              text: "表格编辑和校验",
+              link: "/antd/examples/vxe-table-edit/",
             },
           ],
         },

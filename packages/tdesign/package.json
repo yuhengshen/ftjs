@@ -8,7 +8,7 @@
   "scripts": {
     "build": "vite build",
     "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
-    "pub": "tsx ../../scripts/publish.ts"
+    "semantic-release": "semantic-release"
   },
   "exports": {
     ".": {

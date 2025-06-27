@@ -2,10 +2,9 @@ export default {
   extends: "semantic-release-monorepo",
   branches: [
     "main",
-    "master",
     {
-      name: "semantic-release-monorepo",
-      prerelease: "beta",
+      name: "release-*",
+      prerelease: false,
     },
   ],
   plugins: [

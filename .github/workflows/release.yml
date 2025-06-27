@@ -18,20 +18,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
+          # 获取完整的历史记录，semantic-release 需要这个
           fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: "18"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+          version: 10.4.1
+      - uses: actions/setup-node@v4
         with:
-          version: 9
+          node-version: 20
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -40,14 +37,14 @@ jobs:
         run: pnpm build
 
       - name: Release all packages (dry-run)
-        if: ${{ github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run == 'true' }}
         run: pnpm semantic-release:all --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Release all packages
-        if: ${{ !github.event.inputs.dry_run }}
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: pnpm semantic-release:all
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

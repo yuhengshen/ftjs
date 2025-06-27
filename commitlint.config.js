@@ -8,6 +8,7 @@ export default {
         "antd", // @ftjs/antd
         "core", // @ftjs/core
         "tdesign", // @ftjs/tdesign
+        "element", // @ftjs/element
         "doc", // @ftjs/doc (文档)
       ],
     ],

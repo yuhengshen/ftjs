@@ -1,6 +1,6 @@
 {
-  "name": "@ftjs/core",
-  "version": "0.5.6",
+  "name": "@ftjs/element",
+  "version": "0.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -8,8 +8,6 @@
   "scripts": {
     "build": "vite build",
     "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
-    "test": "vitest --typecheck",
-    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build"
   },
   "exports": {
@@ -25,20 +23,22 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "catalog:",
+    "dayjs": "catalog:",
+    "@ftjs/core": "workspace:*",
+    "element-plus": "catalog:",
+    "vue": "catalog:",
+    "vue-component-type-helpers": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
-    "@vitest/ui": "catalog:",
-    "@vue/test-utils": "catalog:",
-    "happy-dom": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
-    "vitest": "catalog:",
-    "vue-tsc": "catalog:",
-    "vue": "catalog:"
+    "vue-tsc": "catalog:"
   },
   "peerDependencies": {
-    "vue": ">=3.3.0"
+    "vue": ">=3.3.0",
+    "@ftjs/core": ">=0.0.1",
+    "dayjs": ">=1.0.0",
+    "element-plus": ">=2.10.2"
   }
 }

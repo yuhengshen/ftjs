@@ -29,3 +29,4 @@ catalog:
   tdesign-vue-next: ^1.12.0
   dayjs: ^1.11.13
   tdesign-icons-vue-next: ^0.3.5
+  element-plus: ^2.10.2

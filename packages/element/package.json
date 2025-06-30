@@ -1,0 +1,44 @@
+{
+  "name": "@ftjs/element",
+  "version": "0.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "minify": "pnpm dlx esbuild ./dist/index.js --minify --outfile=./dist/index.min.js",
+    "prepublishOnly": "pnpm build"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "dayjs": "catalog:",
+    "@ftjs/core": "workspace:*",
+    "element-plus": "catalog:",
+    "vue": "catalog:",
+    "vue-component-type-helpers": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0",
+    "@ftjs/core": ">=0.0.1",
+    "dayjs": ">=1.0.0",
+    "element-plus": ">=2.10.2"
+  }
+}

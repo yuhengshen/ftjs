@@ -1,1 +1,1 @@
-export const isViewOptionsStyle = "display: flex; gap: 8px;";
+export const isViewOptionsStyle = "display: flex; gap: 8px; flex-wrap: wrap;";

@@ -17,6 +17,10 @@ export default defineConfig({
           __dirname,
           "../../../../tdesign/src/index.ts",
         ),
+        "@ftjs/element": path.resolve(
+          __dirname,
+          "../../../../element/src/index.ts",
+        ),
       },
     },
   },
@@ -33,7 +37,7 @@ export default defineConfig({
         items: [
           { text: "@ftjs/antd", link: "/antd/" },
           { text: "@ftjs/tdesign 🚧", link: "/tdesign/" },
-          { text: "@ftjs/element 🚧", link: "#" },
+          { text: "@ftjs/element 🚧", link: "/element/" },
           { text: "@ftjs/vant 🚧", link: "#" },
         ],
       },
@@ -157,6 +161,16 @@ export default defineConfig({
               link: "/tdesign/examples/custom-upload/",
             },
           ],
+        },
+      ],
+      "/element/": [
+        {
+          text: "介绍",
+          link: "/element/",
+        },
+        {
+          text: "表单",
+          items: [{ text: "FtEleForm", link: "/element/components/form/" }],
         },
       ],
     },

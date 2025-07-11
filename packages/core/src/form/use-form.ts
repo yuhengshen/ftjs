@@ -46,7 +46,7 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
 
   const columnsV = computed(() => {
     const entries = columns.value.map(e => {
-      const field = e.field ?? (e.fields?.[0] as string);
+      const field = getField(e);
       return [field, !toValue(e.hide)];
     });
     return Object.fromEntries(entries);

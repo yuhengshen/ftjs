@@ -14,7 +14,10 @@ defineProps<{
 </script>
 
 <template>
-  <template v-for="column in columns" :key="getField(column)">
-    <FormContentItem :column="column" :is-view="isView" />
-  </template>
+  <FormContentItem
+    v-for="column in columns"
+    :key="getField(column)"
+    :column="column"
+    :is-view="isView"
+  />
 </template>

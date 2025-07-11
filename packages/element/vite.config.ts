@@ -20,13 +20,7 @@ export default defineConfig({
       fileName: "index",
     },
     rollupOptions: {
-      external: [
-        "vue",
-        "@ftjs/core",
-        "dayjs",
-        "tdesign-vue-next",
-        "tdesign-icons-vue-next",
-      ],
+      external: ["vue", "@ftjs/core", "dayjs", "element-plus"],
     },
   },
 });

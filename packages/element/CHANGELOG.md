@@ -1,5 +1,12 @@
 # @ftjs/element
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`665f563`](https://github.com/yuhengshen/ftjs/commit/665f563d8f0e51644684650c7988771204527118)]:
+  - @ftjs/core@0.6.0
+
 ## 0.0.2
 
 ### Patch Changes

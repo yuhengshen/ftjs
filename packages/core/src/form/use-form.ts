@@ -19,6 +19,7 @@ import {
   getField,
   getStorage,
   setStorage,
+  isEqual,
 } from "../utils";
 import { FtFormColumnBase } from "./columns";
 import { RecordPath } from "../type-helper";
@@ -303,6 +304,9 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
       if (!watchObj && !control) return;
 
       const field = getField(column);
+      const watchArr = column.fields ?? ([column.field] as string[]);
+
+      const isSingleWatch = watchArr.length === 1;
       const cancel: (() => void)[] = [];
 
       if (typeof watchObj === "function") {
@@ -314,9 +318,13 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
         cancel.push(
           watch(
             () => {
-              return get(form.value, field);
+              return watchArr.map(f => get(form.value, f));
             },
             (val, oldVal) => {
+              if (isSingleWatch) {
+                val = val?.[0];
+                oldVal = oldVal?.[0];
+              }
               watchObj.handler({ val, oldVal, form: form.value });
             },
             {
@@ -329,7 +337,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
       if (control) {
         cancel.push(
           watch(
-            () => get(form.value, field),
+            () => watchArr.map(f => get(form.value, f)),
             val => {
               control.forEach(({ field: targetField, value }) => {
                 let show = true;
@@ -339,9 +347,15 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
                     val,
                   });
                 } else {
-                  show = Array.isArray(value)
-                    ? (value as any[]).includes(val)
-                    : val === value;
+                  if (Array.isArray(value)) {
+                    if (isSingleWatch) {
+                      show = value.some(v => isEqual(v, val[0]));
+                    } else {
+                      show = isEqual(value, val);
+                    }
+                  } else {
+                    show = isEqual(value, val[0]);
+                  }
                 }
 
                 // 确保目标字段的控制映射存在
@@ -350,6 +364,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
                 }
 
                 fieldControlMap.value.get(targetField)!.set(field, show);
+                console.log(`field ${field} show: ${show}`);
               });
             },
             {

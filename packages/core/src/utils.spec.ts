@@ -10,6 +10,7 @@ import {
   unrefs,
   getStorage,
   setStorage,
+  isEqual,
 } from "./utils";
 import { ref } from "vue";
 
@@ -301,6 +302,201 @@ describe("utils", () => {
       // 验证结果
       expect(localStorageMock.getItem).not.toHaveBeenCalled();
       expect(localStorageMock.setItem).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("isEqual", () => {
+    describe("基本类型比较", () => {
+      it("应该正确比较相同的基本类型", () => {
+        expect(isEqual(1, 1)).toBe(true);
+        expect(isEqual("test", "test")).toBe(true);
+        expect(isEqual(true, true)).toBe(true);
+        expect(isEqual(false, false)).toBe(true);
+      });
+
+      it("应该正确比较不同的基本类型", () => {
+        expect(isEqual(1, 2)).toBe(false);
+        expect(isEqual("test", "other")).toBe(false);
+        expect(isEqual(true, false)).toBe(false);
+        expect(isEqual(1, "1")).toBe(false);
+        expect(isEqual(0, false)).toBe(false);
+      });
+    });
+
+    describe("null和undefined处理", () => {
+      it("应该正确处理null值", () => {
+        expect(isEqual(null, null)).toBe(true);
+        expect(isEqual(null, undefined)).toBe(false);
+        expect(isEqual(null, 0)).toBe(false);
+        expect(isEqual(null, "")).toBe(false);
+        expect(isEqual(null, false)).toBe(false);
+      });
+
+      it("应该正确处理undefined值", () => {
+        expect(isEqual(undefined, undefined)).toBe(true);
+        expect(isEqual(undefined, null)).toBe(false);
+        expect(isEqual(undefined, 0)).toBe(false);
+        expect(isEqual(undefined, "")).toBe(false);
+        expect(isEqual(undefined, false)).toBe(false);
+      });
+    });
+
+    describe("falsy值处理", () => {
+      it("应该正确比较falsy值", () => {
+        expect(isEqual(0, 0)).toBe(true);
+        expect(isEqual(false, false)).toBe(true);
+        expect(isEqual("", "")).toBe(true);
+
+        expect(isEqual(0, false)).toBe(false);
+        expect(isEqual(0, "")).toBe(false);
+        expect(isEqual(false, "")).toBe(false);
+      });
+    });
+
+    describe("数组比较", () => {
+      it("应该正确比较相同的数组", () => {
+        expect(isEqual([], [])).toBe(true);
+        expect(isEqual([1, 2, 3], [1, 2, 3])).toBe(true);
+        expect(isEqual([1, "test", true], [1, "test", true])).toBe(true);
+      });
+
+      it("应该正确比较不同的数组", () => {
+        expect(isEqual([1, 2, 3], [1, 2, 4])).toBe(false);
+        expect(isEqual([1, 2, 3], [1, 2])).toBe(false);
+        expect(isEqual([1, 2], [1, 2, 3])).toBe(false);
+        expect(isEqual([1, 2, 3], [3, 2, 1])).toBe(false);
+      });
+
+      it("应该正确比较嵌套数组", () => {
+        expect(
+          isEqual(
+            [
+              [1, 2],
+              [3, 4],
+            ],
+            [
+              [1, 2],
+              [3, 4],
+            ],
+          ),
+        ).toBe(true);
+        expect(
+          isEqual(
+            [
+              [1, 2],
+              [3, 4],
+            ],
+            [
+              [1, 2],
+              [3, 5],
+            ],
+          ),
+        ).toBe(false);
+        expect(isEqual([1, [2, 3]], [1, [2, 3]])).toBe(true);
+        expect(isEqual([1, [2, 3]], [1, [2, 4]])).toBe(false);
+      });
+
+      it("不应该将数组和非数组视为相等", () => {
+        expect(isEqual([1, 2], { 0: 1, 1: 2 })).toBe(false);
+        expect(isEqual([], {})).toBe(false);
+      });
+    });
+
+    describe("对象比较", () => {
+      it("应该正确比较相同的对象", () => {
+        expect(isEqual({}, {})).toBe(true);
+        expect(isEqual({ a: 1 }, { a: 1 })).toBe(true);
+        expect(isEqual({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(true);
+      });
+
+      it("应该正确比较不同的对象", () => {
+        expect(isEqual({ a: 1 }, { a: 2 })).toBe(false);
+        expect(isEqual({ a: 1 }, { b: 1 })).toBe(false);
+        expect(isEqual({ a: 1, b: 2 }, { a: 1 })).toBe(false);
+        expect(isEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+      });
+
+      it("应该忽略属性顺序", () => {
+        expect(isEqual({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
+        expect(isEqual({ x: 1, y: 2, z: 3 }, { z: 3, x: 1, y: 2 })).toBe(true);
+      });
+
+      it("应该正确比较嵌套对象", () => {
+        const obj1 = { a: { b: { c: 1 } } };
+        const obj2 = { a: { b: { c: 1 } } };
+        const obj3 = { a: { b: { c: 2 } } };
+
+        expect(isEqual(obj1, obj2)).toBe(true);
+        expect(isEqual(obj1, obj3)).toBe(false);
+      });
+
+      it("应该处理包含数组的对象", () => {
+        const obj1 = { a: [1, 2], b: { c: [3, 4] } };
+        const obj2 = { a: [1, 2], b: { c: [3, 4] } };
+        const obj3 = { a: [1, 2], b: { c: [3, 5] } };
+
+        expect(isEqual(obj1, obj2)).toBe(true);
+        expect(isEqual(obj1, obj3)).toBe(false);
+      });
+    });
+
+    describe("混合类型比较", () => {
+      it("应该正确处理包含null/undefined的复杂结构", () => {
+        expect(isEqual({ a: null }, { a: null })).toBe(true);
+        expect(isEqual({ a: null }, { a: undefined })).toBe(false);
+        expect(isEqual([null, 1], [null, 1])).toBe(true);
+        expect(isEqual([null, 1], [undefined, 1])).toBe(false);
+      });
+
+      it("应该处理深度嵌套的复杂结构", () => {
+        const complex1 = {
+          a: [1, { b: [2, 3] }],
+          c: { d: { e: [4, { f: 5 }] } },
+        };
+        const complex2 = {
+          a: [1, { b: [2, 3] }],
+          c: { d: { e: [4, { f: 5 }] } },
+        };
+        const complex3 = {
+          a: [1, { b: [2, 3] }],
+          c: { d: { e: [4, { f: 6 }] } },
+        };
+
+        expect(isEqual(complex1, complex2)).toBe(true);
+        expect(isEqual(complex1, complex3)).toBe(false);
+      });
+    });
+
+    describe("边界情况", () => {
+      it("应该处理同一个对象引用", () => {
+        const obj = { a: 1 };
+        const arr = [1, 2, 3];
+
+        expect(isEqual(obj, obj)).toBe(true);
+        expect(isEqual(arr, arr)).toBe(true);
+      });
+
+      it("应该处理特殊数值", () => {
+        expect(isEqual(NaN, NaN)).toBe(true);
+        expect(isEqual(Infinity, Infinity)).toBe(true);
+        expect(isEqual(-Infinity, -Infinity)).toBe(true);
+        expect(isEqual(Infinity, -Infinity)).toBe(false);
+
+        // Date
+        expect(isEqual(new Date("2021-01-01"), new Date("2021-01-01"))).toBe(
+          true,
+        );
+        expect(isEqual(new Date("2021-01-01"), new Date("2021-01-02"))).toBe(
+          false,
+        );
+      });
+
+      it("应该处理空值组合", () => {
+        expect(isEqual(null, {})).toBe(false);
+        expect(isEqual(undefined, {})).toBe(false);
+        expect(isEqual(null, [])).toBe(false);
+        expect(isEqual(undefined, [])).toBe(false);
+      });
     });
   });
 });

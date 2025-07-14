@@ -11,6 +11,8 @@
   "linked": [],
   "access": "public",
   "baseBranch": "main",
-  "updateInternalDependencies": "minor",
-  "ignore": ["@ftjs/doc"]
+  "ignore": ["@ftjs/doc"],
+  "experimental": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
 }

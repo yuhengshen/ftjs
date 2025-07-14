@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 1.1.1
+
+### Patch Changes
+
+- [`c845e58`](https://github.com/yuhengshen/ftjs/commit/c845e58c84500d7e64ca779d093b86bd4ec37d07) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix(core): 修复在观察多个字段时的值传递逻辑
+
 ## 1.1.0
 
 ### Minor Changes

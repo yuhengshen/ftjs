@@ -364,7 +364,6 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
                 }
 
                 fieldControlMap.value.get(targetField)!.set(field, show);
-                console.log(`field ${field} show: ${show}`);
               });
             },
             {

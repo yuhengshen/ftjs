@@ -328,6 +328,7 @@ describe("useForm", () => {
       interface FormData {
         fieldA: number;
         fieldB: number;
+        fieldC: number;
         targetField: string;
       }
 
@@ -343,12 +344,12 @@ describe("useForm", () => {
           ],
         },
         {
-          field: "fieldB",
+          fields: ["fieldB", "fieldC"],
           title: "字段B",
           control: [
             {
               field: "targetField",
-              value: ({ val }) => val < 10,
+              value: ({ val }) => val[0] < 10 && val[1] < 10,
             },
           ],
         },
@@ -367,10 +368,11 @@ describe("useForm", () => {
 
       form.value.fieldA = 6;
       form.value.fieldB = 8;
+      form.value.fieldC = 9;
       await nextTick();
       expect(visibleColumns.value).toHaveLength(3);
 
-      form.value.fieldB = 11;
+      form.value.fieldB = 10;
       await nextTick();
       expect(visibleColumns.value).toHaveLength(2);
     });

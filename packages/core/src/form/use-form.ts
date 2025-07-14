@@ -344,7 +344,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
                 if (typeof value === "function") {
                   show = value({
                     formData: form.value,
-                    val,
+                    val: isSingleWatch ? val[0] : val,
                   });
                 } else {
                   if (Array.isArray(value)) {

@@ -1,6 +1,6 @@
 {
   "name": "@ftjs/antd",
-  "version": "0.5.7",
+  "version": "1.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -40,7 +40,7 @@
   "peerDependencies": {
     "@ant-design/icons-vue": ">=7.0.0",
     "vue": ">=3.3.0",
-    "@ftjs/core": ">=0.5.7",
+    "@ftjs/core": ">=1.1.0",
     "ant-design-vue": ">=4.0.0",
     "dayjs": ">=1.0.0",
     "vxe-table": ">=4.0.0"

@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 1.1.0
+
+### Minor Changes
+
+- [`665f563`](https://github.com/yuhengshen/ftjs/commit/665f563d8f0e51644684650c7988771204527118) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 在 useForm 中支持多个字段的观察，优化字段显示逻辑
+
 ## 0.5.7
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@ftjs/element",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
-    "@ftjs/core": ">=0.5.7",
+    "@ftjs/core": ">=1.1.0",
     "dayjs": ">=1.0.0",
     "element-plus": ">=2.10.2"
   }

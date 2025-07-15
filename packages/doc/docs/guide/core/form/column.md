@@ -196,7 +196,7 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 字段名 `fields` 和 `field` 至少有一个存在
    *
-   * `field` 优先级高于 `fields`
+   * `fields` 优先级高于 `field`
    *
    * 如果是在 TableColumns 中，则默认继承其中的 field
    */

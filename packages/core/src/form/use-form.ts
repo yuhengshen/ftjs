@@ -10,6 +10,7 @@ import {
   watchEffect,
   ComputedGetter,
   onScopeDispose,
+  unref,
 } from "vue";
 import {
   cloneDeep,
@@ -47,7 +48,7 @@ export function toValueWithForm<T, R>(
   if (isFormGetter(fn)) {
     return fn(form.value);
   }
-  return toValue(fn);
+  return unref(fn);
 }
 
 export const useFormInject = <

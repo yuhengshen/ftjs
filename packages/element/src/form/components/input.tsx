@@ -1,36 +1,39 @@
 import { Refs, useFormItem } from "@ftjs/core";
-import { ElFormItem, ElAutocomplete } from "element-plus";
+import { ElFormItem, ElInput } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
-import { ExtractEventsFromProps } from "../../type";
 import { ComponentProps } from "vue-component-type-helpers";
+import { ExtractEventsFromProps } from "../../type";
 
-type AutocompleteProps = ComponentProps<typeof ElAutocomplete>;
-export interface FtFormColumnAutoComplete<T extends Record<string, any>>
+type InputProps = ComponentProps<typeof ElInput>;
+export interface FtFormColumnInput<T extends Record<string, any>>
   extends EleColumnBase<T> {
   /**
-   * 自动补全
+   * 输入框
    */
-  type: "auto-complete";
-  props?: Refs<AutocompleteProps> & ExtractEventsFromProps<AutocompleteProps>;
+  type: "input";
+  props?: Refs<InputProps> & ExtractEventsFromProps<InputProps>;
 }
 
-export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
+export default defineFormItem<FtFormColumnInput<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+
+  const renderText = () => {
+    return valueComputed.value ?? "-";
+  };
 
   return () => {
     return (
       <ElFormItem {...formItemProps.value}>
         {props.isView ? (
-          <div>{valueComputed.value || "-"}</div>
+          renderText()
         ) : (
-          <ElAutocomplete
+          <ElInput
             v-model={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
+            placeholder="请输入"
             {...props.unrefsProps}
-            onInput={() => {}}
           />
         )}
       </ElFormItem>

@@ -11,6 +11,8 @@ import { h, watchEffect } from "vue";
 import { enhanceAppWithTabs } from "vitepress-plugin-tabs/client";
 import { theme as antTheme } from "ant-design-vue";
 import "element-plus/dist/index.css";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import { ElConfigProvider } from "element-plus";
 
 // 导入自定义样式
 import "./custom.css";
@@ -46,7 +48,16 @@ export default {
             : antTheme.defaultAlgorithm,
         },
       },
-      { default: () => h(DefaultTheme.Layout) },
+      {
+        default: () =>
+          h(
+            ElConfigProvider,
+            {
+              locale: zhCn,
+            },
+            { default: () => h(DefaultTheme.Layout) },
+          ),
+      },
     );
   },
 } satisfies Theme;

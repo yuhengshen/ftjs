@@ -27,6 +27,7 @@ const formRef = ref<FormInstance>();
 const formProps = computed<FormPropsPublic>(() => {
   return {
     model: form.value,
+    labelWidth: 100,
     ...props.internalFormProps,
   };
 });

@@ -37,7 +37,7 @@ catalogs:
       specifier: ^1.11.13
       version: 1.11.13
     element-plus:
-      specifier: https://pkg.pr.new/element-plus/element-plus@21266
+      specifier: https://pkg.pr.new/element-plus/element-plus@5ee6449
       version: 2.10.3
     eslint:
       specifier: ^9.20.0
@@ -238,7 +238,7 @@ importers:
         version: 4.2.6(vue@3.5.13(typescript@5.8.3))
       element-plus:
         specifier: 'catalog:'
-        version: https://pkg.pr.new/element-plus/element-plus@21266(vue@3.5.13(typescript@5.8.3))
+        version: https://pkg.pr.new/element-plus/element-plus@5ee6449(vue@3.5.13(typescript@5.8.3))
       es-toolkit:
         specifier: ^1.33.0
         version: 1.33.0
@@ -287,7 +287,7 @@ importers:
         version: 1.11.13
       element-plus:
         specifier: 'catalog:'
-        version: https://pkg.pr.new/element-plus/element-plus@21266(vue@3.5.13(typescript@5.8.3))
+        version: https://pkg.pr.new/element-plus/element-plus@5ee6449(vue@3.5.13(typescript@5.8.3))
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -1970,8 +1970,8 @@ packages:
   electron-to-chromium@1.5.109:
     resolution: {integrity: sha512-AidaH9JETVRr9DIPGfp1kAarm/W6hRJTPuCnkF+2MqhF4KaAgRIcBc8nvjk+YMXZhwfISof/7WG29eS4iGxQLQ==}
 
-  element-plus@https://pkg.pr.new/element-plus/element-plus@21266:
-    resolution: {tarball: https://pkg.pr.new/element-plus/element-plus@21266}
+  element-plus@https://pkg.pr.new/element-plus/element-plus@5ee6449:
+    resolution: {tarball: https://pkg.pr.new/element-plus/element-plus@5ee6449}
     version: 2.10.3
     peerDependencies:
       vue: ^3.2.0
@@ -5399,7 +5399,7 @@ snapshots:
 
   electron-to-chromium@1.5.109: {}
 
-  element-plus@https://pkg.pr.new/element-plus/element-plus@21266(vue@3.5.13(typescript@5.8.3)):
+  element-plus@https://pkg.pr.new/element-plus/element-plus@5ee6449(vue@3.5.13(typescript@5.8.3)):
     dependencies:
       '@ctrl/tinycolor': 3.6.1
       '@element-plus/icons-vue': 2.3.1(vue@3.5.13(typescript@5.8.3))

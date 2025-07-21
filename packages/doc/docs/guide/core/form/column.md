@@ -63,10 +63,10 @@ const tableColumns = [
 ### 隐藏控制（hide）
 
 - 控制列的显示/隐藏状态
-- 支持布尔值或 getter 函数
+- 支持MaybeRefOrFormGetter\<string\>
 - 响应式属性
 
-### 默认值（value）
+### 默认值（defaultValue）
 
 - 设置字段的初始值
 
@@ -220,7 +220,7 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 是否隐藏
    */
-  hide?: MaybeRefOrGetter<boolean>;
+  hide?: MaybeRefOrFormGetter<boolean>;
   /**
    * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
    */
@@ -285,6 +285,6 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
   /**
    * 是否查看模式
    */
-  isView?: MaybeRefOrGetter<boolean>;
+  isView?: MaybeRefOrFormGetter<boolean>;
 }
 ```

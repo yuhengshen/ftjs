@@ -1,9 +1,12 @@
 import { Refs, useFormItem } from "@ftjs/core";
-import { ElFormItem, ElCascader, cascaderProps } from "element-plus";
+import { ElFormItem, ElCascader } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
-import { ExtractPublicPropTypes } from "vue";
 import { renderCascaderText } from "../utils/cascader";
+import { ExtractEventsFromProps } from "../../type";
+import { ComponentProps } from "vue-component-type-helpers";
+
+type CascaderProps = ComponentProps<typeof ElCascader>;
 
 export interface FtFormColumnCascader<T extends Record<string, any>>
   extends EleColumnBase<T> {
@@ -11,7 +14,7 @@ export interface FtFormColumnCascader<T extends Record<string, any>>
    * 自动补全
    */
   type: "cascader";
-  props?: Refs<ExtractPublicPropTypes<typeof cascaderProps>>;
+  props?: Refs<CascaderProps> & ExtractEventsFromProps<CascaderProps>;
 }
 
 export default defineFormItem<FtFormColumnCascader<any>>(props => {

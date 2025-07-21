@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useFormInject, unrefs } from "@ftjs/core";
+import { useFormInject, unrefs, toValueWithForm } from "@ftjs/core";
 import { FtEleFormColumn, formRenderMap } from "./register";
-import { computed, toValue } from "vue";
+import { computed } from "vue";
 defineOptions({
   name: "FtEleFormContentItem",
 });
@@ -14,7 +14,7 @@ const props = defineProps<{
 const { form } = useFormInject<F>()!;
 
 const isView = computed(() => {
-  return toValue(props.column.isView) ?? props.isView;
+  return toValueWithForm(props.column.isView, form) ?? props.isView;
 });
 
 const unrefsProps = computed(() => {

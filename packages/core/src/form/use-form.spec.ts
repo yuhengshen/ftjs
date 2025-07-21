@@ -225,6 +225,32 @@ describe("useForm", () => {
       );
       expect(visibleColumns.value.length).toBe(columns.length - 2);
     });
+
+    it("visibleColumns应该支持hide为函数的列", async () => {
+      const columnsWithHideFn = [
+        ...columns,
+        {
+          field: "dynamicHide",
+          title: "动态隐藏",
+          value: "test",
+          hide: (form: any) => form.name === "张三",
+        },
+      ];
+      const { form, visibleColumns } = useForm({
+        formData,
+        columns: columnsWithHideFn,
+      });
+      // 初始时name为“张三”，dynamicHide应被隐藏
+      expect(
+        visibleColumns.value.some(col => col.field === "dynamicHide"),
+      ).toBe(false);
+      // 修改name为其他值，dynamicHide应显示
+      form.value.name = "李四";
+      await nextTick();
+      expect(
+        visibleColumns.value.some(col => col.field === "dynamicHide"),
+      ).toBe(true);
+    });
   });
 
   describe("数据转换功能", () => {

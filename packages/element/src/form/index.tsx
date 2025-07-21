@@ -5,6 +5,15 @@ import { FtEleFormColumn } from "./register";
 interface FtFormProps<F extends Record<string, any>>
   extends FtBaseFormProps<F> {
   columns: FtEleFormColumn<F>[];
+  /**
+   * 内部 form 属性
+   *
+   * 存在一些默认值
+   *
+   * | 属性 | 默认值 | 说明 |
+   * | --- | --- | --- |
+   * | labelWidth | 100 | 表单项标签宽度 |
+   */
   internalFormProps?: FormProps;
 }
 

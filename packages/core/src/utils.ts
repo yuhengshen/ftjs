@@ -10,6 +10,12 @@ export const getField = <T extends Record<string, any>>(
   return (column.fields?.[0] ?? column.field) as RecordPath<T>;
 };
 
+export const getDefaultValues = <T extends Record<string, any>>(
+  column: FtFormColumnBase<T>,
+) => {
+  return column.defaultValue ?? column.value;
+};
+
 export const isEmptyStrOrNull = (val: any) => {
   return val === "" || val == null;
 };

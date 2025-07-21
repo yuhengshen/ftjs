@@ -10,6 +10,7 @@ import {
   watchEffect,
   ComputedGetter,
   onScopeDispose,
+  unref,
 } from "vue";
 import {
   cloneDeep,
@@ -20,15 +21,35 @@ import {
   getStorage,
   setStorage,
   isEqual,
+  getDefaultValues,
 } from "../utils";
 import { FtFormColumnBase } from "./columns";
-import { RecordPath } from "../type-helper";
+import { MaybeRefOrFormGetter, RecordPath } from "../type-helper";
 
 interface FormInject<F extends Record<string, any>> {
   form: ComputedRef<F>;
 }
 
+export function isFormGetter<T>(
+  fn: MaybeRefOrFormGetter<T>,
+): fn is (form: any) => T {
+  return typeof fn === "function";
+}
+
 const provideFormKey = Symbol("@ftjs/core-form-provide");
+
+/**
+ * 将 MaybeRefOrFormGetter 转换为普通值
+ */
+export function toValueWithForm<T, R>(
+  fn: MaybeRefOrFormGetter<R>,
+  form: ComputedRef<T>,
+) {
+  if (isFormGetter(fn)) {
+    return fn(form.value);
+  }
+  return unref(fn);
+}
 
 export const useFormInject = <
   F extends Record<string, any> = Record<string, any>,
@@ -42,13 +63,14 @@ export const useFormInject = <
 const useColumnsChecked = <FormData extends Record<string, any>>(
   columns: ComputedRef<FtFormColumnBase<FormData>[]>,
   cache: ComputedGetter<string | undefined>,
+  form: ComputedRef<FormData>,
 ) => {
   const storageKey = `ftjs-form-columns-checked-obj`;
 
   const columnsV = computed(() => {
     const entries = columns.value.map(e => {
       const field = getField(e);
-      return [field, !toValue(e.hide)];
+      return [field, !toValueWithForm(e.hide, form)];
     });
     return Object.fromEntries(entries);
   });
@@ -79,7 +101,7 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
         const field = getField(e);
         const show = v.includes(field as any);
         // 与默认配置一致的选项不存储
-        if (show !== !toValue(e.hide)) storageV[field] = show;
+        if (show !== !toValueWithForm(e.hide, form)) storageV[field] = show;
         return [field, show];
       });
       vRef.value = Object.fromEntries(entries);
@@ -89,7 +111,7 @@ const useColumnsChecked = <FormData extends Record<string, any>>(
 
   const resetColumnsChecked = () => {
     columnsChecked.value = columns.value
-      .filter(e => !toValue(e.hide))
+      .filter(e => !toValueWithForm(e.hide, form))
       .map(e => getField(e));
   };
 
@@ -195,7 +217,9 @@ const getFieldsAndValues = <T extends Record<string, any>>(
   column: FtFormColumnBase<T>,
 ) => {
   const fields = column.fields || [column.field!];
-  const values = column.fields ? column.value || [] : [column.value];
+  const values = column.fields
+    ? getDefaultValues(column) || []
+    : [getDefaultValues(column)];
   return { fields, values };
 };
 
@@ -227,6 +251,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
   const { columnsChecked, resetColumnsChecked } = useColumnsChecked(
     columns,
     () => props.cache,
+    form,
   );
   const { columnsSort, resetColumnsSort } = useColumnsSorted(
     columns,

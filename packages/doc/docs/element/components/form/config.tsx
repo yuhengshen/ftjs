@@ -1,5 +1,4 @@
 import { FtEleFormProps } from "@ftjs/element";
-import { ElTag } from "element-plus";
 import { cascaderOptions } from "./options";
 // 注册 upload 组件
 // import register from "../../register-upload";
@@ -14,16 +13,18 @@ export interface Data {
   datePicker: string;
   dateRangePicker: string[];
   input: string;
-  inputAdornment: string;
   inputNumber: number;
-  tagInput: string[];
+  inputTag: string[];
+  mention: string;
   radio: string;
+  rate: number;
   rangeInput: string[];
   select: string;
   slider: number;
   switch: boolean;
   textarea: string;
   timePicker: string;
+  timeSelect: string;
   treeSelect: string;
   upload: string;
 }
@@ -37,12 +38,21 @@ export const columns: FtEleFormProps<Data>["columns"] = [
     type: "auto-complete",
     value: "第一",
     props: {
-      fetchSuggestions(queryString) {
+      fetchSuggestions(_queryString) {
         return new Promise(resolve => {
           setTimeout(() => {
             resolve([{ value: "第一" }, { value: "第二" }, { value: "第三" }]);
           }, 1000);
         });
+      },
+      onChange: v => {
+        console.log("onChange", v);
+      },
+      onSelect: v => {
+        console.log("onSelect", v);
+      },
+      "onUpdate:modelValue": v => {
+        console.log("onUpdate:modelValue", v);
       },
     },
     rules: [
@@ -60,6 +70,130 @@ export const columns: FtEleFormProps<Data>["columns"] = [
         multiple: true,
       },
       collapseTags: true,
+    },
+  },
+  {
+    field: "checkbox",
+    title: "复选框",
+    type: "checkbox",
+    props: {
+      options: [
+        { label: "选项1", value: "1" },
+        { label: "选项2", value: "2", size: "large", border: true },
+      ],
+    },
+    hide(form) {
+      console.log("hide", form);
+      return form.input === "1";
+    },
+  },
+  {
+    field: "colorPicker",
+    title: "颜色选择器",
+    type: "color-picker",
+  },
+  {
+    field: "datePicker",
+    title: "日期选择器",
+    type: "date-picker",
+    props: {
+      valueFormat: "YYYY-MM-DD HH:mm:ss",
+      defaultTime: [new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 23, 59, 59)],
+      type: "datetimerange",
+      "onUpdate:modelValue": v => {
+        console.log("onUpdate:modelValue", v);
+      },
+    },
+  },
+  {
+    field: "input",
+    title: "输入框",
+    type: "input",
+  },
+  {
+    field: "inputNumber",
+    title: "数字输入框",
+    type: "input-number",
+  },
+  {
+    field: "inputTag",
+    title: "输入标签",
+    type: "input-tag",
+    props: {
+      tagType: "danger",
+    },
+  },
+  {
+    field: "mention",
+    title: "提及",
+    type: "mention",
+    props: {
+      options: [{ value: "第一" }, { value: "第二" }, { value: "第三" }],
+    },
+  },
+  {
+    field: "radio",
+    title: "单选框",
+    type: "radio",
+    props: {
+      type: "button",
+      options: [
+        { label: "选项1", value: "1" },
+        { label: "选项2", value: "2" },
+      ],
+      onChange: v => {
+        console.log("radio onChange", v);
+      },
+    },
+  },
+  {
+    field: "rate",
+    title: "评分",
+    type: "rate",
+  },
+  {
+    field: "select",
+    title: "选择器",
+    type: "select",
+    props: {
+      multiple: true,
+      options: [
+        { label: "选项1", value: "1" },
+        { label: "选项2", value: "2" },
+      ],
+    },
+  },
+  {
+    field: "slider",
+    title: "滑块",
+    type: "slider",
+  },
+  {
+    field: "switch",
+    title: "开关",
+    type: "switch",
+  },
+  {
+    field: "timePicker",
+    title: "时间选择器",
+    type: "time-picker",
+    props: {
+      isRange: true,
+    },
+  },
+  {
+    field: "timeSelect",
+    title: "时间选择",
+    type: "time-select",
+  },
+  {
+    field: "treeSelect",
+    title: "树形选择",
+    type: "tree-select",
+    props: {
+      data: cascaderOptions,
+      multiple: true,
+      showCheckbox: true,
     },
   },
 ];

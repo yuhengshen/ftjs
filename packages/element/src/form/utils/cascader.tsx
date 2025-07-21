@@ -10,7 +10,7 @@ export function renderCascaderText(
   // todo:: type change to public
   props: ExtractPublicPropTypes<any>,
 ) {
-  let modelValue = props.modelValue;
+  const modelValue = props.modelValue;
   if (
     modelValue == null ||
     (Array.isArray(modelValue) && modelValue.length === 0)

@@ -1,5 +1,5 @@
 import type { MaybeRefOrGetter, VNodeChild } from "vue";
-import { RecordPath } from "../type-helper";
+import { MaybeRefOrFormGetter, RecordPath } from "../type-helper";
 
 type WatchHandler<F extends Record<string, any>> = (params: {
   val: any;
@@ -46,15 +46,21 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
   /**
    * 是否隐藏
    */
-  hide?: MaybeRefOrGetter<boolean>;
+  hide?: MaybeRefOrFormGetter<boolean>;
   /**
    * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
    */
   watch?: Watch<F>;
   /**
    * 字段默认值
+   *
+   * @deprecated 请使用 `defaultValue` 代替
    */
   value?: any;
+  /**
+   * 字段默认值
+   */
+  defaultValue?: any;
   /**
    * 控制其他字段基于此值的显示规则
    *
@@ -113,7 +119,7 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
   /**
    * 是否查看模式
    */
-  isView?: MaybeRefOrGetter<boolean>;
+  isView?: MaybeRefOrFormGetter<boolean>;
   /**
    * 自定义查看模式下的渲染
    */

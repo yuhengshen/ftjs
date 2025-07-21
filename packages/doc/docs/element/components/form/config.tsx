@@ -82,6 +82,10 @@ export const columns: FtEleFormProps<Data>["columns"] = [
         { label: "选项2", value: "2", size: "large", border: true },
       ],
     },
+    hide(form) {
+      console.log("hide", form);
+      return form.input === "1";
+    },
   },
   {
     field: "colorPicker",

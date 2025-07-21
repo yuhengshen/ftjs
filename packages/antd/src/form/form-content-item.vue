@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useFormInject } from "@ftjs/core";
+import { useFormInject, toValueWithForm } from "@ftjs/core";
 import { FtAntdFormColumn, formRenderMap } from "./register";
 import { computed, toValue } from "vue";
 defineOptions({
@@ -15,7 +15,7 @@ const props = defineProps<{
 const { form } = useFormInject<F>()!;
 
 const isView = computed(() => {
-  return toValue(props.column.isView) ?? props.isView;
+  return toValueWithForm(props.column.isView, form) ?? props.isView;
 });
 </script>
 

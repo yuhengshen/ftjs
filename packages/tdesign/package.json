@@ -1,6 +1,6 @@
 {
   "name": "@ftjs/tdesign",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -38,7 +38,7 @@
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
-    "@ftjs/core": ">=1.1.1",
+    "@ftjs/core": ">=1.2.0",
     "dayjs": ">=1.0.0",
     "tdesign-vue-next": ">=1.11.5"
   }

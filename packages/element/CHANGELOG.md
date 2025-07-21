@@ -1,5 +1,16 @@
 # @ftjs/element
 
+## 2.0.0
+
+### Minor Changes
+
+- [#15](https://github.com/yuhengshen/ftjs/pull/15) [`bb710b7`](https://github.com/yuhengshen/ftjs/commit/bb710b7ef54c21a68853149a987a50a325d8ca9e) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: element-plus form 完成
+
+### Patch Changes
+
+- Updated dependencies [[`18ace3e`](https://github.com/yuhengshen/ftjs/commit/18ace3e4c40fcc75f852b86d9a856025ed496378)]:
+  - @ftjs/core@1.2.0
+
 ## 1.0.0
 
 ### Patch Changes

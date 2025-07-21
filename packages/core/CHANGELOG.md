@@ -1,5 +1,12 @@
 # @ftjs/core
 
+## 1.2.0
+
+### Minor Changes
+
+- [#15](https://github.com/yuhengshen/ftjs/pull/15) [`18ace3e`](https://github.com/yuhengshen/ftjs/commit/18ace3e4c40fcc75f852b86d9a856025ed496378) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: hide isView 支持函数模式，参数为FormData
+  feat: value 重命名为 defaultValue，以表明其为默认值
+
 ## 1.1.1
 
 ### Patch Changes

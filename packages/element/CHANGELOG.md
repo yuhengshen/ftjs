@@ -1,5 +1,11 @@
 # @ftjs/element
 
+## 1.1.0
+
+### Minor Changes
+
+- [#15](https://github.com/yuhengshen/ftjs/pull/15) [`bb710b7`](https://github.com/yuhengshen/ftjs/commit/bb710b7ef54c21a68853149a987a50a325d8ca9e) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: element-plus form 完成
+
 ## 1.0.0
 
 ### Patch Changes

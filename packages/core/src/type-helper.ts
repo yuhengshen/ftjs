@@ -55,4 +55,4 @@ export type ExtractColumnType<T> = T extends {
   ? U
   : never;
 
-export type MaybeRefOrFormGetter<T> = MaybeRef<T> | ((form: any) => T);
+export type MaybeRefOrFormGetter<T, F> = MaybeRef<T> | ((form: F) => T);

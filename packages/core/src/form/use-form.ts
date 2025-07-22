@@ -30,9 +30,9 @@ interface FormInject<F extends Record<string, any>> {
   form: ComputedRef<F>;
 }
 
-export function isFormGetter<T>(
-  fn: MaybeRefOrFormGetter<T>,
-): fn is (form: any) => T {
+export function isFormGetter<T, F extends Record<string, any>>(
+  fn: MaybeRefOrFormGetter<T, F>,
+): fn is (form: F) => T {
   return typeof fn === "function";
 }
 
@@ -41,8 +41,8 @@ const provideFormKey = Symbol("@ftjs/core-form-provide");
 /**
  * 将 MaybeRefOrFormGetter 转换为普通值
  */
-export function toValueWithForm<T, R>(
-  fn: MaybeRefOrFormGetter<R>,
+export function toValueWithForm<T extends Record<string, any>, R>(
+  fn: MaybeRefOrFormGetter<R, T>,
   form: ComputedRef<T>,
 ) {
   if (isFormGetter(fn)) {

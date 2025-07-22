@@ -46,7 +46,7 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
   /**
    * 是否隐藏
    */
-  hide?: MaybeRefOrFormGetter<boolean>;
+  hide?: MaybeRefOrFormGetter<boolean, F>;
   /**
    * 监听字段值变化，如果是 `fields` ，则只会监听第一个字段的值变化
    */
@@ -119,7 +119,7 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
   /**
    * 是否查看模式
    */
-  isView?: MaybeRefOrFormGetter<boolean>;
+  isView?: MaybeRefOrFormGetter<boolean, F>;
   /**
    * 自定义查看模式下的渲染
    */

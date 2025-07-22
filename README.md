@@ -2,6 +2,8 @@
 
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/core?label=@ftjs/core)
 ![NPM Version](https://img.shields.io/npm/v/@ftjs/antd?label=@ftjs/antd)
+![NPM Version](https://img.shields.io/npm/v/@ftjs/tdesign?label=@ftjs/tdesign)
+![NPM Version](https://img.shields.io/npm/v/@ftjs/element?label=@ftjs/element)
 ![GitHub License](https://img.shields.io/github/license/yuhengshen/ftjs)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/yuhengshen/ftjs/test.yml?branch=main&label=test)
 

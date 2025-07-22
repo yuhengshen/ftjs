@@ -1,5 +1,11 @@
 # @ftjs/element
 
+## 1.2.0
+
+### Minor Changes
+
+- [`7a28aec`](https://github.com/yuhengshen/ftjs/commit/7a28aec78e2c27d88dbf97d859e2bae0e27cc1e2) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: peerDependencies
+
 ## 1.1.0
 
 ### Minor Changes

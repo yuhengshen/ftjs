@@ -1,5 +1,14 @@
 # @ftjs/antd
 
+## 1.2.1
+
+### Patch Changes
+
+- [`b35fd20`](https://github.com/yuhengshen/ftjs/commit/b35fd2021f0ebeb5a191b5adeadee81335b44381) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: 修复MaybeRefOrFormGetter 类型
+
+- Updated dependencies [[`b35fd20`](https://github.com/yuhengshen/ftjs/commit/b35fd2021f0ebeb5a191b5adeadee81335b44381)]:
+  - @ftjs/core@1.2.1
+
 ## 1.2.0
 
 ### Minor Changes

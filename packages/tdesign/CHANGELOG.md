@@ -1,5 +1,11 @@
 # @ftjs/tdesign
 
+## 1.1.0
+
+### Minor Changes
+
+- [`ea057ba`](https://github.com/yuhengshen/ftjs/commit/ea057ba95d0abe7e9bcc1b2e7ef0187e3cff3043) Thanks [@yuhengshen](https://github.com/yuhengshen)! - chore: update peerDependencies @ftjs/core1.2.0
+
 ## 1.0.0
 
 ### Patch Changes

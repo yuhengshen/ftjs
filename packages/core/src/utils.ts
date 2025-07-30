@@ -204,3 +204,20 @@ export const isEqual = (a: any, b: any) => {
       Object.prototype.hasOwnProperty.call(b, key) && isEqual(a[key], b[key]),
   );
 };
+
+interface TreeData {
+  children?: TreeData[];
+  [key: string]: any;
+}
+
+export function forEachTree<T extends TreeData>(
+  tree: T[],
+  cb: (item: T) => void,
+) {
+  for (const item of tree) {
+    cb(item);
+    if (item.children) {
+      forEachTree(item.children, cb);
+    }
+  }
+}

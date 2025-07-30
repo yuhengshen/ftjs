@@ -11,6 +11,7 @@ import {
   getStorage,
   setStorage,
   isEqual,
+  forEachTree,
 } from "./utils";
 import { ref } from "vue";
 
@@ -497,6 +498,154 @@ describe("utils", () => {
         expect(isEqual(null, [])).toBe(false);
         expect(isEqual(undefined, [])).toBe(false);
       });
+    });
+  });
+
+  describe("forEachTree", () => {
+    it("应该遍历单层树结构", () => {
+      const tree = [
+        { id: 1, name: "Node 1" },
+        { id: 2, name: "Node 2" },
+        { id: 3, name: "Node 3" },
+      ];
+
+      const visited: any[] = [];
+      forEachTree(tree, item => {
+        visited.push(item);
+      });
+
+      expect(visited).toEqual(tree);
+    });
+
+    it("应该遍历多层嵌套树结构", () => {
+      const tree = [
+        {
+          id: 1,
+          name: "Root 1",
+          children: [
+            { id: 11, name: "Child 1-1" },
+            { id: 12, name: "Child 1-2" },
+          ],
+        },
+        {
+          id: 2,
+          name: "Root 2",
+          children: [
+            {
+              id: 21,
+              name: "Child 2-1",
+              children: [
+                { id: 211, name: "Grandchild 2-1-1" },
+                { id: 212, name: "Grandchild 2-1-2" },
+              ],
+            },
+          ],
+        },
+      ];
+
+      const visited: any[] = [];
+      forEachTree(tree, item => {
+        visited.push({ id: item.id, name: item.name });
+      });
+
+      expect(visited).toEqual([
+        { id: 1, name: "Root 1" },
+        { id: 11, name: "Child 1-1" },
+        { id: 12, name: "Child 1-2" },
+        { id: 2, name: "Root 2" },
+        { id: 21, name: "Child 2-1" },
+        { id: 211, name: "Grandchild 2-1-1" },
+        { id: 212, name: "Grandchild 2-1-2" },
+      ]);
+    });
+
+    it("应该处理空树结构", () => {
+      const tree: any[] = [];
+      const visited: any[] = [];
+
+      forEachTree(tree, item => {
+        visited.push(item);
+      });
+
+      expect(visited).toEqual([]);
+    });
+
+    it("应该处理没有children的节点", () => {
+      const tree = [
+        { id: 1, name: "Node 1" },
+        { id: 2, name: "Node 2", children: [] },
+        { id: 3, name: "Node 3" },
+      ];
+
+      const visited: any[] = [];
+      forEachTree(tree, item => {
+        visited.push({ id: item.id, name: item.name });
+      });
+
+      expect(visited).toEqual([
+        { id: 1, name: "Node 1" },
+        { id: 2, name: "Node 2" },
+        { id: 3, name: "Node 3" },
+      ]);
+    });
+
+    it("应该支持回调函数修改节点", () => {
+      const tree = [
+        { id: 1, name: "Node 1", value: 0 },
+        {
+          id: 2,
+          name: "Node 2",
+          value: 0,
+          children: [{ id: 21, name: "Child 2-1", value: 0 }],
+        },
+      ];
+
+      forEachTree(tree, item => {
+        item.value = item.id * 10;
+      });
+
+      expect(tree[0].value).toBe(10);
+      expect(tree[1].value).toBe(20);
+      expect(tree[1].children![0].value).toBe(210);
+    });
+
+    it("应该处理复杂的树结构", () => {
+      const tree = [
+        {
+          id: "root1",
+          type: "folder",
+          children: [
+            {
+              id: "child1",
+              type: "file",
+              children: [
+                { id: "grandchild1", type: "file" },
+                { id: "grandchild2", type: "file" },
+              ],
+            },
+            { id: "child2", type: "file" },
+          ],
+        },
+        {
+          id: "root2",
+          type: "folder",
+          children: [],
+        },
+      ];
+
+      const folderCount = { count: 0 };
+      const fileCount = { count: 0 };
+
+      forEachTree(tree, item => {
+        if (item.type === "folder") {
+          folderCount.count++;
+        } else if (item.type === "file") {
+          fileCount.count++;
+        }
+      });
+
+      expect(folderCount.count).toBe(2);
+      expect(fileCount.count).toBe(4);
     });
   });
 });

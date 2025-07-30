@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 1.3.0
+
+### Minor Changes
+
+- [`79fcb1a`](https://github.com/yuhengshen/ftjs/commit/79fcb1a238995799360f3c7eeb22f48bc2d61024) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 实现表头的分组
+
 ## 1.2.1
 
 ### Patch Changes

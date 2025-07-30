@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
 import { useFormInject, toValueWithForm } from "@ftjs/core";
 import { FtAntdFormColumn, formRenderMap } from "./register";
-import { computed, toValue } from "vue";
+import { computed } from "vue";
 defineOptions({
   name: "FtAntdFormContentItem",
   inheritAttrs: false,

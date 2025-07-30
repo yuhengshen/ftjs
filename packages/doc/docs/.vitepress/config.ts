@@ -135,6 +135,10 @@ export default defineConfig({
               text: "表格编辑和校验",
               link: "/antd/examples/vxe-table-edit/",
             },
+            {
+              text: "表格表头分组",
+              link: "/antd/examples/vxe-table-header-group/",
+            },
           ],
         },
       ],

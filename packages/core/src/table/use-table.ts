@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { FtBaseTableProps, FtTableColumn } from "./types";
-import { FtFormColumnBase } from "../form";
+import { forEachTree, FtFormColumnBase } from "../form";
 
 type ExtractSearchColumn<P extends FtBaseTableProps<any, any, any>> =
   P extends FtBaseTableProps<any, any, infer C>
@@ -15,26 +15,27 @@ export const useTable = <
   props: P,
 ) => {
   const formColumns = computed(() => {
-    const fromTable = props.columns
-      .filter(e => e.search)
-      .map(e => {
+    const tableSearch: any[] = [];
+    forEachTree(props.columns, e => {
+      if (e.search) {
         if (typeof e.search === "string") {
-          return {
+          tableSearch.push({
             field: e.field,
             title: e.title,
             type: e.search,
-          };
+          });
+        } else {
+          tableSearch.push({
+            field: e.field,
+            title: e.title,
+            ...e.search!,
+          });
         }
-
-        return {
-          field: e.field,
-          title: e.title,
-          ...e.search!,
-        };
-      });
+      }
+    });
 
     return [
-      ...fromTable,
+      ...tableSearch,
       ...(props.searchColumns ?? []),
     ] as ExtractSearchColumn<P>[];
   });

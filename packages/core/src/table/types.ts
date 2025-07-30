@@ -24,6 +24,10 @@ export interface FtTableColumn<
    * 搜索配置
    */
   search?: SColumn;
+  /**
+   * 子列，用于表头合并
+   */
+  children?: FtTableColumn<TableData, SColumn>[];
 }
 
 export interface FtBaseTableProps<

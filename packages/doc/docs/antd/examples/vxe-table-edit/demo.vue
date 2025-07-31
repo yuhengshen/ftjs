@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 import { ref, useTemplateRef } from "vue";
 import { FtVxeTable, FtVxeTableProps } from "@ftjs/antd";
-import { Button, message } from "ant-design-vue";
+import { AutoCompleteProps, Button, message } from "ant-design-vue";
 
 interface Row {
   id: number;
@@ -11,6 +11,8 @@ interface Row {
   email: string;
   status: number;
 }
+
+const emailOptions = ref<AutoCompleteProps["options"]>([]);
 
 const mockTableData = ref<Row[]>(
   Array.from({ length: 10 }, (_, i) => ({
@@ -54,14 +56,52 @@ const columns: FtVxeTableProps<Row, any>["columns"] = [
   {
     field: "address",
     title: "地址",
+    width: 200,
+    edit: {
+      type: "cascader",
+      field: "addressValue",
+      props: {
+        onChange: (_, selected) => {
+          const row = tableRef.value?.gridRef?.getEditRecord()?.row;
+          if (!row) return;
+          row.address = selected.map(item => item.label).join("/");
+        },
+        options: [
+          {
+            label: "地址1",
+            value: 1,
+            children: [
+              {
+                label: "地址1-1",
+                value: 11,
+              },
+            ],
+          },
+        ],
+      },
+    },
   },
   {
     field: "email",
     title: "邮箱",
+    width: 200,
     edit: {
-      type: "input",
+      type: "auto-complete",
       props: {
         placeholder: "请输入邮箱",
+        options: emailOptions,
+        onSearch: (value: string) => {
+          emailOptions.value = [
+            {
+              label: `${value}@qq.com`,
+              value: `${value}@qq.com`,
+            },
+            {
+              label: `${value}@163.com`,
+              value: `${value}@163.com`,
+            },
+          ];
+        },
       },
       rules: [
         {

@@ -126,6 +126,10 @@ export default defineConfig({
               text: "自定义查看/编辑",
               link: "/antd/examples/custom-render/",
             },
+            {
+              text: "多字段拆分",
+              link: "/antd/examples/fields/",
+            },
           ],
         },
         {

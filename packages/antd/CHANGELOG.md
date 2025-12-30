@@ -1,5 +1,15 @@
 # @ftjs/antd
 
+## 1.4.0
+
+### Minor Changes
+
+- [#22](https://github.com/yuhengshen/ftjs/pull/22) [`afe2f3b`](https://github.com/yuhengshen/ftjs/commit/afe2f3b4bca4fd776a3033128fcc2c9df0038df5) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 添加自动完成和级联选择功能到表格编辑
+
+### Patch Changes
+
+- [#22](https://github.com/yuhengshen/ftjs/pull/22) [`0ffceb4`](https://github.com/yuhengshen/ftjs/commit/0ffceb4d37fccbce819d0b3921b50f5425c7b596) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 添加 `confirmText` 和 `resetText` 属性用于自定义表单提交和重置按钮文本
+
 ## 1.3.0
 
 ### Minor Changes

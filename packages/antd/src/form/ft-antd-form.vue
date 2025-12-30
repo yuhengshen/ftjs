@@ -16,7 +16,10 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = defineProps<FtAntdFormProps<F>>();
+const props = withDefaults(defineProps<FtAntdFormProps<F>>(), {
+  confirmText: "确认",
+  resetText: "重置",
+});
 
 const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
   useForm<FtAntdFormProps<F>>(props);
@@ -71,7 +74,7 @@ defineExpose({
       :colon="false"
     >
       <Button v-if="!hideConfirm" type="primary" htmlType="submit">
-        提交
+        {{ confirmText }}
       </Button>
       <Button
         v-if="!hideReset"
@@ -80,7 +83,7 @@ defineExpose({
         danger
         @click="() => resetToDefault()"
       >
-        重置
+        {{ resetText }}
       </Button>
     </FormItem>
   </Form>

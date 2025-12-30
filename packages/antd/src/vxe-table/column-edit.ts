@@ -8,6 +8,10 @@ import {
   Switch,
   InputNumberProps,
   InputNumber,
+  AutoComplete,
+  AutoCompleteProps,
+  Cascader,
+  CascaderProps,
 } from "ant-design-vue";
 import { Component, MaybeRefOrGetter } from "vue";
 import { VxeTableDefines } from "vxe-table";
@@ -31,6 +35,8 @@ export interface Edit<Type, Props, Row extends Record<string, any>> {
 }
 
 export interface EditMap<_TableData extends Record<string, any>> {
+  "auto-complete": Edit<"auto-complete", Refs<AutoCompleteProps>, _TableData>;
+  cascader: Edit<"cascader", Refs<CascaderProps>, _TableData>;
   input: Edit<"input", Refs<InputProps>, _TableData>;
   select: Edit<"select", Refs<SelectProps>, _TableData>;
   switch: Edit<"switch", Refs<SwitchProps>, _TableData>;
@@ -50,6 +56,8 @@ export function isComponentTuple(value: EditMapValue): value is ComponentTuple {
 }
 
 export const editMap = new Map<keyof EditMap<any>, EditMapValue>([
+  ["auto-complete", AutoComplete],
+  ["cascader", Cascader],
   ["input", Input],
   ["select", Select],
   ["input-number", InputNumber],

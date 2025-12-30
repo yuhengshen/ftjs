@@ -31,5 +31,7 @@ FtAntdForm 组件继承了 @ftjs/core 的表单属性，并扩展了 Ant Design 
 | formData          | 表单数据（v-model:formData）       | `T`                     | 根据`columns`生成 |
 | columns           | 表单列定义                         | `FtAntdFormColumn<T>[]` | -                 |
 | internalFormProps | Ant Design Vue Form 组件的原生属性 | `FormProps`             | -                 |
+| confirmText       | 提交按钮文本                       | `string`                | `'确认'`          |
+| resetText         | 重置按钮文本                       | `string`                | `'重置'`          |
 
 <!--@include: ../shared/form-types.md-->

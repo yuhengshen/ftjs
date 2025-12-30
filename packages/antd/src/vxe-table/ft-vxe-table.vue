@@ -102,6 +102,7 @@ const columns = computed(() => {
                 }
                 set(row, field, value);
               },
+              style: "width: 100%",
             };
             return h(component, props);
           }

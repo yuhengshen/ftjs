@@ -30,6 +30,16 @@ export interface FtAntdFormProps<F extends Record<string, any>>
    * @default false
    */
   hideReset?: boolean;
+  /**
+   * 提交按钮文本
+   * @default '确认'
+   */
+  confirmText?: string;
+  /**
+   * 重置按钮文本
+   * @default '重置'
+   */
+  resetText?: string;
 }
 
 export interface FtAntdFormSearchProps<F extends Record<string, any>>

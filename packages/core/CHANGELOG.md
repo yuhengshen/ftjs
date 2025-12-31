@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 1.2.2
+
+### Patch Changes
+
+- [`dbae3a7`](https://github.com/yuhengshen/ftjs/commit/dbae3a794bb521a9ee6c1ddb2aa602d15be77b50) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: formData 引用变化时内部状态不同步的问题
+
 ## 1.2.1
 
 ### Patch Changes

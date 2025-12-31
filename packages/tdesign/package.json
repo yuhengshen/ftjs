@@ -41,5 +41,15 @@
     "@ftjs/core": "^1.2.1",
     "dayjs": ">=1.0.0",
     "tdesign-vue-next": ">=1.11.5"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yuhengshen/ftjs",
+    "directory": "packages/tdesign"
   }
 }

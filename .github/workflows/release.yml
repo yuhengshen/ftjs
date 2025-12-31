@@ -23,6 +23,8 @@ jobs:
 
       - name: Setup Project Environment
         uses: ./.github/actions/setup
+        with:
+          registry-url: 'https://registry.npmjs.org/'
 
       - name: Build packages
         run: pnpm build

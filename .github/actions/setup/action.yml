@@ -7,6 +7,10 @@ inputs:
     required: false
     default: "1"
 
+  registry-url:
+    description: "Registry URL for publishing"
+    required: false
+
 runs:
   using: "composite"
   steps:
@@ -16,7 +20,7 @@ runs:
         fetch-depth: ${{ inputs.fetch-depth }}
 
     - name: Setup pnpm
-      uses: pnpm/action-setup@v2
+      uses: pnpm/action-setup@v4
       with:
         version: "10.4.1"
         run_install: false
@@ -24,8 +28,9 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: "20"
+        node-version: "24"
         cache: pnpm
+        registry-url: ${{ inputs.registry-url }}
 
     - name: Get pnpm store directory
       shell: bash

@@ -40,5 +40,15 @@
   },
   "peerDependencies": {
     "vue": ">=3.3.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yuhengshen/ftjs",
+    "directory": "packages/core"
   }
 }

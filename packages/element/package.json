@@ -37,7 +37,7 @@
   },
   "peerDependencies": {
     "vue": ">=3.3.0",
-    "@ftjs/core": "^1.2.1",
+    "@ftjs/core": "^1.2.2",
     "dayjs": ">=1.0.0",
     "element-plus": ">=2.10.2"
   },

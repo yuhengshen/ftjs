@@ -232,15 +232,25 @@ export type ExtractColumns<P extends FtBaseFormProps<any>> =
 export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
   const columns = computed(() => props.columns as ExtractColumns<P>);
 
-  const formLocal = ref(props.formData ?? {});
+  const formLocal = ref<ExtractFormData<P>>();
 
-  if (props.formData == null) {
-    props["onUpdate:formData"]?.(formLocal.value);
-  }
+  watch(
+    () => props.formData,
+    v => {
+      if (v == null) {
+        v = {};
+        props["onUpdate:formData"]?.(v);
+      }
+      formLocal.value = v;
+    },
+    {
+      immediate: true,
+    },
+  );
 
   const form = computed({
     get() {
-      return formLocal.value;
+      return formLocal.value!;
     },
     set(v) {
       formLocal.value = v;

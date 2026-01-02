@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, Cascader, CascaderProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -18,6 +18,7 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     const _props = props.unrefsProps as CascaderProps;
@@ -36,7 +37,9 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
         ) : (
           <Cascader
             v-model:value={valueComputed.value}
-            placeholder={`请选择${formItemProps.value.label}`}
+            placeholder={locale.value.placeholder.select(
+              formItemProps.value.label,
+            )}
             {..._props}
           />
         )}

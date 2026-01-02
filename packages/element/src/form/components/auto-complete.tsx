@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { ElFormItem, ElAutocomplete } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
@@ -19,6 +19,7 @@ export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     return (
@@ -28,7 +29,9 @@ export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
         ) : (
           <ElAutocomplete
             v-model={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
+            placeholder={locale.value.placeholder.input(
+              formItemProps.value.label,
+            )}
             {...props.unrefsProps}
             onInput={() => {}}
           />

@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { ElFormItem, ElDatePicker, CommonPicker } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
@@ -21,6 +21,7 @@ export default defineFormItem<FtFormColumnDatePicker<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const renderText = () => {
     if (Array.isArray(valueComputed.value)) {
@@ -37,9 +38,9 @@ export default defineFormItem<FtFormColumnDatePicker<any>>(props => {
         ) : (
           <ElDatePicker
             v-model={valueComputed.value}
-            placeholder="请选择"
-            startPlaceholder="开始时间"
-            endPlaceholder="结束时间"
+            placeholder={locale.value.placeholder.select()}
+            startPlaceholder={locale.value.datePicker.startTime}
+            endPlaceholder={locale.value.datePicker.endTime}
             {...props.unrefsProps}
           />
         )}

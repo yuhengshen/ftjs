@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { getField, useForm } from "@ftjs/core";
+import { getField, useForm, useLocale } from "@ftjs/core";
 import { FtAntdFormSearchProps, useRules } from "./index";
 import {
   FormInstance,
@@ -21,6 +21,8 @@ defineOptions({
 });
 
 const props = defineProps<FtAntdFormSearchProps<F>>();
+
+const locale = useLocale();
 
 const {
   visibleColumns,
@@ -68,7 +70,13 @@ type TreeNode = Exclude<TreeProps["treeData"], undefined>[number];
 
 let oldSortList: TreeNode[] = [];
 const createColumnsTree = () => {
-  const treeData: TreeNode[] = [{ title: "全选", key: "__all", children: [] }];
+  const treeData: TreeNode[] = [
+    {
+      title: locale.value.searchSettings.selectAll,
+      key: "__all",
+      children: [],
+    },
+  ];
 
   const children: TreeNode[] = [];
 
@@ -162,14 +170,20 @@ defineExpose({
   >
     <template #title>
       <span>
-        配置筛选项
-        <span style="font-size: 12px; color: gray"> (可拖动排序) </span>
+        {{ locale.searchSettings.title }}
+        <span style="font-size: 12px; color: gray">
+          {{ locale.searchSettings.dragHint }}
+        </span>
       </span>
     </template>
     <template #footer>
       <div style="text-align: center">
-        <Button type="primary" danger @click="onCancel"> 重置 </Button>
-        <Button type="primary" @click="onSettingOk"> 保存 </Button>
+        <Button type="primary" danger @click="onCancel">
+          {{ locale.searchSettings.reset }}
+        </Button>
+        <Button type="primary" @click="onSettingOk">
+          {{ locale.searchSettings.save }}
+        </Button>
       </div>
     </template>
 
@@ -212,16 +226,18 @@ defineExpose({
           <template #icon>
             <SettingOutlined />
           </template>
-          配置
+          {{ locale.form.settings }}
         </Button>
-        <Button type="primary" htmlType="submit"> 查询 </Button>
+        <Button type="primary" htmlType="submit">
+          {{ locale.form.search }}
+        </Button>
         <Button
           type="primary"
           danger
           htmlType="reset"
           @click="() => resetToDefault()"
         >
-          重置
+          {{ locale.form.reset }}
         </Button>
       </div>
     </FormItem>

@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, TreeSelect, TreeSelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { AntdColumnBase, defineFormItem } from "../register";
@@ -18,6 +18,7 @@ export default defineFormItem<FtFormColumnTreeSelect<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const isViewText = computed(() => {
     if (props.isView && valueComputed.value) {
@@ -49,7 +50,9 @@ export default defineFormItem<FtFormColumnTreeSelect<any>>(props => {
   return () => {
     const _props = unrefs(props.column.props);
 
-    const placeholder = `请输入${formItemProps.value.label}`;
+    const placeholder = locale.value.placeholder.select(
+      formItemProps.value.label,
+    );
 
     return (
       <FormItem {...formItemProps.value}>

@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, InputNumber, InputNumberProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { AntdColumnBase, defineFormItem } from "../register";
@@ -16,6 +16,7 @@ export default defineFormItem<FtFormColumnInputNumber<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     const _props = unrefs(props.column.props);
@@ -27,7 +28,9 @@ export default defineFormItem<FtFormColumnInputNumber<any>>(props => {
         ) : (
           <InputNumber
             v-model:value={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
+            placeholder={locale.value.placeholder.input(
+              formItemProps.value.label,
+            )}
             {..._props}
           />
         )}

@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, AutoComplete, AutoCompleteProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -16,6 +16,7 @@ export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     return (
@@ -25,7 +26,9 @@ export default defineFormItem<FtFormColumnAutoComplete<any>>(props => {
         ) : (
           <AutoComplete
             v-model:value={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
+            placeholder={locale.value.placeholder.input(
+              formItemProps.value.label,
+            )}
             {...props.unrefsProps}
           />
         )}

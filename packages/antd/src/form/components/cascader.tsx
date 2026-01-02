@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, Cascader, CascaderProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { AntdColumnBase, defineFormItem } from "../register";
@@ -17,11 +17,14 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     const _props = unrefs(props.column.props);
 
-    const placeholder = `请选择${formItemProps.value.label}`;
+    const placeholder = locale.value.placeholder.select(
+      formItemProps.value.label,
+    );
 
     const getTextFromOptions = (
       options: any[],

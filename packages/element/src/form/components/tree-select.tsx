@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { ElFormItem, ElTree, ElSelect, ElTreeSelect } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
@@ -21,6 +21,7 @@ export default defineFormItem<FtFormColumnTreeSelect<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const renderText = () => {
     return renderCascaderText({
@@ -42,7 +43,7 @@ export default defineFormItem<FtFormColumnTreeSelect<any>>(props => {
         ) : (
           <ElTreeSelect
             v-model={valueComputed.value}
-            placeholder="请选择"
+            placeholder={locale.value.placeholder.select()}
             {...props.unrefsProps}
           />
         )}

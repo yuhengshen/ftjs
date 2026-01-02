@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { ElFormItem, ElTimePicker } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
@@ -19,6 +19,7 @@ export default defineFormItem<FtFormColumnTimePicker<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const renderText = () => {
     if (Array.isArray(valueComputed.value)) {
@@ -36,7 +37,7 @@ export default defineFormItem<FtFormColumnTimePicker<any>>(props => {
         ) : (
           <ElTimePicker
             v-model={valueComputed.value}
-            placeholder="请选择"
+            placeholder={locale.value.placeholder.select()}
             valueFormat="HH:mm:ss"
             {...props.unrefsProps}
           />

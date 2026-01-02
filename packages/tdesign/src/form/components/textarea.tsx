@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, Textarea, TextareaProps } from "tdesign-vue-next";
 import { useFormItemProps } from "../composables";
 import { TdColumnBase, defineFormItem } from "../register";
@@ -16,6 +16,7 @@ export default defineFormItem<FtFormColumnTextarea<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     const viewRender = () => {
@@ -28,7 +29,9 @@ export default defineFormItem<FtFormColumnTextarea<any>>(props => {
         ) : (
           <Textarea
             v-model:value={valueComputed.value}
-            placeholder={`请输入${props.column.title}`}
+            placeholder={locale.value.placeholder.input(
+              formItemProps.value.label,
+            )}
             {...props.unrefsProps}
           />
         )}

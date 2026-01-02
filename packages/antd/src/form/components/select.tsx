@@ -1,4 +1,4 @@
-import { Refs, unrefs, useFormItem } from "@ftjs/core";
+import { Refs, unrefs, useFormItem, useLocale } from "@ftjs/core";
 import { FormItem, Select, SelectProps } from "ant-design-vue";
 import { useFormItemProps } from "../composables";
 import { computed, unref } from "vue";
@@ -20,9 +20,10 @@ export default defineFormItem<FtFormColumnSelect<any>>(props => {
   });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const placeholder = computed(() => {
-    return `请选择${formItemProps.value.label}`;
+    return locale.value.placeholder.select(formItemProps.value.label);
   });
 
   const isViewTextVNode = computed(() => {

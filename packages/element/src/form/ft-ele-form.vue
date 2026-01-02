@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useForm } from "@ftjs/core";
+import { useForm, useLocale } from "@ftjs/core";
 import { FtEleFormProps } from "./index";
 import {
   FormPropsPublic,
@@ -18,6 +18,8 @@ defineOptions({
 });
 
 const props = defineProps<FtEleFormProps<F>>();
+
+const locale = useLocale();
 
 const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
   useForm<FtEleFormProps<F>>(props);
@@ -58,10 +60,10 @@ defineExpose({
         type="primary"
         @click="() => formRef?.validate()"
       >
-        提交
+        {{ locale.form.submit }}
       </ElButton>
       <ElButton v-if="!hideReset" type="danger" @click="() => resetToDefault()">
-        重置
+        {{ locale.form.reset }}
       </ElButton>
     </ElFormItem>
   </ElForm>

@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import { ElFormItem, ElInput } from "element-plus";
 import { EleColumnBase, defineFormItem } from "../register";
 import { useFormItemProps } from "../composables";
@@ -19,6 +19,7 @@ export default defineFormItem<FtFormColumnInput<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   const renderText = () => {
     return valueComputed.value ?? "-";
@@ -32,7 +33,7 @@ export default defineFormItem<FtFormColumnInput<any>>(props => {
         ) : (
           <ElInput
             v-model={valueComputed.value}
-            placeholder="请输入"
+            placeholder={locale.value.placeholder.input()}
             {...props.unrefsProps}
           />
         )}

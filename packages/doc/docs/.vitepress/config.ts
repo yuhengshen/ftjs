@@ -107,6 +107,10 @@ export default defineConfig({
           text: "表单示例",
           items: [
             {
+              text: "国际化",
+              link: "/antd/examples/locale/",
+            },
+            {
               text: "恢复默认值",
               link: "/antd/examples/reset-to-default/",
             },

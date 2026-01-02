@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useForm } from "@ftjs/core";
+import { useForm, useLocale } from "@ftjs/core";
 import { FtTdFormProps } from "./index";
 import { FormProps, Form, FormItem, Button } from "tdesign-vue-next";
 import { computed, ref, useId } from "vue";
@@ -12,6 +12,8 @@ defineOptions({
 });
 
 const props = defineProps<FtTdFormProps<F>>();
+
+const locale = useLocale();
 
 const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
   useForm<FtTdFormProps<F>>(props);
@@ -59,14 +61,16 @@ defineExpose({
       label=" "
       :colon="false"
     >
-      <Button v-if="!hideConfirm" theme="primary" type="submit"> 提交 </Button>
+      <Button v-if="!hideConfirm" theme="primary" type="submit">
+        {{ locale.form.submit }}
+      </Button>
       <Button
         v-if="!hideReset"
         style="margin-left: 10px"
         theme="danger"
         @click="() => resetToDefault()"
       >
-        重置
+        {{ locale.form.reset }}
       </Button>
     </FormItem>
   </Form>

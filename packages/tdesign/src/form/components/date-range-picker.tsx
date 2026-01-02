@@ -1,4 +1,4 @@
-import { Refs, useFormItem } from "@ftjs/core";
+import { Refs, useFormItem, useLocale } from "@ftjs/core";
 import {
   FormItem,
   DateRangePickerProps,
@@ -20,6 +20,7 @@ export default defineFormItem<FtFormColumnDateRangePicker<any>>(props => {
   const { valueComputed } = useFormItem({ props });
 
   const formItemProps = useFormItemProps(props.column);
+  const locale = useLocale();
 
   return () => {
     return (
@@ -31,7 +32,9 @@ export default defineFormItem<FtFormColumnDateRangePicker<any>>(props => {
         ) : (
           <DateRangePicker
             v-model:value={valueComputed.value}
-            placeholder={`请输入${formItemProps.value.label}`}
+            placeholder={locale.value.placeholder.select(
+              formItemProps.value.label,
+            )}
             {...props.unrefsProps}
           />
         )}

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { getField, useForm } from "@ftjs/core";
+import { getField, useForm, useLocale } from "@ftjs/core";
 import { FtTdFormSearchProps } from "./index";
 import {
   FormProps,
@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<FtTdFormSearchProps<F>>(), {
   width: "280px",
   gap: "15px 20px",
 });
+
+const locale = useLocale();
 
 const {
   visibleColumns,
@@ -60,7 +62,12 @@ let oldSortList: TreeOptionData[] = [];
 
 const createColumnsTree = () => {
   const treeData: TreeOptionData[] = [
-    { label: "全选", value: "__all", draggable: false, children: [] },
+    {
+      label: locale.value.searchSettings.selectAll,
+      value: "__all",
+      draggable: false,
+      children: [],
+    },
   ];
 
   const children: TreeOptionData[] = [];
@@ -152,14 +159,20 @@ defineExpose({
   >
     <template #header>
       <span>
-        配置筛选项
-        <span style="font-size: 12px; color: gray"> (可拖动排序) </span>
+        {{ locale.searchSettings.title }}
+        <span style="font-size: 12px; color: gray">
+          {{ locale.searchSettings.dragHint }}
+        </span>
       </span>
     </template>
     <template #footer>
       <div style="text-align: center">
-        <Button theme="danger" @click="onReset"> 重置 </Button>
-        <Button theme="primary" @click="onSettingOk"> 保存 </Button>
+        <Button theme="danger" @click="onReset">
+          {{ locale.searchSettings.reset }}
+        </Button>
+        <Button theme="primary" @click="onSettingOk">
+          {{ locale.searchSettings.save }}
+        </Button>
       </div>
     </template>
 
@@ -199,10 +212,14 @@ defineExpose({
           <template #icon>
             <SettingIcon />
           </template>
-          配置
+          {{ locale.form.settings }}
         </Button>
-        <Button theme="primary" type="submit"> 查询 </Button>
-        <Button theme="danger" @click="() => resetToDefault()"> 重置 </Button>
+        <Button theme="primary" type="submit">
+          {{ locale.form.search }}
+        </Button>
+        <Button theme="danger" @click="() => resetToDefault()">
+          {{ locale.form.reset }}
+        </Button>
       </div>
     </FormItem>
   </Form>

@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="F extends Record<string, any>">
-import { useForm } from "@ftjs/core";
+import { useForm, useLocale } from "@ftjs/core";
 import { FtAntdFormProps, useRules } from "./index";
 import {
   FormInstance,
@@ -16,10 +16,9 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<FtAntdFormProps<F>>(), {
-  confirmText: "确认",
-  resetText: "重置",
-});
+const props = defineProps<FtAntdFormProps<F>>();
+
+const locale = useLocale();
 
 const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
   useForm<FtAntdFormProps<F>>(props);
@@ -74,7 +73,7 @@ defineExpose({
       :colon="false"
     >
       <Button v-if="!hideConfirm" type="primary" htmlType="submit">
-        {{ confirmText }}
+        {{ confirmText ?? locale.form.submit }}
       </Button>
       <Button
         v-if="!hideReset"
@@ -83,7 +82,7 @@ defineExpose({
         danger
         @click="() => resetToDefault()"
       >
-        {{ resetText }}
+        {{ resetText ?? locale.form.reset }}
       </Button>
     </FormItem>
   </Form>

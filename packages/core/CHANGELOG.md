@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 1.3.0
+
+### Minor Changes
+
+- [`93d143a`](https://github.com/yuhengshen/ftjs/commit/93d143a49c42978d206a87b96fe4031cca3395c6) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 国际化
+
 ## 1.2.2
 
 ### Patch Changes

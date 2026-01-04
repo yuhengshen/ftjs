@@ -1,5 +1,16 @@
 # @ftjs/antd
 
+## 2.0.0
+
+### Minor Changes
+
+- [`93d143a`](https://github.com/yuhengshen/ftjs/commit/93d143a49c42978d206a87b96fe4031cca3395c6) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 国际化
+
+### Patch Changes
+
+- Updated dependencies [[`93d143a`](https://github.com/yuhengshen/ftjs/commit/93d143a49c42978d206a87b96fe4031cca3395c6)]:
+  - @ftjs/core@1.3.0
+
 ## 1.4.0
 
 ### Minor Changes

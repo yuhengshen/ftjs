@@ -1,6 +1,7 @@
 import { describe, it, expectTypeOf } from "vitest";
 import {
   ExtractColumnType,
+  MaybeRef2,
   RecordPath,
   Refs,
   Unref,
@@ -77,7 +78,7 @@ describe("type-helper", () => {
     expectTypeOf<T1>().toEqualTypeOf<{
       a: Ref<number>;
       b: ComputedRef<string>;
-      c: MaybeRef<{ c1: Ref<string> }>;
+      c: MaybeRef2<{ c1: Ref<string> }>;
     }>();
   });
 

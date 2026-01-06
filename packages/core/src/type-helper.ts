@@ -1,4 +1,10 @@
-import { MaybeRef, Ref } from "vue";
+import {
+  ComputedRef,
+  MaybeRef,
+  Ref,
+  ShallowRef,
+  WritableComputedRef,
+} from "vue";
 
 /**
  * 临时工具类型减1
@@ -39,11 +45,18 @@ export type Unrefs<T> = {
   [K in keyof T]: Unref<T[K]>;
 };
 
+export type MaybeRef2<T = any> =
+  | T
+  | Ref<T>
+  | ShallowRef<T>
+  | WritableComputedRef<T>
+  | ComputedRef<T>;
+
 /**
  * 工具类型：将对象的属性值转换为 {@link MaybeRef}
  */
 export type Refs<T> = {
-  [K in keyof T]: T[K] extends Ref<any> ? T[K] : MaybeRef<T[K]>;
+  [K in keyof T]: T[K] extends Ref<any> ? T[K] : MaybeRef2<T[K]>;
 };
 
 /**

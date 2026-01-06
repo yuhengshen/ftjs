@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 1.3.1
+
+### Patch Changes
+
+- [`f2793ca`](https://github.com/yuhengshen/ftjs/commit/f2793cae978af3f38d07ead8eec499268c4c26f8) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: props 可以是 readonly computed
+
 ## 1.3.0
 
 ### Minor Changes

@@ -19,5 +19,8 @@ defineProps<{
     :key="getField(column)"
     :column="column"
     :is-view="isView"
+    :class="{
+      'ftjs-form-is-view': isView,
+    }"
   />
 </template>

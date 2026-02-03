@@ -1,5 +1,11 @@
 # @ftjs/element
 
+## 2.1.0
+
+### Minor Changes
+
+- [`9e48e3f`](https://github.com/yuhengshen/ftjs/commit/9e48e3f3ace524bea244b2479b219d0beda4e190) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 为表单视图模式添加统一样式类 ft-form-is-view
+
 ## 2.0.0
 
 ### Minor Changes

@@ -32,5 +32,8 @@ const getStyle = (column: FtTdFormColumn<F>) => {
     :column="column"
     :is-view="isView"
     :style="getStyle(column)"
+    :class="{
+      'ftjs-form-is-view': isView,
+    }"
   />
 </template>

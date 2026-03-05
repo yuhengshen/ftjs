@@ -26,7 +26,7 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
    *
    * 如果是在 TableColumns 中，则默认继承其中的 field
    */
-  field?: RecordPath<F>;
+  field?: RecordPath<F> | `_${string}`;
   /**
    * 字段名数组，当表单需要返回多个值时，使用这个字段
    *

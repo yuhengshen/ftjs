@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 2.0.0
+
+### Major Changes
+
+- [`4c355ba`](https://github.com/yuhengshen/ftjs/commit/4c355ba91dde43a12fe8d3dbc1d46c121cb845f8) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: update field type to allow prefixed string values in FtFormColumnBase
+
 ## 1.3.1
 
 ### Patch Changes

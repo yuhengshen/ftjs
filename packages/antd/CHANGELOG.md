@@ -1,5 +1,12 @@
 # @ftjs/antd
 
+## 3.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`4c355ba`](https://github.com/yuhengshen/ftjs/commit/4c355ba91dde43a12fe8d3dbc1d46c121cb845f8)]:
+  - @ftjs/core@2.0.0
+
 ## 2.1.0
 
 ### Minor Changes

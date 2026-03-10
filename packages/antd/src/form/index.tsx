@@ -65,3 +65,4 @@ export const useRules = (props: FtAntdFormProps<any>) => {
 
 export { default as FtAntdForm } from "./ft-antd-form.vue";
 export { default as FtAntdFormSearch } from "./ft-antd-form-search.vue";
+export { useFormItemProps } from "./composables";

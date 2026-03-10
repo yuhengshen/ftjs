@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.1.0
+
+### Minor Changes
+
+- [`00aa4ae`](https://github.com/yuhengshen/ftjs/commit/00aa4ae4aa03c4b671fefdf49a6e2874a7e322ba) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: export useFormItemProps
+
 ## 3.0.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.1.1
+
+### Patch Changes
+
+- [`8f2d523`](https://github.com/yuhengshen/ftjs/commit/8f2d5233a21cf493224e1fc7479374e20c335821) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: update field name handling in Cascader component
+
 ## 3.1.0
 
 ### Minor Changes

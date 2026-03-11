@@ -21,6 +21,10 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
 
   return () => {
     const _props = unrefs(props.column.props);
+    const fieldNames = _props?.fieldNames || {};
+    const labelKey = fieldNames.label || "label";
+    const valueKey = fieldNames.value || "value";
+    const childrenKey = fieldNames.children || "children";
 
     const placeholder = locale.value.placeholder.select(
       formItemProps.value.label,
@@ -28,35 +32,35 @@ export default defineFormItem<FtFormColumnCascader<any>>(props => {
 
     const getTextFromOptions = (
       options: any[],
-      value: string[],
+      value: Array<string | number>,
       level: number = 0,
     ) => {
       if (!options || !value || level >= value.length) return undefined;
 
       const currentValue = value[level];
       const currentOption = options.find(
-        option => option.value === currentValue,
+        option => option[valueKey] === currentValue,
       );
 
       if (!currentOption) return undefined;
 
       if (level === value.length - 1) {
-        return currentOption.label;
+        return currentOption[labelKey];
       }
 
       // 递归处理下一级
-      if (currentOption.children && currentOption.children.length > 0) {
+      if (currentOption[childrenKey] && currentOption[childrenKey].length > 0) {
         const childText = getTextFromOptions(
-          currentOption.children,
+          currentOption[childrenKey],
           value,
           level + 1,
         );
         if (childText) {
-          return `${currentOption.label} / ${childText}`;
+          return `${currentOption[labelKey]} / ${childText}`;
         }
       }
 
-      return currentOption.label;
+      return currentOption[labelKey];
     };
 
     const isViewText = computed(() => {

@@ -18,7 +18,7 @@
     "editor.defaultFormatter": "prettier.prettier-vscode"
   },
   "[vue]": {
-    "editor.defaultFormatter": "prettier.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.requireConfig": true
 }

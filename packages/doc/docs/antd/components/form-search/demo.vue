@@ -40,10 +40,12 @@ const handleSearch = (data: SearchData) => {
 </script>
 
 <template>
-  <ft-antd-form-search
-    v-model:formData="searchData"
-    :columns="columns"
-    cache="@ftjs/antd-search-form-demo"
-    @submit="handleSearch"
-  />
+  <div class="vp-raw">
+    <ft-antd-form-search
+      v-model:formData="searchData"
+      :columns="columns"
+      cache="@ftjs/antd-search-form-demo"
+      @submit="handleSearch"
+    />
+  </div>
 </template>

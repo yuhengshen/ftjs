@@ -8,6 +8,7 @@ import {
   FormItem,
   Form,
   Dialog,
+  Badge,
   TreeOptionData,
 } from "tdesign-vue-next";
 import { computed, ref, toValue } from "vue";
@@ -141,6 +142,10 @@ const onDrop = ({ dragNode, dropPosition, dropNode }) => {
   list.splice(toIndex, 0, dragItem);
 };
 
+const hideCountNum = computed<number>(() => {
+  return props.cache ? props.columns.length - columnsChecked.value.length : 0;
+});
+
 defineExpose({
   formInstance: formRef,
   formData: form,
@@ -208,12 +213,14 @@ defineExpose({
 
     <FormItem>
       <div style="display: flex; gap: 10px">
-        <Button v-if="cache" theme="primary" ghost @click="setting">
-          <template #icon>
-            <SettingIcon />
-          </template>
-          {{ locale.form.settings }}
-        </Button>
+        <Badge v-if="cache" :count="hideCountNum">
+          <Button v-if="cache" theme="primary" ghost @click="setting">
+            <template #icon>
+              <SettingIcon />
+            </template>
+            {{ locale.form.settings }}
+          </Button>
+        </Badge>
         <Button theme="primary" type="submit">
           {{ locale.form.search }}
         </Button>

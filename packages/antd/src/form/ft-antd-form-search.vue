@@ -9,6 +9,7 @@ import {
   Button,
   Modal,
   FormItem,
+  Badge,
   Form,
 } from "ant-design-vue";
 import { computed, ref, toValue, useId } from "vue";
@@ -151,6 +152,10 @@ const onDrop = info => {
   list.splice(toIndex, 0, dragNode);
 };
 
+const hideCountNum = computed<number>(() => {
+  return props.cache ? props.columns.length - columnsChecked.value.length : 0;
+});
+
 defineExpose({
   formInstance: formRef,
   formData: form,
@@ -222,12 +227,14 @@ defineExpose({
 
     <FormItem style="--ft-form-control-width: 220px">
       <div style="display: flex; gap: 10px">
-        <Button v-if="cache" @click="setting">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          {{ locale.form.settings }}
-        </Button>
+        <Badge v-if="cache" :count="hideCountNum">
+          <Button @click="setting">
+            <template #icon>
+              <SettingOutlined />
+            </template>
+            {{ locale.form.settings }}
+          </Button>
+        </Badge>
         <Button type="primary" htmlType="submit">
           {{ locale.form.search }}
         </Button>

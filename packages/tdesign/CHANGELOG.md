@@ -1,5 +1,11 @@
 # @ftjs/tdesign
 
+## 3.1.0
+
+### Minor Changes
+
+- [`3c4a798`](https://github.com/yuhengshen/ftjs/commit/3c4a798d0736c18bc69db943512e5934d929030e) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: add badge to display unchecked count in form search components
+
 ## 3.0.0
 
 ### Patch Changes

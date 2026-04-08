@@ -3,7 +3,7 @@
   lang="tsx"
   generic="T extends Record<string, any>, S extends Record<string, any>"
 >
-import { get, set, unrefs, useTable } from "@ftjs/core";
+import { get, set, unrefs, useLocale, useTable } from "@ftjs/core";
 import { FtVxeTableProps } from "./types";
 import {
   Component,
@@ -199,6 +199,11 @@ if (props.autoHeight) {
 
 const current = ref(1);
 const pageSize = ref(props.defaultPageSize);
+const locale = useLocale();
+const showPaginationTotal = computed(() => {
+  if ((props.total ?? 0) <= 0) return undefined;
+  return (total: number) => locale.value.table.paginationTotal(total);
+});
 
 async function refresh() {
   current.value = 1;
@@ -280,6 +285,7 @@ defineExpose({
               showQuickJumper
               showSizeChanger
               showLessItems
+              :showTotal="showPaginationTotal"
               :total
               :defaultPageSize
               @change="() => onSearch?.()"

@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.2.1
+
+### Patch Changes
+
+- [#33](https://github.com/yuhengshen/ftjs/pull/33) [`8b80c6c`](https://github.com/yuhengshen/ftjs/commit/8b80c6c872b278f301abae20887dc0c4e6df6b8d) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Show the localized pagination total in the antd VXE table and hide the total text when `total` is missing or `0`.
+
 ## 3.2.0
 
 ### Minor Changes

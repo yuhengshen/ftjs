@@ -38,6 +38,10 @@ export interface FtLocale {
     /** 结束时间 */
     endTime: string;
   };
+  table: {
+    /** 分页总数文本 */
+    paginationTotal: (total: number) => string;
+  };
 }
 
 /**
@@ -64,6 +68,9 @@ export const zhCN: FtLocale = {
   datePicker: {
     startTime: "开始时间",
     endTime: "结束时间",
+  },
+  table: {
+    paginationTotal: (total: number) => `共 ${total} 条`,
   },
 };
 
@@ -93,6 +100,9 @@ export const enUS: FtLocale = {
   datePicker: {
     startTime: "Start Time",
     endTime: "End Time",
+  },
+  table: {
+    paginationTotal: (total: number) => `${total} total`,
   },
 };
 

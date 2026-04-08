@@ -3,7 +3,7 @@
   lang="tsx"
   generic="T extends Record<string, any>, S extends Record<string, any>"
 >
-import { get, set, unrefs, useTable } from "@ftjs/core";
+import { get, set, unrefs, useLocale, useTable } from "@ftjs/core";
 import { FtVxeTableProps } from "./types";
 import {
   Component,
@@ -199,7 +199,9 @@ if (props.autoHeight) {
 
 const current = ref(1);
 const pageSize = ref(props.defaultPageSize);
-const showPaginationTotal = (total: number) => `共 ${total} 条`;
+const locale = useLocale();
+const showPaginationTotal = (total: number) =>
+  locale.value.table.paginationTotal(total);
 
 async function refresh() {
   current.value = 1;

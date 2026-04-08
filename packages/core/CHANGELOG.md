@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 2.0.1
+
+### Patch Changes
+
+- [#35](https://github.com/yuhengshen/ftjs/pull/35) [`8b984fb`](https://github.com/yuhengshen/ftjs/commit/8b984fb1ad142088a3af6414d5e103a0c0082e8b) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Prepare a patch release for `@ftjs/core`.
+
 ## 2.0.0
 
 ### Major Changes

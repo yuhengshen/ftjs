@@ -199,6 +199,7 @@ if (props.autoHeight) {
 
 const current = ref(1);
 const pageSize = ref(props.defaultPageSize);
+const showPaginationTotal = (total: number) => `共 ${total} 条`;
 
 async function refresh() {
   current.value = 1;
@@ -280,6 +281,7 @@ defineExpose({
               showQuickJumper
               showSizeChanger
               showLessItems
+              :showTotal="showPaginationTotal"
               :total
               :defaultPageSize
               @change="() => onSearch?.()"

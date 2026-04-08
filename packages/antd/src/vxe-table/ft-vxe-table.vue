@@ -200,6 +200,7 @@ if (props.autoHeight) {
 const current = ref(1);
 const pageSize = ref(props.defaultPageSize);
 const locale = useLocale();
+const shouldShowPaginationTotal = computed(() => (props.total ?? 0) > 0);
 const showPaginationTotal = (total: number) =>
   locale.value.table.paginationTotal(total);
 
@@ -283,7 +284,9 @@ defineExpose({
               showQuickJumper
               showSizeChanger
               showLessItems
-              :showTotal="showPaginationTotal"
+              :showTotal="
+                shouldShowPaginationTotal ? showPaginationTotal : undefined
+              "
               :total
               :defaultPageSize
               @change="() => onSearch?.()"

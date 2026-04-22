@@ -163,10 +163,7 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
   if (dropNodeIndex < 0) return;
   if (dropNode.pos === undefined) return;
 
-  const dropNodePosText = dropNode.pos.split("-").at(-1);
-  if (dropNodePosText === undefined) return;
-
-  const dropNodePos = Number(dropNodePosText);
+  const dropNodePos = parseInt(dropNode.pos.split("-").at(-1) ?? "", 10);
   if (Number.isNaN(dropNodePos)) return;
 
   const dropPosition = info.dropPosition - dropNodePos;

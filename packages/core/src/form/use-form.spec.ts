@@ -251,6 +251,36 @@ describe("useForm", () => {
         visibleColumns.value.some(col => col.field === "dynamicHide"),
       ).toBe(true);
     });
+
+    it("初始化排序应该优先使用fields[0]作为排序key", async () => {
+      const { visibleColumns } = useForm({
+        formData,
+        columns: [
+          {
+            field: "name",
+            title: "姓名",
+            sort: 2,
+          },
+          {
+            field: "age",
+            fields: ["contacts.0", "contacts.1"],
+            title: "联系方式",
+            sort: 0,
+          },
+          {
+            field: "isActive",
+            title: "是否激活",
+            sort: 1,
+          },
+        ],
+      });
+
+      expect(visibleColumns.value.map(col => getField(col))).toEqual([
+        "contacts.0",
+        "isActive",
+        "name",
+      ]);
+    });
   });
 
   describe("数据转换功能", () => {

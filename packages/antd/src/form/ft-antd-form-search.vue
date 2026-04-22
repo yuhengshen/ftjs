@@ -12,6 +12,7 @@ import {
   Badge,
   Form,
 } from "ant-design-vue";
+import type { AntTreeNodeDropEvent } from "ant-design-vue";
 import { computed, ref, toValue, useId } from "vue";
 import FormContent from "./form-content.vue";
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
@@ -142,14 +143,28 @@ const allowDrop = ({ dropNode, dropPosition }) => {
   return false;
 };
 
-const onDrop = info => {
+const onDrop = (info: AntTreeNodeDropEvent) => {
   const dragNode = info.dragNode;
-  const position = info.dropPosition;
+  const dropNode = info.node;
   const list = columnsTree.value[0].children!;
   const fromIndex = list.findIndex(e => e.key === dragNode.key);
-  const toIndex = position > fromIndex ? position - 1 : position;
+  if (fromIndex < 0) return;
+
+  const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
-  list.splice(toIndex, 0, dragNode);
+
+  if (dropNode.key === "__all") {
+    list.splice(0, 0, dragItem);
+    return;
+  }
+
+  const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
+  if (dropNodeIndex < 0) return;
+
+  const dropNodePos = Number(dropNode.pos?.split("-").at(-1) ?? 0);
+  const dropPosition = info.dropPosition - dropNodePos;
+  const toIndex = dropPosition > 0 ? dropNodeIndex + 1 : dropNodeIndex;
+  list.splice(toIndex, 0, dragItem);
 };
 
 const hideCountNum = computed<number>(() => {

@@ -12,7 +12,6 @@ import {
   Badge,
   Form,
 } from "ant-design-vue";
-import type { AntTreeNodeDropEvent } from "ant-design-vue/es/tree";
 import { computed, ref, toValue, useId } from "vue";
 import FormContent from "./form-content.vue";
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";
@@ -23,7 +22,6 @@ defineOptions({
 });
 
 const props = defineProps<FtAntdFormSearchProps<F>>();
-const ALL_COLUMNS_KEY = "__all";
 
 const locale = useLocale();
 
@@ -76,7 +74,7 @@ const createColumnsTree = () => {
   const treeData: TreeNode[] = [
     {
       title: locale.value.searchSettings.selectAll,
-      key: ALL_COLUMNS_KEY,
+      key: "__all",
       children: [],
     },
   ];
@@ -140,38 +138,16 @@ const id = useId();
 
 const allowDrop = ({ dropNode, dropPosition }) => {
   if (dropNode.isLeaf && dropPosition === 1) return true;
-  if (dropNode.key === ALL_COLUMNS_KEY && dropPosition === 0) return true;
+  if (dropNode.key === "__all" && dropPosition === 0) return true;
   return false;
 };
 
-const onDrop = (info: AntTreeNodeDropEvent) => {
+const onDrop = info => {
   const dragNode = info.dragNode;
-  const dropNode = info.node;
+  const position = info.dropPosition;
   const list = columnsTree.value[0].children!;
   const fromIndex = list.findIndex(e => e.key === dragNode.key);
-  if (fromIndex < 0) return;
-
-  let toIndex = 0;
-  if (dropNode.key !== ALL_COLUMNS_KEY) {
-    const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
-    if (dropNodeIndex < 0) return;
-    if (dropNode.pos === undefined) return;
-
-    const normalizedDropNodeIndex =
-      fromIndex < dropNodeIndex ? dropNodeIndex - 1 : dropNodeIndex;
-    const dropNodePosText = dropNode.pos.split("-").pop();
-    if (dropNodePosText === undefined) return;
-
-    const dropNodePos = parseInt(dropNodePosText, 10);
-    if (Number.isNaN(dropNodePos)) return;
-
-    const relativeDropPosition = info.dropPosition - dropNodePos;
-    toIndex =
-      relativeDropPosition > 0
-        ? normalizedDropNodeIndex + 1
-        : normalizedDropNodeIndex;
-  }
-
+  const toIndex = position > fromIndex ? position - 1 : position;
   const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
   list.splice(toIndex, 0, dragItem);
@@ -224,7 +200,7 @@ defineExpose({
       :selectable="false"
       draggable
       blockNode
-      :expandedKeys="[ALL_COLUMNS_KEY]"
+      :expandedKeys="['__all']"
       :virtual="false"
       :allowDrop="allowDrop"
       @drop="onDrop"
@@ -233,7 +209,7 @@ defineExpose({
         <div style="display: flex">
           <span>{{ node.title }}</span>
           <SwapOutlined
-            v-if="node.key !== ALL_COLUMNS_KEY"
+            v-if="node.key !== '__all'"
             :rotate="90"
             style="margin-left: auto; color: gray"
           />

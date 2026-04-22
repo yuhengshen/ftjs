@@ -161,9 +161,14 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
 
   const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
   if (dropNodeIndex < 0) return;
-  if (dropNode.pos == null) return;
+  if (dropNode.pos === undefined) return;
 
-  const dropNodePos = Number(dropNode.pos.split("-").at(-1));
+  const dropNodePosText = dropNode.pos.split("-").at(-1);
+  if (dropNodePosText === undefined) return;
+
+  const dropNodePos = Number(dropNodePosText);
+  if (Number.isNaN(dropNodePos)) return;
+
   const dropPosition = info.dropPosition - dropNodePos;
   const toIndex = dropPosition > 0 ? dropNodeIndex + 1 : dropNodeIndex;
   list.splice(toIndex, 0, dragItem);

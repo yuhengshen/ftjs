@@ -148,9 +148,8 @@ const onDrop = info => {
   const list = columnsTree.value[0].children!;
   const fromIndex = list.findIndex(e => e.key === dragNode.key);
   const toIndex = position > fromIndex ? position - 1 : position;
-  const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
-  list.splice(toIndex, 0, dragItem);
+  list.splice(toIndex, 0, dragNode);
 };
 
 const hideCountNum = computed<number>(() => {

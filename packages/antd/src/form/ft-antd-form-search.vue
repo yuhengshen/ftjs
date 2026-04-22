@@ -151,29 +151,24 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
   const fromIndex = list.findIndex(e => e.key === dragNode.key);
   if (fromIndex < 0) return;
 
-  if (dropNode.key === ALL_COLUMNS_KEY) {
-    const dragItem = list[fromIndex];
-    list.splice(fromIndex, 1);
-    list.splice(0, 0, dragItem);
-    return;
+  let toIndex = 0;
+  if (dropNode.key !== ALL_COLUMNS_KEY) {
+    const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
+    if (dropNodeIndex < 0) return;
+    if (dropNode.pos === undefined) return;
+
+    const normalizedDropNodeIndex =
+      fromIndex < dropNodeIndex ? dropNodeIndex - 1 : dropNodeIndex;
+    const dropNodePos = parseInt(dropNode.pos.split("-").at(-1) ?? "", 10);
+    if (Number.isNaN(dropNodePos)) return;
+
+    const dropPosition = info.dropPosition - dropNodePos;
+    toIndex =
+      dropPosition > 0 ? normalizedDropNodeIndex + 1 : normalizedDropNodeIndex;
   }
 
-  const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
-  if (dropNodeIndex < 0) return;
-  if (dropNode.pos === undefined) return;
-
-  const normalizedDropNodeIndex =
-    fromIndex < dropNodeIndex ? dropNodeIndex - 1 : dropNodeIndex;
   const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
-
-  // ant-design-vue 的 Tree 使用类似 "0-0-2" 的 pos 格式，最后一段表示同级索引
-  const dropNodePos = parseInt(dropNode.pos.split("-").at(-1) ?? "", 10);
-  if (Number.isNaN(dropNodePos)) return;
-
-  const dropPosition = info.dropPosition - dropNodePos;
-  const toIndex =
-    dropPosition > 0 ? normalizedDropNodeIndex + 1 : normalizedDropNodeIndex;
   list.splice(toIndex, 0, dragItem);
 };
 

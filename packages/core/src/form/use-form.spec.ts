@@ -252,24 +252,24 @@ describe("useForm", () => {
       ).toBe(true);
     });
 
-    it("初始化排序应该优先使用fields[0]作为排序key", async () => {
+    it("should prioritize fields[0] as sort key during initialization", async () => {
       const { visibleColumns } = useForm({
         formData,
         columns: [
           {
             field: "name",
-            title: "姓名",
+            title: "Name",
             sort: 2,
           },
           {
             field: "age",
             fields: ["contacts.0", "contacts.1"],
-            title: "联系方式",
+            title: "Contacts",
             sort: 0,
           },
           {
             field: "isActive",
-            title: "是否激活",
+            title: "Active",
             sort: 1,
           },
         ],

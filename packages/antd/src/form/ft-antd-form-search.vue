@@ -23,6 +23,7 @@ defineOptions({
 });
 
 const props = defineProps<FtAntdFormSearchProps<F>>();
+const ALL_COLUMNS_KEY = "__all";
 
 const locale = useLocale();
 
@@ -75,7 +76,7 @@ const createColumnsTree = () => {
   const treeData: TreeNode[] = [
     {
       title: locale.value.searchSettings.selectAll,
-      key: "__all",
+      key: ALL_COLUMNS_KEY,
       children: [],
     },
   ];
@@ -139,7 +140,7 @@ const id = useId();
 
 const allowDrop = ({ dropNode, dropPosition }) => {
   if (dropNode.isLeaf && dropPosition === 1) return true;
-  if (dropNode.key === "__all" && dropPosition === 0) return true;
+  if (dropNode.key === ALL_COLUMNS_KEY && dropPosition === 0) return true;
   return false;
 };
 
@@ -153,15 +154,16 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
   const dragItem = list[fromIndex];
   list.splice(fromIndex, 1);
 
-  if (dropNode.key === "__all") {
+  if (dropNode.key === ALL_COLUMNS_KEY) {
     list.splice(0, 0, dragItem);
     return;
   }
 
   const dropNodeIndex = list.findIndex(e => e.key === dropNode.key);
   if (dropNodeIndex < 0) return;
+  if (dropNode.pos == null) return;
 
-  const dropNodePos = Number(dropNode.pos?.split("-").at(-1) ?? 0);
+  const dropNodePos = Number(dropNode.pos.split("-").at(-1));
   const dropPosition = info.dropPosition - dropNodePos;
   const toIndex = dropPosition > 0 ? dropNodeIndex + 1 : dropNodeIndex;
   list.splice(toIndex, 0, dragItem);
@@ -214,7 +216,7 @@ defineExpose({
       :selectable="false"
       draggable
       blockNode
-      :expandedKeys="['__all']"
+      :expandedKeys="[ALL_COLUMNS_KEY]"
       :virtual="false"
       :allowDrop="allowDrop"
       @drop="onDrop"
@@ -223,7 +225,7 @@ defineExpose({
         <div style="display: flex">
           <span>{{ node.title }}</span>
           <SwapOutlined
-            v-if="node.key !== '__all'"
+            v-if="node.key !== ALL_COLUMNS_KEY"
             :rotate="90"
             style="margin-left: auto; color: gray"
           />

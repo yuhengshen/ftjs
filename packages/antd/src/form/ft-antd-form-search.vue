@@ -12,7 +12,7 @@ import {
   Badge,
   Form,
 } from "ant-design-vue";
-import type { AntTreeNodeDropEvent } from "ant-design-vue";
+import type { AntTreeNodeDropEvent } from "ant-design-vue/es/tree";
 import { computed, ref, toValue, useId } from "vue";
 import FormContent from "./form-content.vue";
 import { SettingOutlined, SwapOutlined } from "@ant-design/icons-vue";

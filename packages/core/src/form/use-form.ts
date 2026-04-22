@@ -132,7 +132,7 @@ const useColumnsSorted = <FormData extends Record<string, any>>(
 
   const columnsV = computed(() => {
     const entries = columns.value.map((e, idx) => {
-      const field = e.field ?? (e.fields?.[0] as string);
+      const field = getField(e);
       return [field, e.sort ?? idx];
     });
     return Object.fromEntries(entries);

@@ -251,6 +251,36 @@ describe("useForm", () => {
         visibleColumns.value.some(col => col.field === "dynamicHide"),
       ).toBe(true);
     });
+
+    it("should prioritize fields[0] as sort key during initialization", async () => {
+      const { visibleColumns } = useForm({
+        formData,
+        columns: [
+          {
+            field: "name",
+            title: "Name",
+            sort: 2,
+          },
+          {
+            field: "age",
+            fields: ["contacts.0", "contacts.1"],
+            title: "Contacts",
+            sort: 0,
+          },
+          {
+            field: "isActive",
+            title: "Active",
+            sort: 1,
+          },
+        ],
+      });
+
+      expect(visibleColumns.value.map(col => getField(col))).toEqual([
+        "contacts.0",
+        "isActive",
+        "name",
+      ]);
+    });
   });
 
   describe("数据转换功能", () => {

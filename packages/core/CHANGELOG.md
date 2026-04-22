@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 2.0.2
+
+### Patch Changes
+
+- [#37](https://github.com/yuhengshen/ftjs/pull/37) [`22afab4`](https://github.com/yuhengshen/ftjs/commit/22afab4824310609b870cc99dfd6c4d928e37fb9) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Fix initial form column ordering when a column defines both `field` and `fields` by using the resolved field key consistently during sort initialization.
+
 ## 2.0.1
 
 ### Patch Changes

@@ -159,7 +159,7 @@ const onDrop = (info: AntTreeNodeDropEvent) => {
 
     const normalizedDropNodeIndex =
       fromIndex < dropNodeIndex ? dropNodeIndex - 1 : dropNodeIndex;
-    const dropNodePosText = dropNode.pos.split("-").at(-1);
+    const dropNodePosText = dropNode.pos.split("-").pop();
     if (dropNodePosText === undefined) return;
 
     const dropNodePos = parseInt(dropNodePosText, 10);

@@ -189,6 +189,7 @@ if (props.autoHeight) {
     flex: "1",
     minHeight: 0,
     height: "100%",
+    overflow: "clip",
   };
   tableStyle = {
     flex: "1",

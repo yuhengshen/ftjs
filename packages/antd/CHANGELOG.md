@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.2.2
+
+### Patch Changes
+
+- [#39](https://github.com/yuhengshen/ftjs/pull/39) [`f5dacd8`](https://github.com/yuhengshen/ftjs/commit/f5dacd8ce4488f6fe22793f4e34896472d8ac275) Thanks [@yuhengshen](https://github.com/yuhengshen)! - fix: set overflow to 'clip' on vxe-table container to prevent layout overflow when autoHeight is enabled
+
 ## 3.2.1
 
 ### Patch Changes

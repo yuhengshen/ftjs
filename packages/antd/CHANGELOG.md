@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.2.3
+
+### Patch Changes
+
+- [#41](https://github.com/yuhengshen/ftjs/pull/41) [`5b84d21`](https://github.com/yuhengshen/ftjs/commit/5b84d214fd885d52eb4c922d735acae6457b09a9) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Change `ft-vxe-table` auto-height container overflow from `clip` to `auto`.
+
 ## 3.2.2
 
 ### Patch Changes

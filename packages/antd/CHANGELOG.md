@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.3.0
+
+### Minor Changes
+
+- [`3a78c40`](https://github.com/yuhengshen/ftjs/commit/3a78c40db36aea22c23f4f2af727ecee0f22113d) Thanks [@yuhengshen](https://github.com/yuhengshen)! - add modalZIndex prop to FtAntdFormSearchProps for customizable modal z-index
+
 ## 3.2.3
 
 ### Patch Changes

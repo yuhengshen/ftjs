@@ -67,6 +67,6 @@ export interface FtVxeTableProps<
    */
   hidePagination?: boolean;
   internalTableProps?: InternalVxeTableProps<T>;
-  internalFormProps?: FtAntdFormSearchProps<S>;
+  internalFormProps?: Omit<FtAntdFormSearchProps<S>, "columns">;
   onSearch?: () => Promise<void> | void;
 }

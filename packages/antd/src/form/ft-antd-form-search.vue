@@ -171,6 +171,7 @@ defineExpose({
     :mask="false"
     :width="260"
     :maskClosable="false"
+    :z-index="modalZIndex"
     destroyOnClose
   >
     <template #title>

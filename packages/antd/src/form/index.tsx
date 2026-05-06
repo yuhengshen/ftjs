@@ -43,7 +43,12 @@ export interface FtAntdFormProps<F extends Record<string, any>>
 }
 
 export interface FtAntdFormSearchProps<F extends Record<string, any>>
-  extends FtFormProps<F> {}
+  extends FtFormProps<F> {
+  /**
+   * 模态框的 z-index
+   */
+  modalZIndex?: number;
+}
 
 export const useRules = (props: FtAntdFormProps<any>) => {
   // 收集表单列的验证规则

@@ -180,7 +180,6 @@ let containerStyle: CSSProperties = {
   width: "100%",
 };
 let tableStyle: CSSProperties;
-const containerRef = ref<HTMLDivElement>();
 let height: string | undefined;
 
 if (props.autoHeight) {
@@ -189,7 +188,6 @@ if (props.autoHeight) {
     flex: "1",
     minHeight: 0,
     height: "100%",
-    overflow: "auto",
   };
   tableStyle = {
     flex: "1",
@@ -248,7 +246,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="containerRef" :style="containerStyle">
+  <div :style="containerStyle">
     <template v-if="formColumns.length > 0">
       <FtAntdFormSearch
         ref="search"

@@ -1,5 +1,11 @@
 # @ftjs/element
 
+## 3.1.0
+
+### Minor Changes
+
+- [`e53e895`](https://github.com/yuhengshen/ftjs/commit/e53e895e58a077a0118e70eaa8d47ca8589063c0) Thanks [@yuhengshen](https://github.com/yuhengshen)! - Add setFormData support for ftjs forms and expose the method on framework form instances and Antd vxe table search instances.
+
 ## 3.0.0
 
 ### Patch Changes

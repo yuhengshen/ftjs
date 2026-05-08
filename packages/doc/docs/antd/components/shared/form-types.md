@@ -34,9 +34,10 @@
 
 ## 方法
 
-| 方法名         | 说明                    | 参数         | 返回值         |
-| -------------- | ----------------------- | ------------ | -------------- |
-| getFormData    | 获取表单数据            | -            | `T`            |
-| resetToDefault | 重置表单到默认值        | -            | `void`         |
-| setAsDefault   | 将当前值设为默认值      | `[FormData]` | `void`         |
-| formInstance   | ant-design-vue 表单实例 | -            | `FormInstance` |
+| 方法名         | 说明                    | 参数         | 返回值          |
+| -------------- | ----------------------- | ------------ | --------------- |
+| getFormData    | 获取表单数据            | -            | `T`             |
+| resetToDefault | 重置表单到默认值        | -            | `void`          |
+| setFormData    | 直接替换当前表单值      | `Partial<T>` | `Promise<void>` |
+| setAsDefault   | 将当前值设为默认值      | `[FormData]` | `void`          |
+| formInstance   | ant-design-vue 表单实例 | -            | `FormInstance`  |

@@ -35,6 +35,7 @@ const {
   resetColumnsChecked,
   resetColumnsSort,
   setAsDefault,
+  setFormData,
 } = useForm<FtAntdFormSearchProps<F>>(props);
 
 const { rules } = useRules(props);
@@ -161,6 +162,7 @@ defineExpose({
   formData: form,
   resetToDefault,
   getFormData,
+  setFormData,
   setAsDefault,
 });
 </script>

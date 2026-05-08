@@ -20,8 +20,14 @@ const props = defineProps<FtAntdFormProps<F>>();
 
 const locale = useLocale();
 
-const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
-  useForm<FtAntdFormProps<F>>(props);
+const {
+  getFormData,
+  visibleColumns,
+  form,
+  resetToDefault,
+  setAsDefault,
+  setFormData,
+} = useForm<FtAntdFormProps<F>>(props);
 
 // 获取表单值
 const { rules } = useRules(props);
@@ -52,6 +58,7 @@ defineExpose({
   formInstance: formRef,
   resetToDefault,
   getFormData,
+  setFormData,
   setAsDefault,
 });
 </script>

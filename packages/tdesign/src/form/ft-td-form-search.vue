@@ -33,6 +33,7 @@ const {
   form,
   resetToDefault,
   getFormData,
+  setFormData,
   columnsSort,
   columnsChecked,
   resetColumnsChecked,
@@ -151,6 +152,7 @@ defineExpose({
   formData: form,
   resetToDefault,
   getFormData,
+  setFormData,
   setAsDefault,
 });
 </script>

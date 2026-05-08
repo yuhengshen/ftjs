@@ -561,6 +561,121 @@ describe("useForm", () => {
   });
 
   describe("默认值与重置功能", () => {
+    interface ControlledFormData {
+      type: string;
+      detail: string;
+    }
+
+    it("setFormData应该直接替换表单值并显示隐藏字段", async () => {
+      const { form, visibleColumns, setFormData } = useForm({
+        formData,
+        columns,
+      });
+
+      expect(
+        visibleColumns.value.map(column => getField(column)),
+      ).not.toContain("hobby");
+
+      const nextFormData = {
+        ...formData,
+        hobby: "写作",
+        address: {
+          city: "杭州",
+          street: "西湖路",
+        },
+      };
+
+      await setFormData(nextFormData);
+
+      expect(form.value).toEqual(nextFormData);
+      expect(visibleColumns.value.map(column => getField(column))).toContain(
+        "hobby",
+      );
+    });
+
+    it("setFormData应该显示被控制规则隐藏的字段", async () => {
+      const controlledColumns: FtFormColumnBase<ControlledFormData>[] = [
+        {
+          field: "type",
+          title: "类型",
+          control: [
+            {
+              field: "detail",
+              value: "detail",
+            },
+          ],
+        },
+        {
+          field: "detail",
+          title: "详情",
+        },
+      ];
+
+      const { visibleColumns, setFormData } = useForm({
+        formData: {
+          type: "simple",
+          detail: "",
+        } as ControlledFormData,
+        columns: controlledColumns,
+      });
+
+      expect(
+        visibleColumns.value.map(column => getField(column)),
+      ).not.toContain("detail");
+
+      await setFormData({
+        detail: "补充说明",
+      });
+
+      expect(visibleColumns.value.map(column => getField(column))).toContain(
+        "detail",
+      );
+    });
+
+    it("resetToDefault应该恢复setFormData切换过的控制字段显隐", async () => {
+      const controlledColumns: FtFormColumnBase<ControlledFormData>[] = [
+        {
+          field: "type",
+          title: "类型",
+          value: "simple",
+          control: [
+            {
+              field: "detail",
+              value: "detail",
+            },
+          ],
+        },
+        {
+          field: "detail",
+          title: "详情",
+          value: "",
+        },
+      ];
+
+      const { visibleColumns, setFormData, resetToDefault } = useForm({
+        formData: {
+          type: "simple",
+          detail: "",
+        } as ControlledFormData,
+        columns: controlledColumns,
+      });
+
+      await setFormData({
+        type: "simple",
+        detail: "补充说明",
+      });
+
+      expect(visibleColumns.value.map(column => getField(column))).toContain(
+        "detail",
+      );
+
+      await resetToDefault(true);
+
+      expect(
+        visibleColumns.value.map(column => getField(column)),
+      ).not.toContain("detail");
+    });
+
     it("应该能重置表单到默认值", async () => {
       const { form, resetToDefault } = useForm({
         formData,

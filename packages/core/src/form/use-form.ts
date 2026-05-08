@@ -328,6 +328,37 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
     watchMap.forEach(cancel => cancel());
   });
 
+  function updateControlFieldMap(
+    field: string,
+    control: NonNullable<FtFormColumnBase<ExtractFormData<P>>["control"]>,
+    val: any[],
+    isSingleWatch: boolean,
+  ) {
+    control.forEach(({ field: targetField, value }) => {
+      let show = true;
+      if (typeof value === "function") {
+        show = value({
+          formData: form.value,
+          val: isSingleWatch ? val[0] : val,
+        });
+      } else if (Array.isArray(value)) {
+        if (isSingleWatch) {
+          show = value.some(v => isEqual(v, val[0]));
+        } else {
+          show = isEqual(value, val);
+        }
+      } else {
+        show = isEqual(value, val[0]);
+      }
+
+      if (!fieldControlMap.value.has(targetField)) {
+        fieldControlMap.value.set(targetField, new Map());
+      }
+
+      fieldControlMap.value.get(targetField)!.set(field, show);
+    });
+  }
+
   /**
    * 运行表单字段监听(watch, controls)函数
    */
@@ -374,32 +405,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
           watch(
             () => watchArr.map(f => get(form.value, f)),
             val => {
-              control.forEach(({ field: targetField, value }) => {
-                let show = true;
-                if (typeof value === "function") {
-                  show = value({
-                    formData: form.value,
-                    val: isSingleWatch ? val[0] : val,
-                  });
-                } else {
-                  if (Array.isArray(value)) {
-                    if (isSingleWatch) {
-                      show = value.some(v => isEqual(v, val[0]));
-                    } else {
-                      show = isEqual(value, val);
-                    }
-                  } else {
-                    show = isEqual(value, val[0]);
-                  }
-                }
-
-                // 确保目标字段的控制映射存在
-                if (!fieldControlMap.value.has(targetField)) {
-                  fieldControlMap.value.set(targetField, new Map());
-                }
-
-                fieldControlMap.value.get(targetField)!.set(field, show);
-              });
+              updateControlFieldMap(field, control, val, isSingleWatch);
             },
             {
               immediate: true,
@@ -423,6 +429,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
     if (!sync) await nextTick();
     if (tmpDefaultForm) {
       form.value = cloneDeep(tmpDefaultForm);
+      await nextTick();
       return;
     }
     form.value = columns.value.reduce<ExtractFormData<P>>((prev, column) => {
@@ -432,6 +439,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
       });
       return prev;
     }, {} as ExtractFormData<P>);
+    await nextTick();
   };
 
   /**
@@ -439,6 +447,30 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
    */
   const setAsDefault: SetAsDefault<ExtractFormData<P>> = (v?) => {
     tmpDefaultForm = cloneDeep(v ?? form.value);
+  };
+
+  /**
+   * 直接替换设置表单值，并确保命中的隐藏字段可见
+   */
+  const setFormData: SetFormData<ExtractFormData<P>> = async v => {
+    form.value = cloneDeep(v as ExtractFormData<P>);
+    await nextTick();
+
+    const nextColumnsChecked = new Set(columnsChecked.value);
+    columns.value.forEach(column => {
+      const key = getField(column);
+      const { fields } = getFieldsAndValues(column);
+      const hit = fields.some(field => field !== "-" && has(v, field));
+      if (!hit) return;
+      const controlMap = fieldControlMap.value.get(key);
+      controlMap?.forEach((_show, controlField) => {
+        controlMap.set(controlField, true);
+      });
+      nextColumnsChecked.add(key);
+    });
+    columnsChecked.value = Array.from(nextColumnsChecked) as RecordPath<
+      ExtractFormData<P>
+    >[];
   };
 
   /**
@@ -484,6 +516,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
     columnsSort,
     resetToDefault,
     getFormData,
+    setFormData,
     setAsDefault,
     resetColumnsChecked,
     resetColumnsSort,
@@ -497,3 +530,7 @@ export type ResetToDefault = (sync?: boolean) => Promise<void> | void;
 export type SetAsDefault<FormData extends Record<string, any>> = (
   v?: FormData,
 ) => void;
+
+export type SetFormData<FormData extends Record<string, any>> = (
+  v: Partial<FormData>,
+) => Promise<void> | void;

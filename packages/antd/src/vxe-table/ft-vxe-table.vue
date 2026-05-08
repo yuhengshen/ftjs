@@ -239,6 +239,12 @@ defineExpose({
     return (searchRef.value?.getFormData() ?? {}) as S;
   },
   /**
+   * 设置搜索表单数据
+   */
+  async setFormData(formData: Partial<S>) {
+    await searchRef.value?.setFormData(formData);
+  },
+  /**
    * 刷新表格(会重置分页)
    */
   refresh,

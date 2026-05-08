@@ -15,8 +15,14 @@ const props = defineProps<FtTdFormProps<F>>();
 
 const locale = useLocale();
 
-const { getFormData, visibleColumns, form, resetToDefault, setAsDefault } =
-  useForm<FtTdFormProps<F>>(props);
+const {
+  getFormData,
+  visibleColumns,
+  form,
+  resetToDefault,
+  setAsDefault,
+  setFormData,
+} = useForm<FtTdFormProps<F>>(props);
 
 const formRef = ref<InstanceType<typeof Form>>();
 
@@ -40,6 +46,7 @@ defineExpose({
   formInstance: formRef,
   resetToDefault,
   getFormData,
+  setFormData,
   setAsDefault,
 });
 </script>

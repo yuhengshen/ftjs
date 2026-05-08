@@ -63,11 +63,12 @@ FtVxeTable 的列配置继承了 [VXE-Table 的列配置](https://vxetable.cn/#/
 
 ## 实例方法和属性
 
-| 方法名  | 说明         | 参数 | 返回值                       |
-| ------- | ------------ | ---- | ---------------------------- |
-| refresh | 刷新表格数据 | -    | `Promise<void>`              |
-| formRef | 表单实例     | -    | `FormSearchInstance`         |
-| gridRef | 表格实例     | -    | `VxeGridInstance<TableData>` |
+| 方法名      | 说明               | 参数                | 返回值                       |
+| ----------- | ------------------ | ------------------- | ---------------------------- |
+| refresh     | 刷新表格数据       | -                   | `Promise<void>`              |
+| setFormData | 直接替换搜索表单值 | `Partial<FormData>` | `Promise<void>`              |
+| searchRef   | 表单实例           | -                   | `FormSearchInstance`         |
+| gridRef     | 表格实例           | -                   | `VxeGridInstance<TableData>` |
 
 ## 插槽
 

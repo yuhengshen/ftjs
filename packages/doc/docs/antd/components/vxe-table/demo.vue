@@ -2,7 +2,7 @@
 import { FtVxeTable, FtVxeTableProps } from "@ftjs/antd";
 import { h, ref, useTemplateRef } from "vue";
 import { Button, ButtonGroup, Tag } from "ant-design-vue";
-import { dayjs } from "element-plus";
+import dayjs from "dayjs";
 
 interface TableData {
   id: string;

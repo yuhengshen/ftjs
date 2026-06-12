@@ -16,6 +16,7 @@
     "@ftjs/core": "workspace:*",
     "@ftjs/tdesign": "workspace:*",
     "ant-design-vue": "catalog:",
+    "dayjs": "catalog:",
     "es-toolkit": "^1.33.0",
     "tdesign-icons-vue-next": "catalog:",
     "tdesign-vue-next": "catalog:",

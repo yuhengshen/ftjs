@@ -12,6 +12,8 @@ import {
   AutoCompleteProps,
   Cascader,
   CascaderProps,
+  DatePicker,
+  DatePickerProps,
 } from "ant-design-vue";
 import { Component, MaybeRefOrGetter } from "vue";
 import { VxeTableDefines } from "vxe-table";
@@ -41,6 +43,7 @@ export interface EditMap<_TableData extends Record<string, any>> {
   select: Edit<"select", Refs<SelectProps>, _TableData>;
   switch: Edit<"switch", Refs<SwitchProps>, _TableData>;
   "input-number": Edit<"input-number", Refs<InputNumberProps>, _TableData>;
+  "date-picker": Edit<"date-picker", Refs<DatePickerProps>, _TableData>;
 }
 
 export interface ComponentInfo {
@@ -61,6 +64,7 @@ export const editMap = new Map<keyof EditMap<any>, EditMapValue>([
   ["input", Input],
   ["select", Select],
   ["input-number", InputNumber],
+  ["date-picker", DatePicker],
   [
     "switch",
     [

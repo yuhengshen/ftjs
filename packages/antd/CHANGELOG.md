@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.5.0
+
+### Minor Changes
+
+- [#45](https://github.com/yuhengshen/ftjs/pull/45) [`6f466f5`](https://github.com/yuhengshen/ftjs/commit/6f466f5daed59bd090d0f07f46e37cff1142ccce) Thanks [@yuhengshen](https://github.com/yuhengshen)! - 为 vxe-table 的列编辑功能添加 date-picker（日期选择器）类型支持
+
 ## 3.4.0
 
 ### Minor Changes

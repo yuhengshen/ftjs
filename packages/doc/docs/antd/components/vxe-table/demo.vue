@@ -2,6 +2,7 @@
 import { FtVxeTable, FtVxeTableProps } from "@ftjs/antd";
 import { h, ref, useTemplateRef } from "vue";
 import { Button, ButtonGroup, Tag } from "ant-design-vue";
+import { dayjs } from "element-plus";
 
 interface TableData {
   id: string;
@@ -11,6 +12,7 @@ interface TableData {
   email: string;
   status: number;
   tags: string[];
+  date: string;
 }
 
 interface SearchData {
@@ -58,6 +60,18 @@ const columns: FtVxeTableProps<TableData, SearchData>["columns"] = [
       },
     },
     edit: "input",
+  },
+  {
+    field: "date",
+    title: "日期",
+    width: 150,
+    edit: {
+      type: "date-picker",
+      props: {
+        format: "YYYY-MM-DD",
+        valueFormat: "YYYY-MM-DD",
+      },
+    },
   },
   {
     field: "status",
@@ -146,6 +160,7 @@ const createTableData = () => {
     email: `user${index + 1}@example.com`,
     status: index % 3 === 0 ? 0 : 1,
     tags: [`标签${(index % 5) + 1}`, `类型${(index % 3) + 1}`],
+    date: dayjs().add(index, "day").format("YYYY-MM-DD"),
   }));
 
   tableData.value = data;

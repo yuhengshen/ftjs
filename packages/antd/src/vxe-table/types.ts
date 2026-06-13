@@ -68,5 +68,14 @@ export interface FtVxeTableProps<
   hidePagination?: boolean;
   internalTableProps?: InternalVxeTableProps<T>;
   internalFormProps?: Omit<FtAntdFormSearchProps<S>, "columns">;
-  onSearch?: () => Promise<void> | void;
+  onSearch?: (params: {
+    /**
+     * 搜索触发类型
+     *
+     * init 初始化搜索
+     * refresh 刷新搜索
+     * pagination 分页搜索
+     */
+    trigger: "init" | "refresh" | "pagination";
+  }) => Promise<void> | void;
 }

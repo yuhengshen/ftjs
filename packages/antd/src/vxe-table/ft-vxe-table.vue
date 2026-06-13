@@ -44,7 +44,7 @@ const { formColumns } = useTable<FtVxeTableProps<T, S>>(props);
 
 onMounted(() => {
   if (props.initSearch) {
-    props.onSearch?.();
+    props.onSearch?.({ trigger: "init" });
   }
 });
 
@@ -206,7 +206,7 @@ const showPaginationTotal = computed(() => {
 
 async function refresh() {
   current.value = 1;
-  await props.onSearch?.();
+  await props.onSearch?.({ trigger: "refresh" });
 }
 
 const definedSlots: (string | number)[] = ["pager", "loading"];
@@ -293,7 +293,7 @@ defineExpose({
               :showTotal="showPaginationTotal"
               :total
               :defaultPageSize
-              @change="() => onSearch?.()"
+              @change="() => onSearch?.({ trigger: 'pagination' })"
             />
           </div>
         </template>

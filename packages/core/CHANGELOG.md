@@ -1,5 +1,22 @@
 # @ftjs/core
 
+## 2.2.0
+
+### Minor Changes
+
+- [`7b21890`](https://github.com/yuhengshen/ftjs/commit/7b218903f940a3e8307bd85897f916c446f54a48) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: `formatGetFormData` 新增第二个参数 `ctx`，支持获取 `fields` 拆分的原始值数组和完整表单数据
+
+  ```ts
+  // 之前
+  formatGetFormData?: (val: any) => any;
+
+  // 之后
+  formatGetFormData?: (val: any, ctx: { vals: any[]; formData: F }) => any;
+  ```
+
+  - `ctx.vals` - 对于 `fields` 拆分的列，传递所有字段的原始值数组
+  - `ctx.formData` - 全部的表单数据
+
 ## 2.1.0
 
 ### Minor Changes

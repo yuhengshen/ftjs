@@ -494,10 +494,14 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
     const formData = {} as ExtractFormData<P>;
     visibleColumns.value.forEach(usefulColumn => {
       const { fields } = getFieldsAndValues(usefulColumn);
-      fields.forEach(field => {
-        let value = get(form.value, field);
+      const vals = fields.map(field => get(form.value, field));
+      fields.forEach((field, idx) => {
+        let value = vals[idx];
         if (usefulColumn.formatGetFormData) {
-          value = usefulColumn.formatGetFormData(value);
+          value = usefulColumn.formatGetFormData(value, {
+            vals,
+            formData: form.value,
+          });
         }
         set(formData, field, value);
       });

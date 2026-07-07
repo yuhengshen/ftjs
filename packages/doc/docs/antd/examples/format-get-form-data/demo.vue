@@ -10,7 +10,9 @@ const columns: FtAntdFormProps<FormData>["columns"] = [
     type: "input",
     title: "姓名",
     field: "name",
-    formatGetFormData(val?: string) {
+    formatGetFormData(val: string | undefined, ctx) {
+      // ctx.vals: 对于 fields 拆分的，所有字段的原始值
+      // ctx.formData: 全部表单数据
       return val?.toUpperCase();
     },
   },

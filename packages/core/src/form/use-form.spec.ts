@@ -296,6 +296,9 @@ describe("useForm", () => {
       expect(result).not.toHaveProperty("hobby");
       expect(result).toHaveProperty("name");
       expect(result).toHaveProperty("age");
+      // fields 类型列也应该返回
+      expect(result).toHaveProperty("contacts.0");
+      expect(result).toHaveProperty("contacts.1");
     });
 
     it("formatGetFormData应该正确转换字段值", async () => {
@@ -315,6 +318,31 @@ describe("useForm", () => {
 
       // age字段应该被转换
       expect(result.age).toBe(formData.age * 2);
+    });
+
+    it("formatGetFormData应该能通过ctx获取vals和formData", async () => {
+      const columnsWithFormat = [...columns];
+      // 给 contacts 列（fields: ["contacts.0", "contacts.1"]）添加 formatGetFormData
+      columnsWithFormat[4] = {
+        ...columnsWithFormat[4],
+        formatGetFormData: (val: any, ctx: any) => {
+          // ctx.vals 包含所有 fields 的原始值
+          // ctx.formData 包含全部表单数据
+          return `${ctx.vals.join(",")} (name: ${ctx.formData.name})`;
+        },
+      };
+
+      const { getFormData } = useForm({
+        formData,
+        columns: columnsWithFormat,
+      });
+
+      const result = getFormData();
+
+      // result.contacts 是数组，需通过索引访问
+      expect(result.contacts[0]).toBe(
+        `${formData.contacts[0]},${formData.contacts[1]} (name: ${formData.name})`,
+      );
     });
   });
 

@@ -263,8 +263,16 @@ interface FtFormColumnBase<FormData extends Record<string, any>> {
 
   /**
    * getFormData 时，对数据进行格式化，不会影响 Form 中的值
+   *
+   * @param val 当前字段的值
+   * @param ctx 上下文对象
+   * @param ctx.vals 对于 `fields` 拆分的，通过这个传递所有字段的原始值
+   * @param ctx.formData 全部的表单数据
    */
-  formatGetFormData?: (val: any) => any;
+  formatGetFormData?: (
+    val: any,
+    ctx: { vals: any[]; formData: FormData },
+  ) => any;
 
   /**
    * props 配置，子类定义

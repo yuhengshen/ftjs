@@ -501,6 +501,7 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
           value = usefulColumn.formatGetFormData(value, {
             vals,
             formData: form.value,
+            index: idx,
           });
         }
         set(formData, field, value);

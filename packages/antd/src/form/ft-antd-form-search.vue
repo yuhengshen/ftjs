@@ -238,7 +238,7 @@ defineExpose({
             {{ locale.form.settings }}
           </Button>
         </Badge>
-        <Button type="primary" htmlType="submit" :disabled="loading">
+        <Button type="primary" htmlType="submit" :loading="loading">
           {{ locale.form.search }}
         </Button>
         <Button

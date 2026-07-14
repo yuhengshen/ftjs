@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.6.1
+
+### Patch Changes
+
+- [`e60e698`](https://github.com/yuhengshen/ftjs/commit/e60e6982377d20cf1e72c35b8431782d6a9a36c1) Thanks [@yuhengshen](https://github.com/yuhengshen)! - FtVxeTable 的 loading 状态传递到 FtAntdFormSearch 查询按钮，loading 时按钮 disabled 防止重复提交
+
 ## 3.6.0
 
 ### Minor Changes

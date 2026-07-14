@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.6.2
+
+### Patch Changes
+
+- [`e297fb0`](https://github.com/yuhengshen/ftjs/commit/e297fb0a88eafea8bc2bc31934181725a180d33f) Thanks [@yuhengshen](https://github.com/yuhengshen)! - FtVxeTable 的 loading 状态传递到 FtAntdFormSearch 查询按钮，loading 时按钮显示加载动画并防止重复提交
+
 ## 3.6.1
 
 ### Patch Changes

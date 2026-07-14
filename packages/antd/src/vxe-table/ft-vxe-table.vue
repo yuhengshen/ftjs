@@ -257,6 +257,7 @@ defineExpose({
       <FtAntdFormSearch
         ref="search"
         :cache
+        :loading
         :columns="formColumns"
         @submit="refresh"
         v-bind="internalFormProps"

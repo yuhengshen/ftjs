@@ -48,6 +48,10 @@ export interface FtAntdFormSearchProps<F extends Record<string, any>>
    * 模态框的 z-index
    */
   modalZIndex?: number;
+  /**
+   * 查询按钮 loading 状态
+   */
+  loading?: boolean;
 }
 
 export const useRules = (props: FtAntdFormProps<any>) => {

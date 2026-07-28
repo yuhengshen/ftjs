@@ -92,6 +92,17 @@ export interface FtFormColumnBase<F extends Record<string, any>> {
         }) => boolean);
   }[];
 
+  /**
+   * 当本字段被 control 隐藏时，是否级联隐藏本字段所控制的目标字段。
+   *
+   * 例如：A 控制 B，B 控制 C，当 A 改动导致 B 隐藏时：
+   * - `true`（默认）：C 也会被隐藏
+   * - `false`：C 不受影响，仍按 B 的值判断是否显示
+   *
+   * @default true
+   */
+  cascadeControl?: boolean;
+
   valueGetter?: (val: any) => any;
   valueSetter?: (val: any) => any;
 

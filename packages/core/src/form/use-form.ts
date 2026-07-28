@@ -278,11 +278,44 @@ export const useForm = <P extends FtBaseFormProps<any>>(props: P) => {
   const hideFieldSet = computed(() => {
     const hiddenFields = new Set<string>();
 
+    // 构建字段名到 column 的映射，用于快速查找 cascadeControl 配置
+    const columnMap = new Map<string, FtFormColumnBase<ExtractFormData<P>>>();
+    columns.value.forEach(col => {
+      columnMap.set(getField(col), col);
+    });
+
+    /**
+     * 递归级联隐藏：当 field 被隐藏时，检查它是否控制其他字段，
+     * 若被控制字段的 cascadeControl 不为 false，则递归隐藏
+     */
+    const cascadeHide = (field: string) => {
+      columns.value.forEach(column => {
+        if (!column.control) return;
+        const controllerField = getField(column);
+        // 找到由 field 控制的列
+        if (controllerField !== field) return;
+        column.control.forEach(({ field: targetField }) => {
+          if (hiddenFields.has(targetField)) return;
+          hiddenFields.add(targetField);
+          // 检查目标字段的 cascadeControl 配置，默认 true
+          const targetCol = columnMap.get(targetField);
+          if (targetCol?.cascadeControl !== false) {
+            cascadeHide(targetField);
+          }
+        });
+      });
+    };
+
     fieldControlMap.value.forEach((controlMap, targetField) => {
       // 只有所有控制条件都为true时，字段才显示
       const shouldShow = Array.from(controlMap.values()).every(Boolean);
       if (!shouldShow) {
         hiddenFields.add(targetField);
+        // 检查被隐藏字段的 cascadeControl 配置，默认级联
+        const targetCol = columnMap.get(targetField);
+        if (targetCol?.cascadeControl !== false) {
+          cascadeHide(targetField);
+        }
       }
     });
 

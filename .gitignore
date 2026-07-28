@@ -5,3 +5,4 @@ node_modules
 **/.vitepress/dist
 **/.vitepress/.temp
 .vercel
+packages/core/tsconfig.vitest-temp.json

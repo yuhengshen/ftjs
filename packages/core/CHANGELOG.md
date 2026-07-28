@@ -1,5 +1,11 @@
 # @ftjs/core
 
+## 2.4.0
+
+### Minor Changes
+
+- [`52a7c9d`](https://github.com/yuhengshen/ftjs/commit/52a7c9d2bc8427c142367d3bac73b81764738d74) Thanks [@yuhengshen](https://github.com/yuhengshen)! - form: 新增 `cascadeControl` 属性到 `FtFormColumnBase`，支持 control 链的级联隐藏。当某个字段被 control 隐藏时，默认会级联隐藏该字段所控制的目标字段，可通过 `cascadeControl: false` 关闭此行为
+
 ## 2.3.0
 
 ### Minor Changes

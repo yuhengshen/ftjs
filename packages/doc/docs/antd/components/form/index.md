@@ -34,4 +34,26 @@ FtAntdForm 组件继承了 @ftjs/core 的表单属性，并扩展了 Ant Design 
 | confirmText       | 提交按钮文本                       | `string`                | `'确认'`          |
 | resetText         | 重置按钮文本                       | `string`                | `'重置'`          |
 
+## 表单列扩展属性
+
+antd 的列定义（`AntdColumnBase`）在 [通用列属性](/guide/core/form/column) 基础上，额外支持以下属性，全部内置表单类型生效：
+
+| 属性名 | 说明                                          | 类型                             | 默认值 |
+| ------ | --------------------------------------------- | -------------------------------- | ------ |
+| extra  | 表单项下方的说明文字，透传 Form.Item 的 extra | `MaybeRefOrGetter<VueNode>`      | -      |
+| rules  | 校验规则，透传 Form.Item 的 rules             | `MaybeRefOrGetter<ColumnRule[]>` | -      |
+
+```typescript
+const columns = [
+  {
+    field: "name",
+    title: "姓名",
+    type: "input",
+    // 表单项下方渲染灰色说明文字
+    extra: "姓名将用于合同签署，请填写真实姓名",
+    rules: [{ required: true, message: "请输入姓名" }],
+  },
+];
+```
+
 <!--@include: ../shared/form-types.md-->

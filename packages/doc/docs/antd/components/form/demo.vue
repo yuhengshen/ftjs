@@ -13,6 +13,7 @@ const columns: FtAntdFormProps<FormData>["columns"] = [
     field: "name",
     title: "姓名",
     type: "input",
+    extra: "姓名将用于合同签署，请填写真实姓名",
     rules: [
       { required: true, message: "请输入姓名" },
       { min: 2, max: 10, message: "姓名长度在2-10个字符之间" },

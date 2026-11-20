@@ -47,6 +47,10 @@ export type VueNode = VNodeChildAtom | VNodeChildAtom[] | VNode;
 export interface AntdColumnBase<FormData extends Record<string, any>>
   extends FtFormColumnBase<FormData> {
   /**
+   * 表单项下方的说明文字（透传 Form.Item 的 extra）
+   */
+  extra?: MaybeRefOrGetter<VueNode | undefined>;
+  /**
    * 校验规则
    */
   rules?: MaybeRefOrGetter<ColumnRule[]>;

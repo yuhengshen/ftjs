@@ -1,5 +1,11 @@
 # @ftjs/antd
 
+## 3.7.0
+
+### Minor Changes
+
+- [`284ed4c`](https://github.com/yuhengshen/ftjs/commit/284ed4c5b62649802dc891f01596d169693d8659) Thanks [@yuhengshen](https://github.com/yuhengshen)! - feat: 表单列支持配置 extra，在表单项下方渲染说明文字（透传 Form.Item 的 extra），全部内置表单类型生效
+
 ## 3.6.2
 
 ### Patch Changes
